@@ -1,11 +1,11 @@
-import Quizzes from './Components/Quizzes';
-import * as S from './Dashboard.style';
+import QuizList from './Components/QuizList';
+import * as S from './Style/Dashboard.style';
 
 const Dashboard = () => {
 
   return (
     <S.Dashboard>
-      <Quizzes />
+      <QuizList />
     </S.Dashboard>
   )
 }

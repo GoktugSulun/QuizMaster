@@ -1,6 +1,11 @@
 import { Box, IconButton, Typography, alpha, styled } from "@mui/material";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { shouldForwardProp } from "@/Core/Utils";
+import { PageWrapper } from "@/Core/Layout";
+
+export const Dashboard = styled(PageWrapper)(({ theme }) => ({
+   
+}));
 
 export const Quiz = styled('div')(({ theme }) => ({
    background: theme.palette.common.white,
@@ -15,7 +20,7 @@ export const Quiz = styled('div')(({ theme }) => ({
    ':hover': {
       cursor: 'pointer',
       '& .MuiTypography-root a': {
-         color: theme.palette.primary.main,
+         // color: theme.palette.primary.main,
          textDecoration: 'underline'
       }
    },
@@ -36,9 +41,9 @@ export const Link = styled(ReactRouterLink)(({ theme }) => ({
    }
 }));
 
-export const EllipsisText = styled(Typography, { shouldForwardProp })<{ maxRow?: number }>(({ theme, maxRow }) => ({
+export const EllipsisText = styled(Typography, { shouldForwardProp })<{ $maxRow?: number }>(({ theme, $maxRow }) => ({
    display: '-webkit-box',
-   WebkitLineClamp: maxRow || 1,
+   WebkitLineClamp: $maxRow || 1,
    WebkitBoxOrient: 'vertical',
    overflow: 'hidden',
    textOverflow: 'ellipsis'
@@ -64,3 +69,5 @@ export const Category = styled(Box, { shouldForwardProp })<{ color: string, $bgC
    padding: '5px 15px',
    borderRadius: 50
 }));
+
+ 

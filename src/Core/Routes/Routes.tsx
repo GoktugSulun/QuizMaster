@@ -35,17 +35,25 @@ const RouteList = () => {
   return (
     <Suspense fallback={<div />}>
       <Routes>
-      <Route element={<ProtectedRoute isAllowed />}>
-        <Route path="/" element={<Dashboard />}>
-          <Route path='favorites' />
-          <Route path='saves' />
+        {/* Protected Route */}
+        <Route element={<ProtectedRoute isAllowed />}>
+          <Route path="/" element={<Dashboard />}>
+            <Route path='favorites' />
+            <Route path='saves' />
+          </Route>
+          {/* <Route path='quiz/:id' element={} /> */}
+          <Route path="/test" element={<Test />} />
         </Route>
-        <Route path="/test" element={<Test />} />
-      </Route>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="*" element={<div> Page Not Found! </div>} />
-    </Routes>
+
+        {/* Private Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* 404 Page */}
+        <Route element={<ProtectedRoute isAllowed />}>
+          <Route path="*" element={<div> Page Not Found! </div>} />
+        </Route>
+      </Routes>
     </Suspense>
   );
 };

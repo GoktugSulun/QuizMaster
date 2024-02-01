@@ -1,8 +1,8 @@
-import { Quiz } from "@/Components/Quiz";
 import img1 from '../../../Pngs/img-1.jpg';
 import img2 from '../../../Pngs/img-2.jpg';
 import img3 from '../../../Pngs/img-3.jpg';
 import { Grid } from "@mui/material";
+import Quiz from './Quiz';
 
 const items = [
   {
@@ -37,7 +37,7 @@ const items = [
   }
 ]
 
-const Quizzes = () => {
+const QuizList = () => {
   return (
     <Grid container spacing={5}>
       { items.map((item) => (
@@ -50,4 +50,4 @@ const Quizzes = () => {
   )
 }
 
-export default Quizzes
+export default QuizList;
