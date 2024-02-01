@@ -7,6 +7,8 @@ const Dashboard = lazy(() => import('@/Pages/Dashboard/Dashboard'));
 const Login = lazy(() => import('@/Pages/Login/Login'));
 const Register = lazy(() => import('@/Pages/Register/Register'));
 const Test = lazy(() => import('@/Pages/Test/Test'));
+const Quiz = lazy(() => import('@/Pages/Quiz/Quiz'));
+const QuizRules = lazy(() => import('@/Pages/QuizRules/QuizRules'));
 
 const RouteList = () => {
   const token = localStorage.getItem('token');
@@ -41,7 +43,8 @@ const RouteList = () => {
             <Route path='favorites' />
             <Route path='saves' />
           </Route>
-          {/* <Route path='quiz/:id' element={} /> */}
+          <Route path='quiz' element={<Quiz />} />
+          <Route path='rules/quiz' element={<QuizRules />} />
           <Route path="/test" element={<Test />} />
         </Route>
 

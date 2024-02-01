@@ -16,7 +16,7 @@ const defaultTheme = createTheme({
     },
     secondary: {
       main: '#F9FAFC',
-      light: 'rgba(0, 0, 0, 0.16)'
+      light: 'rgba(0, 0, 0, 0.16)',
     },
     common: {
       black: '#000000',
@@ -81,6 +81,10 @@ const theme = createTheme(defaultTheme, {
       styleOverrides: {
         root: {
           color: defaultTheme.palette.common.black
+        },
+        paragraph: {
+          margin: 0,
+          color: '#5e5e5e'
         }
       }
     },
