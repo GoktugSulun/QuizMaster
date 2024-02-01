@@ -1,6 +1,9 @@
 import { Suspense } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { Fallback } from '../Components';
+import { Header } from '@/Components/Header';
+import { Sidebar } from '@/Components/Sidebar';
+import { MainWrapper } from '../Layout';
 
 type ProtectedRouteProps = {
   isAllowed?: boolean,
@@ -28,7 +31,11 @@ const ProtectedRoute = ({ isAllowed = false, redirectPath = '/' }: ProtectedRout
 
   return (
     <Suspense fallback={<Fallback size={80} />}>
-      <Outlet />
+      <Header />
+      <MainWrapper>
+        <Sidebar /> 
+        <Outlet />
+      </MainWrapper>
     </Suspense>
   );
 };

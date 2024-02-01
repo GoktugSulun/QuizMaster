@@ -15,7 +15,7 @@ const defaultTheme = createTheme({
        light: alpha(deepPurple[500], 0.5)
      },
      secondary: {
-       main: purple[500],
+       main: '#F9FAFC',
      },
    }
  });
