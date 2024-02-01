@@ -5,7 +5,7 @@ type SidebarProps = {
 }
 
 export const Sidebar = styled('div')<SidebarProps>(({ theme, isOpen }) => ({
-   minWidth: isOpen ? '180px' : '60px',
+   minWidth: isOpen ? '250px' : '80px',
    height: 'calc(100vh - 80px)',
    background: theme.palette.common.white,
    boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
@@ -18,6 +18,9 @@ export const Sidebar = styled('div')<SidebarProps>(({ theme, isOpen }) => ({
       right: -20,
       background: theme.palette.common.white,
       border: `1px solid ${theme.palette.secondary.light}`,
+      '&:hover': {
+         background: theme.palette.common.white,
+      },
       '& .MuiSvgIcon-root': {
          width: 20,
          height: 20
