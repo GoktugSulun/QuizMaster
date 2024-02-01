@@ -1,0 +1,28 @@
+{
+   "posts": [
+      {
+         "id": 1,
+         "user_id": 2,
+         "title": "Deneme title 1",
+         "description": "Deneme description description description description" 
+      },
+      {
+         "id": 2,
+         "user_id": 2,
+         "title": "Deneme title 2",
+         "description": "Deneme description description description description" 
+      },
+      {
+         "id": 3,
+         "user_id": 2,
+         "title": "Deneme title 3",
+         "description": "Deneme description description description description" 
+      },
+      {
+         "id": 4,
+         "user_id": 2,
+         "title": "Deneme title 4",
+         "description": "Deneme description description description description" 
+      }
+   ]
+}
