@@ -7,7 +7,7 @@ export const Dashboard = styled(PageWrapper)(({ theme }) => ({
    
 }));
 
-export const Quiz = styled('div')(({ theme }) => ({
+export const QuizPreview = styled('div')(({ theme }) => ({
    background: theme.palette.common.white,
    borderRadius: 20,
    height: '100%',

@@ -5,7 +5,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNavigate } from 'react-router-dom';
 
-type QuizProps = {
+type QuizPreviewProps = {
    data: {
       id: number;
       title: string;
@@ -18,7 +18,7 @@ type QuizProps = {
    }
 };
 
-const Quiz = (props: QuizProps) => {
+const QuizPreview = (props: QuizPreviewProps) => {
    const { id, title, description, time, img, liked } = props.data;
    const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const Quiz = (props: QuizProps) => {
    };
 
    return (
-      <S.Quiz onClick={navigateHandler}>
+      <S.QuizPreview onClick={navigateHandler}>
          <Tooltip title={liked ? 'Unlike' : 'Like'}>
             <S.LikeButton>
                { liked ? <FavoriteIcon /> : <FavoriteBorderIcon /> }
@@ -100,8 +100,8 @@ const Quiz = (props: QuizProps) => {
                </Stack>
             </Stack>
          </Stack>
-      </S.Quiz>
+      </S.QuizPreview>
    )
 }
 
-export default Quiz
+export default QuizPreview;
