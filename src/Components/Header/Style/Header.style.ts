@@ -17,7 +17,7 @@ export const Logo = styled(Typography)(({ theme }) => ({
 export const ProfileMenuItem = styled(MenuItem)({
    width: 180,
    padding: '10px 20px',
-   '&:not(:first-child, :last-child)': {
+   '&:not(:first-of-type, :last-of-type)': {
       padding: '14px 20px'
    },
    '& .MuiSvgIcon-root': {
