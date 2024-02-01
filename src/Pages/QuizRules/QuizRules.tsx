@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import * as S from './Style/QuizRules.style';
 import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import img1 from '../../Pngs/img-1.jpg';
 import QuizRuleHeader from './Components/QuizRuleHeader';
 import QuizRuleInfos from './Components/QuizRuleInfos';
@@ -18,11 +18,24 @@ const data = {
    liked: true,
 };
 
+/* 
+   * This page must be displayed when the url is like that => /rules/quiz?id={id}
+   ! If there is no id query, send user to dashboard.
+*/
+
 const QuizRules = () => {
    const [searchParams] = useSearchParams();
+   const navigate = useNavigate();
+
+   const navigateToQuizHandler = () => {
+      const id = searchParams.get("id");
+      navigate({ pathname: '/quiz', search: `?id=${id}&question=1` });
+   };
 
    useEffect(() => {
-      console.log(searchParams.get("id"), 'searchParams');
+      if (!searchParams.get("id")) {
+         navigate('/', { replace: true });
+      }
    }, [searchParams]);
 
    return (
@@ -44,7 +57,7 @@ const QuizRules = () => {
             </Stack>
             <Divider sx={{ margin: '40px 0' }} />
             <Stack alignItems="center">
-               <Button sx={{ padding: "8px 60px", ":hover": { padding: "8px 80px" } }} > START </Button>
+               <Button onClick={navigateToQuizHandler} sx={{ padding: "8px 60px", ":hover": { padding: "8px 80px" } }} > START </Button>
             </Stack>
          </S.QuizRulesContent>
       </S.QuizRules>
