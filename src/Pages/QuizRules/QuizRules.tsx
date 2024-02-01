@@ -19,8 +19,9 @@ const data = {
 };
 
 /* 
-   * This page must be displayed when the url is like that => /rules/quiz?id={id}
-   ! If there is no id query, send user to dashboard.
+   ? Required searchParam => id
+   * This component must be displayed when the url is like that => /rules/quiz?id={id}
+   ! If there is no "id" query, navigate user to dashboard.
 */
 
 const QuizRules = () => {
