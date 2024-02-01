@@ -1,9 +1,26 @@
 import { styled } from '@mui/material'
 
-export const Sidebar = styled('div')(({ theme }) => ({
-   width: '180px',
+type SidebarProps = {
+   isOpen: boolean
+}
+
+export const Sidebar = styled('div')<SidebarProps>(({ theme, isOpen }) => ({
+   minWidth: isOpen ? '180px' : '60px',
    height: 'calc(100vh - 80px)',
    background: theme.palette.common.white,
-   boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
-   borderRight: '1px solid rgba(0, 0, 0, 0.16)'
+   boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
+   borderTop: '1px solid rgba(0, 0, 0, 0.16)',
+   transition: 'min-width 350ms',
+   position: 'relative',
+   '& .MuiIconButton-root': {
+      position: 'absolute',
+      top: 30,
+      right: -20,
+      background: theme.palette.common.white,
+      border: `1px solid ${theme.palette.secondary.light}`,
+      '& .MuiSvgIcon-root': {
+         width: 20,
+         height: 20
+      }
+   }
 }));

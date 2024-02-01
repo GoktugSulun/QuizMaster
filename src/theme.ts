@@ -8,17 +8,22 @@ declare module '@mui/material/Button' {
  };
  
 const defaultTheme = createTheme({
-   palette: {
-     primary: {
-       main: deepPurple[500],
-       dark: deepPurple[700],
-       light: alpha(deepPurple[500], 0.5)
-     },
-     secondary: {
-       main: '#F9FAFC',
-     },
-   }
- });
+  palette: {
+    primary: {
+      main: deepPurple[500],
+      dark: deepPurple[700],
+      light: alpha(deepPurple[500], 0.5)
+    },
+    secondary: {
+      main: '#F9FAFC',
+      light: 'rgba(0, 0, 0, 0.16)'
+    },
+    common: {
+      black: '#000000',
+      white: '#FFFFFF',
+    }
+  }
+});
  
 const theme = createTheme(defaultTheme, {
   components: {
