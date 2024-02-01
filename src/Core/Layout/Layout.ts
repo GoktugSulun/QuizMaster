@@ -22,6 +22,6 @@ export const PageContent = styled('div')(({ theme }) => ({
    background: theme.palette.common.white,
    borderRadius: 15,
    height: '100%',
-   padding: '25px 50px',
    border: `1px solid ${theme.palette.secondary.light}`,
 }));
+

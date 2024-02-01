@@ -1,6 +1,7 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as S from './Style/Quiz.style';
 import { useEffect } from 'react';
+import QuizHeader from './Components/QuizHeader';
 
 /*
    ? Required searchParams => id & question
@@ -23,7 +24,7 @@ const Quiz = () => {
    return (
       <S.Quiz>
          <S.QuizContent>
-            
+            <QuizHeader />
          </S.QuizContent>
       </S.Quiz>
    )

@@ -5,7 +5,8 @@ export const QuizRules = styled(PageWrapper)({});
 
 export const QuizRulesContent = styled(PageContent)(({ theme }) => ({
    display: 'flex',
-   flexDirection: 'column'
+   flexDirection: 'column',
+   padding: '25px 50px',
 }));
 
 export const Image = styled('img')({

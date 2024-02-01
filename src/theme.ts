@@ -1,18 +1,31 @@
-import { alpha, createTheme } from '@mui/material/styles';
-import { blue, deepPurple, purple, red } from '@mui/material/colors';
+import { createTheme } from '@mui/material/styles';
+import { deepPurple } from '@mui/material/colors';
 
 declare module '@mui/material/Button' {
    interface ButtonPropsVariantOverrides {
      dashed: true;
    }
- };
+};
+
+declare module "@mui/material/styles" {
+  interface Palette {
+    custom: Palette['primary'];
+  }
+  interface PaletteOptions {
+    custom?: PaletteOptions['primary'];
+  }
+}
  
 const defaultTheme = createTheme({
   palette: {
+    custom: {
+      main: 'rgba(129, 117, 192, 0.8)',
+      light: '#EDEAFB'
+    },
     primary: {
       main: deepPurple[500],
       dark: deepPurple[700],
-      light: alpha(deepPurple[500], 0.5)
+      light: '#EDEAFB',
     },
     secondary: {
       main: '#F9FAFC',
@@ -51,24 +64,24 @@ const theme = createTheme(defaultTheme, {
           }
         }
       },
-      variants: [
-        {
-          props: { variant: 'dashed' },
-          style: {
-            textTransform: 'none',
-            border: `2px dashed ${defaultTheme.palette.primary.main}`,
-            '&:hover': {
-              background: blue
-            }
-          },
-        },
-        {
-          props: { variant: 'dashed', color: 'secondary' },
-          style: {
-            border: `4px dashed ${red[500]}`,
-          },
-        },
-      ],
+      // variants: [
+      //   {
+      //     props: { variant: 'dashed' },
+      //     style: {
+      //       textTransform: 'none',
+      //       border: `2px dashed ${defaultTheme.palette.primary.main}`,
+      //       '&:hover': {
+      //         background: blue
+      //       }
+      //     },
+      //   },
+      //   {
+      //     props: { variant: 'dashed', color: 'secondary' },
+      //     style: {
+      //       border: `4px dashed ${red[500]}`,
+      //     },
+      //   },
+      // ],
     },
     MuiSelect: {
       styleOverrides: {
