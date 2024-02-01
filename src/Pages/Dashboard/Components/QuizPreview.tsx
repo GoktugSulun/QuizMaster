@@ -3,7 +3,7 @@ import * as S from '../Style/Dashboard.style';
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 
 type QuizPreviewProps = {
    data: {
@@ -23,7 +23,8 @@ const QuizPreview = (props: QuizPreviewProps) => {
    const navigate = useNavigate();
 
    const navigateHandler = () => {
-      navigate(`/quiz/${id}`);
+      const searchParams = createSearchParams({ id: `${id}` });
+      navigate({ pathname: 'rules/quiz', search: `?${searchParams}` });
    };
 
    return (
