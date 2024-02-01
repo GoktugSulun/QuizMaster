@@ -1,15 +1,19 @@
-import { Stack } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Stack } from '@mui/material';
+import { Link } from 'react-router-dom';
+import * as S from './Dashboard.style';
+import { useEffect } from 'react';
+import { snackbar } from '@/Core/Utils';
 
 const Dashboard = () => {
+
   return (
-    <div>
-      <Stack sx={{ margin: 10 }} direction="row" spacing={5}>
+    <S.Dashboard>
+      <Stack>
         <Link to="/login"> Login </Link>
         <Link to="/register"> Register </Link>
         <Link to="/test"> Test </Link>
       </Stack>
-    </div>
+    </S.Dashboard>
   )
 }
 

@@ -36,7 +36,10 @@ const RouteList = () => {
     <Suspense fallback={<div />}>
       <Routes>
       <Route element={<ProtectedRoute isAllowed />}>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />}>
+          <Route path='favorites' />
+          <Route path='saves' />
+        </Route>
         <Route path="/test" element={<Test />} />
       </Route>
       <Route path="/login" element={<Login />} />
