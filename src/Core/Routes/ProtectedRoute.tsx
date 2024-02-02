@@ -30,13 +30,15 @@ const ProtectedRoute = ({ isAllowed = false, redirectPath = '/' }: ProtectedRout
   }
 
   return (
-    <Suspense fallback={<Fallback size={80} />}>
+    <>
       <Header />
       <MainWrapper>
         <Sidebar /> 
-        <Outlet />
+        <Suspense fallback={<Fallback size={80} />}>
+          <Outlet />
+        </Suspense>
       </MainWrapper>
-    </Suspense>
+    </>
   );
 };
 
