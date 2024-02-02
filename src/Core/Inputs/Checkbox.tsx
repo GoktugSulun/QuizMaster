@@ -1,47 +1,48 @@
-import { Checkbox, type CheckboxProps, FormControlLabel, type FormControlLabelProps, FormHelperText, FormControl } from '@mui/material';
-import { type FieldValues, useController, type UseControllerProps, type Control } from 'react-hook-form';
+import { Checkbox, FormControlLabel, FormHelperText, FormControl } from '@mui/material';
+import { type FieldValues, type FieldPath, useController } from 'react-hook-form';
+import { type CheckboxInputType } from '../Models';
 
-type CheckboxInputTypes<T extends FieldValues> = Omit<FormControlLabelProps, 'control'> 
-   & UseControllerProps<T> 
-   & { 
-      defaultChecked?: boolean, 
-      helperText?: string, 
-      error?: boolean,
-      control: Control<T>
-   };
+const CheckboxInput = <T extends FieldValues, U extends FieldPath<T>>(props: CheckboxInputType<T, U>) => {
+   const { name, control, checkbox, ...otherProps } = props;
 
-const CheckboxInput = <T extends FieldValues>(props: CheckboxInputTypes<T>) => {
-   const { control, defaultChecked=false, error=false, ...checkboxProps } = props;
-
-   const { field, fieldState } = useController({
-      name: props.name,
-      control: props.control
-   });
-
+   const { field, fieldState } = control 
+      ? useController({ name, control }) 
+      : { 
+         field: {
+            value: props.checked,
+            onChange: props.onChange,
+            onBlur: props.onBlur,
+            name: props.name || props.id,
+            ref: props.ref,
+            disabled: props.disabled
+         }, 
+         fieldState: {
+            error: props.error
+         } 
+      };
+   const error = !!fieldState.error;
+   const helperText = (typeof fieldState.error === 'object' && 'message' in fieldState.error) 
+      ? fieldState.error.message 
+      : props.helperText
+   
    return (
       <FormControl
-         error={!!fieldState?.error || props.error}
+         error={!!error}
       >
          <FormControlLabel 
-            control={
-               <Checkbox
-                  required={props.required}
-                  defaultChecked={props.defaultChecked}
-               />} 
-            label={props.label}
+            {...otherProps}
+            control={ <Checkbox {...checkbox} /> } 
             checked={field.value}
             onChange={field.onChange}
             onBlur={field.onBlur}
-            name={field.name}
+            name={field.name || props.id}
+            disabled={field.disabled}
             ref={field.ref}
-            labelPlacement={props.labelPlacement}
-            disabled={props.disabled}
-            required={props.required}
          />
          <FormHelperText  
-            error={!!fieldState?.error || props.error}
+            error={!!error}
          >
-            { fieldState?.error?.message || props.helperText }
+            { helperText }
          </FormHelperText>
       </FormControl>
    );

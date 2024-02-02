@@ -3,6 +3,7 @@ import * as S from './Style/Quiz.style';
 import QuizHeader from './Components/QuizHeader';
 import { Box, Divider } from '@mui/material';
 import QuizPagination from './Components/QuizPagination';
+import MultipleChoice from './Components/MultipleChoice';
 
 /*
    ? Required searchParams => id & question
@@ -25,7 +26,7 @@ const Quiz = () => {
       <S.Quiz>
          <S.QuizContent>
             <QuizHeader />
-            <Box flex={1}> body </Box>
+            <MultipleChoice />
             <Divider />
             <QuizPagination count={10} />
          </S.QuizContent>

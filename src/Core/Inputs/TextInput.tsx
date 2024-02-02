@@ -1,19 +1,30 @@
-import { FormControl, FormHelperText, InputLabel, OutlinedInput, type OutlinedInputProps } from '@mui/material';
-import { useController, type UseControllerProps, type FieldValues, type Control } from 'react-hook-form';
+import { FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/material';
+import { type FieldValues, type FieldPath, useController } from 'react-hook-form';
 import ErrorIcon from '@mui/icons-material/Error';
+import { TextInputType } from '../Models';
 
-type TextInputProps<T extends FieldValues> = OutlinedInputProps 
-  & UseControllerProps<T> 
-  & { helperText?: string, shrink?: boolean, control: Control<T>, };
+const TextInput = <TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>(props: TextInputType<TFieldValues, TName>) => {
+  const { name, control, ...otherProps } = props;
 
-const TextInput = <T extends FieldValues>(props: TextInputProps<T>) => {
-
-  const { control, helperText, shrink, ...outlinedInputProps } = props;
-
-  const { field, fieldState } = useController({
-    name: props.name,
-    control: props.control
-  });
+  const { field, fieldState } = control 
+    ? useController({ name, control }) 
+    : { 
+        field: {
+          value: props.value,
+          onChange: props.onChange,
+          onBlur: props.onBlur,
+          name: props.name || props.id,
+          ref: props.ref,
+          disabled: props.disabled
+        }, 
+        fieldState: {
+          error: props.error
+        } 
+    };
+  const error = !!fieldState.error;
+  const helperText = (typeof fieldState.error === 'object' && 'message' in fieldState.error) 
+    ? fieldState.error.message 
+    : props.helperText
 
   return (
     <FormControl 
@@ -21,27 +32,27 @@ const TextInput = <T extends FieldValues>(props: TextInputProps<T>) => {
     >
       <InputLabel 
         shrink={props.shrink}
-        error={!!fieldState?.error ?? props.error} 
-        htmlFor={props.name || props.id}
+        error={error} 
+        htmlFor={name || props.id}
       >
         {props.label}
       </InputLabel>
       <OutlinedInput
-        {...outlinedInputProps}
-        error={!!fieldState?.error ?? props.error}
-        onChange={field.onChange}
-        onBlur={field.onBlur} 
+        {...otherProps}
+        error={error}
         value={field.value}
+        onChange={field.onChange}
+        onBlur={field.onBlur}
         name={field.name}
-        id={props.name || props.id}
+        ref={field.ref}
+        disabled={field.disabled}
         notched={props.shrink}
-        inputRef={field.ref} 
-        endAdornment={props.endAdornment || (!!fieldState?.error && <ErrorIcon color="error" />)}
+        endAdornment={props.endAdornment || (error && <ErrorIcon color="error" />)}
       />
       <FormHelperText
-        error={!!fieldState?.error ?? props.error} 
+        error={error} 
       >
-        { fieldState?.error?.message || props.helperText }
+        { helperText }
       </FormHelperText>
     </FormControl>
   );

@@ -60,9 +60,9 @@ const SelectInput = <T extends FieldValues>(props: SelectInputProps<T>) => {
             onBlur={field.onBlur} 
             value={field.value}
             name={field.name}
+            inputRef={field.ref} 
             id={props.name || props.id}
             notched={props.shrink}
-            inputRef={field.ref} 
          >
             {
                !!emptyValue
