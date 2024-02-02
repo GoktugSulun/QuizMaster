@@ -5,17 +5,16 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useSearchParams } from 'react-router-dom';
 
-const QuizPagination = () => {
+type QuizPagination = {
+   siblingCount?: number;
+   count: number;
+}
+
+const QuizPagination = ({ siblingCount=1, count }: QuizPagination) => {
    const [searchParams, setSearchParams] = useSearchParams();
    const page = +(searchParams.get("question") as string);
 
-   const { items } = usePagination({
-      page,
-      siblingCount: 1,
-      count: 10
-    });
-
-   console.log(items, ' items');
+   const { items } = usePagination({ page, siblingCount, count });
 
    const handleClick = (newPage: number) => {
       const id = searchParams.get("id") as string;
@@ -35,7 +34,7 @@ const QuizPagination = () => {
    };
    
    return (
-      <Stack flexDirection="row" justifyContent="space-between" gap={1} margin="10px 20px 30px">
+      <Stack flexDirection="row" justifyContent="space-between" gap={1} margin="30px 20px">
          <S.PaginationDirectionButton 
             startIcon={<ArrowBackIcon />}
             onClick={() => handleClick(page - 1)}

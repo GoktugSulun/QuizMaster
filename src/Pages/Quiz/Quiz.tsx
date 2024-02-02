@@ -1,8 +1,7 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import * as S from './Style/Quiz.style';
-import { useEffect } from 'react';
 import QuizHeader from './Components/QuizHeader';
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import QuizPagination from './Components/QuizPagination';
 
 /*
@@ -12,26 +11,23 @@ import QuizPagination from './Components/QuizPagination';
 */
 
 const Quiz = () => {
-   const navigate = useNavigate();
    const [searchParams, setSearchParams] = useSearchParams();
+   
+   const id = searchParams.get("id");
+   const question = searchParams.get("question");
 
-   useEffect(() => {
-      const id = searchParams.get("id");
-      const question = searchParams.get("question");
-      console.log('id: ', id);
-      console.log('question: ', question);
-      
-      if (!id || !question) {
-         navigate('/', { replace: true });
-      }
-   }, [searchParams]);
+
+   if (!id || !question) {
+      return <Navigate to="/" replace />
+   }
 
    return (
       <S.Quiz>
          <S.QuizContent>
             <QuizHeader />
             <Box flex={1}> body </Box>
-            <QuizPagination />
+            <Divider />
+            <QuizPagination count={10} />
          </S.QuizContent>
       </S.Quiz>
    )
