@@ -10,6 +10,12 @@ type QuizPagination = {
    count: number;
 }
 
+/*
+   TODO : 100 tane soru olduğunda aradaki sorulara ulaşmak çok zor
+   * bir prop al ya da limit belirle (20 ve üstü gibi)
+   * bu limitten yüksek olduğunda prev ve next buttonlarını paginationButton gibi yap
+   * paginationButtonları en sağa ya da sola al, diğer tarafa da Autocomplete ekle, kullanıcı istediği soruya yazarak erişsin
+*/
 const QuizPagination = ({ siblingCount=1, count }: QuizPagination) => {
    const [searchParams, setSearchParams] = useSearchParams();
    const page = +(searchParams.get("question") as string);
