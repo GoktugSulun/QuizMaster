@@ -1,21 +1,12 @@
-import { Autocomplete, type AutocompleteProps, FormControl, FormHelperText, TextField } from '@mui/material';
+import { Autocomplete, FormControl, FormHelperText, TextField } from '@mui/material';
 import { useState } from 'react';
-import { useController, type UseControllerProps, type FieldValues, type Control } from 'react-hook-form';
+import { useController, type FieldValues, FieldPath } from 'react-hook-form';
+import { AutocompleteData, AutocompleteType } from '../Models';
 
-type Data = { id: number, name: string };
+type AutocompleteInputProps<T extends FieldValues, U extends FieldPath<T>> = AutocompleteType<T, U>;
 
-type AutocompleteInputProps<T extends FieldValues> = Omit<AutocompleteProps<Data, true, false, false>, 'renderInput'>
-  & UseControllerProps<T> 
-  & { 
-      helperText?: string, 
-      shrink?: boolean, 
-      label?: string, 
-      error?: boolean, 
-      control: Control<T>,
-      placeholder?: string 
-   };
-
-const AutocompleteInput = <T extends FieldValues>(props: AutocompleteInputProps<T>) => {
+// TODO : This input should be also work correctly without react-hook-form
+const AutocompleteInput = <T extends FieldValues, U extends FieldPath<T>>(props: AutocompleteInputProps<T, U>) => {
    const [showPlaceholder, setShowPlaceholder] = useState(true);
    const { control, helperText, shrink, options, error=false, ...autocompleteInputProps } = props; 
 
@@ -24,9 +15,9 @@ const AutocompleteInput = <T extends FieldValues>(props: AutocompleteInputProps<
       control: props.control
    });
 
-   const onChange = (event: React.SyntheticEvent, newValue: Data | Data[] | null) => {
+   const onChange = (event: React.SyntheticEvent, newValue: AutocompleteData | AutocompleteData[] | null) => {
       if (props.multiple) {
-         const value = newValue as Data[];
+         const value = newValue as AutocompleteData[];
          setShowPlaceholder(!value.length);
       }
       return field.onChange(newValue);

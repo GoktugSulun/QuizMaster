@@ -1,4 +1,4 @@
-import { type CheckboxProps, type FormControlLabelProps, type OutlinedInputProps } from "@mui/material"
+import { AutocompleteProps, SelectProps, type CheckboxProps, type FormControlLabelProps, type OutlinedInputProps } from "@mui/material"
 import { type UseControllerProps, type Control, type FieldPath, type FieldValues } from "react-hook-form"
 
 // Common Types ---- [Start]
@@ -40,7 +40,7 @@ export type TextInputType<TFieldValues extends FieldValues, TName extends FieldP
 
 // Checkbox Types ---- [Start]
 type CheckboxInputProps = {
-   checkbox: CheckboxProps, 
+   checkbox?: CheckboxProps, 
    helperText?: string, 
    error?: boolean
 }
@@ -50,3 +50,43 @@ export type CheckboxInputType<TFieldValues extends FieldValues, TName extends Fi
    & CheckboxInputProps 
    & ControlType<TFieldValues, TName>;
 // Checkbox Types ---- [End]
+
+// Autocomplete Types ---- [Start]
+type AutocompleteInputProps<TFieldValues extends FieldValues> = {
+   helperText?: string, 
+   shrink?: boolean, 
+   label?: string, 
+   error?: boolean, 
+   control: Control<TFieldValues>,
+   placeholder?: string 
+}
+
+export type AutocompleteData = { id: number, name: string };
+
+export type AutocompleteType<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>> = 
+   Omit<AutocompleteProps<AutocompleteData, true, false, false>, 'renderInput'>
+   & AutocompleteInputProps<TFieldValues>
+   & ControlType<TFieldValues, TName>;
+// Autocomplete Types ---- [End]
+
+// Select Types ---- [Start]
+type SelectInputProps<TFieldValues extends FieldValues> = { 
+   helperText?: string; 
+   shrink?: boolean; 
+   options: SelectOption[]; 
+   emptyValue?: string; 
+   disabledEmptyItem?: boolean;
+   control: Control<TFieldValues>
+}
+
+export type SelectOption = {
+   id: number;
+   name: string;
+   [key: string]: any;
+}
+
+export type SelectType<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>> = 
+   SelectProps
+   & SelectInputProps<TFieldValues>
+   & ControlType<TFieldValues, TName>;
+// Select Types ---- [End]
