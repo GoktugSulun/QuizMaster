@@ -18,7 +18,7 @@ export const QuizPreview = styled('div')(({ theme }) => ({
       objectFit: 'cover'
    },
    ':hover': {
-      cursor: 'pointer',
+      // cursor: 'pointer',
       '& .MuiTypography-root a': {
          // color: theme.palette.primary.main,
          textDecoration: 'underline'
@@ -35,7 +35,8 @@ export const Image = styled('img')(({ theme }) => ({
 
 export const Link = styled(ReactRouterLink)(({ theme }) => ({
    textDecoration: 'none',
-   color: theme.palette.common.black,
+   color: theme.palette.primary.main,
+   fontWeight: 'bold',
    '&:hover ': {
       textDecoration: 'underline'
    }

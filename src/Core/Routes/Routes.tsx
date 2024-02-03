@@ -9,6 +9,7 @@ const Register = lazy(() => import('@/Pages/Register/Register'));
 const Test = lazy(() => import('@/Pages/Test/Test'));
 const Quiz = lazy(() => import('@/Pages/Quiz/Quiz'));
 const QuizRules = lazy(() => import('@/Pages/QuizRules/QuizRules'));
+const QuizResult = lazy(() => import('@/Pages/QuizResult/QuizResult'));
 
 const RouteList = () => {
   const token = localStorage.getItem('token');
@@ -17,16 +18,20 @@ const RouteList = () => {
     /*
       * Reset scroll and start page from the top when page is reload or path is changed
     */
+   console.log('path => ', location.pathname);
+   
+   console.log('değişti');
+   
     window.scrollTo(0, 0);
   }, [location.pathname]);
   
-  useEffect(() => {
-    const scrollTo = () => window.scrollTo(0, 0);
-    window.addEventListener('beforeunload', scrollTo);
-    return () => {
-      window.removeEventListener('beforeunload', scrollTo);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const scrollTo = () => window.scrollTo(0, 0);
+  //   window.addEventListener('beforeunload', scrollTo);
+  //   return () => {
+  //     window.removeEventListener('beforeunload', scrollTo);
+  //   };
+  // }, []);
   
   // if (token) {
   //   return (
@@ -43,8 +48,9 @@ const RouteList = () => {
             <Route path='favorites' />
             <Route path='saves' />
           </Route>
-          <Route path='quiz' element={<Quiz />} />
-          <Route path='rules/quiz' element={<QuizRules />} />
+          <Route path='/quiz' element={<Quiz />} />
+          <Route path='/rules/quiz' element={<QuizRules />} />
+          <Route path='/result/quiz' element={<QuizResult />} />
           <Route path="/test" element={<Test />} />
         </Route>
 

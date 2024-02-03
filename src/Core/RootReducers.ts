@@ -1,9 +1,11 @@
-import DashboardSlice from "@/Pages/Dashboard/Store/Dashboard.slice";
-import AppConfigSlice from "./Store/AppConfig.slice";
+import AppConfig from "./Store/AppConfig.slice";
+import Dashboard from "@/Pages/Dashboard/Store/Dashboard.slice";
+import Quiz from "@/Pages/Quiz/Store/Quiz.slice";
 
 const reducer = {
-  ...DashboardSlice,
-  ...AppConfigSlice
+  ...AppConfig,
+  ...Dashboard,
+  ...Quiz,
 }
 
 export default reducer;

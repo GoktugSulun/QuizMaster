@@ -9,8 +9,6 @@ const Sidebar = () => {
    const [isOpen, setIsOpen] = useState(true);
 
    const toggleSidebar = () => {
-      console.log('click');
-      
       setIsOpen((prev) => !prev);
    }
 

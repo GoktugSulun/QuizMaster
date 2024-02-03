@@ -1,9 +1,9 @@
-import { Box, Button, Stack, Tooltip } from '@mui/material';
+import { Stack, Tooltip } from '@mui/material';
 import * as S from '../Style/Dashboard.style';
-import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import QuizPreviewFooter from './QuizPreviewFooter';
+import QuizPreviewBody from './QuizPreviewBody';
 
 type QuizPreviewProps = {
    data: {
@@ -20,15 +20,9 @@ type QuizPreviewProps = {
 
 const QuizPreview = (props: QuizPreviewProps) => {
    const { id, title, description, time, img, liked } = props.data;
-   const navigate = useNavigate();
-
-   const navigateHandler = () => {
-      const searchParams = createSearchParams({ id: `${id}` });
-      navigate({ pathname: 'rules/quiz', search: `?${searchParams}` });
-   };
 
    return (
-      <S.QuizPreview onClick={navigateHandler}>
+      <S.QuizPreview>
          <Tooltip title={liked ? 'Unlike' : 'Like'}>
             <S.LikeButton>
                { liked ? <FavoriteIcon /> : <FavoriteBorderIcon /> }
@@ -43,62 +37,9 @@ const QuizPreview = (props: QuizPreviewProps) => {
             > 
                Mathematics 
             </S.Category>
-            <Stack flex={1}>
-               <Box sx={{ padding: '0 20px', flex: 1 }} >
-                  <Tooltip 
-                     title={title} 
-                     placement="bottom-start"
-                     slotProps={{
-                        popper: {
-                          modifiers: [
-                            {
-                              name: 'offset',
-                              options: {
-                                offset: [0, -8],
-                              },
-                            },
-                          ],
-                        },
-                      }}
-                  >
-                     <S.EllipsisText 
-                        $maxRow={1} 
-                        fontSize={22} 
-                        variant="h6"
-                        lineHeight={1.4}
-                     > 
-                        <S.Link to=""> {title} </S.Link> 
-                     </S.EllipsisText >
-                  </Tooltip>
-                  <S.EllipsisText 
-                     sx={{ marginTop: 2, color: '#5e5e5e' }} 
-                     $maxRow={3} 
-                     fontSize={14} 
-                     paragraph
-                  > 
-                     {description} 
-                  </S.EllipsisText>
-               </Box>
-               <Stack 
-                  padding="0 20px 15px" 
-                  flexDirection="row" 
-                  justifyContent="space-between"
-                  gap={1}
-                  flexWrap="wrap"
-               > 
-                  <Box sx={{ color: '#5e5e5e', background: '#ececec', borderRadius: 2, padding: '5px 10px' }}> 
-                     <Stack 
-                        height="100%" 
-                        flexDirection="row" 
-                        alignItems="center" 
-                        gap={1}
-                     >
-                        <AccessAlarmsIcon />
-                        {time}
-                     </Stack>
-                  </Box>
-                  <Button sx={{ padding: "5px 30px", ":hover": { padding: "5px 40px" } }} > START </Button> 
-               </Stack>
+            <Stack flex={1} gap={4}>
+               <QuizPreviewBody id={id} title={title} description={description} />
+               <QuizPreviewFooter id={id} time={time} />
             </Stack>
          </Stack>
       </S.QuizPreview>

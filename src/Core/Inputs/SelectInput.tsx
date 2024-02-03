@@ -1,26 +1,11 @@
-import { FormControl, FormHelperText, InputLabel, MenuItem, Select, type SelectChangeEvent, type SelectProps } from '@mui/material';
-import { type FieldValues, type UseControllerProps, useController, type Control } from 'react-hook-form';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select, type SelectChangeEvent } from '@mui/material';
+import { type FieldValues, useController, FieldPath } from 'react-hook-form';
+import { SelectType } from '../Models';
 
-type Option = {
-   id: number;
-   name: string;
-   [key: string]: any;
-}
+type SelectInputProps<T extends FieldValues, U extends FieldPath<T>> = SelectType<T, U>;
 
-type SelectInputProps<T extends FieldValues> = SelectProps 
-   & UseControllerProps<T>
-   & { 
-      helperText?: string, 
-      shrink?: boolean, 
-      options: Option[], 
-      emptyValue?: 
-      string, 
-      disabledEmptyItem?: 
-      boolean,
-      control: Control<T>
-   };
-
-const SelectInput = <T extends FieldValues>(props: SelectInputProps<T>) => {
+// TODO : This input should be also work correctly without react-hook-form
+const SelectInput = <T extends FieldValues, U extends FieldPath<T>>(props: SelectInputProps<T, U>) => {
    
    const { control, helperText, shrink, emptyValue, disabledEmptyItem=false, ...selectProps } = props;
 
@@ -60,9 +45,9 @@ const SelectInput = <T extends FieldValues>(props: SelectInputProps<T>) => {
             onBlur={field.onBlur} 
             value={field.value}
             name={field.name}
+            inputRef={field.ref} 
             id={props.name || props.id}
             notched={props.shrink}
-            inputRef={field.ref} 
          >
             {
                !!emptyValue

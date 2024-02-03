@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { useAppDispatch, useMaterialForm } from '../../Core/Hooks';
 import { useNavigate } from 'react-router-dom';
-import { snackbar } from '../../Core/Utils/Snackbar';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { snackbar } from '@/Core/Utils';
 
 type defaultValuesType = {
   email: string;

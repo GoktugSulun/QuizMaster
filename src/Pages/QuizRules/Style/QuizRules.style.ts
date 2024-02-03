@@ -1,16 +1,12 @@
-import { PageWrapper } from "@/Core/Layout";
+import { PageContent, PageWrapper } from "@/Core/Layout";
 import { styled } from "@mui/material";
 
 export const QuizRules = styled(PageWrapper)({});
 
-export const QuizRulesContent = styled('div')(({ theme }) => ({
-   background: theme.palette.common.white,
-   borderRadius: 15,
-   height: '100%',
-   padding: '25px 50px',
-   border: `1px solid ${theme.palette.secondary.light}`,
+export const QuizRulesContent = styled(PageContent)(({ theme }) => ({
    display: 'flex',
-   flexDirection: 'column'
+   flexDirection: 'column',
+   padding: '25px 50px',
 }));
 
 export const Image = styled('img')({
