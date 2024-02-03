@@ -3,6 +3,7 @@ import * as S from '../Style/Quiz.style';
 import { Stack } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import DoneIcon from '@mui/icons-material/Done';
 import { useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '@/Core/Hooks';
 
@@ -14,10 +15,10 @@ import { useAppSelector } from '@/Core/Hooks';
 */
 const QuizPagination = () => {
    const [searchParams, setSearchParams] = useSearchParams();
-   const { questions, answers } = useAppSelector((state) => state.Quiz);
+   const { quiz, answers } = useAppSelector((state) => state.Quiz);
    
    const page = +(searchParams.get("question") as string);
-   const { items } = usePagination({ page, count: questions.length });
+   const { items } = usePagination({ page, count: quiz.questions.length });
    const isLastPage = page === items.filter((item) => item.type === 'page').length
    
    const changePageHandler = (newPage: number) => {
@@ -40,7 +41,9 @@ const QuizPagination = () => {
       }
    };
 
+   // Time interval will be reseted because of cleanup function in QuizHeader component
    const completeQuizHandler = () => {
+      console.log('complete quiz');
       // Send request to complete quiz
    };
    
@@ -70,8 +73,8 @@ const QuizPagination = () => {
             }
          </Stack>
          <S.PaginationDirectionButton 
-            endIcon={isLastPage ? null : <ArrowForwardIcon />}
-            onClick={() => changePageHandler(page + 1)}
+            endIcon={isLastPage ? <DoneIcon /> : <ArrowForwardIcon />}
+            onClick={() => isLastPage ? completeQuizHandler() : changePageHandler(page + 1)}
          > 
             { isLastPage ? 'Complete' : 'Next' } 
          </S.PaginationDirectionButton>

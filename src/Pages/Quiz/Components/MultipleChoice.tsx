@@ -7,7 +7,7 @@ import { QuizActions } from '../Store/Quiz.slice';
 const MultipleChoice = () => {
    const dispatch = useAppDispatch();
    const [searchParams] = useSearchParams();
-   const { questions, answers } = useAppSelector((state) => state.Quiz);
+   const { quiz: { questions }, answers } = useAppSelector((state) => state.Quiz);
 
    const questionId = searchParams.get("question") as string;
    const options = questions.find((question) => question.id === +questionId)?.options || [];

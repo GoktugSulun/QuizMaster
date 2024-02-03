@@ -7,8 +7,17 @@ export type Option = {
 export type Question = {
    id: number;
    name: string;
+   time: number;
    image?: string;
    options: Option[]
+}
+
+export type Quiz = {
+   id: number | null;
+   time: number;
+   name: string;
+   description: string;
+   questions: Question[];
 }
 
 export type Answer = {

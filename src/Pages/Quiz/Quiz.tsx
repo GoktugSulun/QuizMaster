@@ -17,7 +17,7 @@ import { Loading } from '@/Core/Components';
 
 const Quiz = () => {
    const [searchParams] = useSearchParams();
-   const questions = useAppSelector((state) => state.Quiz.questions);
+   const quiz = useAppSelector((state) => state.Quiz.quiz);
    
    const id = searchParams.get("id");
    const question = searchParams.get("question");
@@ -29,16 +29,16 @@ const Quiz = () => {
    }
 
    useEffect(() => {
-      if (!questions.length) {
+      if (!quiz.id) {
          QuizThunks.getQuestions();
       }
-   }, [questions]);
+   }, [quiz]);
 
    useEffect(() => {
       setIdle();
    }, [isSuccess]);
 
-   if (!questions.length) {
+   if (!quiz.id) {
       return (
          <S.Quiz>
             <S.QuizContent>

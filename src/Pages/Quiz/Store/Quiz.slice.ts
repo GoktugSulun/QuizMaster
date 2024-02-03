@@ -1,25 +1,31 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { type Answer, type Question } from '../Models/Quiz.model';
+import { type Quiz, type Answer } from '../Models/Quiz.model';
 
 const NAME = 'Quiz';
 
 type InitialStateTypes = {
-   questions: Question[];
+   quiz: Quiz,
    answers: Answer[]
 }
 
 const initialState: InitialStateTypes = {
-  questions: [],
-  answers: []// data for backend
+   quiz: {
+      id: null,
+      time: 0,
+      name: '',
+      description: '',
+      questions: []
+   },
+   answers: []// data for backend
 };
 
 const QuizSlice = createSlice({
    name: NAME,
    initialState,
    reducers: {
-      setQuestions: (state, action: PayloadAction<Question[]>) => {
-         state.questions = action.payload;
-         state.answers = action.payload.map((question) => ({ questionId: question.id, answerId: null }))
+      setQuiz: (state, action: PayloadAction<Quiz>) => {
+         state.quiz = action.payload;
+         state.answers = action.payload.questions.map((question) => ({ questionId: question.id, answerId: null }))
       },
       setAnswer: (state, action: PayloadAction<Answer>) => {
          const { questionId } = action.payload;

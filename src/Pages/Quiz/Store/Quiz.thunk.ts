@@ -5,11 +5,11 @@ import { type Question } from "../Models/Quiz.model";
 
 export const QuizThunks = {
    getQuestions: () => request({
-      url: `/questions`,
+      url: `/quizzes/1`,
       key: 'getQuestions',
       method: 'GET',
       success: ({ data, thunkAPI }) => {
-         thunkAPI.dispatch(QuizActions.setQuestions(data));
+         thunkAPI.dispatch(QuizActions.setQuiz(data));
       }
    }),
 }
