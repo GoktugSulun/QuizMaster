@@ -12,7 +12,7 @@ const QuizPreviewFooter = ({ time, id }: QuizPreviewFooterProps) => {
 
    const navigateHandler = () => {
       const searchParams = createSearchParams({ id: `${id}` });
-      navigate({ pathname: 'rules/quiz', search: `?${searchParams}` });
+      navigate({ pathname: '/rules/quiz', search: `?${searchParams}` });
    };
 
    return (

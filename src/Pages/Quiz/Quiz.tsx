@@ -4,9 +4,10 @@ import QuizHeader from './Components/QuizHeader';
 import { Divider } from '@mui/material';
 import QuizPagination from './Components/QuizPagination';
 import MultipleChoice from './Components/MultipleChoice';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { QuizActions } from './Store/Quiz.slice';
+import { useAppSelector, useThunk } from '@/Core/Hooks';
+import { useEffect } from 'react';
+import { QuizThunks } from './Store/Quiz.thunk';
+import { Loading } from '@/Core/Components';
 
 /*
    ? Required searchParams => id & question
@@ -16,13 +17,35 @@ import { QuizActions } from './Store/Quiz.slice';
 
 const Quiz = () => {
    const [searchParams] = useSearchParams();
-   const dispatch = useDispatch();
+   const { questions } = useAppSelector((state) => state.Quiz);
    
    const id = searchParams.get("id");
    const question = searchParams.get("question");
 
+   const { isSuccess, setIdle } = useThunk("getQuestions");
+
    if (!id || !question) {
       return <Navigate to="/" replace />
+   }
+
+   useEffect(() => {
+      if (!questions.length) {
+         QuizThunks.getQuestions();
+      }
+   }, [questions]);
+
+   useEffect(() => {
+      setIdle();
+   }, [isSuccess]);
+
+   if (!questions.length) {
+      return (
+         <S.Quiz>
+            <S.QuizContent>
+               <Loading size={80} />
+            </S.QuizContent>
+         </S.Quiz>
+      )
    }
 
    return (
@@ -31,7 +54,7 @@ const Quiz = () => {
             <QuizHeader />
             <MultipleChoice />
             <Divider />
-            <QuizPagination count={10} />
+            <QuizPagination />
          </S.QuizContent>
       </S.Quiz>
    )

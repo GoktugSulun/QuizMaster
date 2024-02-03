@@ -6,6 +6,9 @@ import img1 from '../../Pngs/img-1.jpg';
 import QuizRuleHeader from './Components/QuizRuleHeader';
 import QuizRuleInfos from './Components/QuizRuleInfos';
 import QuizRuleQuestionTypes from './Components/QuizRuleQuestionTypes';
+import { QuizThunks } from '../Quiz/Store/Quiz.thunk';
+import { useThunk } from '@/Core/Hooks';
+import { Loading } from '@/Core/Components';
 
 const data = {
    id: 1, 
@@ -28,10 +31,19 @@ const QuizRules = () => {
    const [searchParams] = useSearchParams();
    const navigate = useNavigate();
 
+   const { isLoading, isSuccess, setIdle } = useThunk('getQuestions');
+
    const navigateToQuizHandler = () => {
-      const id = searchParams.get("id");
-      navigate({ pathname: '/quiz', search: `?id=${id}&question=1` });
+      QuizThunks.getQuestions();
    };
+
+   useEffect(() => {
+      if (isSuccess) {
+         setIdle();
+         const id = searchParams.get("id") as string;
+         navigate({ pathname: '/quiz', search: `?id=${id}&question=1` }, { replace: true });
+      }
+   }, [isSuccess]);
    
    if (!searchParams.get("id")) {
       return <Navigate to="/" replace />
@@ -56,7 +68,13 @@ const QuizRules = () => {
             </Stack>
             <Divider sx={{ margin: '40px 0' }} />
             <Stack alignItems="center">
-               <Button onClick={navigateToQuizHandler} sx={{ padding: "8px 60px", ":hover": { padding: "8px 80px" } }} > START </Button>
+               <Button 
+                  onClick={navigateToQuizHandler} 
+                  sx={{ padding: "8px 60px", ":hover": { padding: "8px 80px" } }} 
+                  disabled={isLoading}
+               >
+                  { isLoading ? <Loading size={25} color='#FFFFFF' /> : 'START'} 
+               </Button>
             </Stack>
          </S.QuizRulesContent>
       </S.QuizRules>

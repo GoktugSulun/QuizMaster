@@ -4,11 +4,7 @@ import { Stack } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useSearchParams } from 'react-router-dom';
-
-type QuizPagination = {
-   siblingCount?: number;
-   count: number;
-}
+import { useAppSelector } from '@/Core/Hooks';
 
 /*
    TODO : 100 tane soru olduğunda aradaki sorulara ulaşmak çok zor
@@ -16,11 +12,15 @@ type QuizPagination = {
    * bu limitten yüksek olduğunda prev ve next buttonlarını paginationButton gibi yap
    * paginationButtonları en sağa ya da sola al, diğer tarafa da Autocomplete ekle, kullanıcı istediği soruya yazarak erişsin
 */
-const QuizPagination = ({ siblingCount=1, count }: QuizPagination) => {
+const QuizPagination = () => {
    const [searchParams, setSearchParams] = useSearchParams();
+   const { questions } = useAppSelector((state) => state.Quiz);
+   
    const page = +(searchParams.get("question") as string);
+   const { items } = usePagination({ page, count: questions.length });
 
-   const { items } = usePagination({ page, siblingCount, count });
+   console.log(items, ' items');
+   
 
    const handleClick = (newPage: number) => {
       const id = searchParams.get("id") as string;
@@ -70,7 +70,7 @@ const QuizPagination = ({ siblingCount=1, count }: QuizPagination) => {
          <S.PaginationDirectionButton 
             endIcon={<ArrowForwardIcon />}
             onClick={() => handleClick(page + 1)}
-            disabled={page === items.length + 1}
+            disabled={page === items.filter((item) => item.type === 'page').length}
          > 
             Next 
          </S.PaginationDirectionButton>

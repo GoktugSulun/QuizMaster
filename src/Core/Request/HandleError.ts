@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { snackbar } from '../Utils/Snackbar';
+import { snackbar } from '../Utils';
 
 export const handleError = (error: Error) => {
 

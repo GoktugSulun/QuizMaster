@@ -17,16 +17,20 @@ const RouteList = () => {
     /*
       * Reset scroll and start page from the top when page is reload or path is changed
     */
+   console.log('path => ', location.pathname);
+   
+   console.log('değişti');
+   
     window.scrollTo(0, 0);
   }, [location.pathname]);
   
-  useEffect(() => {
-    const scrollTo = () => window.scrollTo(0, 0);
-    window.addEventListener('beforeunload', scrollTo);
-    return () => {
-      window.removeEventListener('beforeunload', scrollTo);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const scrollTo = () => window.scrollTo(0, 0);
+  //   window.addEventListener('beforeunload', scrollTo);
+  //   return () => {
+  //     window.removeEventListener('beforeunload', scrollTo);
+  //   };
+  // }, []);
   
   // if (token) {
   //   return (
@@ -43,8 +47,8 @@ const RouteList = () => {
             <Route path='favorites' />
             <Route path='saves' />
           </Route>
-          <Route path='quiz' element={<Quiz />} />
-          <Route path='rules/quiz' element={<QuizRules />} />
+          <Route path='/quiz' element={<Quiz />} />
+          <Route path='/rules/quiz' element={<QuizRules />} />
           <Route path="/test" element={<Test />} />
         </Route>
 

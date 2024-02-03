@@ -48,6 +48,8 @@ const payloadWithFiles = (payload: any, files: File | File[]) => {
 export const request = async ({ method='GET', url, payload, files, key, success, failure }: RequestProps) => {
   const thunk = createAsyncThunk(`request/${key}`, async (_, thunkAPI) => {
     try {
+      // Todo: delete
+      await new Promise(resolve => setTimeout(resolve, 3000));
       const data = files ? payloadWithFiles(payload, files) : payload;
       const response = await axios({ method, baseURL, url, data });
       if (response.status === 200 && response.statusText === 'OK') {
