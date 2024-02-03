@@ -17,7 +17,7 @@ import { Loading } from '@/Core/Components';
 
 const Quiz = () => {
    const [searchParams] = useSearchParams();
-   const { questions } = useAppSelector((state) => state.Quiz);
+   const questions = useAppSelector((state) => state.Quiz.questions);
    
    const id = searchParams.get("id");
    const question = searchParams.get("question");

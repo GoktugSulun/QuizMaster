@@ -8,7 +8,7 @@ import { Question } from '../Models/Quiz.model';
 const QuizHeader = () => {
    const [searchParams] = useSearchParams();
    const questionNumber = searchParams.get("question") as string;
-   const { questions } = useAppSelector((state) => state.Quiz);
+   const questions = useAppSelector((state) => state.Quiz.questions);
 
    const question = questions.find((_, index) => +questionNumber === index + 1) as Question;
 

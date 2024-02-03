@@ -14,15 +14,13 @@ import { useAppSelector } from '@/Core/Hooks';
 */
 const QuizPagination = () => {
    const [searchParams, setSearchParams] = useSearchParams();
-   const { questions } = useAppSelector((state) => state.Quiz);
+   const { questions, answers } = useAppSelector((state) => state.Quiz);
    
    const page = +(searchParams.get("question") as string);
    const { items } = usePagination({ page, count: questions.length });
-
-   console.log(items, ' items');
+   const isLastPage = page === items.filter((item) => item.type === 'page').length
    
-
-   const handleClick = (newPage: number) => {
+   const changePageHandler = (newPage: number) => {
       const id = searchParams.get("id") as string;
       
       if (newPage !== +page) {
@@ -30,23 +28,27 @@ const QuizPagination = () => {
       }
    };  
 
-   const handleClickDots = (type: 'start-ellipsis' | 'end-ellipsis', index: number) => {
+   const changePageByDotsHandler = (type: 'start-ellipsis' | 'end-ellipsis', index: number) => {
       if (type === "start-ellipsis") {
          const newPage = (items[index + 1].page as number) - 1;
-         handleClick(newPage);
+         changePageHandler(newPage);
       }
 
       if (type === "end-ellipsis") {
          const newPage = (items[index - 1].page as number) + 1;
-         handleClick(newPage);
+         changePageHandler(newPage);
       }
+   };
+
+   const completeQuizHandler = () => {
+      // Send request to complete quiz
    };
    
    return (
       <Stack flexDirection="row" justifyContent="space-between" gap={1} margin="30px 20px">
          <S.PaginationDirectionButton 
             startIcon={<ArrowBackIcon />}
-            onClick={() => handleClick(page - 1)}
+            onClick={() => changePageHandler(page - 1)}
             disabled={page === 1}
          > 
             Prev 
@@ -59,7 +61,7 @@ const QuizPagination = () => {
                         key={index}
                         $isSelected={selected}
                         {...item}
-                        onClick={() => type === 'page' ? handleClick(page as number) : handleClickDots(type, index)}
+                        onClick={() => type === 'page' ? changePageHandler(page as number) : changePageByDotsHandler(type, index)}
                      > 
                         {type === 'page' ? page : '...'} 
                      </S.PaginationButton>
@@ -68,11 +70,10 @@ const QuizPagination = () => {
             }
          </Stack>
          <S.PaginationDirectionButton 
-            endIcon={<ArrowForwardIcon />}
-            onClick={() => handleClick(page + 1)}
-            disabled={page === items.filter((item) => item.type === 'page').length}
+            endIcon={isLastPage ? null : <ArrowForwardIcon />}
+            onClick={() => changePageHandler(page + 1)}
          > 
-            Next 
+            { isLastPage ? 'Complete' : 'Next' } 
          </S.PaginationDirectionButton>
       </Stack>
    )

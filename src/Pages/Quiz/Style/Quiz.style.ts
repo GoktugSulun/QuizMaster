@@ -43,11 +43,13 @@ export const PaginationButton = styled(Button, { shouldForwardProp })<{ $isSelec
    }
 }));
 
-export const AnswerBox = styled(Box)(({ theme }) => ({
-   // background: theme.palette.custom.light,
-   // color: theme.palette.primary.main,
+export const AnswerBox = styled(Box, { shouldForwardProp })<{ $isChecked: boolean }>(({ theme, $isChecked }) => ({
+   background: $isChecked ? theme.palette.custom.light : 'initial',
    width: '100%',
    padding: '40px 25px',
    borderRadius: 15,
    boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
+   '& .MuiTypography-root': {
+      color: $isChecked ? theme.palette.primary.main : theme.palette.common.black
+   }
 }));

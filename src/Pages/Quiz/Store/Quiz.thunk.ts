@@ -11,5 +11,5 @@ export const QuizThunks = {
       success: ({ data, thunkAPI }) => {
          thunkAPI.dispatch(QuizActions.setQuestions(data));
       }
-   })
+   }),
 }
