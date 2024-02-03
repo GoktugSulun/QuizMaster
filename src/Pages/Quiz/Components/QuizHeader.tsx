@@ -10,7 +10,7 @@ const QuizHeader = () => {
    const questionNumber = searchParams.get("question") as string;
    const { questions } = useAppSelector((state) => state.Quiz);
 
-   const question = questions.find((_, index) => +questionNumber === index) as Question;
+   const question = questions.find((_, index) => +questionNumber === index + 1) as Question;
 
    return (
       <S.QuizHeader flexDirection="row" alignItems="flex-start" gap={2}>
