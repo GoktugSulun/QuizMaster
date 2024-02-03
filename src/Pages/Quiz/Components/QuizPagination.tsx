@@ -24,7 +24,10 @@ const QuizPagination = ({ siblingCount=1, count }: QuizPagination) => {
 
    const handleClick = (newPage: number) => {
       const id = searchParams.get("id") as string;
-      setSearchParams({ id, question: `${newPage}` });
+      
+      if (newPage !== +page) {
+         setSearchParams({ id, question: `${newPage}` });
+      }
    };  
 
    const handleClickDots = (type: 'start-ellipsis' | 'end-ellipsis', index: number) => {

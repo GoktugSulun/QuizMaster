@@ -1,4 +1,4 @@
-import { PayloadAction, Reducer, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 const NAME = 'Dashboard';
 

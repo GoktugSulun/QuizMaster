@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import * as S from './Style/QuizRules.style';
 import { useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import img1 from '../../Pngs/img-1.jpg';
 import QuizRuleHeader from './Components/QuizRuleHeader';
 import QuizRuleInfos from './Components/QuizRuleInfos';
@@ -32,12 +32,10 @@ const QuizRules = () => {
       const id = searchParams.get("id");
       navigate({ pathname: '/quiz', search: `?id=${id}&question=1` });
    };
-
-   useEffect(() => {
-      if (!searchParams.get("id")) {
-         navigate('/', { replace: true });
-      }
-   }, [searchParams]);
+   
+   if (!searchParams.get("id")) {
+      return <Navigate to="/" replace />
+   }
 
    return (
       <S.QuizRules>

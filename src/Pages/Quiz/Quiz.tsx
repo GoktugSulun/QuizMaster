@@ -1,22 +1,25 @@
 import { Navigate, useSearchParams } from 'react-router-dom';
 import * as S from './Style/Quiz.style';
 import QuizHeader from './Components/QuizHeader';
-import { Box, Divider } from '@mui/material';
+import { Divider } from '@mui/material';
 import QuizPagination from './Components/QuizPagination';
 import MultipleChoice from './Components/MultipleChoice';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { QuizActions } from './Store/Quiz.slice';
 
 /*
    ? Required searchParams => id & question
    * This component must be displayed when the url is like that => /quiz?id=1&question=1
-   ! If "id" or "question" query is missing, then navigate to user to dashboard.
+   ! If "id" or "question" query is missing, then navigate user to dashboard.
 */
 
 const Quiz = () => {
-   const [searchParams, setSearchParams] = useSearchParams();
+   const [searchParams] = useSearchParams();
+   const dispatch = useDispatch();
    
    const id = searchParams.get("id");
    const question = searchParams.get("question");
-
 
    if (!id || !question) {
       return <Navigate to="/" replace />
@@ -34,4 +37,5 @@ const Quiz = () => {
    )
 }
 
-export default Quiz
+export default Quiz;
+

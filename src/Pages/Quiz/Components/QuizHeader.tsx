@@ -1,8 +1,12 @@
 import { Stack, Typography } from '@mui/material';
 import * as S from '../Style/Quiz.style';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import { useSearchParams } from 'react-router-dom';
 
 const QuizHeader = () => {
+   const [searchParams] = useSearchParams();
+   const question = searchParams.get("question");
+
   return (
     <S.QuizHeader flexDirection="row" alignItems="flex-start" gap={2}>
       <Stack alignSelf="center" flexDirection="row" flex={1}>
@@ -12,7 +16,7 @@ const QuizHeader = () => {
             fontSize={20} 
             variant="body1"
          > 
-            1) 
+            {question}) 
          </Typography>
          <Typography alignSelf="center" paragraph fontSize={20} flex={1}> Aşağıdakilerden hangisi asal sayı çarpanlarına bölünebilen bir sayıdır ? </Typography> 
       </Stack>
