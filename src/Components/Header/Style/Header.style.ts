@@ -11,7 +11,8 @@ export const Logo = styled(Typography)(({ theme }) => ({
    width: '250px',
    height: '100%',
    display: 'grid',
-   placeItems: 'center'
+   placeItems: 'center',
+   color: theme.palette.primary.main,
 }));
 
 export const ProfileMenuItem = styled(MenuItem)({

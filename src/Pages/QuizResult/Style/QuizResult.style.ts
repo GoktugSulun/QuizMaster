@@ -4,5 +4,6 @@ import { styled } from "@mui/material";
 export const QuizResult = styled(PageWrapper)({});
 
 export const QuizResultContent = styled(PageContent)(({ theme }) => ({
-
+   display: 'flex',
+   flexDirection: 'column',
 }));
