@@ -1,11 +1,11 @@
-import { Box, Button, Stack, Typography } from "@mui/material"
-import ResultBox from "./ResultBox"
+import { Button, Stack, Typography } from "@mui/material"
+import ResultOverviewBox from "./ResultOverviewBox"
 
 const Results = () => {
 
    return (
       <Stack flex={1} gap={3} padding="0 30px">
-         <ResultBox 
+         <ResultOverviewBox 
             title="YOUR GRADE"
             text="90"
             items={[
@@ -14,7 +14,7 @@ const Results = () => {
                { id: 3, key: 'Completed Date:', value: '04/02/2024' },
             ]}
          />
-         <ResultBox 
+         <ResultOverviewBox 
             title="YOUR ACCURACY"
             text="15 / 20"
             items={[
