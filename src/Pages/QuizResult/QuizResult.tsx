@@ -2,7 +2,8 @@ import { Navigate, useSearchParams } from 'react-router-dom';
 import * as S from './Style/QuizResult.style';
 import PieChart from './Components/PieChart';
 import { Box, Stack, Typography } from '@mui/material';
-import Results from './Components/Results';
+import ResultOverview from './Components/ResultOverview';
+import Answers from './Components/Answers';
 
 /*
    ? Required searchParams => id 
@@ -37,9 +38,10 @@ const QuizResult = () => {
             <Stack flex={1} rowGap={3} padding="20px 0" flexDirection={{ xs: "column", lg: "row" }}>
                <Box minHeight={{ xs: '400px', lg: 'auto' }} flex={1}> <PieChart /> </Box>
                <Box width="1px" height="100%" bgcolor="secondary.light" />
-               <Results />
+               <ResultOverview  />
             </Stack>
          </S.QuizResultContent>
+         <Answers />
       </S.QuizResult>
    )
 }
