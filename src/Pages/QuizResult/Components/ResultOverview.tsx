@@ -1,7 +1,16 @@
-import { Button, Stack, Typography } from "@mui/material"
-import ResultOverviewBox from "./ResultOverviewBox"
+import { Button, Stack, Typography } from "@mui/material";
+import ResultOverviewBox from "./ResultOverviewBox";
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 const Results = () => {
+
+   const viewAnswersHandler = () => {
+      const answersEl = document.getElementById("answers");
+      if (!answersEl) {
+         throw Error("Answers component must has id with 'answers'!");
+      }
+      answersEl.scrollIntoView();
+   };
 
    return (
       <Stack flex={1} gap={3} padding="0 30px">
@@ -24,8 +33,8 @@ const Results = () => {
             ]}
          />
          <Stack flex={1} justifyContent="center" alignItems="center" gap={3}>
-            <Typography textAlign="center" paragraph fontSize="18px"> You can click the button below to find out the answers to the questions you left blank or answered incorrectly.</Typography>
-            <Button>
+            <Typography textAlign="center" paragraph fontSize="18px"> You can scroll down or click the button below to find out the answers to the questions you left blank or answered incorrectly.</Typography>
+            <Button onClick={viewAnswersHandler} endIcon={<ArrowDownwardIcon />}>
                View Answers
             </Button>
          </Stack>

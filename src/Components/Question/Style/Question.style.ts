@@ -1,4 +1,4 @@
-import { Box, Stack, styled } from "@mui/material";
+import { Box, Stack, alpha, styled } from "@mui/material";
 import { shouldForwardProp } from "@/Core/Utils";
 
 export const QuestionHeader = styled(Stack)(({ theme }) => ({
@@ -14,13 +14,28 @@ export const Time = styled(Stack)(({ theme }) => ({
    background: theme.palette.custom.light
 }));
 
-export const OptionBox = styled(Box, { shouldForwardProp })<{ $isChecked: boolean }>(({ theme, $isChecked }) => ({
-   background: $isChecked ? theme.palette.custom.light : 'initial',
+type OptionBoxProps = { 
+   $bgColor: string; 
+   $color: string; 
+   $fontWeight: string; 
+   cursor: string; 
+}
+
+export const OptionBox = styled(Box, { shouldForwardProp })<OptionBoxProps>(({ theme, ...props }) => ({
+   background: props.$bgColor,
    width: '100%',
    padding: '40px 25px',
    borderRadius: 15,
    boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
    '& .MuiTypography-root': {
-      color: $isChecked ? theme.palette.primary.main : theme.palette.common.black
+      color: props.$color,
+      fontWeight: props.$fontWeight,
+      cursor: 'initial',
+   },
+   '& .MuiRadio-root': {
+      cursor: 'initial',
+      '&.Mui-checked': {
+         color: props.$color
+      }
    }
 }));

@@ -2,6 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/Core/Hooks';
 import { QuizActions } from '../Store/Quiz.slice';
 import MultipleChoice from '@/Components/Question/MultipleChoice';
+import { Stack } from '@mui/material';
 
 const Options = () => {
    const dispatch = useAppDispatch();
@@ -22,11 +23,18 @@ const Options = () => {
    }  
 
    return (
-      <MultipleChoice
-         onClick={(option) => setAnswerHandler(option.id)}
-         checked={(option) => !!answers.find((answer) => answer.answerId === option.id)}
-         options={options}
-      />
+      <Stack 
+         flex={1} 
+         justifyContent="center" 
+         alignItems="center"
+         padding="0 50px"
+      >
+         <MultipleChoice
+            onClick={(option) => setAnswerHandler(option.id)}
+            checked={(option) => !!answers.find((answer) => answer.answerId === option.id)}
+            options={options}
+         />
+      </Stack>
    )
 }
 

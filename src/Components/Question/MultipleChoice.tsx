@@ -1,15 +1,15 @@
-import { FormControlLabel, Grid, Radio, Stack } from "@mui/material";
+import { FormControlLabel, Grid, Radio, alpha, useTheme } from "@mui/material";
 import * as S from './Style/Question.style';
 import { type Option } from "@/Pages/Quiz/Models/Quiz.model";
 
 type DisabledProps = {
-  disabled?: true;
+  readOnly?: true;
   options: Option[];
-  checked?: (option: Option) => boolean | boolean;
+  checked: (option: Option) => boolean | boolean;
 }
 
 type DefaultProps = {
-  disabled?: false; 
+  readOnly?: false; 
   options: Option[];
   checked?: (option: Option) => boolean | boolean;
   onClick: (option: Option) => void;
@@ -18,45 +18,72 @@ type DefaultProps = {
 type MultipleChoiceProps = DefaultProps | DisabledProps;
 
 const MultipleChoice = (props: MultipleChoiceProps) => {
-  const { options, disabled=false, checked=false } = props;
+  const { options, readOnly=false, checked=false } = props;
+  const theme = useTheme();
 
   return (
-    <Stack 
-      flex={1} 
-      justifyContent="center" 
-      alignItems="center"
-      padding="0 50px"
+    <Grid 
+      container 
+      rowSpacing={{ xs: 2, md: 5 }} 
+      columnSpacing={3}
     >
-      <Grid 
-        container 
-        rowSpacing={{ xs: 2, md: 5 }} 
-        columnSpacing={3}
-      >
-        {
-          options.map((option) => {
-            const isChecked = typeof checked === 'function' ? checked(option) : checked;
-            return (
-              <Grid key={option.id} item xs={12} md={6}>
-                <S.OptionBox $isChecked={isChecked}>
-                  <FormControlLabel 
-                    value={option.id} 
-                    label={option.name}
-                    disabled={disabled}
-                    control={
-                      <Radio
-                        checked={isChecked}
-                        {...('onClick' in props ? { onClick: () => props.onClick(option) } : {})}
-                        value={option.id}
-                      />
-                    } 
-                  />
-                </S.OptionBox>
-              </Grid>
-            )
-          })
-        }
-      </Grid>
-    </Stack>
+      {
+        options.map((option) => {
+          const isChecked = typeof checked === 'function' ? checked(option) : checked;
+          const isCorrect = option.isCorrect;
+          const isWrong = !option.isCorrect && isChecked;
+          const bgColor = () => {
+            if (readOnly) {
+              if (isCorrect) return alpha(theme.palette.success.light, 0.3)
+              if (isWrong) return alpha(theme.palette.error.light, 0.3)
+              return 'initial'
+            }
+            return isChecked ? theme.palette.custom.light : 'initial';
+          }
+          const color = () => {
+            if (readOnly) {
+              if (isCorrect) return alpha(theme.palette.success.main, 1)
+              if (isWrong) return alpha(theme.palette.error.main, 1)
+              return 'initial'
+            }
+            return isChecked ? theme.palette.primary.main : theme.palette.common.black;
+          }
+          const fontWeight = ((readOnly && isCorrect) || (readOnly && isWrong)) ? 'bold' : 'initial';
+          const cursor = readOnly ? 'initial' : 'pointer';
+          return (
+            <Grid 
+              key={option.id} 
+              item 
+              xs={12} 
+              md={6}
+            >
+              <S.OptionBox 
+                $bgColor={bgColor()} 
+                $color={color()} 
+                $fontWeight={fontWeight}
+                cursor={cursor}
+              >
+                <FormControlLabel 
+                  value={option.id} 
+                  label={option.name}
+                  control={
+                    <Radio
+                      checked={isChecked}
+                      readOnly={readOnly}
+                      {...('onClick' in props ? { onClick: () => props.onClick(option) } : {})}
+                      value={option.id}
+                      disableTouchRipple={readOnly}
+                      disableFocusRipple={readOnly}
+                      disableRipple={readOnly}
+                    />
+                  } 
+                />
+              </S.OptionBox>
+            </Grid>
+          )
+        })
+      }
+    </Grid>
   )
 }
 
