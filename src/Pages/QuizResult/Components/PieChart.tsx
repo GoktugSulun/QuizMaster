@@ -1,4 +1,4 @@
-import { useTheme } from '@mui/material';
+import { alpha, useTheme } from '@mui/material';
 import { PieChart as MuiPieChart, pieArcLabelClasses } from '@mui/x-charts/PieChart';
 
 const PieChart = () => {
@@ -11,8 +11,8 @@ const PieChart = () => {
                arcLabel: (item) => `${item.value !== 0 ? item.value : ''}`,
                arcLabelMinAngle: -360,
                data: [
-                  { id: 1, value: 15, label: 'Correct', color: theme.palette.success.light },
-                  { id: 2, value: 3, label: 'Wrong', color: theme.palette.error.light },
+                  { id: 1, value: 15, label: 'Correct', color: alpha(theme.palette.success.light, 0.8) },
+                  { id: 2, value: 3, label: 'Wrong', color: alpha(theme.palette.error.light, 0.8) },
                   { id: 3, value: 2, label: 'Blank', color: theme.palette.grey[300] },
                ],
                startAngle: 0,
