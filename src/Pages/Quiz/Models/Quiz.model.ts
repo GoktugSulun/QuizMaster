@@ -9,7 +9,8 @@ export type Question = {
    name: string;
    time: number;
    image?: string;
-   options: Option[]
+   options: Option[];
+   selectedOptionId?: number;
 }
 
 export type Quiz = {

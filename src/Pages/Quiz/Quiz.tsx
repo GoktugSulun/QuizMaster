@@ -3,7 +3,7 @@ import * as S from './Style/Quiz.style';
 import QuizHeader from './Components/QuizHeader';
 import { Divider } from '@mui/material';
 import QuizPagination from './Components/QuizPagination';
-import MultipleChoice from './Components/MultipleChoice';
+import Options from './Components/Options';
 import { useAppSelector, useThunk } from '@/Core/Hooks';
 import { useEffect } from 'react';
 import { QuizThunks } from './Store/Quiz.thunk';
@@ -52,7 +52,7 @@ const Quiz = () => {
       <S.Quiz>
          <S.QuizContent>
             <QuizHeader />
-            <MultipleChoice />
+            <Options />
             <Divider />
             <QuizPagination />
          </S.QuizContent>
