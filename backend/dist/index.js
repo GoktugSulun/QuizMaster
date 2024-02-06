@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
     res.send('Welcome to Express & TypeScript Server');
 });
 app.get('/test', (req, res) => {
-    res.json("Selam test data :D");
+    res.json("Selam test data :D :)");
 });
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
