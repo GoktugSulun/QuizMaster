@@ -17,7 +17,8 @@ export const Time = styled(Stack)(({ theme }) => ({
 type OptionBoxProps = { 
    $bgColor: string; 
    $color: string; 
-   $fontWeight: string; 
+   $fontWeight: string;
+   $readOnly: string;  
    cursor: string; 
 }
 
@@ -30,10 +31,10 @@ export const OptionBox = styled(Box, { shouldForwardProp })<OptionBoxProps>(({ t
    '& .MuiTypography-root': {
       color: props.$color,
       fontWeight: props.$fontWeight,
-      cursor: 'initial',
+      cursor: props.$readOnly ? 'initial' : 'cursor',
    },
    '& .MuiRadio-root': {
-      cursor: 'initial',
+      cursor: props.$readOnly ? 'initial' : 'cursor',
       '&.Mui-checked': {
          color: props.$color
       }
