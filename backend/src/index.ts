@@ -17,9 +17,9 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.get('/test', (req: Request, res: Response) => {
-  res.json("Selam test data :D");
+  res.json("Selam test data :D :)");
 });
 
 app.listen(port, () => {
-  console.log(`Server is Fire at http://localhost:${port}`);
+  console.log(`Server is running on port ${port}`);
 });
