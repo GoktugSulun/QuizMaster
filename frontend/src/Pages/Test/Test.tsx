@@ -7,6 +7,7 @@ import { Button, Chip, Grid } from "@mui/material";
 import CheckboxInput from "@/Core/Inputs/Checkbox";
 import AutocompleteInput from "@/Core/Inputs/Autocomplete";
 import { useForm } from "react-hook-form";
+import ApiTest from "./ApiTest";
 
 const schema = yup.object().shape({
   email: yup.string().min(3, ' Min 3 character').required("Email Required!"),
@@ -159,7 +160,9 @@ const Test = () => {
       > 
         Validate 
       </Button>
-      <p style={{ height: 500 }} >denem</p>
+      <br />
+      <br />
+      <ApiTest />
     </S.Test>
   );
 };
