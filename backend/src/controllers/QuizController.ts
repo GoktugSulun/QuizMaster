@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { QuizService } from "../services";
-import { Helpers } from "../helpers";
+import QuizService from '../services/QuizService.ts';
+import Helpers from '../utils/Helpers.ts';
 
 class QuizController {
   static async getAll(req: Request, res: Response) {

@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import { QuizRoute } from './routes';
+import QuizRoute from './routes/QuizRoute.ts';
 
 //For env File 
 dotenv.config();

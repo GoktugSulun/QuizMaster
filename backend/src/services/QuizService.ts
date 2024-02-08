@@ -1,6 +1,6 @@
 import { Request } from "express";
-import { IResponse } from "../types";
-import { Helpers } from "../helpers";
+import { IResponse } from "../types/Types.ts";
+import Helpers from "../utils/Helpers.ts";
 
 class QuizService {
   static async getAll(): Promise<IResponse> {
