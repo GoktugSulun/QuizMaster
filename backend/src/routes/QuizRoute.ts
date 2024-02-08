@@ -5,7 +5,7 @@ const app = express();
 
 app.get('/', QuizController.getAll);
 app.get('/:id', QuizController.getById);
-// app.post('/', QuizController.create);
+app.post('/', QuizController.create);
 // app.put('/:id', QuizController.edit);
 // app.delete('/:id', QuizController.delete);
 

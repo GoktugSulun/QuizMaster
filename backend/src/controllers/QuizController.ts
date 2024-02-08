@@ -24,6 +24,17 @@ class QuizController {
       }
     }
   }
+
+  static async create(req: Request, res: Response) {
+    try {
+      const result = await QuizService.create(req);
+      Helpers.responseJSON(res, result);
+    } catch (error) {
+      if (error instanceof Error) {
+        Helpers.responseMessage(res, false, error.message);
+      }
+    }
+  }
 }
   
 export default QuizController;
