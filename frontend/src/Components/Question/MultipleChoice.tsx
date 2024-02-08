@@ -62,6 +62,7 @@ const MultipleChoice = (props: MultipleChoiceProps) => {
                 $color={color()} 
                 $fontWeight={fontWeight}
                 cursor={cursor}
+                $readOnly={readOnly}
               >
                 <FormControlLabel 
                   value={option.id} 
