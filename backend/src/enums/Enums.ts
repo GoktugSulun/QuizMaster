@@ -1,0 +1,5 @@
+export enum QuestionEnums {
+   MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
+   TRUE_FALSE = 'TRUE_FALSE',
+   FILL_IN_THE_BLANK = 'FILL_IN_THE_BLANK'
+}
