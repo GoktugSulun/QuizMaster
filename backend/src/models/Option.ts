@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 export const optionSchema = new mongoose.Schema({
+   question_id: {
+      type: Number,
+      required: true
+   },
    name: { 
       type: String, 
       trim: true, 

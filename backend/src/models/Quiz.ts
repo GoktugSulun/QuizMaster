@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { questionSchema } from './Question.ts';
 
 const quizSchema = new mongoose.Schema({
    name: { 
@@ -15,8 +14,7 @@ const quizSchema = new mongoose.Schema({
    total_time: { 
       type: Number, 
       required: true 
-   },
-   questions: [questionSchema]
+   }
 });
 
 const Quiz = mongoose.model('Quiz', quizSchema);

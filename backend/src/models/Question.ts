@@ -1,16 +1,18 @@
 import mongoose from 'mongoose';
-import { optionSchema } from './Option.ts';
 
 export const questionSchema = new mongoose.Schema({
+   quizId: {
+      type: Number,
+      required: true
+   },
    name: { 
       type: String, 
-      trim: true, 
+      // trim: true, 
       required: true 
    },
    time: { 
       type: Number
    },
-   options: [optionSchema]
 });
 
 const Question = mongoose.model('Question', questionSchema);

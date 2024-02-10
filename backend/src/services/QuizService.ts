@@ -10,7 +10,7 @@ class QuizService {
     try {
       return {
         type: true,
-        message: 'All comments has been fetched',
+        message: 'All quizzes has been fetched',
         data
       };
     } catch (error) {
@@ -35,34 +35,45 @@ class QuizService {
   static async create(req: Request): Promise<IResponse> {
     try {
       // const { name } = req.body;
+    
       const dummy = {
-        name: 'quiz-1',
-        description: 'quiz-1 description',
-        total_time: 3000,
+        name: 'quiz-3',
+        description: 'quiz-3 description',
+        totalTime: 10000,
+        category: 'Software', 
         questions: [
           {
-            name: 'Quetion-1',
+            name: 'Quetion-4',
             options: [
-              { name: 'Option-1', isCorrect: true },
-              { name: 'Option-2', isCorrect: false },
-              { name: 'Option-3', isCorrect: false },
-              { name: 'Option-4', isCorrect: false },
+              { name: 'Option-13', isCorrect: true },
+              { name: 'Option-14', isCorrect: false },
+              { name: 'Option-15', isCorrect: false },
+              { name: 'Option-16', isCorrect: false },
+            ]
+          },
+          {
+            name: 'Quetion-5',
+            options: [
+              { name: 'Option-17', isCorrect: false },
+              { name: 'Option-18', isCorrect: true },
+              { name: 'Option-19', isCorrect: false },
+              { name: 'Option-20', isCorrect: false },
             ]
           }
         ]
-      }
+      };
+
+      // const { quizData, ...questions } = dummy;
   
       const quiz = new Quiz(dummy);
-      return quiz.save()
-        .then((data) => ({ type: true, message: 'create', data }))
-        .catch((error) => Helpers.responseError(error));
+      const data = await quiz.save();
+      
+      return { 
+        type: true, 
+        message: 'Quiz has been created successfully!', 
+        data 
+      };
 
-
-      // return {
-      //   type: true,
-      //   message: 'getById',
-      //   data
-      // };
     } catch (error) {
       return Helpers.responseError(error)
     }
