@@ -3,7 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { Fallback } from '../Components';
 import { Header } from '@/Components/Header';
 import { Sidebar } from '@/Components/Sidebar';
-import { MainWrapper } from '../Layout';
+import { ContentWrapper, MainWrapper } from '../Layout';
 
 type ProtectedRouteProps = {
   isAllowed?: boolean,
@@ -30,15 +30,15 @@ const ProtectedRoute = ({ isAllowed = false, redirectPath = '/' }: ProtectedRout
   }
 
   return (
-    <>
-      <Header />
-      <MainWrapper>
-        <Sidebar /> 
+    <MainWrapper>
+      <Sidebar /> 
+      <ContentWrapper>
+        <Header />
         <Suspense fallback={<Fallback size={80} />}>
           <Outlet />
         </Suspense>
-      </MainWrapper>
-    </>
+      </ContentWrapper>
+    </MainWrapper>
   );
 };
 

@@ -3,9 +3,7 @@ import { Link as ReactRouterLink } from "react-router-dom";
 import { shouldForwardProp } from "@/Core/Utils";
 import { PageWrapper } from "@/Core/Layout";
 
-export const Dashboard = styled(PageWrapper)(({ theme }) => ({
-   
-}));
+export const Dashboard = styled(PageWrapper)({});
 
 export const QuizPreview = styled('div')(({ theme }) => ({
    background: theme.palette.common.white,
@@ -16,14 +14,7 @@ export const QuizPreview = styled('div')(({ theme }) => ({
       width: '100%',
       height: '180px',
       objectFit: 'cover'
-   },
-   ':hover': {
-      // cursor: 'pointer',
-      '& .MuiTypography-root a': {
-         // color: theme.palette.primary.main,
-         textDecoration: 'underline'
-      }
-   },
+   }
 }));
 
 export const Image = styled('img')(({ theme }) => ({

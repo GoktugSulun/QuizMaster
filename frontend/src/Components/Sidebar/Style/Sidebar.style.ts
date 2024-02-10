@@ -8,7 +8,8 @@ type SidebarProps = {
 export const Sidebar = styled('div')<SidebarProps>(({ theme, isOpen }) => ({
    width: isOpen ? '250px' : '80px',
    minWidth: isOpen ? '250px' : '80px',
-   height: 'calc(100vh - 80px)',
+   height: 'calc(100vh - 20px)',
+   borderRadius: 5,
    background: theme.palette.common.white,
    boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
    borderTop: '1px solid rgba(0, 0, 0, 0.16)',
@@ -17,7 +18,7 @@ export const Sidebar = styled('div')<SidebarProps>(({ theme, isOpen }) => ({
    // overflow: 'hidden',
    '& .MuiIconButton-root': {
       position: 'absolute',
-      top: 40,
+      top: 100,
       right: -20,
       zIndex: 5,
       background: theme.palette.common.white,
@@ -59,3 +60,16 @@ export const Item = styled(MenuItem, { shouldForwardProp })<ItemProps>(({ theme,
       } 
    }
 }));
+
+export const Logo = styled('div')({
+   width: '100%',
+   display: 'flex',
+   flexDirection: 'column',
+   alignItems: 'center',
+   gap: 10,
+   padding: '20px 10px',
+   '& img': {
+      width: 'clamp(70px, 100%, 150px)',
+      height: 'clamp(70px, 100%, 150px)',
+   }
+});

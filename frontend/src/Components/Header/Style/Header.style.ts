@@ -3,6 +3,7 @@ import { MenuItem, Typography, styled } from '@mui/material'
 export const Header = styled('div')(({ theme }) => ({
    width: '100%',
    height: 80,
+   borderRadius: 5,
    background: theme.palette.common.white,
    boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
 }));

@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import * as S from './Style/Header.style';
 import ProfileMenu from './Components/Menu';
 
