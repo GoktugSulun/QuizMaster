@@ -46,7 +46,7 @@ const RouteList = () => {
         <Route element={<ProtectedRoute isAllowed />}>
           <Route path="/" element={<Dashboard />}>
             <Route path='favorites' />
-            <Route path='saves' />
+            <Route path='saved' />
           </Route>
           <Route path='/quiz' element={<Quiz />} />
           <Route path='/rules/quiz' element={<QuizRules />} />

@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <S.Header>
       <Stack flexDirection="row" height="100%">
-        <S.Logo variant="h3"> QUIZZZ </S.Logo>
+        <S.Logo variant="h3"> Home </S.Logo>
         <Stack 
           flex={1}
           flexDirection="row" 

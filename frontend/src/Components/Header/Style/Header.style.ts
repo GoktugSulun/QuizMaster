@@ -9,8 +9,7 @@ export const Header = styled('div')(({ theme }) => ({
 }));
 
 export const Logo = styled(Typography)(({ theme }) => ({
-   width: '250px',
-   height: '100%',
+   padding: '0 10px',
    display: 'grid',
    placeItems: 'center',
    color: theme.palette.primary.main,

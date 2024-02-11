@@ -1,4 +1,4 @@
-import { MenuItem, styled } from '@mui/material';
+import { MenuItem, alpha, styled } from '@mui/material';
 import { shouldForwardProp } from '@/Core/Utils';
  
 type SidebarProps = {
@@ -15,7 +15,6 @@ export const Sidebar = styled('div')<SidebarProps>(({ theme, isOpen }) => ({
    borderTop: '1px solid rgba(0, 0, 0, 0.16)',
    transition: 'min-width 350ms, width 350ms',
    position: 'relative',
-   // overflow: 'hidden',
    '& .MuiIconButton-root': {
       position: 'absolute',
       top: 100,
@@ -39,16 +38,36 @@ type ItemProps = {
 }
 
 export const Item = styled(MenuItem, { shouldForwardProp })<ItemProps>(({ theme, $isOpen, $isActive }) => ({
+   background: $isActive ? theme.palette.custom.light : 'inital',
+   padding: '15px 10px',
+   position: "relative",
+   '&::after': {
+      content: '""',
+      width: $isActive ? 3 : 0,
+      height: "100%",
+      background: theme.palette.primary.main,
+      position: "absolute",
+      top: 0,
+      left: 0,
+      opacity: $isActive ? 1 : 0,
+      visibility: $isActive ? 'visible' : 'hidden',
+   },
+   '&:hover': {
+      background: alpha(theme.palette.custom.light, 0.7)
+   },
+   '& + .MuiDivider-root': {
+      margin: 0,
+      background: alpha(theme.palette.custom.light, 0.5)
+   },
    '& .MuiListItemIcon-root': {
-      width: 'calc(80px - 16px - 16px)',
+      width: 'calc(80px - 16px - 8px)',
       minWidth: 'initial',
       display: 'flex',
       justifyContent: 'center',
-      marginRight: 10,
       '& .MuiSvgIcon-root': {
          width: 30,
          height: 30,
-         ...($isActive ? { color: theme.palette.primary.main } : { color: 'grey' } )
+         color: $isActive ? theme.palette.primary.main : 'rgba(129, 117, 192, 0.8)'
       },
    },
    '& .MuiListItemText-root': {
@@ -56,7 +75,8 @@ export const Item = styled(MenuItem, { shouldForwardProp })<ItemProps>(({ theme,
       visibility: $isOpen ? 'visible' : 'hidden',
       transition: 'opacity 350ms, visibility 350ms',
       '& .MuiTypography-root': {
-         ...($isActive ? { color: theme.palette.primary.main } : {} )
+         color: theme.palette.primary.main,
+         fontWeight: $isActive ? 'bold' : 'normal',
       } 
    }
 }));
