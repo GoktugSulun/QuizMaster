@@ -47,6 +47,8 @@ const RouteList = () => {
           <Route path="/" element={<Dashboard />}>
             <Route path='favorites' />
             <Route path='saved' />
+            <Route path='completed' />
+            <Route path='created' />
           </Route>
           <Route path='/quiz' element={<Quiz />} />
           <Route path='/rules/quiz' element={<QuizRules />} />

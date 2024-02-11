@@ -3,13 +3,15 @@ import MenuList from '@mui/material/MenuList';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import FolderIcon from '@mui/icons-material/Folder';
 import HomeIcon from '@mui/icons-material/Home';
 import * as S from '../Style/Sidebar.style';
 import { ListItemText } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CustomTooltip } from '@/Components/Tooltip';
 
-const SidebarMenu = ({ isOpen }: { isOpen: boolean }) => {
+const Menu = ({ isOpen }: { isOpen: boolean }) => {
    const location = useLocation();
    const navigate = useNavigate();
    const queryParams = new URLSearchParams(location.search);
@@ -73,8 +75,40 @@ const SidebarMenu = ({ isOpen }: { isOpen: boolean }) => {
             </S.Item>
          </CustomTooltip>
          <Divider />
+         <CustomTooltip 
+            title={isOpen ? "" : "Completed"} 
+            placement="right" 
+            arrow
+         >
+            <S.Item 
+               $isActive={location.pathname === '/completed'} 
+               $isOpen={isOpen}
+               onClick={() => navigate('/completed')}
+               disableRipple
+            >
+               <ListItemIcon> <AssignmentTurnedInIcon /> </ListItemIcon>
+               <ListItemText> Completed </ListItemText>
+            </S.Item>
+         </CustomTooltip>
+         <Divider />
+         <CustomTooltip 
+            title={isOpen ? "" : "Completed"} 
+            placement="right" 
+            arrow
+         >
+            <S.Item 
+               $isActive={location.pathname === '/created'} 
+               $isOpen={isOpen}
+               onClick={() => navigate('/created')}
+               disableRipple
+            >
+               <ListItemIcon> <FolderIcon /> </ListItemIcon>
+               <ListItemText> Created </ListItemText>
+            </S.Item>
+         </CustomTooltip>
+         <Divider />
       </MenuList>
    );
 };
 
-export default SidebarMenu;
+export default Menu;

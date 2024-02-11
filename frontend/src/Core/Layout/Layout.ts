@@ -22,7 +22,8 @@ export const PageWrapper = styled('div')({
 
 export const ContentWrapper = styled('div')({
    display: 'flex',
-   flexDirection: 'column'
+   flexDirection: 'column',
+   flex: 1
 });
 
 export const PageContent = styled('div')(({ theme }) => ({

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import * as S from './Style/Sidebar.style';
-import { IconButton, Typography } from '@mui/material';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import SidebarMenu from './Components/SidebarMenu';
+import Menu from './Components/Menu';
 import Logo from './Components/Logo';
+import CreateQuiz from './Components/CreateQuiz';
 
 const Sidebar = () => {
    const [isOpen, setIsOpen] = useState(true);
@@ -15,19 +16,24 @@ const Sidebar = () => {
 
    return (
       <S.Sidebar isOpen={isOpen}>
-         <IconButton onClick={toggleSidebar}>
-            { isOpen ? <ArrowBackIosNewIcon /> : <ArrowForwardIosIcon /> }
-         </IconButton>
-         <Logo isOpen={isOpen} />
-         <Typography 
-            fontWeight="bold" 
-            color="primary.main" 
-            fontSize={18}
-            padding="0 30px"
-         > 
-            Quizzes 
-         </Typography>
-         <SidebarMenu isOpen={isOpen} />
+         <Box>
+            <IconButton className="toggle" onClick={toggleSidebar}>
+               { isOpen ? <ArrowBackIosNewIcon /> : <ArrowForwardIosIcon /> }
+            </IconButton>
+            <Logo isOpen={isOpen} />
+            {/* <Typography 
+               fontWeight="bold" 
+               color="primary.main" 
+               fontSize={18}
+               padding="0 30px"
+            > 
+               Quizzes 
+            </Typography> */}
+         <Menu isOpen={isOpen} />
+         </Box>
+         <Stack flex={1} justifyContent="flex-end">
+            <CreateQuiz isOpen={isOpen} />
+         </Stack>
       </S.Sidebar>
    )
 }

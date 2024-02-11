@@ -1,4 +1,4 @@
-import { MenuItem, alpha, styled } from '@mui/material';
+import { MenuItem, Stack, alpha, styled } from '@mui/material';
 import { shouldForwardProp } from '@/Core/Utils';
  
 type SidebarProps = {
@@ -6,6 +6,8 @@ type SidebarProps = {
 }
 
 export const Sidebar = styled('div')<SidebarProps>(({ theme, isOpen }) => ({
+   display: 'flex',
+   flexDirection: 'column',
    width: isOpen ? '250px' : '80px',
    minWidth: isOpen ? '250px' : '80px',
    height: 'calc(100vh - 20px)',
@@ -15,7 +17,7 @@ export const Sidebar = styled('div')<SidebarProps>(({ theme, isOpen }) => ({
    borderTop: '1px solid rgba(0, 0, 0, 0.16)',
    transition: 'min-width 350ms, width 350ms',
    position: 'relative',
-   '& .MuiIconButton-root': {
+   '& .MuiIconButton-root.toggle': {
       position: 'absolute',
       top: 100,
       right: -20,
@@ -93,3 +95,51 @@ export const Logo = styled('div')({
       height: 'clamp(70px, 100%, 150px)',
    }
 });
+
+export const CreateQuizLogoWrapper = styled('div')(({ theme }) => ({
+   position: "absolute",
+   top: -35,
+   left: "50%",
+   transform: "translate(-50%, 0)",
+   background: theme.palette.common.white,
+   padding: 10,
+   borderRadius: "50%",
+   display: "flex",
+   justifyContent: "center",
+   alignItems: "center"
+}));
+
+export const CreateQuizLogo = styled('div')(({ theme }) => ({
+   background: theme.palette.custom.light,
+   borderRadius: "50%",
+   '& .MuiButtonBase-root': {
+      transition: "background 350ms",
+      '&:hover': {
+         background: theme.palette.primary.main,
+         '& .MuiSvgIcon-root': {
+            color: theme.palette.common.white
+         }
+      },
+      '& .MuiSvgIcon-root': {
+         color: theme.palette.primary.main
+      }
+   }
+}));
+
+export const CreateQuizResponsive = styled(Stack)(({ theme }) => ({
+   alignItems: "center",
+   margin: "15px",
+   '& .MuiButtonBase-root': {
+      transition: "background 350ms",
+      background: theme.palette.custom.light,
+      '&:hover': {
+         background: theme.palette.primary.main,
+         '& .MuiSvgIcon-root': {
+            color: theme.palette.common.white
+         }
+      },
+      '& .MuiSvgIcon-root': {
+         color: theme.palette.primary.main
+      }
+   }
+}));
