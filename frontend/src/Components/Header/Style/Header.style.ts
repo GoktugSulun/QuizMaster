@@ -8,8 +8,8 @@ export const Header = styled('div')(({ theme }) => ({
    boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
 }));
 
-export const Logo = styled(Typography)(({ theme }) => ({
-   padding: '0 10px',
+export const PageTitle = styled(Typography)(({ theme }) => ({
+   padding: '0 40px',
    display: 'grid',
    placeItems: 'center',
    color: theme.palette.primary.main,

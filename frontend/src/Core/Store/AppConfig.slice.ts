@@ -27,8 +27,13 @@ const AppConfigSlice = createSlice({
       };      
       state.notifications.push(newNotification);
     },
-    setIsOpenSidebar: (state, action: PayloadAction<boolean>) => {
-      state.isOpenSidebar = action.payload;
+    setIsOpenSidebar: (state, action: PayloadAction<"CLOSE" | "OPEN" | "TOGGLE">) => {
+      const valueMap = {
+        "TOGGLE": !state.isOpenSidebar,
+        "OPEN": true,
+        "CLOSE": false
+      }
+      state.isOpenSidebar = valueMap[action.payload];
     },
     closeSnackbar: (state, action) => {
       state.notifications = state.notifications.filter((notification) => notification.options.key !== action.payload);

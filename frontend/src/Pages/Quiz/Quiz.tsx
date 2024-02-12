@@ -4,10 +4,11 @@ import QuizHeader from './Components/QuizHeader';
 import { Divider } from '@mui/material';
 import QuizPagination from './Components/QuizPagination';
 import Options from './Components/Options';
-import { useAppSelector, useThunk } from '@/Core/Hooks';
+import { useAppDispatch, useAppSelector, useThunk } from '@/Core/Hooks';
 import { useEffect } from 'react';
 import { QuizThunks } from './Store/Quiz.thunk';
 import { Loading } from '@/Core/Components';
+import { AppConfigActions } from '@/Core/Store/AppConfig.slice';
 
 /*
    ? Required searchParams => id & question
@@ -17,7 +18,9 @@ import { Loading } from '@/Core/Components';
 
 const Quiz = () => {
    const [searchParams] = useSearchParams();
+   const dispatch = useAppDispatch();
    const quiz = useAppSelector((state) => state.Quiz.quiz);
+   const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
    
    const id = searchParams.get("id");
    const question = searchParams.get("question");
@@ -37,6 +40,13 @@ const Quiz = () => {
    useEffect(() => {
       setIdle();
    }, [isSuccess]);
+
+   useEffect(() => {
+      // TODO : param değişince render oluyorsa bunu iptal et, bu sayfaya yönlendirmeden önce kapat sidebar'ı
+      if (isOpenSidebar) {
+         dispatch(AppConfigActions.setIsOpenSidebar('CLOSE'));
+      }
+   }, []);
 
    if (!quiz.id) {
       return (

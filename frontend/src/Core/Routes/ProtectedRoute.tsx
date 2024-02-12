@@ -8,9 +8,11 @@ import { ContentWrapper, MainWrapper } from '../Layout';
 type ProtectedRouteProps = {
   isAllowed?: boolean,
   redirectPath?: string,
+  is404?: boolean
 }
 
-const ProtectedRoute = ({ isAllowed = false, redirectPath = '/' }: ProtectedRouteProps) => {
+const ProtectedRoute = (props: ProtectedRouteProps) => {
+  const { isAllowed = false, redirectPath = '/', is404 = false } = props;
   const token = localStorage.getItem('token');
 
   if (!token) {
@@ -33,7 +35,7 @@ const ProtectedRoute = ({ isAllowed = false, redirectPath = '/' }: ProtectedRout
     <MainWrapper>
       <Sidebar /> 
       <ContentWrapper>
-        <Header />
+        <Header is404={is404} />
         <Suspense fallback={<Fallback size={80} />}>
           <Outlet />
         </Suspense>

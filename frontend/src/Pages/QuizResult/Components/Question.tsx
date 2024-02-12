@@ -4,9 +4,7 @@ import QuestionHeader from '@/Components/Question/QuestionHeader';
 import MultipleChoice from '@/Components/Question/MultipleChoice';
 import { Box } from '@mui/material';
 
-const Question = ({ question, index }: { question: QuestionType, index: number }) => {
-   console.log(!!question.options.find((option) => option.isCorrect && (option.id === question.selectedOptionId)) , 222);
-   
+const Question = ({ question, index }: { question: QuestionType, index: number }) => {   
 
    return (
       <S.Question>

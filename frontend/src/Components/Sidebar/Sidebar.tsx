@@ -14,7 +14,7 @@ const Sidebar = () => {
    const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
 
    const toggleSidebar = () => {
-      dispatch(AppConfigActions.setIsOpenSidebar(!isOpenSidebar));
+      dispatch(AppConfigActions.setIsOpenSidebar("TOGGLE"));
    }
 
    return (
