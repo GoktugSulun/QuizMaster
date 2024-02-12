@@ -3,13 +3,13 @@ import { MenuItem, Typography, styled } from '@mui/material'
 export const Header = styled('div')(({ theme }) => ({
    width: '100%',
    height: 80,
+   borderRadius: 5,
    background: theme.palette.common.white,
    boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
 }));
 
-export const Logo = styled(Typography)(({ theme }) => ({
-   width: '250px',
-   height: '100%',
+export const PageTitle = styled(Typography)(({ theme }) => ({
+   padding: '0 40px',
    display: 'grid',
    placeItems: 'center',
    color: theme.palette.primary.main,

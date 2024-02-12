@@ -1,4 +1,4 @@
-import { Reducer, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { HttpResponseEnums } from '../Constants/Enums';
 import { InitialStateTypes } from './AppConfig.model';
 
@@ -6,6 +6,7 @@ const NAME = 'AppConfig';
 
 const initialState: InitialStateTypes = {
   notifications: [],
+  isOpenSidebar: true,
   loadings: {},
   requestStatuses: {},
   errors: {}
@@ -25,6 +26,14 @@ const AppConfigSlice = createSlice({
         }
       };      
       state.notifications.push(newNotification);
+    },
+    setIsOpenSidebar: (state, action: PayloadAction<"CLOSE" | "OPEN" | "TOGGLE">) => {
+      const valueMap = {
+        "TOGGLE": !state.isOpenSidebar,
+        "OPEN": true,
+        "CLOSE": false
+      }
+      state.isOpenSidebar = valueMap[action.payload];
     },
     closeSnackbar: (state, action) => {
       state.notifications = state.notifications.filter((notification) => notification.options.key !== action.payload);

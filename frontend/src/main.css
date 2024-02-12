@@ -2,6 +2,16 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  ::-webkit-scrollbar {
+    width: 0;
+  }
+  /* ::-webkit-scrollbar-track {
+    background: #F3F6FD; 
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #ae60f8; 
+    border-radius: 10px;
+  } */
 }
 
 body {

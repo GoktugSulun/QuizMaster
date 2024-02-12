@@ -18,9 +18,9 @@ const RouteList = () => {
     /*
       * Reset scroll and start page from the top when page is reload or path is changed
     */
-   console.log('path => ', location.pathname);
+  //  console.log('path => ', location.pathname);
    
-   console.log('değişti');
+  //  console.log('değişti');
    
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -46,11 +46,13 @@ const RouteList = () => {
         <Route element={<ProtectedRoute isAllowed />}>
           <Route path="/" element={<Dashboard />}>
             <Route path='favorites' />
-            <Route path='saves' />
+            <Route path='saved' />
+            <Route path='completed' />
+            <Route path='created' />
           </Route>
           <Route path='/quiz' element={<Quiz />} />
           <Route path='/rules/quiz' element={<QuizRules />} />
-          <Route path='/result/quiz' element={<QuizResult />} />
+          <Route path='/results/quiz' element={<QuizResult />} />
           <Route path="/test" element={<Test />} />
         </Route>
 
@@ -59,7 +61,7 @@ const RouteList = () => {
         <Route path="/register" element={<Register />} />
 
         {/* 404 Page */}
-        <Route element={<ProtectedRoute isAllowed />}>
+        <Route element={<ProtectedRoute is404 isAllowed />}>
           <Route path="*" element={<div> Page Not Found! </div>} />
         </Route>
       </Routes>

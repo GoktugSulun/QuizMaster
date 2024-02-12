@@ -1,29 +1,15 @@
-import { Box, IconButton, Typography, alpha, styled } from "@mui/material";
+import { Box, IconButton, Stack, Typography, alpha, styled } from "@mui/material";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { shouldForwardProp } from "@/Core/Utils";
 import { PageWrapper } from "@/Core/Layout";
 
-export const Dashboard = styled(PageWrapper)(({ theme }) => ({
-   
-}));
+export const Dashboard = styled(PageWrapper)({});
 
-export const QuizPreview = styled('div')(({ theme }) => ({
+export const QuizPreview = styled(Stack)(({ theme }) => ({
    background: theme.palette.common.white,
    borderRadius: 20,
    height: '100%',
-   position: 'relative',
-   '& .quiz-img': {
-      width: '100%',
-      height: '180px',
-      objectFit: 'cover'
-   },
-   ':hover': {
-      // cursor: 'pointer',
-      '& .MuiTypography-root a': {
-         // color: theme.palette.primary.main,
-         textDecoration: 'underline'
-      }
-   },
+   boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px'
 }));
 
 export const Image = styled('img')(({ theme }) => ({
@@ -51,23 +37,18 @@ export const EllipsisText = styled(Typography, { shouldForwardProp })<{ $maxRow?
 }));
 
 export const LikeButton = styled(IconButton)(({ theme }) => ({
-   position: 'absolute',
-   top: 10,
-   right: 10,
-   background: 'rgba(0, 0, 0, 0.2)',
+   background: theme.palette.custom.light,
    '&:hover': {
-      background: 'rgba(0, 0, 0, 0.3)',
+      background: alpha(theme.palette.primary.main, .3),
    },
    '& .MuiSvgIcon-root': {
-      color: theme.palette.common.white
+      color: theme.palette.primary.main
    }
 }));
 
 export const Category = styled(Box, { shouldForwardProp })<{ color: string, $bgColor: string }>(({ theme, color, $bgColor }) => ({
    background: $bgColor,
    color: alpha(color, .8),
-   margin: '15px 20px',
-   padding: '5px 15px',
    borderRadius: 50
 }));
 

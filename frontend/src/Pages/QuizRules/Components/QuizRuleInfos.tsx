@@ -1,21 +1,6 @@
-import { Stack, styled, Tooltip, tooltipClasses, Typography, type TooltipProps } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import InfoIcon from '@mui/icons-material/Info';
-
-const InfoTooltip = styled(({ className, ...props }: TooltipProps) => (
-   <Tooltip {...props} placement="top" arrow classes={{ popper: className }} />
- ))(({ theme }) => ({
-   [`& .${tooltipClasses.arrow}`]: {
-      color: '#dadde9'
-    },
-   [`& .${tooltipClasses.tooltip}`]: {
-     backgroundColor: '#f5f5f9',
-     color: 'rgba(0, 0, 0, 0.87)',
-     maxWidth: 220,
-     fontSize: theme.typography.pxToRem(12),
-     border: '1px solid #dadde9',
-     lineHeight: '18px'
-   }
- }))
+import { CustomTooltip } from "@/Components/Tooltip";
 
 const QuizRuleInfos = () => {
    return (
@@ -54,9 +39,9 @@ type QuizRuleInfoProps = {
 
 const QuizRuleInfo = ({ keyValue, value, description }: QuizRuleInfoProps) => (
    <Stack flexDirection="row" alignItems="center" gap={2}>
-      <InfoTooltip arrow title={description}> 
+      <CustomTooltip placement="top" arrow title={description}> 
          <InfoIcon color="primary" sx={{ cursor: "pointer" }} /> 
-      </InfoTooltip>
+      </CustomTooltip>
       <Typography color="primary" lineHeight={1.5} fontWeight="bold" fontSize="1.1rem" variant="h6"> {keyValue}: </Typography>
       <Typography alignSelf="stretch" display="flex" alignItems="center" flex={1} fontSize={20} paragraph> {value} </Typography>
    </Stack>

@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-import ProfileImg from '../../../../public/foto2.jpeg';
+import ProfileImg from '@/pngs/foto2.jpeg';
 import { ArrowPaper } from '../Style/Header.style';
 import { useTheme } from '@mui/material';
 import * as S from '../Style/Header.style'
