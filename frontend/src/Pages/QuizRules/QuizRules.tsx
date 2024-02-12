@@ -14,6 +14,7 @@ const data = {
    id: 1, 
    title: 'Asal Sayılar adpajpokasopdap padasdsapodsak adpakaspokdsaop sosos ososods', 
    description: '1-Asıl sayılara dair en önemli bilgilerin yer aldığı bu quizi çöz ve eskiklerini tamamla, bizimle başarıya ulaş! 1-Asıl sayılara dair en önemli bilgilerin yer aldığı bu quizi çöz ve eskiklerini tamamla, bizimle başarıya ulaş! 1-Asıl sayılara dair en önemli bilgilerin yer aldığı bu quizi çöz ve eskiklerini tamamla, bizimle başarıya ulaş!',
+   category: "Mathematics",
    created_at: new Date(),
    updated_at: new Date(),
    img: img1,
@@ -55,7 +56,12 @@ const QuizRules = () => {
             <Typography color="primary" textAlign="center" fontWeight="bold" variant="h4">
                Quiz Rules
             </Typography>
-            <QuizRuleHeader img={data.img} title={data.title} description={data.description} />
+            <QuizRuleHeader 
+               img={data.img} 
+               title={data.title} 
+               description={data.description} 
+               category={data.category}
+            />
             <Divider sx={{ margin: '40px 0' }} />
             <Stack flex={1} flexDirection="row">
                <Stack flex={1} alignItems="center" justifyContent="center">

@@ -23,7 +23,12 @@ const QuizPreviewFooter = ({ time, id }: QuizPreviewFooterProps) => {
          gap={1}
          flexWrap="wrap"
       > 
-         <Box sx={{ color: '#5e5e5e', background: '#ececec', borderRadius: 2, padding: '5px 10px' }}> 
+         <Box 
+            color="#5e5e5e"
+            bgcolor="#ececec"
+            borderRadius={2}
+            padding="5px 10px"
+         > 
             <Stack 
                height="100%" 
                flexDirection="row" 
@@ -36,7 +41,7 @@ const QuizPreviewFooter = ({ time, id }: QuizPreviewFooterProps) => {
          </Box>
          <Button 
             onClick={navigateHandler} 
-            sx={{ padding: "5px 30px", ":hover": { padding: "5px 40px" } }} 
+            sx={{ padding: "5px 30px" }} 
          > 
             START 
          </Button> 
