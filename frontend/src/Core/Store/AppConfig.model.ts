@@ -22,8 +22,9 @@ export type ErrorTypes = {
 }
 
 export type InitialStateTypes = {
-   notifications: NotificationTypes[],
-   loadings: LoadingTypes,
-   requestStatuses: RequestStatusTypes,
+   notifications: NotificationTypes[];
+   isOpenSidebar: boolean;
+   loadings: LoadingTypes;
+   requestStatuses: RequestStatusTypes;
    errors: ErrorTypes
 }

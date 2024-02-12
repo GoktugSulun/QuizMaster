@@ -10,10 +10,12 @@ import * as S from '../Style/Sidebar.style';
 import { ListItemText } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CustomTooltip } from '@/Components/Tooltip';
+import { useAppSelector } from '@/Core/Hooks';
 
-const Menu = ({ isOpen }: { isOpen: boolean }) => {
+const Menu = () => {
    const location = useLocation();
    const navigate = useNavigate();
+   const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
    const queryParams = new URLSearchParams(location.search);
 
    const navigateHandler = (url: string) => {
@@ -28,13 +30,13 @@ const Menu = ({ isOpen }: { isOpen: boolean }) => {
       <MenuList sx={{ width: '100%', overflow: 'hidden' }}>
          <Divider />
          <CustomTooltip 
-            title={isOpen ? "" : "Home"} 
+            title={isOpenSidebar ? "" : "Home"} 
             placement="right" 
             arrow
          >
             <S.Item 
                $isActive={location.pathname === '/'}  
-               $isOpen={isOpen}
+               $isOpen={isOpenSidebar}
                onClick={() => navigate('/')}
                disableRipple
             >
@@ -44,13 +46,13 @@ const Menu = ({ isOpen }: { isOpen: boolean }) => {
          </CustomTooltip>
          <Divider />
          <CustomTooltip 
-            title={isOpen ? "" : "Favorites"} 
+            title={isOpenSidebar ? "" : "Favorites"} 
             placement="right" 
             arrow
          >
             <S.Item 
                $isActive={location.pathname.includes('favorites')} 
-               $isOpen={isOpen}
+               $isOpen={isOpenSidebar}
                onClick={() => navigateHandler('/favorites')}
                disableRipple
             >
@@ -60,13 +62,13 @@ const Menu = ({ isOpen }: { isOpen: boolean }) => {
          </CustomTooltip>
          <Divider />
          <CustomTooltip 
-            title={isOpen ? "" : "Saved"} 
+            title={isOpenSidebar ? "" : "Saved"} 
             placement="right" 
             arrow
          >
             <S.Item 
                $isActive={location.pathname === '/saved'} 
-               $isOpen={isOpen}
+               $isOpen={isOpenSidebar}
                onClick={() => navigate('/saved')}
                disableRipple
             >
@@ -76,13 +78,13 @@ const Menu = ({ isOpen }: { isOpen: boolean }) => {
          </CustomTooltip>
          <Divider />
          <CustomTooltip 
-            title={isOpen ? "" : "Completed"} 
+            title={isOpenSidebar ? "" : "Completed"} 
             placement="right" 
             arrow
          >
             <S.Item 
                $isActive={location.pathname === '/completed'} 
-               $isOpen={isOpen}
+               $isOpen={isOpenSidebar}
                onClick={() => navigate('/completed')}
                disableRipple
             >
@@ -92,13 +94,13 @@ const Menu = ({ isOpen }: { isOpen: boolean }) => {
          </CustomTooltip>
          <Divider />
          <CustomTooltip 
-            title={isOpen ? "" : "Completed"} 
+            title={isOpenSidebar ? "" : "Created"} 
             placement="right" 
             arrow
          >
             <S.Item 
                $isActive={location.pathname === '/created'} 
-               $isOpen={isOpen}
+               $isOpen={isOpenSidebar}
                onClick={() => navigate('/created')}
                disableRipple
             >

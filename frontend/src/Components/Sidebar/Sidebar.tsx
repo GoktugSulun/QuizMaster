@@ -1,38 +1,35 @@
-import { useState } from 'react';
 import * as S from './Style/Sidebar.style';
-import { Box, IconButton, Stack, Typography } from '@mui/material';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { Box, IconButton, Stack } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIcon from '@mui/icons-material/ArrowBackIosNew';
 import Menu from './Components/Menu';
 import Logo from './Components/Logo';
 import CreateQuiz from './Components/CreateQuiz';
+import { useAppDispatch, useAppSelector } from '@/Core/Hooks';
+import { AppConfigActions } from '@/Core/Store/AppConfig.slice';
+import { CustomTooltip } from '../Tooltip';
 
 const Sidebar = () => {
-   const [isOpen, setIsOpen] = useState(true);
+   const dispatch = useAppDispatch();
+   const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
 
    const toggleSidebar = () => {
-      setIsOpen((prev) => !prev);
+      dispatch(AppConfigActions.setIsOpenSidebar(!isOpenSidebar));
    }
 
    return (
-      <S.Sidebar isOpen={isOpen}>
+      <S.Sidebar isOpen={isOpenSidebar}>
          <Box>
-            <IconButton className="toggle" onClick={toggleSidebar}>
-               { isOpen ? <ArrowBackIosNewIcon /> : <ArrowForwardIosIcon /> }
-            </IconButton>
-            <Logo isOpen={isOpen} />
-            {/* <Typography 
-               fontWeight="bold" 
-               color="primary.main" 
-               fontSize={18}
-               padding="0 30px"
-            > 
-               Quizzes 
-            </Typography> */}
-         <Menu isOpen={isOpen} />
+            <CustomTooltip arrow title={isOpenSidebar ? "Close Sidebar" : "Open Sidebar"}>
+               <IconButton className="toggle" onClick={toggleSidebar}>
+                  { isOpenSidebar ? <ArrowBackIcon /> : <ArrowForwardIcon /> }
+               </IconButton>
+            </CustomTooltip>
+            <Logo />
+         <Menu />
          </Box>
          <Stack flex={1} justifyContent="flex-end">
-            <CreateQuiz isOpen={isOpen} />
+            <CreateQuiz />
          </Stack>
       </S.Sidebar>
    )

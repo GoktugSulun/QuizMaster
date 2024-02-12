@@ -2,10 +2,12 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import * as S from '../Style/Sidebar.style';
 import AddIcon from '@mui/icons-material/Add';
 import { CustomTooltip } from "@/Components/Tooltip";
+import { useAppSelector } from "@/Core/Hooks";
 
-const CreateQuiz = ({ isOpen } : { isOpen : boolean}) => {
+const CreateQuiz = () => {
+  const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
 
-  if (!isOpen) {
+  if (!isOpenSidebar) {
     return (
       <S.CreateQuizResponsive>
         <CustomTooltip 

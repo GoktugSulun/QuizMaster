@@ -1,8 +1,10 @@
 import LogoURL from '@/Pngs/logo.png';
 import * as S from '../Style/Sidebar.style';
 import { Typography } from '@mui/material';
+import { useAppSelector } from '@/Core/Hooks';
 
-const Logo = ({ isOpen } : { isOpen: boolean }) => {
+const Logo = () => {
+   const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
 
    return (
       <S.Logo>
@@ -12,7 +14,7 @@ const Logo = ({ isOpen } : { isOpen: boolean }) => {
             variant="h5"
             fontWeight="bold"
          > 
-            { isOpen ? 'QuizMaster' : 'QM'} 
+            { isOpenSidebar ? 'QuizMaster' : 'QM'} 
          </Typography>
       </S.Logo>
    )
