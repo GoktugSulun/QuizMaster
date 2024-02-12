@@ -47,7 +47,7 @@ const QuizPreviewList = () => {
   return (
     <Grid container spacing={5}>
       { items.map((item) => (
-          <Grid key={item.id} item xs={12} md={4}>
+          <Grid key={item.id} item md={12} lg={4}>
             <QuizPreview data={item} />
           </Grid>
         )) 
