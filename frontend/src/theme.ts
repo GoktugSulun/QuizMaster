@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import { alpha, createTheme } from '@mui/material/styles';
 import { deepPurple } from '@mui/material/colors';
 
 declare module '@mui/material/Button' {
@@ -19,7 +19,8 @@ declare module "@mui/material/styles" {
 const defaultTheme = createTheme({
   palette: {
     custom: {
-      main: 'rgba(129, 117, 192, 0.8)',
+      // main: 'rgba(129, 117, 192, 0.8)',
+      main: alpha('#8175c0', 0.8),
       light: '#EDEAFB'
     },
     primary: {
