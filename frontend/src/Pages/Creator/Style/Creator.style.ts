@@ -45,6 +45,12 @@ export const QuitButton = styled(Button)(({ theme }) => ({
    color: theme.palette.common.black,
    boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
    '&:hover': {
-      background: theme.palette.secondary.main,
+      background: alpha(theme.palette.secondary.light, 0.1),
+   }
+}));
+
+export const EyeButton = styled(QuitButton)(({ theme }) => ({
+   '& .MuiSvgIcon-root': {
+      color: alpha(theme.palette.secondary.light, 0.6),
    }
 }));
