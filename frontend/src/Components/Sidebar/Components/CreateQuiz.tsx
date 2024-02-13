@@ -3,9 +3,15 @@ import * as S from '../Style/Sidebar.style';
 import AddIcon from '@mui/icons-material/Add';
 import { CustomTooltip } from "@/Components/Tooltip";
 import { useAppSelector } from "@/Core/Hooks";
+import { useNavigate } from "react-router-dom";
 
 const CreateQuiz = () => {
+  const navigate = useNavigate();
   const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
+
+  const navigateToCreator = () => {
+    navigate('/creator');
+  };
 
   if (!isOpenSidebar) {
     return (
@@ -15,7 +21,7 @@ const CreateQuiz = () => {
             arrow
             placement="right"
           >
-            <IconButton>
+            <IconButton onClick={navigateToCreator}>
               <AddIcon fontSize="large" />
             </IconButton>
           </CustomTooltip>
@@ -40,7 +46,7 @@ const CreateQuiz = () => {
             arrow
             placement="top"
           >
-            <IconButton>
+            <IconButton onClick={navigateToCreator}>
               <AddIcon fontSize="large" />
             </IconButton>
           </CustomTooltip>
@@ -64,7 +70,7 @@ const CreateQuiz = () => {
         Create a quiz to test your students, friends or so on, or just for fun.
       </Typography>
       <Stack alignItems="center">
-        <Button> Create Your Quiz </Button>
+        <Button onClick={navigateToCreator}> Create Your Quiz </Button>
       </Stack>
     </Box>
   )
