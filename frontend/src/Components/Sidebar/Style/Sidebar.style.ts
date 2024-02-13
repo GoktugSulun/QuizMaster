@@ -40,7 +40,7 @@ type ItemProps = {
 }
 
 export const Item = styled(MenuItem, { shouldForwardProp })<ItemProps>(({ theme, $isOpen, $isActive }) => ({
-   background: $isActive ? theme.palette.custom.light : 'inital',
+   background: $isActive ? theme.palette.custom.light : 'initial',
    padding: '15px 10px',
    position: "relative",
    '&::after': {
