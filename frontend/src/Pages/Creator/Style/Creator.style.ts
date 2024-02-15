@@ -1,5 +1,6 @@
 import { PageWrapper } from "@/Core/Layout";
 import { Box, Button, Stack, alpha, styled } from "@mui/material"; 
+import { shouldForwardProp } from "@/Core/Utils";
 
 export const CreateQuiz = styled(PageWrapper)({
    display: "flex",
@@ -25,7 +26,7 @@ export const Slides = styled(Stack)(({ theme }) => ({
    borderRadius: "5px 0 0 5px",
 }));
 
-export const Slide = styled(Box)<{ $isActive: boolean; }>(({ theme, $isActive }) => ({
+export const Slide = styled(Box, { shouldForwardProp })<{ $isActive: boolean; }>(({ theme, $isActive }) => ({
    padding: "15px",
    backgroundColor: $isActive ? alpha(theme.palette.custom.light, .7) : 'initial',
    cursor: "pointer",
@@ -39,6 +40,8 @@ export const Slide = styled(Box)<{ $isActive: boolean; }>(({ theme, $isActive })
 
 export const Question = styled(Stack)(({ theme }) => ({
    flex: 1,
+   borderLeft: `1px solid ${theme.palette.secondary.light}`,
+   borderRight: `1px solid ${theme.palette.secondary.light}`,
 }));
 
 export const QuestionSettings = styled(Stack)(({ theme }) => ({

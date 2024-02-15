@@ -1,4 +1,4 @@
-import { Box, Stack, alpha, styled } from "@mui/material";
+import { Box, Stack, styled } from "@mui/material";
 import { shouldForwardProp } from "@/Core/Utils";
 
 export const QuestionHeader = styled(Stack)(({ theme }) => ({
@@ -18,7 +18,7 @@ type OptionBoxProps = {
    $bgColor: string; 
    $color: string; 
    $fontWeight: string;
-   $readOnly: string;  
+   $readOnly: boolean;  
    cursor: string; 
 }
 

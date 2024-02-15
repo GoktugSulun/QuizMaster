@@ -7,7 +7,7 @@ type SelectInputProps<T extends FieldValues, U extends FieldPath<T>> = SelectTyp
 // TODO : This input should be also work correctly without react-hook-form
 const SelectInput = <T extends FieldValues, U extends FieldPath<T>>(props: SelectInputProps<T, U>) => {
    
-   const { control, helperText, shrink, emptyValue, disabledEmptyItem=false, ...selectProps } = props;
+   const { control, helperText, shrink=false, emptyValue, disabledEmptyItem=false, ...selectProps } = props;
 
    const { field, fieldState } = useController({
       name: props.name,
@@ -32,7 +32,7 @@ const SelectInput = <T extends FieldValues, U extends FieldPath<T>>(props: Selec
          fullWidth={props.fullWidth}
       >
          <InputLabel 
-            shrink={props.shrink}
+            shrink={shrink}
             error={!!fieldState?.error ?? props.error} 
             htmlFor={props.name || props.id}
          >
@@ -47,7 +47,7 @@ const SelectInput = <T extends FieldValues, U extends FieldPath<T>>(props: Selec
             name={field.name}
             inputRef={field.ref} 
             id={props.name || props.id}
-            notched={props.shrink}
+            notched={shrink}
          >
             {
                !!emptyValue
