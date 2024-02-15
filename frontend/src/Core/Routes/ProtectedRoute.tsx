@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { Fallback } from '../Components';
+import { Fallback, Loading } from '../Components';
 import { Header } from '@/Components/Header';
 import { Sidebar } from '@/Components/Sidebar';
 import { ContentWrapper, MainWrapper } from '../Layout';
@@ -36,7 +36,7 @@ const ProtectedRoute = (props: ProtectedRouteProps) => {
       <Sidebar /> 
       <ContentWrapper>
         <Header is404={is404} />
-        <Suspense fallback={<Fallback size={80} />}>
+        <Suspense fallback={<Loading size={80} />}>
           <Outlet />
         </Suspense>
       </ContentWrapper>

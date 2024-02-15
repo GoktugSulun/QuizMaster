@@ -1,5 +1,5 @@
 
-type OptionType = {
+export type OptionType = {
    id?: string;
    name: string; 
    isCorrect: boolean;

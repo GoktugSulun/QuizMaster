@@ -18,23 +18,31 @@ type OptionBoxProps = {
    $bgColor: string; 
    $color: string; 
    $fontWeight: string;
-   $readOnly: boolean;  
-   cursor: string; 
+   cursor?: string; 
+   size?: "small" | "medium" | "large"
 }
 
-export const OptionBox = styled(Box, { shouldForwardProp })<OptionBoxProps>(({ theme, ...props }) => ({
+const optionBoxSizeMap = {
+   small: "25px",
+   medium: "40px 25px",
+   large: "60px 30px"
+}
+
+export const OptionBox = styled(Box, { shouldForwardProp })<OptionBoxProps>(({ theme, size="medium", ...props }) => ({
    background: props.$bgColor,
    width: '100%',
-   padding: '40px 25px',
+   padding: optionBoxSizeMap[size],
    borderRadius: 15,
    boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
-   '& .MuiTypography-root': {
+   '& .MuiTypography-root, & .MuiOutlinedInput-input': {
       color: props.$color,
       fontWeight: props.$fontWeight,
-      cursor: props.$readOnly ? 'initial' : 'cursor',
+   },
+   '& .MuiTypography-root': {
+      cursor: props.cursor || 'initial',
    },
    '& .MuiRadio-root': {
-      cursor: props.$readOnly ? 'initial' : 'cursor',
+      cursor: props.cursor || 'initial',
       '&.Mui-checked': {
          color: props.$color
       }

@@ -4,7 +4,7 @@ import { QuestionSettings } from './Components/QuestionSettings';
 import { Slides } from './Components/Slides';
 import * as S from './Style/Creator.style';
 import { CreatorHeader } from './Components/CreatorHeader';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { type QuestionType } from './Model/Creator.model';
 
 type DefaultValuesType = {
@@ -24,6 +24,10 @@ const defaultValues: DefaultValuesType = (
 const CreateQuiz = () => {
   const theme = useTheme();
   const form = useForm({ defaultValues });
+
+  const formValues = useWatch({ control: form.control });
+  console.log(formValues, ' formValues');
+  
   
   return (
     <FormProvider {...form}>
