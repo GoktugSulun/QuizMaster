@@ -1,14 +1,12 @@
 
 export type OptionType = {
-   id?: string;
+   id?: string | number;
    name: string; 
    isCorrect: boolean;
 }
 
 export type QuestionType = {
-   id?: string;
+   id?: string | number;
    name: string;
    options: OptionType[];
 }
-
-export type ActiveSlideType = QuestionType & { index: number; }

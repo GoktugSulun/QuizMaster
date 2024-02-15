@@ -9,7 +9,7 @@ type ControlledInput<TFieldValues extends FieldValues, TName extends FieldPath<T
    onChange?: never,
    onBlur?: never,
    ref?: never,
-   value?: never
+   // value?: never
 }
 
 // Normal MUI input, not controlled by React-hook-form

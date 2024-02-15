@@ -1,11 +1,11 @@
 import { FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/material';
-import { type FieldValues, type FieldPath, useController } from 'react-hook-form';
+import { type FieldValues, type FieldPath, useController, useFormContext } from 'react-hook-form';
 import ErrorIcon from '@mui/icons-material/Error';
 import { TextInputType } from '../Models';
 
 const TextInput = <TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>(props: TextInputType<TFieldValues, TName>) => {
   const { name, control, shrink=false, ...otherProps } = props;
-
+  
   const { field, fieldState } = control 
     ? useController({ name, control }) 
     : { 
@@ -40,7 +40,7 @@ const TextInput = <TFieldValues extends FieldValues, TName extends FieldPath<TFi
       <OutlinedInput
         {...otherProps}
         error={error}
-        value={field.value}
+        value={props.value ?? field.value}
         onChange={field.onChange}
         onBlur={field.onBlur}
         name={field.name}

@@ -9,12 +9,14 @@ import { type QuestionType } from './Model/Creator.model';
 
 type DefaultValuesType = {
   quizId: number;
+  activeIndex: number;
   questions: QuestionType[];
 }
 
 const defaultValues: DefaultValuesType = (
   {
     quizId: 1,
+    activeIndex: 0,
     questions: [
       { name: "", options: [1,2,3,4].map(() => ({ name: "", isCorrect: false })) }
     ]
@@ -27,6 +29,8 @@ const CreateQuiz = () => {
 
   const formValues = useWatch({ control: form.control });
   console.log(formValues, ' formValues');
+  
+  console.log('creator top render');
   
   
   return (

@@ -1,22 +1,21 @@
 import * as QuestionStyle from "@/Components/Question/Style/Question.style";
-import { useAppSelector } from "@/Core/Hooks";
 import { TextInput } from "@/Core/Inputs";
 import { type OptionType } from "@/Pages/Creator/Model/Creator.model";
 import { Grid, Radio, alpha, useTheme } from "@mui/material";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 const MultipleChoice = () => {
    const theme = useTheme();
    const form = useFormContext();
-   const { index } = useAppSelector((state) => state.Creator.activeSlide);
+   const index = form.getValues("activeIndex");
 
-   const options: OptionType[] = useWatch({ control: form.control, name: `questions.${index}.options` });
+   const options: OptionType[] = form.watch(`questions.${index}.options`);   
 
    const setCorrectOption = (optionIndex: number) => {
       const newOptionValues = options.map((option, index) => ({ ...option, isCorrect: index === optionIndex ? !option.isCorrect : false }));
       form.setValue(`questions.${index}.options`, newOptionValues);
    };
-
+   
    return (
       <Grid 
          container
@@ -37,9 +36,7 @@ const MultipleChoice = () => {
                   return alpha(theme.palette.error.main, 1);
                })();
                const fontWeight = !isAnyOneSelect ? 'initial' : 'bold';
-               console.log(fontWeight, ' fon');
-               console.log(isAnyOneSelect, ' isAnyOneSelected');
-               
+               const value = form.watch(`questions.${index}.options.${optionIndex}.name`);
 
                return (
                   <Grid 
@@ -68,6 +65,7 @@ const MultipleChoice = () => {
                            fullWidth
                            control={form.control}
                            name={`questions.${index}.options.${optionIndex}.name`}
+                           value={value}
                            placeholder="Add Option"
                            multiline
                            shrink

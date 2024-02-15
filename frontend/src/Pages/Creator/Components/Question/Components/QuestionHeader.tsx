@@ -1,13 +1,14 @@
-import { useAppSelector } from "@/Core/Hooks";
 import { TextInput } from "@/Core/Inputs";
 import { Stack, useTheme } from "@mui/material"
 import { useFormContext } from "react-hook-form";
 
 const QuestionHeader = () => {
   const theme = useTheme();
-  const { control } = useFormContext();
-  const { index } = useAppSelector((state) => state.Creator.activeSlide);
+  const form = useFormContext();
 
+  const index = form.watch("activeIndex");
+  const name = form.watch(`questions.${index}.name`);
+  
   return (
     <Stack 
       alignItems="center" 
@@ -17,12 +18,13 @@ const QuestionHeader = () => {
     >
       <TextInput 
         name={`questions.${index}.name`}
-        control={control}
+        value={name}
+        control={form.control}
         sx={{
           boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
           '& .MuiOutlinedInput-notchedOutline': { border: "none" }
         }}
-        inputProps={{ style: { textAlign: "center", fontSize: 25, lineHeight: 1.3 } }}
+        inputProps={{ maxLength: 120, style: { textAlign: "center", fontSize: 25, lineHeight: 1.3 } }}
         fullWidth
         multiline
         maxRows={3}

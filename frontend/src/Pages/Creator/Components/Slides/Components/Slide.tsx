@@ -1,19 +1,31 @@
 import { Stack, Typography, useTheme } from '@mui/material';
 import * as S from '../../../Style/Creator.style';
 import ImageIcon from '@mui/icons-material/Image';
+import { type QuestionType } from '@/Pages/Creator/Model/Creator.model';
+import { useFormContext } from 'react-hook-form';
 
-const Slide = (props) => {
+type SliceProps = {
+   index: number;
+   field: QuestionType
+};
+
+const Slide = (props: SliceProps) => {
    const theme = useTheme();
-   const isActive = props.index === 1;
+   const form = useFormContext();
+   const isActive = props.index === form.getValues("activeIndex");
+
+   const setActiveSlideHandler = () => {
+      form.setValue('activeIndex', props.index);
+   };
 
    return (
-      <S.Slide $isActive={isActive}>
+      <S.Slide onClick={setActiveSlideHandler} $isActive={isActive}>
          <Typography 
             fontSize={14} 
             paragraph
             {...(isActive ? { color: theme.palette.primary.main, fontWeight: "bold" } : {})}
          > 
-            {props.index}. Multiple Choice 
+            {props.index + 1}. Multiple Choice 
          </Typography>
          <Stack
             className="slide"
