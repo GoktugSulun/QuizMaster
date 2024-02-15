@@ -3,7 +3,6 @@ import { Question } from './Components/Question';
 import { QuestionSettings } from './Components/QuestionSettings';
 import { Slides } from './Components/Slides';
 import * as S from './Style/Creator.style';
-import { CreatorHeader } from './Components/CreatorHeader';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { type QuestionType } from './Model/Creator.model';
 
@@ -23,7 +22,7 @@ const defaultValues: DefaultValuesType = (
   }
 );
 
-const CreateQuiz = () => {
+const Creator = () => {
   const theme = useTheme();
   const form = useForm({ defaultValues });
 
@@ -35,11 +34,10 @@ const CreateQuiz = () => {
   
   return (
     <FormProvider {...form}>
-      <S.CreateQuiz>
-        <CreatorHeader />
+      <S.Creator>
         <Stack 
           flexDirection="row" 
-          flex={1}
+          height="100%"
           borderTop={`1px solid ${theme.palette.secondary.light}`}
           borderBottom={`1px solid ${theme.palette.secondary.light}`}
           borderRadius="5px"
@@ -49,9 +47,9 @@ const CreateQuiz = () => {
           <Question />
           <QuestionSettings />
         </Stack>
-      </S.CreateQuiz>
+      </S.Creator>
     </FormProvider>
   )
 }
 
-export default CreateQuiz;
+export default Creator;

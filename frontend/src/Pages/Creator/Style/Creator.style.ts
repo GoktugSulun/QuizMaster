@@ -1,12 +1,10 @@
 import { PageWrapper } from "@/Core/Layout";
-import { Box, Button, Stack, alpha, styled } from "@mui/material"; 
+import { Button, Stack, alpha, styled } from "@mui/material"; 
 import { shouldForwardProp } from "@/Core/Utils";
 
-export const CreateQuiz = styled(PageWrapper)({
-   display: "flex",
-   flexDirection: "column",
+export const Creator = styled(PageWrapper)({
    gap: 10,
-   padding: "15px 0"
+   padding: "15px 0",
 });
 
 
@@ -26,8 +24,8 @@ export const Slides = styled(Stack)(({ theme }) => ({
    borderRadius: "5px 0 0 5px",
 }));
 
-export const Slide = styled(Box, { shouldForwardProp })<{ $isActive: boolean; }>(({ theme, $isActive }) => ({
-   padding: "15px",
+export const Slide = styled(Stack, { shouldForwardProp })<{ $isActive: boolean; }>(({ theme, $isActive }) => ({
+   padding: "10px 15px 10px 0",
    backgroundColor: $isActive ? alpha(theme.palette.custom.light, .7) : 'initial',
    cursor: "pointer",
    '& .MuiStack-root.slide': {
@@ -35,7 +33,19 @@ export const Slide = styled(Box, { shouldForwardProp })<{ $isActive: boolean; }>
    },
    '&:hover .MuiStack-root.slide': {
       border: `2px solid ${$isActive ? alpha(theme.palette.custom.main, .5) : theme.palette.secondary.light}`
-   }
+   },
+   // animation: "zoom-in-zoom-out 1s ease 1",
+   // '@keyframes zoom-in-zoom-out': {
+   //    '0%': {
+   //      transform: 'scale(1)'
+   //    },
+   //    '50%': {
+   //      transform: 'scale(1.1)'
+   //    },
+   //    '100%': {
+   //      transform: 'scale(1)'
+   //    }
+   //  }
 }));
 
 export const Question = styled(Stack)(({ theme }) => ({
