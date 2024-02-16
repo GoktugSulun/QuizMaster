@@ -8,6 +8,14 @@ import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from
 const Slides = () => {
    const form = useFormContext();
    const questions = useFieldArray({ name: "questions", control: form.control });
+   
+   const watchedQuestions = form.watch("questions");
+   const controlledQuestions = questions.fields.map((field, index) => {
+      return {
+        ...field,
+        ...watchedQuestions[index]
+      };
+    });
 
    const addQuestionHandler = () => {
       const newQuestion: QuestionType = { 
@@ -31,7 +39,7 @@ const Slides = () => {
             sx={{ "::-webkit-scrollbar": { width: "5px" } }}
             boxShadow= "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"
          >
-            {questions.fields.map((field, index) => (
+            {controlledQuestions.map((field, index) => (
                <Slide 
                   key={field.id} 
                   field={field as QuestionType} 

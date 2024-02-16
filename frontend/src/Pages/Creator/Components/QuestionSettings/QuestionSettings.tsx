@@ -26,9 +26,9 @@ const QuestionSettings = () => {
                icon={() => <QuizIcon sx={{ color: "primary.main", marginRight: "5px" }} />}
                name="type"
                options={[
-                  { id: QuestionEnums.MULTIPLE_CHOICE, name: "Multiple Choice" },
-                  { id: QuestionEnums.TRUE_FALSE, name: "True/False" },
-                  { id: QuestionEnums.FILL_IN_THE_BLANK, name: "Filling the Blank" },
+                  { id: QuestionEnums.MULTIPLE_CHOICE, name: QuestionEnums.MULTIPLE_CHOICE},
+                  { id: QuestionEnums.TRUE_FALSE, name: QuestionEnums.TRUE_FALSE },
+                  { id: QuestionEnums.FILL_IN_THE_BLANK, name: QuestionEnums.FILL_IN_THE_BLANK },
                ]}
             />
             <Divider sx={{ margin: "30px 0" }} />
@@ -38,8 +38,8 @@ const QuestionSettings = () => {
                   icon={() => <RewardIcon sx={{ color: "primary.main", marginRight: "5px" }} />}
                   name="point"
                   options={[
-                     { id: PointEnums.STANDART, name: "Standart" },
-                     { id: PointEnums.DOUBLE_UP, name: "Double Up" },
+                     { id: PointEnums.STANDART, name: PointEnums.STANDART },
+                     { id: PointEnums.DOUBLE_UP, name: PointEnums.DOUBLE_UP },
                   ]}
                />
                <InputGroup
@@ -47,8 +47,8 @@ const QuestionSettings = () => {
                   icon={() => <OptionsIcon sx={{ color: "primary.main", marginRight: "5px" }} />}
                   name="optionType"
                   options={[
-                     { id: CorrectOptionEnums.SINGLE_OPTION, name: "Single Option" },
-                     { id: CorrectOptionEnums.MULTIPLE_OPTIONS, name: "Multiple Options" },
+                     { id: CorrectOptionEnums.SINGLE_OPTION, name: CorrectOptionEnums.SINGLE_OPTION },
+                     { id: CorrectOptionEnums.MULTIPLE_OPTIONS, name: CorrectOptionEnums.MULTIPLE_OPTIONS },
                   ]}
                   condition={questionType === QuestionEnums.MULTIPLE_CHOICE}
                />

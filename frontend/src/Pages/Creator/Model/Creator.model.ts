@@ -1,17 +1,17 @@
 export enum QuestionEnums {
-   MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
-   TRUE_FALSE = 'TRUE_FALSE',
-   FILL_IN_THE_BLANK = 'FILL_IN_THE_BLANK'
+   MULTIPLE_CHOICE = 'Multiple Choice',
+   TRUE_FALSE = 'True/False',
+   FILL_IN_THE_BLANK = 'Filling the Blank'
 }
 
 export enum PointEnums {
-   STANDART = 'STANDART',
-   DOUBLE_UP = 'DOUBLE_UP',
+   STANDART = 'Standart',
+   DOUBLE_UP = 'Double Up',
 }
 
 export enum CorrectOptionEnums {
-   SINGLE_OPTION = 'SINGLE_OPTION',
-   MULTIPLE_OPTIONS = 'MULTIPLE_OPTIONS',
+   SINGLE_OPTION = 'Single Option',
+   MULTIPLE_OPTIONS = 'Multiple Options',
 }
 
 export type OptionType = {

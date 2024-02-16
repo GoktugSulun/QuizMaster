@@ -51,7 +51,7 @@ const Slide = (props: SliceProps) => {
                paragraph
                {...(isActive ? { color: theme.palette.primary.main, fontWeight: "bold" } : {})}
             > 
-               {props.index + 1}. Multiple Choice 
+               {props.index + 1}. {props.field.type}
             </Typography>
             <Stack
                className="slide"
