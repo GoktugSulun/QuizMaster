@@ -4,7 +4,7 @@ import { QuestionSettings } from './Components/QuestionSettings';
 import { Slides } from './Components/Slides';
 import * as S from './Style/Creator.style';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { type QuestionType } from './Model/Creator.model';
+import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from './Model/Creator.model';
 
 type DefaultValuesType = {
   quizId: number;
@@ -17,7 +17,13 @@ const defaultValues: DefaultValuesType = (
     quizId: 1,
     activeIndex: 0,
     questions: [
-      { name: "", options: [1,2,3,4].map(() => ({ name: "", isCorrect: false })) }
+      { 
+        name: "", 
+        options: [1,2,3,4].map(() => ({ name: "", isCorrect: false })), 
+        type: QuestionEnums.MULTIPLE_CHOICE,
+        point: PointEnums.STANDART,
+        optionType: CorrectOptionEnums.SINGLE_OPTION
+      }
     ]
   }
 );
@@ -28,9 +34,6 @@ const Creator = () => {
 
   const formValues = useWatch({ control: form.control });
   console.log(formValues, ' formValues');
-  
-  console.log('creator top render');
-  
   
   return (
     <FormProvider {...form}>

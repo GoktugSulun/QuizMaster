@@ -4,7 +4,7 @@ import { shouldForwardProp } from "@/Core/Utils";
 
 export const Creator = styled(PageWrapper)({
    gap: 10,
-   padding: "15px 0",
+   padding: "15px 0 0 0",
 });
 
 
@@ -33,19 +33,7 @@ export const Slide = styled(Stack, { shouldForwardProp })<{ $isActive: boolean; 
    },
    '&:hover .MuiStack-root.slide': {
       border: `2px solid ${$isActive ? alpha(theme.palette.custom.main, .5) : theme.palette.secondary.light}`
-   },
-   // animation: "zoom-in-zoom-out 1s ease 1",
-   // '@keyframes zoom-in-zoom-out': {
-   //    '0%': {
-   //      transform: 'scale(1)'
-   //    },
-   //    '50%': {
-   //      transform: 'scale(1.1)'
-   //    },
-   //    '100%': {
-   //      transform: 'scale(1)'
-   //    }
-   //  }
+   }
 }));
 
 export const Question = styled(Stack)(({ theme }) => ({
@@ -58,7 +46,6 @@ export const QuestionSettings = styled(Stack)(({ theme }) => ({
    borderRight: `1px solid ${theme.palette.secondary.light}`,
    borderRadius: "0 5px 5px 0"
 }));
-
 
 // Modal
 export const QuizSettings = styled(Stack)({

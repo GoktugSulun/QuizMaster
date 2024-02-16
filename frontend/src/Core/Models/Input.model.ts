@@ -80,7 +80,7 @@ type SelectInputProps<TFieldValues extends FieldValues> = {
 }
 
 export type SelectOption = {
-   id: number;
+   id: number | string;
    name: string;
    [key: string]: any;
 }
