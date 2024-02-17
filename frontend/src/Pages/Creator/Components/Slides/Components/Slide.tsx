@@ -1,7 +1,7 @@
 import { Box, Grid, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import * as S from '../../../Style/Creator.style';
 import ImageIcon from '@mui/icons-material/Image';
-import { type QuestionType } from '@/Pages/Creator/Model/Creator.model';
+import { QuestionEnums, type QuestionType } from '@/Pages/Creator/Model/Creator.model';
 import { useFormContext } from 'react-hook-form';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DuplicateIcon from '@mui/icons-material/ContentCopy';
@@ -15,6 +15,8 @@ type SliceProps = {
 const Slide = (props: SliceProps) => {
    const theme = useTheme();
    const form = useFormContext();
+
+   const questionType = form.watch(`questions.${props.index}.type`) as QuestionEnums;
    const isActive = props.index === form.getValues("activeIndex");
 
    const setActiveSlideHandler = () => {
@@ -79,10 +81,37 @@ const Slide = (props: SliceProps) => {
                   <ImageIcon sx={{ color: theme.palette.secondary.light }} />
                </Stack>
                <Grid container spacing={1} marginTop="1px">
-                  <Grid item xs={6}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
-                  <Grid item xs={6}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
-                  <Grid item xs={6}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
-                  <Grid item xs={6}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
+                  {
+                     questionType === QuestionEnums.MULTIPLE_CHOICE 
+                        && (
+                           <>
+                              <Grid item xs={6}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
+                              <Grid item xs={6}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
+                              <Grid item xs={6}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
+                              <Grid item xs={6}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
+                           </>
+                        )
+                  }
+                  {
+                     questionType === QuestionEnums.TRUE_FALSE 
+                        && (
+                           <>
+                              <Grid item xs={6}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
+                              <Grid item xs={6}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
+                           </>
+                        )
+                  }
+                  {
+                     questionType === QuestionEnums.SHORT_ANSWER 
+                        && (
+                           <>
+                              <Grid item xs={12}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
+                              <Grid item xs={4}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
+                              <Grid item xs={4}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
+                              <Grid item xs={4}> <Box padding="5px" border={`1px solid ${theme.palette.secondary.light}`} /> </Grid>
+                           </>
+                        )
+                  }
                </Grid>
             </Stack>
          </Box>

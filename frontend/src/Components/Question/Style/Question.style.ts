@@ -15,9 +15,9 @@ export const Time = styled(Stack)(({ theme }) => ({
 }));
 
 type OptionBoxProps = { 
-   $bgColor: string; 
-   $color: string; 
-   $fontWeight: string;
+   $bgColor?: string; 
+   $color?: string; 
+   $fontWeight?: string;
    cursor?: string; 
    size?: "small" | "medium" | "large"
 }
@@ -29,14 +29,14 @@ const optionBoxSizeMap = {
 }
 
 export const OptionBox = styled(Box, { shouldForwardProp })<OptionBoxProps>(({ theme, size="medium", ...props }) => ({
-   background: props.$bgColor,
+   background: props.$bgColor || theme.palette.common.white,
    width: '100%',
    padding: optionBoxSizeMap[size],
    borderRadius: 15,
    boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
    '& .MuiTypography-root, & .MuiOutlinedInput-input': {
-      color: props.$color,
-      fontWeight: props.$fontWeight,
+      color: props.$color || theme.palette.common.black,
+      fontWeight: props.$fontWeight || 'normal',
    },
    '& .MuiTypography-root': {
       cursor: props.cursor || 'initial',
@@ -44,7 +44,7 @@ export const OptionBox = styled(Box, { shouldForwardProp })<OptionBoxProps>(({ t
    '& .MuiRadio-root': {
       cursor: props.cursor || 'initial',
       '&.Mui-checked': {
-         color: props.$color
+         color: props.$color || theme.palette.common.black,
       }
    }
 }));

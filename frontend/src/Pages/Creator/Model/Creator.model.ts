@@ -1,7 +1,7 @@
 export enum QuestionEnums {
    MULTIPLE_CHOICE = 'Multiple Choice',
    TRUE_FALSE = 'True/False',
-   FILL_IN_THE_BLANK = 'Filling the Blank'
+   SHORT_ANSWER = 'Short Answer'
 }
 
 export enum PointEnums {

@@ -1,4 +1,4 @@
-import { AutocompleteProps, SelectProps, type CheckboxProps, type FormControlLabelProps, type OutlinedInputProps } from "@mui/material"
+import { AutocompleteProps, SelectProps, type CheckboxProps, type FormControlLabelProps, type OutlinedInputProps, SelectChangeEvent } from "@mui/material"
 import { type UseControllerProps, type Control, type FieldPath, type FieldValues } from "react-hook-form"
 
 // Common Types ---- [Start]
@@ -6,7 +6,7 @@ import { type UseControllerProps, type Control, type FieldPath, type FieldValues
 type ControlledInput<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>> = {
    control: Control<TFieldValues>, 
    name: TName,
-   onChange?: never,
+   // onChange?: never,
    onBlur?: never,
    ref?: never,
    // value?: never
@@ -76,7 +76,8 @@ type SelectInputProps<TFieldValues extends FieldValues> = {
    options: SelectOption[]; 
    emptyValue?: string; 
    disabledEmptyItem?: boolean;
-   control: Control<TFieldValues>
+   control: Control<TFieldValues>;
+   handlechange?: (event: SelectChangeEvent<{}>) => void
 }
 
 export type SelectOption = {

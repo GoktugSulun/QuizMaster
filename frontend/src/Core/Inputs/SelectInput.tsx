@@ -1,6 +1,7 @@
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select, type SelectChangeEvent } from '@mui/material';
 import { type FieldValues, useController, FieldPath } from 'react-hook-form';
 import { SelectType } from '../Models';
+import { type ReactNode } from 'react';
 
 type SelectInputProps<T extends FieldValues, U extends FieldPath<T>> = SelectType<T, U>;
 
@@ -14,7 +15,8 @@ const SelectInput = <T extends FieldValues, U extends FieldPath<T>>(props: Selec
       control: props.control
    });
 
-   const onChangeHandler = (event: SelectChangeEvent<unknown>) => {
+   const onChangeHandler = (event: SelectChangeEvent<{}>, child: ReactNode) => {
+      props?.onChange?.(event, child);
       if (props.multiple){
          const value = event.target.value as (string|number)[];
          if (value.includes('')) {

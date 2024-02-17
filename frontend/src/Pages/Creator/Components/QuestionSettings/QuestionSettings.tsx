@@ -29,7 +29,7 @@ const QuestionSettings = () => {
          sx={{ transition: "width 500ms" }}
       >
          <CustomTooltip 
-            title={isOpen ? "Close" : "Open"}
+            title={isOpen ? "Close Question Settings" : "Open Question Settings"}
             arrow
             placement="left"
          >
@@ -58,7 +58,7 @@ const QuestionSettings = () => {
                   options={[
                      { id: QuestionEnums.MULTIPLE_CHOICE, name: QuestionEnums.MULTIPLE_CHOICE},
                      { id: QuestionEnums.TRUE_FALSE, name: QuestionEnums.TRUE_FALSE },
-                     { id: QuestionEnums.FILL_IN_THE_BLANK, name: QuestionEnums.FILL_IN_THE_BLANK },
+                     { id: QuestionEnums.SHORT_ANSWER, name: QuestionEnums.SHORT_ANSWER },
                   ]}
                />
                <Divider sx={{ margin: "30px 0" }} />

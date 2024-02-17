@@ -45,7 +45,7 @@ const TextInput = <TFieldValues extends FieldValues, TName extends FieldPath<TFi
         onBlur={field.onBlur}
         name={field.name}
         ref={field.ref}
-        disabled={field.disabled}
+        disabled={props.disabled ?? field.disabled}
         notched={shrink}
         endAdornment={props.endAdornment || (error && <ErrorIcon color="error" />)}
       />
