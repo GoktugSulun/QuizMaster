@@ -19,11 +19,12 @@ export const Sidebar = styled('div')<SidebarProps>(({ theme, isOpen }) => ({
    position: 'relative',
    '& .MuiIconButton-root.toggle': {
       position: 'absolute',
-      top: 100,
+      top: isOpen ? 100 : 140,
       right: -20,
       zIndex: 5,
       background: theme.palette.common.white,
       border: `1px solid ${theme.palette.secondary.light}`,
+      transition: "top 350ms",
       '&:hover': {
          background: theme.palette.common.white,
       },
