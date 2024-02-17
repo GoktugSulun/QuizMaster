@@ -43,8 +43,23 @@ export const Question = styled(Stack)(({ theme }) => ({
 }));
 
 export const QuestionSettings = styled(Stack)(({ theme }) => ({
-   borderRight: `1px solid ${theme.palette.secondary.light}`,
-   borderRadius: "0 5px 5px 0"
+   borderRadius: "0 5px 5px 0",
+   position: "relative",
+   '& .MuiIconButton-root.toggle': {
+      position: 'absolute',
+      top: 140,
+      left: -20,
+      zIndex: 5,
+      background: theme.palette.common.white,
+      border: `1px solid ${theme.palette.secondary.light}`,
+      '&:hover': {
+         background: theme.palette.common.white,
+      },
+      '& .MuiSvgIcon-root': {
+         width: 20,
+         height: 20
+      }
+   }
 }));
 
 // Modal
