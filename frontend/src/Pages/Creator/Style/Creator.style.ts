@@ -1,5 +1,5 @@
 import { PageWrapper } from "@/Core/Layout";
-import { Button, Stack, alpha, styled } from "@mui/material"; 
+import { Stack, alpha, styled } from "@mui/material"; 
 import { shouldForwardProp } from "@/Core/Utils";
 
 export const Creator = styled(PageWrapper)({
@@ -50,25 +50,3 @@ export const QuestionSettings = styled(Stack)(({ theme }) => ({
 // Modal
 export const QuizSettings = styled(Stack)({
 });
-
-export const SaveButton = styled(Button)(({ theme }) => ({
-   padding: "5px 30px",
-   fontSize: 16,
-   boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
-}));
-
-export const QuitButton = styled(Button)(({ theme }) => ({
-   padding: "5px 20px",
-   background: theme.palette.secondary.light,
-   color: theme.palette.common.black,
-   boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
-   '&:hover': {
-      background: alpha(theme.palette.secondary.light, 0.1),
-   }
-}));
-
-export const EyeButton = styled(QuitButton)(({ theme }) => ({
-   '& .MuiSvgIcon-root': {
-      color: alpha(theme.palette.secondary.light, 0.6),
-   }
-}));

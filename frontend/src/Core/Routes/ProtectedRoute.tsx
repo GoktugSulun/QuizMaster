@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Fallback, Loading } from '../Components';
 import { Header } from '@/Components/Header';
 import { Sidebar } from '@/Components/Sidebar';
@@ -21,7 +21,7 @@ const ProtectedRoute = (props: ProtectedRouteProps) => {
         <Navigate to="/login" replace />
       </Suspense>
     );
-  }
+  };
 
   if (!isAllowed) {
     return (
@@ -29,13 +29,16 @@ const ProtectedRoute = (props: ProtectedRouteProps) => {
         <Navigate to={redirectPath} replace />
       </Suspense>
     );
-  }
+  };
+
+  const { pathname } = useLocation();
+  const isCreatorPage = pathname.includes("/creator")
 
   return (
     <MainWrapper>
       <Sidebar /> 
       <ContentWrapper>
-        <Header is404={is404} />
+        { !isCreatorPage && <Header is404={is404} /> } 
         <Suspense fallback={<Loading size={80} />}>
           <Outlet />
         </Suspense>

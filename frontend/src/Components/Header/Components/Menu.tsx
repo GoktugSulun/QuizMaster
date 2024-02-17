@@ -9,7 +9,7 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import ProfileImg from '@/pngs/foto2.jpeg';
 import { ArrowPaper } from '../Style/Header.style';
-import { useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import * as S from '../Style/Header.style'
 
 const ProfileMenu = () => {
@@ -26,7 +26,7 @@ const ProfileMenu = () => {
    };
 
    return (
-      <React.Fragment>
+      <Box marginTop="0 !important">
          <Tooltip title="Account">
             <IconButton
                onClick={handleClick}
@@ -72,7 +72,7 @@ const ProfileMenu = () => {
             Logout
          </S.ProfileMenuItem>
          </Menu>
-      </React.Fragment>
+      </Box>
   );
 };
 

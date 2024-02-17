@@ -1,5 +1,4 @@
-import { TextInput } from '@/Core/Inputs';
-import { MenuItem, Typography, styled } from '@mui/material'
+import { Button, MenuItem, Typography, alpha, styled } from '@mui/material'
 
 export const Header = styled('div')(({ theme }) => ({
    width: '100%',
@@ -55,3 +54,25 @@ export const ArrowPaper = () => ({
       },
    },
 });
+
+export const SaveButton = styled(Button)(({ theme }) => ({
+   padding: "5px 30px",
+   fontSize: 16,
+   boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
+}));
+
+export const QuitButton = styled(Button)(({ theme }) => ({
+   padding: "5px 20px",
+   background: theme.palette.secondary.light,
+   color: theme.palette.common.black,
+   boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
+   '&:hover': {
+      background: alpha(theme.palette.secondary.light, 0.1),
+   }
+}));
+
+export const EyeButton = styled(QuitButton)(({ theme }) => ({
+   '& .MuiSvgIcon-root': {
+      color: alpha(theme.palette.secondary.light, 0.6),
+   }
+}));

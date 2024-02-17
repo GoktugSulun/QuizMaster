@@ -5,6 +5,7 @@ import { Slides } from './Components/Slides';
 import * as S from './Style/Creator.style';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from './Model/Creator.model';
+import { Header } from '@/Components/Header';
 
 type DefaultValuesType = {
   quizId: number;
@@ -37,6 +38,7 @@ const Creator = () => {
   
   return (
     <FormProvider {...form}>
+      <Header />
       <S.Creator>
         <Stack 
           flexDirection="row" 
