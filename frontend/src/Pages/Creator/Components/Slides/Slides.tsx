@@ -8,17 +8,19 @@ import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from
 const Slides = () => {
    const form = useFormContext();
    const questions = useFieldArray({ name: "questions", control: form.control });
-   
-   const watchedQuestions = form.watch("questions");
-   const controlledQuestions = questions.fields.map((field, index) => {
+
+   const watchedQuestions = form.watch("questions") as QuestionType[];
+   const controlledQuestions = watchedQuestions.map((field, index) => {
       return {
         ...field,
         ...watchedQuestions[index]
       };
-    });
+   });
+   console.log(controlledQuestions, ' controlledQuestions');
+   
 
    const addQuestionHandler = () => {
-      const newQuestion: QuestionType = { 
+      const newQuestion: Omit<QuestionType, "id"> = { 
          name: "", 
          options: [1,2,3,4].map(() => ({ name: "", isCorrect: false })),
          type: QuestionEnums.MULTIPLE_CHOICE,
@@ -28,6 +30,26 @@ const Slides = () => {
       const activeIndex = form.getValues("activeIndex") as number;
       questions.insert(activeIndex + 1, newQuestion);
       form.setValue("activeIndex", activeIndex + 1);
+   };
+
+   const duplicateQuestionHandler = (event: React.MouseEvent<HTMLButtonElement>, field: QuestionType, index: number) => {
+      event.stopPropagation();
+      const { id, ...fieldData } = field;
+      const duplicatedQuestion = { ...fieldData };
+      questions.insert(index + 1, duplicatedQuestion);
+      form.setValue("activeIndex", index + 1);
+   };
+
+   const removeQuestionHandler = (event: React.MouseEvent<HTMLButtonElement>, index: number) => {
+      event.stopPropagation();
+      if (questions.fields.length === 1) {
+         return alert("Cannot delete!");
+      }
+      const activeIndex = form.getValues("activeIndex") as number;
+      if ((activeIndex === index && questions.fields.length - 1 === index) || activeIndex > index) {
+         form.setValue("activeIndex", activeIndex - 1);
+      }
+      questions.remove(index);
    };
 
    return (
@@ -42,6 +64,8 @@ const Slides = () => {
             {controlledQuestions.map((field, index) => (
                <Slide 
                   key={field.id} 
+                  duplicateQuestionHandler={duplicateQuestionHandler}
+                  removeQuestionHandler={removeQuestionHandler}
                   field={field as QuestionType} 
                   index={index} 
                />

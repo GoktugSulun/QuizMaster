@@ -15,13 +15,13 @@ export enum CorrectOptionEnums {
 }
 
 export type OptionType = {
-   id?: string | number;
+   id?: string;
    name: string; 
    isCorrect: boolean;
 }
 
 export type QuestionType = {
-   id?: string | number;
+   id: string;
    name: string;
    options: OptionType[];
    type: QuestionEnums;

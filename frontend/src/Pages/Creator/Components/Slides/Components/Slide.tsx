@@ -9,7 +9,9 @@ import { CustomTooltip } from '@/Components/Tooltip';
 
 type SliceProps = {
    index: number;
-   field: QuestionType
+   field: QuestionType;
+   duplicateQuestionHandler: (event: React.MouseEvent<HTMLButtonElement>, field: QuestionType, index: number) => void;
+   removeQuestionHandler: (event: React.MouseEvent<HTMLButtonElement>, index: number) => void;
 };
 
 const Slide = (props: SliceProps) => {
@@ -28,10 +30,14 @@ const Slide = (props: SliceProps) => {
          onClick={setActiveSlideHandler} 
          $isActive={isActive} 
          flexDirection="row"
+         id={props.field.id}
       >
          <Stack alignSelf="flex-end">
             <CustomTooltip title="Duplicate" arrow placement="left">
-               <IconButton sx={{ '&:hover .MuiSvgIcon-root': { color: theme.palette.primary.main } }}>
+               <IconButton 
+                  sx={{ '&:hover .MuiSvgIcon-root': { color: theme.palette.primary.main } }}
+                  onClick={(event) => props.duplicateQuestionHandler(event, props.field, props.index)}
+               >
                   <DuplicateIcon 
                      fontSize="small" 
                      sx={{ color: theme.palette.custom.main }} 
@@ -39,7 +45,10 @@ const Slide = (props: SliceProps) => {
                </IconButton>
             </CustomTooltip>
             <CustomTooltip title="Delete" arrow placement="left">
-               <IconButton sx={{ '&:hover .MuiSvgIcon-root': { color: theme.palette.primary.main } }}>
+               <IconButton 
+                  sx={{ '&:hover .MuiSvgIcon-root': { color: theme.palette.primary.main } }}
+                  onClick={(event) => props.removeQuestionHandler(event, props.index)}
+               >
                   <DeleteIcon 
                      fontSize="small" 
                      sx={{ color: theme.palette.custom.main }}

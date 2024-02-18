@@ -1,8 +1,8 @@
 import * as S from '../../Style/Creator.style';
 import QuizIcon from '@mui/icons-material/Quiz';
 import RewardIcon from '@mui/icons-material/MilitaryTech';
-import { useFormContext } from 'react-hook-form';
-import { CorrectOptionEnums, PointEnums, QuestionEnums } from '../../Model/Creator.model';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from '../../Model/Creator.model';
 import { Button, Divider, IconButton, Stack, alpha, useTheme } from '@mui/material';
 import OptionsIcon from '@mui/icons-material/Apps';
 import { CustomTooltip } from '@/Components/Tooltip';
@@ -15,12 +15,33 @@ const QuestionSettings = () => {
    const theme = useTheme();
    const form = useFormContext();
    const [isOpen, setIsOpen] = useState(true);
+   
+   const questions = useFieldArray({ name: "questions", control: form.control });
+   const watchedQuestions = form.watch("questions") as QuestionType[];
 
-   const activeSlide = form.watch("activeIndex");
-   const questionType = form.watch(`questions.${activeSlide}.type`);
+   const activeIndex = form.watch("activeIndex") as number;
+   const questionType = form.watch(`questions.${activeIndex}.type`);
 
    const setIsOpenHandler = () => {
       setIsOpen(!isOpen);
+   };
+
+   const duplicateQuestionHandler = () => {
+      const field = form.getValues(`questions.${activeIndex}`)
+      const { id, ...fieldData } = field;
+      const duplicatedQuestion = { ...fieldData };
+      questions.insert(activeIndex + 1, duplicatedQuestion);
+      form.setValue("activeIndex", activeIndex + 1);
+   };
+
+   const removeQuestionHandler = () => {
+      if (watchedQuestions.length === 1) {
+         return alert("Cannot delete!");
+      }
+      if (watchedQuestions.length - 1 === activeIndex) {
+         form.setValue("activeIndex", activeIndex - 1);
+      }
+      questions.remove(activeIndex);
    };
 
    return (
@@ -110,6 +131,7 @@ const QuestionSettings = () => {
                            borderColor: theme.palette.error.main, 
                         }
                      }}
+                     onClick={removeQuestionHandler}
                   > 
                      Delete 
                   </Button>
@@ -119,7 +141,7 @@ const QuestionSettings = () => {
                   placement="top"
                   arrow
                >
-                  <Button sx={{ flex: 2 }}> Duplicate </Button>
+                  <Button onClick={duplicateQuestionHandler} sx={{ flex: 2 }}> Duplicate </Button>
                </CustomTooltip>
             </Stack>
          </Stack>

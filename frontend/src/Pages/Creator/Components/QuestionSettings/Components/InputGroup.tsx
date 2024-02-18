@@ -54,10 +54,9 @@ const InputGroup = ({ condition=true, ...props }: InputGroupProps) => {
             fullWidth
             control={form.control}
             name={`questions.${activeSlide}.${props.name}`}
-            onChange={(event) => setOptionsByType(event)}
+            {...(props.name === "type" ? { onChange: (e) => setOptionsByType(e) } : {})}
             value={value}
             options={props.options}
-            // {...(props.name === "type" ? { handlechange: (e) => setOptionsByType(e) } : {})}
          />
       </Box>
    )
