@@ -2,6 +2,21 @@ import { TextInput } from "@/Core/Inputs";
 import { Stack, useTheme } from "@mui/material"
 import { useFormContext } from "react-hook-form";
 
+const QuestionNumber = (props: { index: number; }) => (
+  <Stack 
+    bgcolor="custom.light" 
+    color="primary.main"
+    width={50}
+    height={50}
+    borderRadius="50%"
+    alignItems="center"
+    justifyContent="center"
+    fontWeight="bold"
+  >
+    { props.index + 1 }
+  </Stack>
+);
+
 const QuestionHeader = () => {
   const theme = useTheme();
   const form = useFormContext();
@@ -18,6 +33,7 @@ const QuestionHeader = () => {
     >
       <TextInput 
         name={`questions.${index}.name`}
+        startAdornment={<QuestionNumber index={index} />}
         value={name}
         control={form.control}
         sx={{

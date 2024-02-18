@@ -21,7 +21,7 @@ export type OptionType = {
 }
 
 export type QuestionType = {
-   id: string;
+   id?: string;
    name: string;
    options: OptionType[];
    type: QuestionEnums;

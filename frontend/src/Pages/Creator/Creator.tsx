@@ -6,6 +6,7 @@ import * as S from './Style/Creator.style';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from './Model/Creator.model';
 import { Header } from '@/Components/Header';
+import { useEffect } from 'react';
 
 type DefaultValuesType = {
   quizId: number;
@@ -35,6 +36,30 @@ const Creator = () => {
 
   const formValues = useWatch({ control: form.control });
   console.log(formValues, ' formValues');
+
+  useEffect(() => {
+    const keydownHandler = (event: KeyboardEvent) => {
+      if (event.code === "ArrowUp") {
+        const activeIndex = form.getValues("activeIndex") as number;
+        if (activeIndex !== 0) {
+          form.setValue("activeIndex", activeIndex - 1);
+        }
+        return;
+      }
+      if (event.code === "ArrowDown") {
+        const [activeIndex, questions] = form.getValues(["activeIndex", "questions"]) as [number, QuestionType[]];
+        if (activeIndex !== questions.length - 1) {
+          form.setValue("activeIndex", activeIndex + 1);
+        }
+        return;
+      }
+    }
+
+    window.addEventListener("keydown", keydownHandler);
+    return () => {
+      window.removeEventListener("keydown", keydownHandler);
+    };
+  }, []);
   
   return (
     <FormProvider {...form}>
