@@ -8,7 +8,7 @@ type AutocompleteInputProps<T extends FieldValues, U extends FieldPath<T>> = Aut
 // TODO : This input should be also work correctly without react-hook-form
 const AutocompleteInput = <T extends FieldValues, U extends FieldPath<T>>(props: AutocompleteInputProps<T, U>) => {
    const [showPlaceholder, setShowPlaceholder] = useState(true);
-   const { control, helperText, shrink, options, error=false, ...autocompleteInputProps } = props; 
+   const { control, helperText, shrink=false, options, error=false, ...autocompleteInputProps } = props; 
 
    const { field, fieldState } = useController({
       name: props.name,
@@ -41,7 +41,7 @@ const AutocompleteInput = <T extends FieldValues, U extends FieldPath<T>>(props:
                <TextField 
                   {...params}
                   placeholder={showPlaceholder ? props.placeholder : ''}
-                  InputLabelProps={{ shrink: props.shrink }}
+                  InputLabelProps={{ shrink }}
                   error={!!fieldState?.error ?? props.error} 
                   label={props.label} 
                />

@@ -3,15 +3,18 @@
   padding: 0;
   box-sizing: border-box;
   ::-webkit-scrollbar {
-    width: 0;
+    width: 10px;
+    height: 5px;
   }
-  /* ::-webkit-scrollbar-track {
-    background: #F3F6FD; 
+  ::-webkit-scrollbar-track {
+    background: #F3F6FD;
+    border: 1px solid rgba(0, 0, 0, 0.16);
   }
   ::-webkit-scrollbar-thumb {
-    background: #ae60f8; 
+    background: rgba(69, 61, 110, 0.8); 
+    background: #673ab7; 
     border-radius: 10px;
-  } */
+  }
 }
 
 body {

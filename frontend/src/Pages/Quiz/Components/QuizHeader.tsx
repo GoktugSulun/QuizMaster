@@ -1,6 +1,3 @@
-import { Stack, Typography } from '@mui/material';
-import * as S from '../Style/Quiz.style';
-import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import { useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '@/Core/Hooks';
 import { Question } from '../Models/Quiz.model';
@@ -17,7 +14,8 @@ const formattedTime = (time: number | null): string => {
 };
 
 const QuizHeader = () => {
-   const intervalRef = useRef<number | null>(null);
+   // Todo : check interval type
+   const intervalRef = useRef<NodeJS.Timeout | null>(null);
    const [searchParams] = useSearchParams();
    const questions = useAppSelector((state) => state.Quiz.quiz.questions);
    const [remainingTime, setRemainingTime] = useState<number | null>(null); // second

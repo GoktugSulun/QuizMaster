@@ -4,8 +4,8 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { TextInputType } from '../Models';
 
 const TextInput = <TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>>(props: TextInputType<TFieldValues, TName>) => {
-  const { name, control, ...otherProps } = props;
-
+  const { name, control, shrink=false, ...otherProps } = props;
+  
   const { field, fieldState } = control 
     ? useController({ name, control }) 
     : { 
@@ -31,7 +31,7 @@ const TextInput = <TFieldValues extends FieldValues, TName extends FieldPath<TFi
       fullWidth={props.fullWidth}
     >
       <InputLabel 
-        shrink={props.shrink}
+        shrink={shrink}
         error={error} 
         htmlFor={name || props.id}
       >
@@ -40,13 +40,13 @@ const TextInput = <TFieldValues extends FieldValues, TName extends FieldPath<TFi
       <OutlinedInput
         {...otherProps}
         error={error}
-        value={field.value}
+        value={props.value ?? field.value}
         onChange={field.onChange}
         onBlur={field.onBlur}
         name={field.name}
         ref={field.ref}
-        disabled={field.disabled}
-        notched={props.shrink}
+        disabled={props.disabled ?? field.disabled}
+        notched={shrink}
         endAdornment={props.endAdornment || (error && <ErrorIcon color="error" />)}
       />
       <FormHelperText

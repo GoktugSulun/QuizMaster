@@ -5,7 +5,7 @@ import { ComponentProps } from 'react'
 const Fallback = (props: ComponentProps<typeof Loading>) => {
   return (
     <FullSizeLoadingWrapper>
-        <Loading {...props} /> 
+      <Loading {...props} /> 
     </FullSizeLoadingWrapper>
   )
 }

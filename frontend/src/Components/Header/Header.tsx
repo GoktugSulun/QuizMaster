@@ -2,6 +2,8 @@ import { Box, Stack, alpha, useTheme } from '@mui/material';
 import * as S from './Style/Header.style';
 import ProfileMenu from './Components/Menu';
 import { useLocation } from 'react-router-dom';
+import CreatorInput from './Components/CreatorInput';
+import CreatorButtons from './Components/CreatorButtons';
 
 const extract = (pathname: string): string => {
   if (pathname.includes('/')) {
@@ -16,15 +18,20 @@ const capitilize = (pathname: string): string => {
   return firstLetter.toUpperCase() + remainingLetters;
 };
 
-const Header = ({ is404 }: { is404: boolean; }) => {
+const Header = ({ is404=false }: { is404?: boolean; }) => {
   const { pathname } = useLocation();
   const theme = useTheme();
+  const isCreatorPage = pathname.includes('/creator');
 
   const pageTitle = (() => {
     if (is404) {
       return 'Page Not Found';
     }
-
+    
+    if (isCreatorPage) {
+      return capitilize(pathname);
+    }
+    
     switch (pathname) {
       case '/':
         return 'Home'
@@ -52,16 +59,20 @@ const Header = ({ is404 }: { is404: boolean; }) => {
   return (
     <S.Header>
       <Stack flexDirection="row" height="100%">
-        <S.PageTitle fontWeight="bold" variant="h4"> {pageTitle} </S.PageTitle>
+        <Stack flexDirection="row" alignItems="center">
+          <S.PageTitle fontWeight="bold" variant="h4"> {pageTitle} </S.PageTitle>
+          { isCreatorPage && <CreatorInput /> }
+        </Stack>
         <Stack 
           flex={1}
           flexDirection="row" 
           justifyContent="flex-end" 
           alignItems="center"
-          spacing={5} 
+          gap={2}
           height="100%"
           paddingRight={5}
         >
+          { isCreatorPage && <CreatorButtons /> }
           <ProfileMenu />
         </Stack>
       </Stack>

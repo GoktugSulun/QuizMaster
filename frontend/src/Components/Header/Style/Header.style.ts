@@ -1,4 +1,4 @@
-import { MenuItem, Typography, styled } from '@mui/material'
+import { Button, MenuItem, Typography, alpha, styled } from '@mui/material'
 
 export const Header = styled('div')(({ theme }) => ({
    width: '100%',
@@ -35,22 +35,44 @@ export const ArrowPaper = () => ({
       filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
       mt: 1.5,
       '& .MuiAvatar-root': {
-      width: 32,
-      height: 32,
-      ml: -0.5,
-      mr: 1,
+         width: 32,
+         height: 32,
+         ml: -0.5,
+         mr: 1,
       },
       '&::before': {
-      content: '""',
-      display: 'block',
-      position: 'absolute',
-      top: 0,
-      right: 14,
-      width: 10,
-      height: 10,
-      bgcolor: 'background.paper',
-      transform: 'translateY(-50%) rotate(45deg)',
-      zIndex: 0,
+         content: '""',
+         display: 'block',
+         position: 'absolute',
+         top: 0,
+         right: 14,
+         width: 10,
+         height: 10,
+         bgcolor: 'background.paper',
+         transform: 'translateY(-50%) rotate(45deg)',
+         zIndex: 0,
       },
    },
-})
+});
+
+export const SaveButton = styled(Button)(({ theme }) => ({
+   padding: "5px 30px",
+   fontSize: 16,
+   boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
+}));
+
+export const QuitButton = styled(Button)(({ theme }) => ({
+   padding: "5px 20px",
+   background: theme.palette.secondary.light,
+   color: theme.palette.common.black,
+   boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
+   '&:hover': {
+      background: alpha(theme.palette.secondary.light, 0.1),
+   }
+}));
+
+export const EyeButton = styled(QuitButton)(({ theme }) => ({
+   '& .MuiSvgIcon-root': {
+      color: alpha(theme.palette.secondary.light, 0.6),
+   }
+}));

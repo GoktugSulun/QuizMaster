@@ -1,20 +1,22 @@
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select, type SelectChangeEvent } from '@mui/material';
 import { type FieldValues, useController, FieldPath } from 'react-hook-form';
 import { SelectType } from '../Models';
+import { type ReactNode } from 'react';
 
 type SelectInputProps<T extends FieldValues, U extends FieldPath<T>> = SelectType<T, U>;
 
 // TODO : This input should be also work correctly without react-hook-form
 const SelectInput = <T extends FieldValues, U extends FieldPath<T>>(props: SelectInputProps<T, U>) => {
    
-   const { control, helperText, shrink, emptyValue, disabledEmptyItem=false, ...selectProps } = props;
+   const { control, helperText, shrink=false, emptyValue, disabledEmptyItem=false, ...selectProps } = props;
 
    const { field, fieldState } = useController({
       name: props.name,
       control: props.control
    });
 
-   const onChangeHandler = (event: SelectChangeEvent<unknown>) => {
+   const onChangeHandler = (event: SelectChangeEvent<{}>, child: ReactNode) => {
+      props?.onChange?.(event, child);
       if (props.multiple){
          const value = event.target.value as (string|number)[];
          if (value.includes('')) {
@@ -32,7 +34,7 @@ const SelectInput = <T extends FieldValues, U extends FieldPath<T>>(props: Selec
          fullWidth={props.fullWidth}
       >
          <InputLabel 
-            shrink={props.shrink}
+            shrink={shrink}
             error={!!fieldState?.error ?? props.error} 
             htmlFor={props.name || props.id}
          >
@@ -43,11 +45,11 @@ const SelectInput = <T extends FieldValues, U extends FieldPath<T>>(props: Selec
             error={!!fieldState?.error ?? props.error}
             onChange={onChangeHandler}
             onBlur={field.onBlur} 
-            value={field.value}
+            value={props.value || field.value}
             name={field.name}
             inputRef={field.ref} 
             id={props.name || props.id}
-            notched={props.shrink}
+            notched={shrink}
          >
             {
                !!emptyValue

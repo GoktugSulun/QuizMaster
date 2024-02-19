@@ -32,22 +32,22 @@ const MultipleChoice = (props: MultipleChoiceProps) => {
           const isChecked = typeof checked === 'function' ? checked(option) : checked;
           const isCorrect = option.isCorrect;
           const isWrong = !option.isCorrect && isChecked;
-          const bgColor = () => {
+          const bgColor = (() => {
             if (readOnly) {
               if (isCorrect) return alpha(theme.palette.success.light, 0.3)
               if (isWrong) return alpha(theme.palette.error.light, 0.3)
               return 'initial'
             }
             return isChecked ? theme.palette.custom.light : 'initial';
-          }
-          const color = () => {
+          })();
+          const color = (() => {
             if (readOnly) {
               if (isCorrect) return alpha(theme.palette.success.main, 1)
               if (isWrong) return alpha(theme.palette.error.main, 1)
               return 'initial'
             }
             return isChecked ? theme.palette.primary.main : theme.palette.common.black;
-          }
+          })();
           const fontWeight = ((readOnly && isCorrect) || (readOnly && isWrong)) ? 'bold' : 'initial';
           const cursor = readOnly ? 'initial' : 'pointer';
           return (
@@ -58,11 +58,10 @@ const MultipleChoice = (props: MultipleChoiceProps) => {
               md={6}
             >
               <S.OptionBox 
-                $bgColor={bgColor()} 
-                $color={color()} 
+                $bgColor={bgColor} 
+                $color={color} 
                 $fontWeight={fontWeight}
                 cursor={cursor}
-                $readOnly={readOnly}
               >
                 <FormControlLabel 
                   value={option.id} 
