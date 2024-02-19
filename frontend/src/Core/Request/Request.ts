@@ -24,7 +24,7 @@ type RequestProps = {
   method?: 'GET' | 'POST' | 'DELETE' |'PUT' | 'PATCH',
   url: string,
   payload?: any,
-  files?: File[],
+  files?: null | File | File[],
   key: string,
   success?: ({ data, thunkAPI }: SuccessFunctionType) => void,
   failure?: (error: Error | AxiosResponse) => void 

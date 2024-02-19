@@ -1,13 +1,24 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { VisibilityEnums, type QuestionWithIdType, type QuizWithIdType } from '../Model/Creator.model';
 
 const NAME = 'Creator';
 
 type InitialStateTypes = {
   isOpenQuizSettingsModal: boolean;
+  quiz: QuizWithIdType,
+  questions: QuestionWithIdType[]
 }
 
 const initialState: InitialStateTypes = {
   isOpenQuizSettingsModal: true,
+  quiz: {
+    id: "",
+    name: "",
+    description: "",
+    visibility: VisibilityEnums.PUBLIC,
+    image: null
+  },
+  questions: []
 };
 
 const CreatorSlice = createSlice({
@@ -21,8 +32,14 @@ const CreatorSlice = createSlice({
         "CLOSE": false
       }
       state.isOpenQuizSettingsModal = valueMap[action.payload];
+    },
+    setQuiz: (state, action: PayloadAction<QuizWithIdType>) => {
+      state.quiz = action.payload;
+    },
+    setQuestions: (state, action: PayloadAction<QuestionWithIdType[]>) => {
+      state.questions = action.payload;
     }
-  },
+  },  
 });
 
 const { reducer, actions } = CreatorSlice;
