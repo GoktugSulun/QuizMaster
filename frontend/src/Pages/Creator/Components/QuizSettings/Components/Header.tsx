@@ -9,10 +9,10 @@ const Header = (props: HeaderProps) => {
    return (
       <Stack 
          flexDirection="row"
-         alignItems="center"
+         alignItems="flex-end"
          justifyContent="space-between"
          gap="10px"
-         padding="10px 15px 10px 20px"
+         padding="20px 20px 20px 25px"
       >
          <Typography 
             fontWeight="bold" 
@@ -22,7 +22,11 @@ const Header = (props: HeaderProps) => {
             Quiz Settings 
          </Typography>
          <IconButton 
-            sx={{ '&:hover': { backgroundColor: "custom.light" } }} 
+            sx={{ 
+               backgroundColor: "custom.light",
+               '&:hover': { backgroundColor: "primary.main" },
+               '&:hover .MuiSvgIcon-root': { color: "common.white" } 
+            }} 
             onClick={props.handleClose}>
             <CloseIcon sx={{ color: "primary.main" }} />
          </IconButton>

@@ -1,15 +1,12 @@
 import { useAppDispatch } from "@/Core/Hooks";
 import { CreatorActions } from "@/Pages/Creator/Store/Creator.slice";
-import { Button, Stack, Typography, useTheme } from "@mui/material"
-import { useFormContext } from "react-hook-form";
+import { Button, Stack, Typography, useTheme } from "@mui/material";
+
 
 const CreatorInput = () => {
    const theme = useTheme();
    const dispatch = useAppDispatch();
-   const form = useFormContext();
-
-   // const name = form.watch("name");
-   const name = form.getValues("name");
+   const name = ''; // TODO : make dynamic from store
 
    const openQuizSettingsModal = () => {
       dispatch(CreatorActions.setIsOpenQuizSettingsModal("OPEN"));
