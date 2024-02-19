@@ -63,5 +63,17 @@ export const QuestionSettings = styled(Stack)(({ theme }) => ({
 }));
 
 // Modal
-export const QuizSettings = styled(Stack)({
-});
+export const QuizSettings = styled(Stack)(({ theme }) => ({
+   position: "absolute",
+   top: "50%",
+   left: "50%",
+   transform: "translate(-50%, -50%)",
+   background: theme.palette.common.white,
+   borderRadius: "10px",
+   outline: "none",
+   minWidth: 600,
+   transition: "min-width 350ms",
+   [theme.breakpoints.down("sm")]: {
+      minWidth: "90%"
+   },
+}));

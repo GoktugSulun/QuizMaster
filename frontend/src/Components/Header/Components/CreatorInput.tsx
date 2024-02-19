@@ -1,7 +1,19 @@
+import { useAppDispatch } from "@/Core/Hooks";
+import { CreatorActions } from "@/Pages/Creator/Store/Creator.slice";
 import { Button, Stack, Typography, useTheme } from "@mui/material"
+import { useFormContext } from "react-hook-form";
 
 const CreatorInput = () => {
    const theme = useTheme();
+   const dispatch = useAppDispatch();
+   const form = useFormContext();
+
+   // const name = form.watch("name");
+   const name = form.getValues("name");
+
+   const openQuizSettingsModal = () => {
+      dispatch(CreatorActions.setIsOpenQuizSettingsModal("OPEN"));
+   };
 
    return (
       <Stack
@@ -14,8 +26,9 @@ const CreatorInput = () => {
          padding="8px 10px"
          sx={{ cursor: "pointer" }}
          minWidth={300}
+         onClick={openQuizSettingsModal}
       >
-         <Typography> Enter quiz title... </Typography>
+         <Typography> { name || "Enter quiz title..." } </Typography>
          <Button> Settings </Button>
       </Stack>
    )
