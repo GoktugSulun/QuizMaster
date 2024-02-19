@@ -14,6 +14,11 @@ export enum CorrectOptionEnums {
    MULTIPLE_OPTIONS = 'Multiple Options',
 }
 
+export enum VisibilityEnums {
+   PRIVATE = 'Private',
+   PUBLIC = 'Public',
+}
+
 export type OptionType = {
    id?: string;
    name: string; 

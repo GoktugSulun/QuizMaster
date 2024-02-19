@@ -71,9 +71,9 @@ export const QuizSettings = styled(Stack)(({ theme }) => ({
    background: theme.palette.common.white,
    borderRadius: "10px",
    outline: "none",
-   minWidth: 600,
+   minWidth: 900,
    transition: "min-width 350ms",
-   [theme.breakpoints.down("sm")]: {
+   [theme.breakpoints.down("md")]: {
       minWidth: "90%"
    },
 }));

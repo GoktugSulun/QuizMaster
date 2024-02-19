@@ -4,7 +4,7 @@ import { QuestionSettings } from './Components/QuestionSettings';
 import { Slides } from './Components/Slides';
 import * as S from './Style/Creator.style';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from './Model/Creator.model';
+import { VisibilityEnums, CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from './Model/Creator.model';
 import { Header } from '@/Components/Header';
 import { useEffect } from 'react';
 import { QuizSettings } from './Components/QuizSettings';
@@ -12,6 +12,7 @@ import { QuizSettings } from './Components/QuizSettings';
 type DefaultValuesType = {
   name: string;
   description: string;
+  visibility: VisibilityEnums,
   quizId: number;
   activeIndex: number;
   questions: QuestionType[];
@@ -21,6 +22,7 @@ const defaultValues: DefaultValuesType = (
   {
     name: "",
     description: "",
+    visibility: VisibilityEnums.PUBLIC,
     quizId: 1,
     activeIndex: 0,
     questions: [

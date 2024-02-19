@@ -28,7 +28,7 @@ const CreatorInput = () => {
          minWidth={300}
          onClick={openQuizSettingsModal}
       >
-         <Typography> { name || "Enter quiz title..." } </Typography>
+         <Typography> { name.trim() || "Enter quiz title..." } </Typography>
          <Button> Settings </Button>
       </Stack>
    )

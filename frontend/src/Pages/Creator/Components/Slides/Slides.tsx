@@ -16,8 +16,6 @@ const Slides = () => {
         ...watchedQuestions[index]
       };
    });
-   console.log(controlledQuestions, ' controlledQuestions');
-   
 
    const addQuestionHandler = () => {
       const newQuestion: Omit<QuestionType, "id"> = { 
@@ -55,7 +53,7 @@ const Slides = () => {
    return (
       <S.Slides>
          <Box 
-            // 80px: header, 30px: 15+15 padding for parent, 20px: 10+10 padding for root,
+            //* 80px: header, 30px: 15+15 padding for parent, 20px: 10+10 padding for root,
             maxHeight="calc(100vh - 80px - 30px - 20px - 55px)" 
             overflow="auto"
             sx={{ "::-webkit-scrollbar": { width: "5px" } }}

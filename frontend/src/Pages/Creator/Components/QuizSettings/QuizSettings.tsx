@@ -3,6 +3,7 @@ import Modal from '@mui/material/Modal';
 import { useAppDispatch, useAppSelector } from '@/Core/Hooks';
 import { CreatorActions } from '../../Store/Creator.slice';
 import Header from './Components/Header';
+import Body from './Components/Body';
 
 const QuizSettings = () => {
    const dispatch = useAppDispatch();
@@ -20,6 +21,7 @@ const QuizSettings = () => {
          >
             <S.QuizSettings>
                <Header handleClose={handleClose} />
+               <Body />
             </S.QuizSettings>
          </Modal>
       </div>
