@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/GoktugSulun/Quiz-App/issues"
   },
-  "homepage": "https://github.com/GoktugSulun/Quiz-App#readme"
+  "homepage": "https://github.com/GoktugSulun/Quiz-App#readme",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
