@@ -13,8 +13,7 @@ const Image = () => {
    const form = useFormContext();
 
    const image = useWatch({ control: form.control, name: "image" });
-   const blobURL = image ? URL.createObjectURL(image) : "";
-   console.log(blobURL, ' blob');
+   const blobURL = image ? URL.createObjectURL(image) : ""; // TODO : fix it
 
    const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const image = event.target.files?.[0];

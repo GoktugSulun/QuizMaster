@@ -7,7 +7,7 @@ export type Option = {
 export type Question = {
    id: number;
    name: string;
-   time: number;
+   time: number | null;
    image?: string;
    options: Option[];
    selectedOptionId?: number;

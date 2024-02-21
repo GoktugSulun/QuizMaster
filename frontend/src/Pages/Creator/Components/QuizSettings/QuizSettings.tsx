@@ -11,11 +11,18 @@ import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Divider } from '@mui/material';
 
+export type TimeType = {
+   id: number; 
+   name: string;
+}
+
 type DefaultValuesType = {
    name: string;
    description: string;
    visibility: VisibilityEnums;
-   image: File | null
+   image: File | null;
+   minute: TimeType | null;
+   second: TimeType | null;
 }
 
 const resolver = yupResolver(yup.object({
@@ -29,13 +36,22 @@ const resolver = yupResolver(yup.object({
       .trim()
       .min(10, "Description must have minimum 10 characters")
       .required("Description required"),
+   second: yup
+      .object()
+      .nullable()
+      .test("isValidSecondTime", "", (value, context) => {
+         const val = value as TimeType | null;
+         return (context.parent.minute?.name !== "00") || (val?.name !== "00")
+      })
 }));
 
 const defaultValues: DefaultValuesType = {
    name: "",
    description: "",
    visibility: VisibilityEnums.PRIVATE,
-   image: null
+   image: null,
+   minute: { id: 1, name: "00"},
+   second: { id: 1, name: "00"},
 }
 
 const QuizSettings = () => {

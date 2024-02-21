@@ -14,8 +14,12 @@ const Footer = (props: FooterProps) => {
       if (!isValid) {
          snackbar("Please fill in the required fields!", { variant: "error" });
       }
-      const data = form.getValues()
-      console.log(data, 'data');
+      const { minute, second, ...data } = form.getValues();
+      const payload = {
+         ...data,
+         totalTime: (minute.id * 60) + (second.id)
+      }
+      console.log(payload, 'payload');
    };
 
    return (
