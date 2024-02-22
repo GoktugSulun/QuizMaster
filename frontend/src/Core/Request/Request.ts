@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { handleError } from './HandleError';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { store } from '../../main';
+import { store } from '@/main';
 import { GetThunkAPI } from '@reduxjs/toolkit/dist/createAsyncThunk';
 
 type AsyncThunkConfig = {
@@ -53,7 +53,7 @@ export const request = async ({ method='GET', url, payload, files, key, success,
       const data = files ? payloadWithFiles(payload, files) : payload;
       const response = await axios({ method, baseURL, url, data });
       if (response.data.type) {
-        return success?.({ data: response.data, thunkAPI });
+        return success?.({ data: response.data.data, thunkAPI });
       }
       failure?.(response.data);
       return thunkAPI.rejectWithValue(response.data?.message || "Error occurs!");

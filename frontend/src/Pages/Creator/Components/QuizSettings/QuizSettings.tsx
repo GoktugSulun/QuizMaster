@@ -10,6 +10,7 @@ import { VisibilityEnums } from '../../Model/Creator.model';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Divider } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export type TimeType = {
    id: number; 
@@ -56,10 +57,15 @@ const defaultValues: DefaultValuesType = {
 
 const QuizSettings = () => {
    const dispatch = useAppDispatch();
+   const navigate = useNavigate();
+   const params = useParams();
    const isOpen = useAppSelector((state) => state.Creator.isOpenQuizSettingsModal);
    const form = useForm({ defaultValues, resolver, mode: "onChange" });
 
    const handleClose = () => {
+      if (!params.quizId) {
+         navigate('/', { replace: true });
+      }
       dispatch(CreatorActions.setIsOpenQuizSettingsModal('CLOSE'))
    }
 

@@ -3,11 +3,14 @@ import { Question } from './Components/Question';
 import { QuestionSettings } from './Components/QuestionSettings';
 import { Slides } from './Components/Slides';
 import * as S from './Style/Creator.style';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { VisibilityEnums, CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from './Model/Creator.model';
 import { Header } from '@/Components/Header';
 import { useEffect } from 'react';
 import { QuizSettings } from './Components/QuizSettings';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch } from '@/Core/Hooks';
+import { CreatorActions } from './Store/Creator.slice';
 
 type DefaultValuesType = {
   name: string;
@@ -37,13 +40,32 @@ const defaultValues: DefaultValuesType = (
   }
 );
 
+/*
+   ? Optional param => quizId
+   * Firstly, 
+      * if there is no quizId and quizSettings modal will be opened to create a quiz and get its id.
+      * if there is a quizId, dont open quizSettings modal.
+   ! If "id" or "question" query is missing, then navigate user to dashboard.
+*/
+
 const Creator = () => {
   const theme = useTheme();
+  const params = useParams();
+  const dispatch = useAppDispatch();
   const form = useForm({ defaultValues });
 
-  const formValues = useWatch({ control: form.control });
-  console.log(formValues, ' formValues');
+  // const formValues = useWatch({ control: form.control });
+  // console.log(formValues, ' formValues');
 
+  useEffect(() => {
+    if (!params.quizId) {
+      console.log('open => ', params);
+      
+       dispatch(CreatorActions.setIsOpenQuizSettingsModal('OPEN'));
+    }
+ }, [params.quizId]);
+
+  //* Navigate slides using keyboard
   useEffect(() => {
     const keydownHandler = (event: KeyboardEvent) => {
       if (event.code === "ArrowUp") {

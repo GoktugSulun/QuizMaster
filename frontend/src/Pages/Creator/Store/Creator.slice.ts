@@ -10,7 +10,7 @@ type InitialStateTypes = {
 }
 
 const initialState: InitialStateTypes = {
-  isOpenQuizSettingsModal: true,
+  isOpenQuizSettingsModal: false,
   quiz: {
     id: "",
     name: "",
@@ -35,7 +35,16 @@ const CreatorSlice = createSlice({
       state.isOpenQuizSettingsModal = valueMap[action.payload];
     },
     setQuiz: (state, action: PayloadAction<QuizWithIdType>) => {
-      state.quiz = action.payload;
+      console.log('girdim => ', action.payload);
+      
+      state.quiz = {
+        id: "111",
+        name: "aaa",
+        description: "bbb",
+        visibility: VisibilityEnums.PUBLIC,
+        image: null,
+        totalTime: 23232
+      };
     },
     setQuestions: (state, action: PayloadAction<QuestionWithIdType[]>) => {
       state.questions = action.payload;
@@ -47,3 +56,4 @@ const { reducer, actions } = CreatorSlice;
 
 export const CreatorActions = actions;
 export default { [NAME]: reducer };
+// export default reducer;

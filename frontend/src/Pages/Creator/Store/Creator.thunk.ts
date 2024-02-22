@@ -11,6 +11,8 @@ const CreatorThunks = {
       key: 'createQuiz',
       success: ({ data, thunkAPI }) => {
          const payload = data as QuizWithIdType;
+         console.log('aaa');
+         
          thunkAPI.dispatch(CreatorActions.setQuiz(payload));
       },
    }),

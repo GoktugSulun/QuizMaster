@@ -4,10 +4,11 @@ import CreatorThunks from "@/Pages/Creator/Store/Creator.thunk";
 import { Button, Stack } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { DefaultValuesType } from "../QuizSettings";
-import { useAppSelector, useThunk } from "@/Core/Hooks";
+import { useAppDispatch, useAppSelector, useThunk } from "@/Core/Hooks";
 import { Loading } from "@/Core/Components";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { CreatorActions } from "@/Pages/Creator/Store/Creator.slice";
 
 type FooterProps = {
    handleClose: () => void
@@ -15,6 +16,7 @@ type FooterProps = {
 
 const Footer = (props: FooterProps) => {
    const navigate = useNavigate();
+   const dispatch = useAppDispatch();
    const form = useFormContext();
    const quizId = useAppSelector((state) => state.Creator.quiz.id);
 
@@ -36,11 +38,13 @@ const Footer = (props: FooterProps) => {
    };
 
    useEffect(() => {
-      if (quizId) {
+      if (isSuccess) {
+         console.log('girdim navigate edicem, ', quizId);
          setIdle();
-         navigate(`/creator/${quizId}`);
+         dispatch(CreatorActions.setIsOpenQuizSettingsModal("CLOSE"));
+         navigate(`/creator/${quizId}`, { replace: true });
       }
-   }, [isSuccess, quizId]);
+   }, [isSuccess]);
 
    return (
       <Stack 

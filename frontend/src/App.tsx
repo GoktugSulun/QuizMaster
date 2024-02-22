@@ -3,9 +3,6 @@ import { Routes } from './Core/Routes';
 
 const App = () => {
   useNotifier();
-
-  console.log('render');
-  
   
   return (
     <Routes />
