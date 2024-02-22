@@ -1,12 +1,13 @@
-import { ApiURL } from "@/Constants";
+import { ApiURL } from "@/Constants/ApiURL";
 import { request } from "@/Core/Request";
 import { CreatorActions } from "./Creator.slice";
-import { type QuizWithIdType } from "../Model/Creator.model";
+import { type QuizType, type QuizWithIdType } from "../Model/Creator.model";
 
 const CreatorThunks = {
-   createQuiz: () => request({
+   createQuiz: (payload: QuizType) => request({
       method: 'POST',
       url: ApiURL.QUIZ,
+      payload,
       key: 'createQuiz',
       success: ({ data, thunkAPI }) => {
          const payload = data as QuizWithIdType;

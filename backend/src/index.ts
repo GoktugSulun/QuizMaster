@@ -22,7 +22,7 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 // app.use('/Auth', AuthRoute);
-app.use('/v1/app/quizzes', QuizRoute);
+app.use(`/v1/quizzes`, QuizRoute);
 
 try {
   mongoose.connect(process.env.DB_CONNECTION_URL!)

@@ -16,7 +16,7 @@ export type TimeType = {
    name: string;
 }
 
-type DefaultValuesType = {
+export type DefaultValuesType = {
    name: string;
    description: string;
    visibility: VisibilityEnums;
@@ -37,7 +37,7 @@ const resolver = yupResolver(yup.object({
       .min(10, "Description must have minimum 10 characters")
       .required("Description required"),
    second: yup
-      .object()
+      .object({ id: yup.number().required(), name: yup.string().required() })
       .nullable()
       .test("isValidSecondTime", "", (value, context) => {
          const val = value as TimeType | null;

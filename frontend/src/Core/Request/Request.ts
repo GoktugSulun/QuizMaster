@@ -52,11 +52,11 @@ export const request = async ({ method='GET', url, payload, files, key, success,
       await new Promise(resolve => setTimeout(resolve, 3000));
       const data = files ? payloadWithFiles(payload, files) : payload;
       const response = await axios({ method, baseURL, url, data });
-      if (response.status === 200 && response.statusText === 'OK') {
+      if (response.data.type) {
         return success?.({ data: response.data, thunkAPI });
       }
-      failure?.(response);
-      return thunkAPI.rejectWithValue('Oppss problem');
+      failure?.(response.data);
+      return thunkAPI.rejectWithValue(response.data?.message || "Error occurs!");
     } catch (error) {
       if (error instanceof Error) {
         handleError(error);

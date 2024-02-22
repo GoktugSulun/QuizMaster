@@ -3,3 +3,8 @@ export enum QuestionEnums {
    TRUE_FALSE = 'TRUE_FALSE',
    SHORT_ANSWER = 'SHORT_ANSWER'
 }
+
+export enum VisibilityEnums {
+   PRIVATE = 'Private',
+   PUBLIC = 'Public',
+}

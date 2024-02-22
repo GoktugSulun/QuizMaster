@@ -1,26 +1,46 @@
 import { snackbar } from "@/Core/Utils";
+import { type QuizType } from "@/Pages/Creator/Model/Creator.model";
+import CreatorThunks from "@/Pages/Creator/Store/Creator.thunk";
 import { Button, Stack } from "@mui/material";
 import { useFormContext } from "react-hook-form";
+import { DefaultValuesType } from "../QuizSettings";
+import { useAppSelector, useThunk } from "@/Core/Hooks";
+import { Loading } from "@/Core/Components";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 type FooterProps = {
    handleClose: () => void
 }
 
 const Footer = (props: FooterProps) => {
+   const navigate = useNavigate();
    const form = useFormContext();
+   const quizId = useAppSelector((state) => state.Creator.quiz.id);
+
+   const { isLoading, isSuccess, setIdle } = useThunk('createQuiz');
+   console.log(isSuccess, ' issucess');
+   
 
    const saveQuizSettings = async () => {
       const isValid = await form.trigger();
       if (!isValid) {
-         snackbar("Please fill in the required fields!", { variant: "error" });
+         return snackbar("Please fill in the required fields!", { variant: "error" });
       }
-      const { minute, second, ...data } = form.getValues();
+      const { minute, second, ...data } = form.getValues() as DefaultValuesType;
       const payload = {
          ...data,
-         totalTime: (minute.id * 60) + (second.id)
-      }
-      console.log(payload, 'payload');
+         totalTime: minute!.id * 60 + second!.id
+      } as QuizType;
+      CreatorThunks.createQuiz(payload);
    };
+
+   useEffect(() => {
+      if (quizId) {
+         setIdle();
+         navigate(`/creator/${quizId}`);
+      }
+   }, [isSuccess, quizId]);
 
    return (
       <Stack 
@@ -42,6 +62,7 @@ const Footer = (props: FooterProps) => {
                }
             }}
             onClick={props.handleClose}
+            disabled={isLoading}
          > 
             Cancel 
          </Button>
@@ -52,8 +73,9 @@ const Footer = (props: FooterProps) => {
                fontSize: 18
             }}
             onClick={saveQuizSettings}
+            disabled={isLoading}
          > 
-            Save 
+            { isLoading ? <Loading size={20} color="#FFFFFF" /> : "Save" } 
          </Button>
       </Stack>
    )
