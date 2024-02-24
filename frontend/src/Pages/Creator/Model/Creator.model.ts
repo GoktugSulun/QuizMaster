@@ -46,3 +46,7 @@ export type QuestionType = {
 
 export type QuestionWithIdType = Omit<QuestionType, "options"> 
    & { id: string; options: OptionWithIdType[] }
+
+export type QuizWithQuestions = QuizWithIdType & {
+   questions: QuestionWithIdType[]
+}

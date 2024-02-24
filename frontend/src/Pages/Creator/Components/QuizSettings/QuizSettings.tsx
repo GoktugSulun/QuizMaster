@@ -66,7 +66,7 @@ const QuizSettings = () => {
       if (!params.quizId) {
          navigate('/', { replace: true });
       }
-      dispatch(CreatorActions.setIsOpenQuizSettingsModal('CLOSE'))
+      dispatch(CreatorActions.setIsOpenQuizSettingsModal('CLOSE'));
    }
 
    return (

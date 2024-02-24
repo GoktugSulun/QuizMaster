@@ -4,6 +4,7 @@ import ProfileMenu from './Components/Menu';
 import { useLocation } from 'react-router-dom';
 import CreatorInput from './Components/CreatorInput';
 import CreatorButtons from './Components/CreatorButtons';
+import { useAppSelector } from '@/Core/Hooks';
 
 const extract = (pathname: string): string => {
   if (pathname.includes('/')) {
@@ -22,6 +23,7 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
   const { pathname } = useLocation();
   const theme = useTheme();
   const isCreatorPage = pathname.includes('/creator');
+  const doesQuizIdExist = !!useAppSelector((state) => state.Creator.quiz.id);
 
   const pageTitle = (() => {
     if (is404) {
@@ -61,7 +63,7 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
       <Stack flexDirection="row" height="100%">
         <Stack flexDirection="row" alignItems="center">
           <S.PageTitle fontWeight="bold" variant="h4"> {pageTitle} </S.PageTitle>
-          { isCreatorPage && <CreatorInput /> }
+          { isCreatorPage && doesQuizIdExist && <CreatorInput /> }
         </Stack>
         <Stack 
           flex={1}
@@ -72,7 +74,7 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
           height="100%"
           paddingRight={5}
         >
-          { isCreatorPage && <CreatorButtons /> }
+          { isCreatorPage && doesQuizIdExist && <CreatorButtons /> }
           <ProfileMenu />
         </Stack>
       </Stack>

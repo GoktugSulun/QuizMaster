@@ -3,7 +3,7 @@ import { type ReactNode } from 'react';
 
 type LoadingProps = {
    fullWidth?: boolean,
-   blur?: boolean,
+   blur?: boolean | number,
    size?: number,
    color?: string,
    margin?: string
@@ -24,10 +24,10 @@ export default Loading;
 
 type LoadingWrapperProps = {
    fullWidth: boolean,
-   blur: boolean,
+   blur: boolean | number,
    color: string,
    margin: string,
-   children: ReactNode
+   children: ReactNode,
 }
 
 const LoadingWrapper = styled('div')<LoadingWrapperProps>(({ theme, ...props }) => ({
@@ -35,8 +35,9 @@ const LoadingWrapper = styled('div')<LoadingWrapperProps>(({ theme, ...props }) 
    justifyContent: 'center',
    alignItems: 'center',
    width: props.fullWidth ? '100%' : 'auto',
-   height: '100%',
+   height: "100%",
    margin: props.margin,
+   zIndex: 10,
    ...(props.blur ? {
       position: 'absolute',
       top: 0,
@@ -45,7 +46,7 @@ const LoadingWrapper = styled('div')<LoadingWrapperProps>(({ theme, ...props }) 
       borderRadius: 'inherit',
       background: 'rgba(255, 255, 255, 0.2)',
       boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-      backdropFilter: 'blur(1px)',
+      backdropFilter: typeof props.blur === "boolean" ? 'blur(1px)' : `blur(${props.blur}px)`
    } : {}),
    '& .MuiCircularProgress-root svg circle': {
       stroke: props.color

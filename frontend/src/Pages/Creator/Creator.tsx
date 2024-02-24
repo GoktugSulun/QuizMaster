@@ -9,8 +9,10 @@ import { Header } from '@/Components/Header';
 import { useEffect } from 'react';
 import { QuizSettings } from './Components/QuizSettings';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch } from '@/Core/Hooks';
+import { useAppDispatch, useAppSelector, useThunk } from '@/Core/Hooks';
 import { CreatorActions } from './Store/Creator.slice';
+import CreatorThunks from './Store/Creator.thunk';
+import { Loading } from '@/Core/Components';
 
 type DefaultValuesType = {
   name: string;
@@ -43,9 +45,11 @@ const defaultValues: DefaultValuesType = (
 /*
    ? Optional param => quizId
    * Firstly, 
-      * if there is no quizId and quizSettings modal will be opened to create a quiz and get its id.
-      * if there is a quizId, dont open quizSettings modal.
-   ! If "id" or "question" query is missing, then navigate user to dashboard.
+      * (CREATE): if there is no "quizId" param, quizSettings modal will be opened to create a quiz and get its id.
+      * (EDIT): if "quizId" param exists, dont open quizSettings modal.
+      * (EDIT): if "quizId" param exists but quiz object in redux is empty, then fetch quiz info using "quizId" param.
+   ! If fetching status is failure, then display an "failure" message
+   ! If quiz doesnt exist with that id, then display an "no-data" message
 */
 
 const Creator = () => {
@@ -53,15 +57,22 @@ const Creator = () => {
   const params = useParams();
   const dispatch = useAppDispatch();
   const form = useForm({ defaultValues });
+  const quizId = useAppSelector((state) => state.Creator.quiz.id);
 
   // const formValues = useWatch({ control: form.control });
   // console.log(formValues, ' formValues');
 
+  const { isLoading: isLoadingGetQuizById } = useThunk("getQuizById");
+
   useEffect(() => {
+    //* Create a new quiz
     if (!params.quizId) {
-      console.log('open => ', params);
-      
        dispatch(CreatorActions.setIsOpenQuizSettingsModal('OPEN'));
+    }
+
+    //* Edit an existing quiz whether it has questions or not.
+    if (params.quizId && !quizId) {
+      CreatorThunks.getQuizById(quizId);
     }
  }, [params.quizId]);
 
@@ -97,11 +108,13 @@ const Creator = () => {
         <Stack 
           flexDirection="row" 
           height="100%"
-          borderTop={`1px solid ${theme.palette.secondary.light}`}
-          borderBottom={`1px solid ${theme.palette.secondary.light}`}
+          borderTop={isLoadingGetQuizById ? "none" : `1px solid ${theme.palette.secondary.light}`}
+          borderBottom={isLoadingGetQuizById ? "none" : `1px solid ${theme.palette.secondary.light}`}
           borderRadius="5px"
           bgcolor={theme.palette.common.white}
+          position="relative"
         >
+          { isLoadingGetQuizById && <Loading fullWidth blur={2} size={60} /> }
           <Slides />
           <Question />
           <QuestionSettings />

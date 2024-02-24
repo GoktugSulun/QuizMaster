@@ -1,4 +1,4 @@
 export enum ApiURL {
    QUIZ = "v1/quizzes",
-   QUESTION = "QUESTION",
+   QUESTION = "v1/questions",
 }

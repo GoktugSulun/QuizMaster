@@ -35,20 +35,11 @@ const CreatorSlice = createSlice({
       state.isOpenQuizSettingsModal = valueMap[action.payload];
     },
     setQuiz: (state, action: PayloadAction<QuizWithIdType>) => {
-      console.log('girdim => ', action.payload);
-      
-      state.quiz = {
-        id: "111",
-        name: "aaa",
-        description: "bbb",
-        visibility: VisibilityEnums.PUBLIC,
-        image: null,
-        totalTime: 23232
-      };
+      state.quiz = action.payload;
     },
     setQuestions: (state, action: PayloadAction<QuestionWithIdType[]>) => {
       state.questions = action.payload;
-    }
+    },
   },  
 });
 
