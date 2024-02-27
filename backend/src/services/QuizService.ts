@@ -2,6 +2,7 @@ import { Request } from "express";
 import { IResponse } from "../types/Types.ts";
 import Helpers from "../utils/Helpers.ts";
 import Quiz from "../models/Quiz.ts";
+import { authorizedUserId } from "../index.ts";
 
 class QuizService {
   static async getAll(): Promise<IResponse> {
@@ -20,12 +21,12 @@ class QuizService {
 
   static async getById(req: Request): Promise<IResponse> {
     const { id } = req.params;
-    const data = await Quiz.find({ _id: id });
+    const data = await Quiz.find({ _id: id, creatorId: authorizedUserId });
 
     try {
       return {
         type: true,
-        message: `Fetched quiz with id '${id}' successfully`,
+        message: `Quiz with id '${id}' has been fetched successfully`,
         data: data[0] || {}
       };
     } catch (error) {
@@ -37,7 +38,7 @@ class QuizService {
     try {
       const quizData = req.body as typeof Quiz;
       
-      const quiz = new Quiz(quizData);
+      const quiz = new Quiz({ ...quizData, creatorId: authorizedUserId });
       const data = await quiz.save();
       
       return { 
@@ -58,7 +59,7 @@ class QuizService {
       
       const data = await Quiz.findByIdAndUpdate(
         { _id: id }, 
-        { $set: quizData },
+        { $set: { ...quizData, creatorId: authorizedUserId } },
         { returnOriginal: false }
       );
       

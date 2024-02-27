@@ -5,6 +5,9 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import QuizRoute from './routes/QuizRoute.ts';
 
+// TODO : change it later
+export const authorizedUserId = "1";
+
 //For env File 
 dotenv.config();
 
