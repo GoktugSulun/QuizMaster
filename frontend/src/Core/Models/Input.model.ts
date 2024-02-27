@@ -64,7 +64,7 @@ type AutocompleteInputProps<TFieldValues extends FieldValues> = {
 export type AutocompleteData = { id: number, name: string };
 
 export type AutocompleteType<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>> = 
-   Omit<AutocompleteProps<AutocompleteData, true, false, false>, 'renderInput'>
+   Omit<AutocompleteProps<AutocompleteData, true, true, true>, 'renderInput'>
    & AutocompleteInputProps<TFieldValues>
    & ControlType<TFieldValues, TName>;
 // Autocomplete Types ---- [End]

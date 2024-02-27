@@ -57,3 +57,4 @@ const { actions, reducer } = AppConfigSlice;
 
 export const AppConfigActions = actions;
 export default { [NAME]: reducer };
+// export default reducer;

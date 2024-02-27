@@ -3,12 +3,21 @@ import { Question } from './Components/Question';
 import { QuestionSettings } from './Components/QuestionSettings';
 import { Slides } from './Components/Slides';
 import * as S from './Style/Creator.style';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from './Model/Creator.model';
+import { FormProvider, useForm } from 'react-hook-form';
+import { VisibilityEnums, CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from './Model/Creator.model';
 import { Header } from '@/Components/Header';
 import { useEffect } from 'react';
+import { QuizSettings } from './Components/QuizSettings';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector, useThunk } from '@/Core/Hooks';
+import { CreatorActions } from './Store/Creator.slice';
+import CreatorThunks from './Store/Creator.thunk';
+import { Loading } from '@/Core/Components';
 
 type DefaultValuesType = {
+  name: string;
+  description: string;
+  visibility: VisibilityEnums,
   quizId: number;
   activeIndex: number;
   questions: QuestionType[];
@@ -16,6 +25,9 @@ type DefaultValuesType = {
 
 const defaultValues: DefaultValuesType = (
   {
+    name: "",
+    description: "",
+    visibility: VisibilityEnums.PUBLIC,
     quizId: 1,
     activeIndex: 0,
     questions: [
@@ -30,13 +42,41 @@ const defaultValues: DefaultValuesType = (
   }
 );
 
+/*
+   ? Optional param => quizId
+   * Firstly, 
+      * (CREATE): if there is no "quizId" param, quizSettings modal will be opened to create a quiz and get its id.
+      * (EDIT): if "quizId" param exists, dont open quizSettings modal.
+      * (EDIT): if "quizId" param exists but quiz object in redux is empty, then fetch quiz info using "quizId" param.
+   ! If fetching status is failure, then display an "failure" message
+   ! If quiz doesnt exist with that id, then display an "no-data" message
+*/
+
 const Creator = () => {
   const theme = useTheme();
+  const params = useParams();
+  const dispatch = useAppDispatch();
   const form = useForm({ defaultValues });
+  const quizId = useAppSelector((state) => state.Creator.quiz.id);
 
-  const formValues = useWatch({ control: form.control });
-  console.log(formValues, ' formValues');
+  // const formValues = useWatch({ control: form.control });
+  // console.log(formValues, ' formValues');
 
+  const { isLoading } = useThunk("getQuizByIdWithQuestions");
+
+  useEffect(() => {
+    //* Create a new quiz
+    if (!params.quizId) {
+       dispatch(CreatorActions.setIsOpenQuizSettingsModal('OPEN'));
+    }
+
+    //* Edit an existing quiz whether it has questions or not.
+    if (params.quizId && !quizId) {
+      CreatorThunks.getQuizById(quizId);
+    }
+ }, [params.quizId]);
+
+  //* Navigate slides using keyboard
   useEffect(() => {
     const keydownHandler = (event: KeyboardEvent) => {
       if (event.code === "ArrowUp") {
@@ -68,16 +108,19 @@ const Creator = () => {
         <Stack 
           flexDirection="row" 
           height="100%"
-          borderTop={`1px solid ${theme.palette.secondary.light}`}
-          borderBottom={`1px solid ${theme.palette.secondary.light}`}
+          borderTop={isLoading ? "none" : `1px solid ${theme.palette.secondary.light}`}
+          borderBottom={isLoading ? "none" : `1px solid ${theme.palette.secondary.light}`}
           borderRadius="5px"
           bgcolor={theme.palette.common.white}
+          position="relative"
         >
+          { isLoading && <Loading fullWidth blur={2} size={60} /> }
           <Slides />
           <Question />
           <QuestionSettings />
         </Stack>
       </S.Creator>
+      <QuizSettings />
     </FormProvider>
   )
 }

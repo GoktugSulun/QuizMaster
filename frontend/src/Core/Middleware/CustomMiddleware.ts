@@ -1,6 +1,7 @@
 import { type Middleware } from '@reduxjs/toolkit';
 import { HttpResponseEnums, ThunkEnums } from '../Constants/Enums';
 import { AppConfigActions } from '../Store/AppConfig.slice';
+import { snackbar } from '../Utils';
 
 type Action = {
   type: string;
@@ -33,6 +34,9 @@ const customMiddleWare: Middleware = (store) => (next) => (action: Action) => {
       requestStatusValue: getStatus(actionStatus as ActionStatus),
       errorValue: actionStatus === ThunkEnums.REJECTED ? action.payload : null
     }));
+    if (actionStatus === ThunkEnums.REJECTED) {
+      snackbar(action.payload, { variant: 'error' })
+    }
   }
 
   next(action);

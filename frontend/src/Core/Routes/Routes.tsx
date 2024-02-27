@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import { Suspense, lazy, useEffect } from 'react';
 import { Fallback } from '../Components';
@@ -14,6 +14,7 @@ const Creator = lazy(() => import('@/Pages/Creator/Creator'));
 
 const RouteList = () => {
   const token = localStorage.getItem('token');
+  const location = useLocation();
 
   useEffect(() => {
     /*
@@ -21,7 +22,7 @@ const RouteList = () => {
     */
   //  console.log('path => ', location.pathname);
    
-  //  console.log('değişti');
+   console.log(location, ' loccc');
    
     window.scrollTo(0, 0);
   }, [location.pathname]);
@@ -42,7 +43,9 @@ const RouteList = () => {
 
   return (
     <Suspense fallback={<div />}>
+      {/* TODO: Change route structure and use useBlocker to prevent navigation in some cases */}
       <Routes>
+        {/* TODO: HomePage will be global route, and others will be protected */}
         {/* Protected Route */}
         <Route element={<ProtectedRoute isAllowed />}>
           <Route path="/" element={<Dashboard />}>
@@ -55,7 +58,8 @@ const RouteList = () => {
           <Route path='/rules/quiz' element={<QuizRules />} />
           <Route path='/results/quiz' element={<QuizResult />} />
           <Route path="/test" element={<Test />} />
-          <Route path="/creator/:id?" element={<Creator />} />
+          <Route path="/creator/:quizId?" element={<Creator />} />
+          <Route path="/creator/edit/:quizId" element={<Creator />} />
         </Route>
 
         {/* Private Routes */}

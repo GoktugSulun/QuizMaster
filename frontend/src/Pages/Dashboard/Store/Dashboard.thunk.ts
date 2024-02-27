@@ -1,4 +1,3 @@
-import { HttpMethodEnums } from '../../../Core/Constants/Enums';
 import { request } from '../../../Core/Request';
 import { DashboardActions } from './Dashboard.slice';
 
