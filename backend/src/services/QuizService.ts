@@ -3,10 +3,11 @@ import { IResponse } from "../types/Types.ts";
 import Helpers from "../utils/Helpers.ts";
 import Quiz from "../models/Quiz.ts";
 import { authorizedUserId } from "../index.ts";
+import { VisibilityEnums } from "../enums/Enums.ts";
 
 class QuizService {
   static async getAll(): Promise<IResponse> {
-    const data = await Quiz.find();
+    const data = await Quiz.find({ visibility: VisibilityEnums.PUBLIC });
 
     try {
       return {

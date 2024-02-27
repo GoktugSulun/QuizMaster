@@ -1,17 +1,16 @@
+import { ApiURL } from '@/Constants/ApiURL';
 import { request } from '../../../Core/Request';
-import { DashboardActions } from './Dashboard.slice';
+import { type CreatedQuizType, DashboardActions } from './Dashboard.slice';
 
 const DashboardThunks = {
-  fetchUserById: () => request({
+  getAllQuizzes: () => request({
     method: 'GET',
-    url: 'posts',
-    key: 'fetchUserById',
+    url: `${ApiURL.QUIZ}/all`,
+    key: 'getAllQuizzes',
     success: ({ data, thunkAPI }) => {
-      thunkAPI.dispatch(DashboardActions.setPosts(data));
-    },
-    // failure: (error) => {
-    //   console.log(error, ' error failure func');
-    // }
+      const payload = data as CreatedQuizType[];
+      thunkAPI.dispatch(DashboardActions.setQuizzes(payload));
+    }
   })
 };
 

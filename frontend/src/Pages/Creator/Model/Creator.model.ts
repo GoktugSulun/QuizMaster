@@ -27,7 +27,8 @@ export type QuizType = {
    totalTime: number;
 }
 
-export type QuizWithIdType = QuizType & { id: string; }
+export type QuizWithIdType = QuizType 
+   & { id: string; userId: string; createdAt: string; updatedAt: string; }
 
 export type OptionType = {
    name: string; 

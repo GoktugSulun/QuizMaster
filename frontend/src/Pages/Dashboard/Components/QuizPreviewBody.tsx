@@ -3,9 +3,9 @@ import * as S from '../Style/Dashboard.style';
 import { CustomTooltip } from "@/Components/Tooltip";
 
 type QuizPreviewBodyProps = {
-   title: string;
+   id: string;
+   name: string;
    description: string;
-   id: number;
 };
 
 const tooltipSlotProps = {
@@ -21,13 +21,13 @@ const tooltipSlotProps = {
    },
 };
  
-const QuizPreviewBody = ({ title, description, id }: QuizPreviewBodyProps) => {
+const QuizPreviewBody = ({ id, name, description }: QuizPreviewBodyProps) => {
    // TODO : fix tooltip location for short title
 
    return (
       <Box padding="0 20px" flex={1}>
          <CustomTooltip 
-            title={title} 
+            title={name} 
             placement="bottom-start"
             slotProps={tooltipSlotProps}
          >
@@ -37,7 +37,7 @@ const QuizPreviewBody = ({ title, description, id }: QuizPreviewBodyProps) => {
                variant="h6"
                lineHeight={1.4}
             > 
-               <S.Link to={{ pathname: "rules/quiz", search: `?id=${id}` }}> {title} </S.Link> 
+               <S.Link to={{ pathname: "rules/quiz", search: `?id=${id}` }}> {name} </S.Link> 
             </S.EllipsisText >
          </CustomTooltip>
          <S.EllipsisText 

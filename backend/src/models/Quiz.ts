@@ -32,7 +32,11 @@ export const quizSchema = new mongoose.Schema({
    creatorId: {
       type: String,
       required: true
-   }
+   },
+   // isRemoved: {
+   //    type: Boolean,
+   //    required: true
+   // }
 }, { timestamps: true });
 
 const Quiz = mongoose.model('Quiz', quizSchema);

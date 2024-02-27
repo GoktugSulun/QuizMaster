@@ -3,7 +3,7 @@ import QuizController from '../controllers/QuizController.ts';
 
 const app = express();
 
-app.get('/', QuizController.getAll);
+app.get('/all', QuizController.getAll);
 app.get('/:id', QuizController.getById);
 app.post('/', QuizController.create);
 app.put('/:id', QuizController.edit);
