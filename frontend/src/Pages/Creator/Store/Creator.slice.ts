@@ -26,6 +26,7 @@ const CreatorSlice = createSlice({
   name: NAME,
   initialState,
   reducers: {
+    reset: () => initialState,
     setIsOpenQuizSettingsModal: (state, action: PayloadAction<"OPEN" | "CLOSE" | "TOGGLE">) => {
       const valueMap = {
         "TOGGLE": !state.isOpenQuizSettingsModal,

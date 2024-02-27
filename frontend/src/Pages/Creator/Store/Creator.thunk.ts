@@ -2,6 +2,7 @@ import { ApiURL } from "@/Constants/ApiURL";
 import { request } from "@/Core/Request";
 import { CreatorActions } from "./Creator.slice";
 import { type QuizWithQuestions, type QuizType, type QuizWithIdType, type QuestionType, type QuestionWithIdType } from "../Model/Creator.model";
+import { snackbar } from "@/Core/Utils";
 
 const CreatorThunks = {
    createQuiz: (payload: QuizType) => request({
@@ -14,7 +15,7 @@ const CreatorThunks = {
          thunkAPI.dispatch(CreatorActions.setQuiz(payload));
       },
    }),
-   editQuiz: ({ id, image: file, ...payload }: Omit<QuizWithIdType, "image"> & { image: File | null } ) => request({
+   editQuiz: ({ id, image: file, ...payload }: QuizWithIdType) => request({
       method: 'PUT',
       url: `${ApiURL.QUIZ}/${id}`,
       key: 'editQuiz',
@@ -23,9 +24,10 @@ const CreatorThunks = {
       success: ({ data, thunkAPI }) => {
          const payload = data as QuizWithIdType;
          thunkAPI.dispatch(CreatorActions.setQuiz(payload));
+         snackbar("Quiz settings has been updated successfully");
       },
    }),
-   getQuizById: (id: number | string) => request({
+   getQuizById: (id: string) => request({
       method: 'GET',
       url: `${ApiURL.QUIZ}/${id}`,
       key: 'getQuizById',

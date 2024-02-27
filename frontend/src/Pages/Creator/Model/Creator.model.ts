@@ -23,7 +23,7 @@ export type QuizType = {
    name: string;
    description: string;
    visibility: VisibilityEnums;
-   image: string | null;
+   image: File | null;
    totalTime: number;
 }
 

@@ -72,7 +72,7 @@ const Creator = () => {
 
     //* Edit an existing quiz whether it has questions or not.
     if (params.quizId && !quizId) {
-      CreatorThunks.getQuizById(quizId);
+      CreatorThunks.getQuizById(params.quizId);
     }
  }, [params.quizId]);
 
@@ -98,6 +98,7 @@ const Creator = () => {
     window.addEventListener("keydown", keydownHandler);
     return () => {
       window.removeEventListener("keydown", keydownHandler);
+      dispatch(CreatorActions.reset());
     };
   }, []);
   
