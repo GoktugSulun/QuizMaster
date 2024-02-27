@@ -1,4 +1,4 @@
-import { useAppDispatch } from "@/Core/Hooks";
+import { useAppDispatch, useAppSelector } from "@/Core/Hooks";
 import { CreatorActions } from "@/Pages/Creator/Store/Creator.slice";
 import { Button, Stack, Typography, useTheme } from "@mui/material";
 
@@ -6,7 +6,7 @@ import { Button, Stack, Typography, useTheme } from "@mui/material";
 const CreatorInput = () => {
    const theme = useTheme();
    const dispatch = useAppDispatch();
-   const name = ''; // TODO : make dynamic from store
+   const name = useAppSelector((state) => state.Creator.quiz.name);
 
    const openQuizSettingsModal = () => {
       dispatch(CreatorActions.setIsOpenQuizSettingsModal("OPEN"));
@@ -25,7 +25,7 @@ const CreatorInput = () => {
          minWidth={300}
          onClick={openQuizSettingsModal}
       >
-         <Typography> { name.trim() || "Enter quiz title..." } </Typography>
+         <Typography> { name || "Enter quiz title..." } </Typography>
          <Button> Settings </Button>
       </Stack>
    )

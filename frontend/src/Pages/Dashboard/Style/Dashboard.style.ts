@@ -1,23 +1,25 @@
-import { Box, IconButton, Stack, Typography, alpha, styled } from "@mui/material";
+import { Box, IconButton, Typography, alpha, styled } from "@mui/material";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { shouldForwardProp } from "@/Core/Utils";
 import { PageWrapper } from "@/Core/Layout";
 
 export const Dashboard = styled(PageWrapper)({});
 
-export const QuizPreview = styled(Stack)(({ theme }) => ({
+export const QuizPreview = styled(Box)(({ theme }) => ({
    background: theme.palette.common.white,
    borderRadius: 20,
    height: '100%',
-   boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px'
+   boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
 }));
 
-export const Image = styled('img')(({ theme }) => ({
-   width: '100%',
-   height: '180px',
-   objectFit: "cover",
-   borderRadius: "20px 20px 0 0"
-})); 
+export const Image = styled('img')({
+   width: "100%",
+   height: "auto",
+   aspectRatio: 3 / 2,
+   borderTopLeftRadius: 20,
+   borderTopRightRadius: 20,
+   borderRadius: "20px 20px 0 0",
+})
 
 export const Link = styled(ReactRouterLink)(({ theme }) => ({
    textDecoration: 'none',

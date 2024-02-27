@@ -1,28 +1,24 @@
+import { QuizWithIdType } from '@/Pages/Creator/Model/Creator.model';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 const NAME = 'Dashboard';
 
-type Post = {
-  id: number,
-  user_id: number,
-  title: string,
-  description: string
-}
+export type CreatedQuizType = Omit<QuizWithIdType, "image"> & { image: string | null }
 
 type InitialStateTypes = {
-  posts: Post[]
+  quizzes: CreatedQuizType[]
 }
 
 const initialState: InitialStateTypes = {
-  posts: []
+  quizzes: []
 };
 
 const DashboardSlice = createSlice({
   name: NAME,
   initialState,
   reducers: {
-    setPosts: (state, action: PayloadAction<Post[]>) => {
-      state.posts = action.payload;
+    setQuizzes: (state, action: PayloadAction<CreatedQuizType[]>) => {
+      state.quizzes = action.payload;
     }
   },
 });

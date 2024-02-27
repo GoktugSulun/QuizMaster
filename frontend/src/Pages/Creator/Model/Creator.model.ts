@@ -23,11 +23,12 @@ export type QuizType = {
    name: string;
    description: string;
    visibility: VisibilityEnums;
-   image: string | null;
+   image: File | null;
    totalTime: number;
 }
 
-export type QuizWithIdType = QuizType & { id: string; }
+export type QuizWithIdType = QuizType 
+   & { id: string; userId: string; createdAt: string; updatedAt: string; }
 
 export type OptionType = {
    name: string; 

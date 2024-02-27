@@ -19,32 +19,51 @@ const Footer = (props: FooterProps) => {
    const dispatch = useAppDispatch();
    const form = useFormContext();
    const quizId = useAppSelector((state) => state.Creator.quiz.id);
+   const isEditing = !!quizId;
 
    const { isLoading, isSuccess, setIdle } = useThunk('createQuiz');
-   console.log(isSuccess, ' issucess');
+   const { 
+      isLoading: isLoadingEditingQuiz, 
+      isSuccess: isSuccessEditingQuiz, 
+      setIdle: setIdleEditingQuiz 
+   } = useThunk('editQuiz');
    
-
    const saveQuizSettings = async () => {
       const isValid = await form.trigger();
       if (!isValid) {
          return snackbar("Please fill in the required fields!", { variant: "error" });
       }
-      const { minute, second, ...data } = form.getValues() as DefaultValuesType;
+      const { minute, second, image, ...data } = form.getValues() as DefaultValuesType;
       const payload = {
          ...data,
+         image: typeof image === "string" ? null : image,
          totalTime: minute!.id * 60 + second!.id
       } as QuizType;
+
+      //* Edit an existing quiz
+      if (isEditing) {
+         CreatorThunks.editQuiz({ ...payload, id: quizId });
+         return;
+      }
+
+      //* Create a new quiz
       CreatorThunks.createQuiz(payload);
    };
 
    useEffect(() => {
       if (isSuccess) {
-         console.log('girdim navigate edicem, ', quizId);
          setIdle();
          dispatch(CreatorActions.setIsOpenQuizSettingsModal("CLOSE"));
          navigate(`/creator/${quizId}`, { replace: true });
       }
    }, [isSuccess]);
+
+   useEffect(() => {
+      if (isSuccessEditingQuiz) {
+         setIdleEditingQuiz();
+         dispatch(CreatorActions.setIsOpenQuizSettingsModal("CLOSE"));
+      }
+   }, [isSuccessEditingQuiz]);
 
    return (
       <Stack 
@@ -66,7 +85,7 @@ const Footer = (props: FooterProps) => {
                }
             }}
             onClick={props.handleClose}
-            disabled={isLoading}
+            disabled={isLoading || isLoadingEditingQuiz}
          > 
             Cancel 
          </Button>
@@ -77,9 +96,9 @@ const Footer = (props: FooterProps) => {
                fontSize: 18
             }}
             onClick={saveQuizSettings}
-            disabled={isLoading}
+            disabled={isLoading || isLoadingEditingQuiz}
          > 
-            { isLoading ? <Loading size={20} color="#FFFFFF" /> : "Save" } 
+            { (isLoading || isLoadingEditingQuiz) ? <Loading size={25} color="#FFFFFF" /> : "Save" } 
          </Button>
       </Stack>
    )

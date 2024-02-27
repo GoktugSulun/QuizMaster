@@ -21,7 +21,7 @@ const Body = () => {
 
    const triggerTimeValidation = () => {
       form.trigger()
-   };
+   };   
    
    return (
       <Stack 
@@ -40,7 +40,7 @@ const Body = () => {
                   variant="h6"
                   color="primary.main"
                >
-                  Name
+                  Name*
                </Typography>
                <TextInput
                   control={form.control}
@@ -54,7 +54,7 @@ const Body = () => {
                   variant="h6"
                   color="primary.main"
                >
-                  Description
+                  Description*
                </Typography>
                <TextInput
                   control={form.control}
@@ -74,7 +74,7 @@ const Body = () => {
                variant="h6"
                color="primary.main"
             >
-               Total Time
+               Total Time*
             </Typography>
             <Stack
                marginTop="10px"
@@ -118,7 +118,7 @@ const Body = () => {
                   <Typography color="primary.main" fontWeight="bold"> { second?.name || "00" } </Typography>
                </Stack>
             </Stack>
-            { (!!timeError) && <Typography mt={1} fontSize={14} color="error.main"> Error Message </Typography>}
+            { (!!timeError) && <Typography mt={1} fontSize={14} color="error.main"> Please define a time for this quiz </Typography>}
          </Stack>
          <Stack marginTop="10px">
             <Typography 

@@ -12,3 +12,16 @@ export const getTimeOptions = () => {
          return { id: index, name: `${index}` };
       });
 }
+
+//* Format seconds to { minute: { id: 1, name: "1" }, second: { id: 2, name: "2" } }
+export const formatTime = (time: number) => {
+   const minute = Math.trunc(time / 60);
+   const second = time % 60;
+   const formattedMinute = minute < 10 ? `0${minute}` : minute;
+   const formattedSecond = second < 10 ? `0${second}` : second;
+
+   return { 
+      minute: { id: minute, name: `${formattedMinute}` },
+      second: { id: second, name: `${formattedSecond}` }
+   }
+}

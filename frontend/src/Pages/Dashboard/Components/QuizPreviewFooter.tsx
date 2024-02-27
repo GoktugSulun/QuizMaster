@@ -1,14 +1,16 @@
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
 import { createSearchParams, useNavigate } from "react-router-dom";
+import { formatTime } from "@/Core/Helper";
 
 type QuizPreviewFooterProps = {
-   time: string;
-   id: number;
+   id: string;
+   totalTime: number;
 }
 
-const QuizPreviewFooter = ({ time, id }: QuizPreviewFooterProps) => { 
+const QuizPreviewFooter = ({ id, totalTime }: QuizPreviewFooterProps) => { 
    const navigate = useNavigate();
+   const { minute, second } = formatTime(totalTime);
 
    const navigateHandler = () => {
       const searchParams = createSearchParams({ id: `${id}` });
@@ -36,7 +38,15 @@ const QuizPreviewFooter = ({ time, id }: QuizPreviewFooterProps) => {
                gap={1}
             >
                <AccessAlarmsIcon />
-               {time}
+               <Stack
+                  flexDirection="row"
+                  alignItems="center"
+                  gap="5px"
+               >
+                  <Typography variant="body1"> {minute.name} </Typography>
+                  : 
+                  <Typography variant="body1"> {second.name} </Typography>
+               </Stack>
             </Stack>
          </Box>
          <Button 

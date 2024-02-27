@@ -11,6 +11,8 @@ import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Divider } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { formatTime } from '@/Core/Helper';
 
 export type TimeType = {
    id: number; 
@@ -26,7 +28,7 @@ export type DefaultValuesType = {
    second: TimeType | null;
 }
 
-const resolver = yupResolver(yup.object({
+const schema = yup.object({
    name: yup
       .string()
       .trim()
@@ -37,30 +39,41 @@ const resolver = yupResolver(yup.object({
       .trim()
       .min(10, "Description must have minimum 10 characters")
       .required("Description required"),
+   visibility: yup
+      .mixed()
+      .required()
+      .oneOf(Object.values(VisibilityEnums)),
+   image: yup
+      .mixed()
+      .nullable(),
+   minute: yup
+      .object({ id: yup.number().required(), name: yup.string().required() })
+      .nullable(),
    second: yup
       .object({ id: yup.number().required(), name: yup.string().required() })
       .nullable()
       .test("isValidSecondTime", "", (value, context) => {
          const val = value as TimeType | null;
          return (context.parent.minute?.name !== "00") || (val?.name !== "00")
-      })
-}));
+      }),
+}) as yup.ObjectSchema<DefaultValuesType>;
 
 const defaultValues: DefaultValuesType = {
    name: "",
    description: "",
    visibility: VisibilityEnums.PRIVATE,
    image: null,
-   minute: { id: 1, name: "00"},
-   second: { id: 1, name: "00"},
+   minute: { id: 0, name: "00"},
+   second: { id: 0, name: "00"},
 }
 
 const QuizSettings = () => {
    const dispatch = useAppDispatch();
    const navigate = useNavigate();
    const params = useParams();
-   const isOpen = useAppSelector((state) => state.Creator.isOpenQuizSettingsModal);
-   const form = useForm({ defaultValues, resolver, mode: "onChange" });
+   const isOpenQuizSettingsModal = useAppSelector((state) => state.Creator.isOpenQuizSettingsModal);
+   const quiz = useAppSelector((state) => state.Creator.quiz);
+   const form = useForm<DefaultValuesType>({ defaultValues, resolver: yupResolver(schema), mode: "onChange" });
 
    const handleClose = () => {
       if (!params.quizId) {
@@ -69,10 +82,24 @@ const QuizSettings = () => {
       dispatch(CreatorActions.setIsOpenQuizSettingsModal('CLOSE'));
    }
 
+   useEffect(() => {
+      if (isOpenQuizSettingsModal && quiz.id) {
+         const { minute, second } = formatTime(quiz.totalTime);
+         form.reset({
+            name: quiz.name,
+            description: quiz.description,
+            visibility: VisibilityEnums.PRIVATE,
+            image: null,
+            minute,
+            second,
+         });
+      }  
+   }, [isOpenQuizSettingsModal]);
+
    return (
       <FormProvider {...form}>
          <Modal
-            open={isOpen}
+            open={isOpenQuizSettingsModal}
             onClose={handleClose}
          >
             <S.QuizSettings>

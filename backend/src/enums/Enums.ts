@@ -8,3 +8,8 @@ export enum VisibilityEnums {
    PRIVATE = 'Private',
    PUBLIC = 'Public',
 }
+
+export enum PointEnums {
+   STANDART = 'Standart',
+   DOUBLE_UP = 'Double Up',
+}
