@@ -62,7 +62,7 @@ const Creator = () => {
   // const formValues = useWatch({ control: form.control });
   // console.log(formValues, ' formValues');
 
-  const { isLoading: isLoadingGetQuizById } = useThunk("getQuizById");
+  const { isLoading } = useThunk("getQuizByIdWithQuestions");
 
   useEffect(() => {
     //* Create a new quiz
@@ -108,13 +108,13 @@ const Creator = () => {
         <Stack 
           flexDirection="row" 
           height="100%"
-          borderTop={isLoadingGetQuizById ? "none" : `1px solid ${theme.palette.secondary.light}`}
-          borderBottom={isLoadingGetQuizById ? "none" : `1px solid ${theme.palette.secondary.light}`}
+          borderTop={isLoading ? "none" : `1px solid ${theme.palette.secondary.light}`}
+          borderBottom={isLoading ? "none" : `1px solid ${theme.palette.secondary.light}`}
           borderRadius="5px"
           bgcolor={theme.palette.common.white}
           position="relative"
         >
-          { isLoadingGetQuizById && <Loading fullWidth blur={2} size={60} /> }
+          { isLoading && <Loading fullWidth blur={2} size={60} /> }
           <Slides />
           <Question />
           <QuestionSettings />

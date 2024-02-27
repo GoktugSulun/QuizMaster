@@ -1,7 +1,7 @@
 import { ApiURL } from "@/Constants/ApiURL";
 import { request } from "@/Core/Request";
 import { CreatorActions } from "./Creator.slice";
-import { QuizWithQuestions, type QuizType, type QuizWithIdType, QuestionType, QuestionWithIdType } from "../Model/Creator.model";
+import { type QuizWithQuestions, type QuizType, type QuizWithIdType, type QuestionType, type QuestionWithIdType } from "../Model/Creator.model";
 
 const CreatorThunks = {
    createQuiz: (payload: QuizType) => request({
