@@ -13,7 +13,7 @@ export const questionSchema = new mongoose.Schema({
    time: { 
       type: Number
    },
-});
+}, { timestamps: true });
 
 const Question = mongoose.model('Question', questionSchema);
 export default Question;

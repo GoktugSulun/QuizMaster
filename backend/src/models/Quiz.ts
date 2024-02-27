@@ -36,7 +36,7 @@ export const quizSchema = new mongoose.Schema({
       type: [String, null],
       default: null
    }
-});
+}, { timestamps: true });
 
 const Quiz = mongoose.model('Quiz', quizSchema);
 export default Quiz;

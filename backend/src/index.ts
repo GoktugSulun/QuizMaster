@@ -8,6 +8,15 @@ import QuizRoute from './routes/QuizRoute.ts';
 //For env File 
 dotenv.config();
 
+// Mongoose config
+mongoose.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform(doc, ret, options) {
+    delete ret._id
+  },
+});
+
 const app: Application = express();
 const port = process.env.PORT || 8000;
 

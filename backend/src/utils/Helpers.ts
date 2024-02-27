@@ -25,7 +25,7 @@ class Helpers {
       }
       return {
          type: false,
-         message: (error instanceof Error) ? error.message : (message || 'Unknown Error')
+         message: (error instanceof Error) ? error.message : (message || 'Unknown Error!')
       }
    }
 }
