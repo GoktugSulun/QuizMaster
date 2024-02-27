@@ -6,15 +6,8 @@ export const quizSchema = new mongoose.Schema({
       type: String, 
       trim: true, 
       required: [true, 'Name is a required field'],
-      // unique: [true, 'You have already same quiz with this name, try another'],
       minLength: [3, "Name must have minimum three(3) characters"],
       maxLength: [40, "Name must have maximum forty(40) characters"],
-      // validate: {
-      //    validator: (value: String) => {
-      //       return value === "deneme"
-      //    },
-      //    message: "Name property should be 'deneme' for this example instead of {VALUE}"
-      // }
    },
    description: { 
       type: String, 
