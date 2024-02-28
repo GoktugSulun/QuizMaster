@@ -25,6 +25,7 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
   const isCreatorPage = pathname.includes('/creator');
   const doesQuizIdExist = !!useAppSelector((state) => state.Creator.quiz.id);
 
+  // TODO : Fix this title
   const pageTitle = (() => {
     if (is404) {
       return 'Page Not Found';
