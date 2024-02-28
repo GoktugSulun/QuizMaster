@@ -10,7 +10,7 @@ interface IError {
 class QuizController {
   static async getAll(req: Request, res: Response) {
     try {
-      const result = await QuizService.getAll();
+      const result = await QuizService.getAll(req);
       Helpers.responseJSON(res, result);
     } catch (error) {
       const err = error as IError;
@@ -41,6 +41,46 @@ class QuizController {
   static async edit(req: Request, res: Response) {
     try {
       const result = await QuizService.edit(req);
+      Helpers.responseJSON(res, result);
+    } catch (error) {
+      const err = error as IError;
+      Helpers.responseMessage(res, false, err.message);
+    }
+  }
+
+  static async like(req: Request, res: Response) {
+    try {
+      const result = await QuizService.like(req);
+      Helpers.responseJSON(res, result);
+    } catch (error) {
+      const err = error as IError;
+      Helpers.responseMessage(res, false, err.message);
+    }
+  }
+
+  static async unlike(req: Request, res: Response) {
+    try {
+      const result = await QuizService.unlike(req);
+      Helpers.responseJSON(res, result);
+    } catch (error) {
+      const err = error as IError;
+      Helpers.responseMessage(res, false, err.message);
+    }
+  }
+
+  static async save(req: Request, res: Response) {
+    try {
+      const result = await QuizService.save(req);
+      Helpers.responseJSON(res, result);
+    } catch (error) {
+      const err = error as IError;
+      Helpers.responseMessage(res, false, err.message);
+    }
+  }
+
+  static async unsave(req: Request, res: Response) {
+    try {
+      const result = await QuizService.unsave(req);
       Helpers.responseJSON(res, result);
     } catch (error) {
       const err = error as IError;

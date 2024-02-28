@@ -4,10 +4,14 @@ import Helpers from "../utils/Helpers.ts";
 import Quiz from "../models/Quiz.ts";
 import { authorizedUserId } from "../index.ts";
 import { VisibilityEnums } from "../enums/Enums.ts";
+import Like from "../models/Like.ts";
+import Save from "../models/Save.ts";
 
 class QuizService {
-  static async getAll(): Promise<IResponse> {
-    const data = await Quiz.find({ visibility: VisibilityEnums.PUBLIC });
+  static async getAll(req: Request): Promise<IResponse> {
+    const isRemoved = req.query.isRemoved === "true";
+
+    const data = await Quiz.find({ visibility: VisibilityEnums.PUBLIC, isRemoved });
 
     try {
       return {
@@ -37,7 +41,8 @@ class QuizService {
 
   static async create(req: Request): Promise<IResponse> {
     try {
-      const quizData = req.body as typeof Quiz;
+      // Todo : type tanımla
+      const quizData = req.body;
       
       const quiz = new Quiz({ ...quizData, creatorId: authorizedUserId });
       const data = await quiz.save();
@@ -55,7 +60,8 @@ class QuizService {
 
   static async edit(req: Request): Promise<IResponse> {
     try {
-      const quizData = req.body as typeof Quiz;
+      // Todo : type tanımla
+      const quizData = req.body;
       const { id } = req.params;
       
       const data = await Quiz.findByIdAndUpdate(
@@ -67,6 +73,84 @@ class QuizService {
       return { 
         type: true, 
         message: `Quiz with id '${id}' has been updated successfully!`, 
+        data
+      };
+
+    } catch (error) {
+      return Helpers.responseError(error)
+    }
+  }
+
+  static async like(req: Request): Promise<IResponse> {
+    try {
+      const { quizId } = req.body as { quizId: string; };
+
+      const newLikedData = new Like({ quizId, userId: authorizedUserId });
+      const data = await newLikedData.save();
+      
+      return { 
+        type: true, 
+        message: `Quiz with id '${quizId}' has been liked successfully!`,
+        data
+      };
+
+    } catch (error) {
+      return Helpers.responseError(error)
+    }
+  }
+
+  static async unlike(req: Request): Promise<IResponse> {
+    try {
+      const { id } = req.params as { id: string; };
+      
+      const data = await Like.findByIdAndUpdate(
+        { _id: id }, 
+        { $set: { isRemoved: true } },
+        { returnOriginal: false }
+      );
+      
+      return { 
+        type: true, 
+        message: `You have removed your like from quiz with id '${id}'`,
+        data
+      };
+
+    } catch (error) {
+      return Helpers.responseError(error)
+    }
+  }
+
+  static async save(req: Request): Promise<IResponse> {
+    try {
+      const { quizId } = req.body as { quizId: string; };
+      
+      const newSavedData = new Save({ quizId, userId: authorizedUserId });
+      const data = await newSavedData.save();
+      
+      return { 
+        type: true, 
+        message: `Quiz with id '${quizId}' has been saved successfully!`,
+        data
+      };
+
+    } catch (error) {
+      return Helpers.responseError(error)
+    }
+  }
+
+  static async unsave(req: Request): Promise<IResponse> {
+    try {
+      const { id } = req.params as { id: string; };
+      
+      const data = await Save.findByIdAndUpdate(
+        { _id: id }, 
+        { $set: { isRemoved: true } },
+        { returnOriginal: false }
+      );
+      
+      return { 
+        type: true, 
+        message: `You have removed your save from quiz with id '${id}'`,
         data
       };
 
