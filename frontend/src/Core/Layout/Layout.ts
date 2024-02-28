@@ -11,13 +11,13 @@ export const FullSizeLoadingWrapper = styled('div')({
 
 export const MainWrapper = styled('div')({
    display: 'flex',
-   padding: '10px 20px 10px 10px',
+   padding: "0 20px 10px 10px",
    gap: 30
 });
 
 export const PageWrapper = styled('div')({
    flex: 1,
-   padding: '30px 15px',
+   padding: '30px 15px 0',
 });
 
 export const ContentWrapper = styled('div')({

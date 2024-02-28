@@ -1,11 +1,11 @@
-import { Box, IconButton, Typography, alpha, styled } from "@mui/material";
+import { Box, IconButton, Stack, Typography, alpha, styled } from "@mui/material";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { shouldForwardProp } from "@/Core/Utils";
 import { PageWrapper } from "@/Core/Layout";
 
 export const Dashboard = styled(PageWrapper)({});
 
-export const QuizPreview = styled(Box)(({ theme }) => ({
+export const QuizPreview = styled(Stack)(({ theme }) => ({
    background: theme.palette.common.white,
    borderRadius: 20,
    height: '100%',

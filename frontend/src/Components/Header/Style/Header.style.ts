@@ -1,8 +1,16 @@
-import { Button, MenuItem, Typography, alpha, styled } from '@mui/material'
+import { Button, MenuItem, Stack, Typography, alpha, styled } from '@mui/material';
+
+export const HeaderWrapper = styled(Stack)(({ theme }) => ({
+   width: '100%',
+   height: "90px",
+   position: "sticky",
+   top: 0,
+   zIndex: 10,
+}));
 
 export const Header = styled('div')(({ theme }) => ({
    width: '100%',
-   height: 80,
+   height: '80px',
    borderRadius: 5,
    background: theme.palette.common.white,
    boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
