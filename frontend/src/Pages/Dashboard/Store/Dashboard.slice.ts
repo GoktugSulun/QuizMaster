@@ -1,12 +1,10 @@
-import { QuizWithIdType } from '@/Pages/Creator/Model/Creator.model';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { IQuiz } from '../../../../../common/ApiModels';
 
 const NAME = 'Dashboard';
 
-export type CreatedQuizType = Omit<QuizWithIdType, "image"> & { image: string | null }
-
 type InitialStateTypes = {
-  quizzes: CreatedQuizType[]
+  quizzes: IQuiz[]
 }
 
 const initialState: InitialStateTypes = {
@@ -17,8 +15,20 @@ const DashboardSlice = createSlice({
   name: NAME,
   initialState,
   reducers: {
-    setQuizzes: (state, action: PayloadAction<CreatedQuizType[]>) => {
+    setQuizzes: (state, action: PayloadAction<IQuiz[]>) => {
       state.quizzes = action.payload;
+    },
+    setQuiz: (state, action: PayloadAction<IQuiz>) => {
+      const index = state.quizzes.findIndex((quiz) => quiz.id === action.payload.id);
+      state.quizzes[index] = action.payload;
+    },
+    updateFavoriteField: (state, action: PayloadAction<{ quizId: string, value: boolean; }>) => {
+      const index = state.quizzes.findIndex((quiz) => quiz.id === action.payload.quizId);
+      state.quizzes[index].isFavorite = action.payload.value;
+    },
+    updateSaveField: (state, action: PayloadAction<{ quizId: string, value: boolean; }>) => {
+      const index = state.quizzes.findIndex((quiz) => quiz.id === action.payload.quizId);
+      state.quizzes[index].isSaved = action.payload.value;
     }
   },
 });
