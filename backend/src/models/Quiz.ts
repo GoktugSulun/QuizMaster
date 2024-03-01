@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { VisibilityEnums } from '../enums/Enums.ts';
+import { VisibilityEnums } from '../constants/Enums/Enums.ts';
 
 export const quizSchema = new mongoose.Schema({
    name: { 

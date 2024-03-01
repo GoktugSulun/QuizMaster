@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import QuizService from '../services/QuizService.ts';
 import Helpers from '../utils/Helpers.ts';
+import { authorizedUserId } from "../index.ts";
+import { type ICreate, type IEdit, type IMarkAsFavorite, type IMarkAsSaved, type IUnmarkAsFavorite } from "../constants/Types/Quiz/QuizType.ts";
 
 interface IError {
   type: boolean;
@@ -10,7 +12,8 @@ interface IError {
 class QuizController {
   static async getAll(req: Request, res: Response) {
     try {
-      const result = await QuizService.getAll(req);
+      const params = { isRemoved: req.params.isRemoved === "true" }
+      const result = await QuizService.getAll(params);
       Helpers.responseJSON(res, result);
     } catch (error) {
       const err = error as IError;
@@ -19,8 +22,12 @@ class QuizController {
   }
 
   static async getById(req: Request, res: Response) {
+    if (!req.params.id) { 
+      return Helpers.responseMessage(res, false, "'Id' field is required!");
+    }
     try {
-      const result = await QuizService.getById(req);
+      const params = { id: req.params.id };
+      const result = await QuizService.getById(params);
       Helpers.responseJSON(res, result);
     } catch (error) {
       const err = error as IError;
@@ -30,7 +37,9 @@ class QuizController {
 
   static async create(req: Request, res: Response) {
     try {
-      const result = await QuizService.create(req);
+      // Todo : Validate req.body
+      const params = { ...req.body, creatorId: authorizedUserId } as ICreate;
+      const result = await QuizService.create(params);
       Helpers.responseJSON(res, result);
     } catch (error) {
       const err = error as IError;
@@ -39,8 +48,13 @@ class QuizController {
   }
 
   static async edit(req: Request, res: Response) {
+    if (!req.params.id) { 
+      return Helpers.responseMessage(res, false, "'Id' field is required!");
+    }
     try {
-      const result = await QuizService.edit(req);
+      // Todo : Validate req.body
+      const params = { body: req.body, id: req.params.id } as IEdit;
+      const result = await QuizService.edit(params);
       Helpers.responseJSON(res, result);
     } catch (error) {
       const err = error as IError;
@@ -48,9 +62,11 @@ class QuizController {
     }
   }
 
-  static async like(req: Request, res: Response) {
+  static async markAsFavorite(req: Request, res: Response) {
     try {
-      const result = await QuizService.like(req);
+      // Todo : Validate req.body
+      const params = req.body as IMarkAsFavorite;
+      const result = await QuizService.markAsFavorite(params);
       Helpers.responseJSON(res, result);
     } catch (error) {
       const err = error as IError;
@@ -58,9 +74,13 @@ class QuizController {
     }
   }
 
-  static async unlike(req: Request, res: Response) {
+  static async unmarkAsFavorite(req: Request, res: Response) {
+    if (!req.params.id) { 
+      return Helpers.responseMessage(res, false, "'Id' field is required!");
+    }
     try {
-      const result = await QuizService.unlike(req);
+      const params = { quizId: req.params.id } as IUnmarkAsFavorite;
+      const result = await QuizService.unmarkAsFavorite(params);
       Helpers.responseJSON(res, result);
     } catch (error) {
       const err = error as IError;
@@ -68,9 +88,11 @@ class QuizController {
     }
   }
 
-  static async save(req: Request, res: Response) {
+  static async markAsSaved(req: Request, res: Response) {
     try {
-      const result = await QuizService.save(req);
+      // Todo : Validate req.body
+      const params = req.body as IMarkAsSaved;
+      const result = await QuizService.markAsSaved(params);
       Helpers.responseJSON(res, result);
     } catch (error) {
       const err = error as IError;
@@ -78,9 +100,13 @@ class QuizController {
     }
   }
 
-  static async unsave(req: Request, res: Response) {
+  static async unmarkAsSaved(req: Request, res: Response) {
+    if (!req.params.id) { 
+      return Helpers.responseMessage(res, false, "'Id' field is required!");
+    }
     try {
-      const result = await QuizService.unsave(req);
+      const params = { quizId: req.params.id };
+      const result = await QuizService.unmarkAsSaved(params);
       Helpers.responseJSON(res, result);
     } catch (error) {
       const err = error as IError;

@@ -1,15 +1,15 @@
-import { Request } from "express";
 import { IResponse } from "../types/Types.ts";
 import Helpers from "../utils/Helpers.ts";
 import Quiz from "../models/Quiz.ts";
 import { authorizedUserId } from "../index.ts";
-import { VisibilityEnums } from "../enums/Enums.ts";
-import Like from "../models/Like.ts";
+import { VisibilityEnums } from "../constants/Enums/Enums.ts";
+import Favorite from "../models/Favorite.ts";
 import Save from "../models/Save.ts";
+import { type IEdit, type ICreate, type IGetAll, type IGetById, IMarkAsFavorite, type IUnmarkAsFavorite, type IMarkAsSaved, type IUnmarkAsSaved } from "../constants/Types/Quiz/QuizType.ts";
 
 class QuizService {
-  static async getAll(req: Request): Promise<IResponse> {
-    const isRemoved = req.query.isRemoved === "true";
+  static async getAll(params: IGetAll): Promise<IResponse> {
+    const { isRemoved } = params;
 
     const data = await Quiz.find({ visibility: VisibilityEnums.PUBLIC, isRemoved });
 
@@ -24,8 +24,8 @@ class QuizService {
     }
   }
 
-  static async getById(req: Request): Promise<IResponse> {
-    const { id } = req.params;
+  static async getById(params: IGetById): Promise<IResponse> {
+    const { id } = params;
     const data = await Quiz.find({ _id: id, creatorId: authorizedUserId });
 
     try {
@@ -39,12 +39,11 @@ class QuizService {
     }
   }
 
-  static async create(req: Request): Promise<IResponse> {
+  static async create(params: ICreate): Promise<IResponse> {
     try {
-      // Todo : type tanımla
-      const quizData = req.body;
+      const quizData = params;
       
-      const quiz = new Quiz({ ...quizData, creatorId: authorizedUserId });
+      const quiz = new Quiz(quizData);
       const data = await quiz.save();
       
       return { 
@@ -58,11 +57,9 @@ class QuizService {
     }
   }
 
-  static async edit(req: Request): Promise<IResponse> {
+  static async edit(params: IEdit): Promise<IResponse> {
     try {
-      // Todo : type tanımla
-      const quizData = req.body;
-      const { id } = req.params;
+      const { body: quizData, id } = params;
       
       const data = await Quiz.findByIdAndUpdate(
         { _id: id }, 
@@ -81,17 +78,34 @@ class QuizService {
     }
   }
 
-  static async like(req: Request): Promise<IResponse> {
+  static async markAsFavorite(params: IMarkAsFavorite): Promise<IResponse> {
     try {
-      const { quizId } = req.body as { quizId: string; };
+      const { quizId } = params;
 
-      const newLikedData = new Like({ quizId, userId: authorizedUserId });
-      const data = await newLikedData.save();
+      const isQuizExisted = await Quiz.exists({ _id: quizId });
+      console.log(isQuizExisted, ' isQuizExisted');
+      
+      if (!isQuizExisted) {
+        return {
+          type: false,
+          message: `Quiz with id '${quizId}' couldn't find!`,
+        }
+      }
+
+      const isExisted = await Favorite.exists({ userId: authorizedUserId, quizId, isRemoved: false });
+      if (isExisted) {
+        return { 
+          type: false, 
+          message: `Quiz with id '${quizId}' has been already add to favorites!`,
+        };
+      }
+
+      const newFavoriteData = new Favorite({ quizId, userId: authorizedUserId });
+      await newFavoriteData.save();
       
       return { 
         type: true, 
-        message: `Quiz with id '${quizId}' has been liked successfully!`,
-        data
+        message: `Quiz with id '${quizId}' has been added to favorites successfully!`,
       };
 
     } catch (error) {
@@ -99,20 +113,35 @@ class QuizService {
     }
   }
 
-  static async unlike(req: Request): Promise<IResponse> {
+  static async unmarkAsFavorite(params: IUnmarkAsFavorite): Promise<IResponse> {
     try {
-      const { id } = req.params as { id: string; };
+      const { quizId } = params;
+
+      const isQuizExisted = await Quiz.exists({ _id: quizId });
+      if (!isQuizExisted) {
+        return {
+          type: false,
+          message: `Quiz with id '${quizId}' couldn't find!`,
+        }
+      }
+
+      const isExisted = await Favorite.exists({ userId: authorizedUserId, quizId, isRemoved: false });
+      if (!isExisted) {
+        return { 
+          type: false, 
+          message: `Quiz with id '${quizId}' hasn't been add to favorites yet!`,
+        };
+      }
       
-      const data = await Like.findByIdAndUpdate(
-        { _id: id }, 
+      await Favorite.findByIdAndUpdate(
+        { _id: quizId }, 
         { $set: { isRemoved: true } },
         { returnOriginal: false }
       );
       
       return { 
         type: true, 
-        message: `You have removed your like from quiz with id '${id}'`,
-        data
+        message: `Quiz with id '${quizId}' has been removed from favorites`
       };
 
     } catch (error) {
@@ -120,17 +149,32 @@ class QuizService {
     }
   }
 
-  static async save(req: Request): Promise<IResponse> {
+  static async markAsSaved(params: IMarkAsSaved): Promise<IResponse> {
     try {
-      const { quizId } = req.body as { quizId: string; };
+      const { quizId } = params;
+
+      const isQuizExisted = await Quiz.exists({ _id: quizId });
+      if (!isQuizExisted) {
+        return {
+          type: false,
+          message: `Quiz with id '${quizId}' couldn't find!`,
+        }
+      }
+
+      const isExisted = await Favorite.exists({ userId: authorizedUserId, quizId, isRemoved: false });
+      if (isExisted) {
+        return { 
+          type: false, 
+          message: `Quiz with id '${quizId}' has been already saved!`,
+        };
+      }
       
       const newSavedData = new Save({ quizId, userId: authorizedUserId });
-      const data = await newSavedData.save();
+      await newSavedData.save();
       
       return { 
         type: true, 
         message: `Quiz with id '${quizId}' has been saved successfully!`,
-        data
       };
 
     } catch (error) {
@@ -138,19 +182,35 @@ class QuizService {
     }
   }
 
-  static async unsave(req: Request): Promise<IResponse> {
+  static async unmarkAsSaved(params: IUnmarkAsSaved): Promise<IResponse> {
     try {
-      const { id } = req.params as { id: string; };
+      const { quizId } = params;
+
+      const isQuizExisted = await Quiz.exists({ _id: quizId });
+      if (!isQuizExisted) {
+        return {
+          type: false,
+          message: `Quiz with id '${quizId}' couldn't find!`,
+        }
+      }
+
+      const isExisted = await Favorite.exists({ userId: authorizedUserId, quizId, isRemoved: false });
+      if (!isExisted) {
+        return { 
+          type: false, 
+          message: `Quiz with id '${quizId}' hasn't been saved yet!`,
+        };
+      }
       
       const data = await Save.findByIdAndUpdate(
-        { _id: id }, 
+        { _id: quizId }, 
         { $set: { isRemoved: true } },
         { returnOriginal: false }
       );
       
       return { 
         type: true, 
-        message: `You have removed your save from quiz with id '${id}'`,
+        message: `Quiz with id '${quizId}' has been removed from saves`,
         data
       };
 

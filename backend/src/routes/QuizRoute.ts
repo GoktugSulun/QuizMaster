@@ -14,11 +14,11 @@ app.post('/', QuizController.create);
 app.put('/:id', QuizController.edit);
 
 // Like
-app.post('/like', QuizController.like);
-app.put('/unlike/:id', QuizController.unlike);
+app.post('/markAsFavorite', QuizController.markAsFavorite);
+app.put('/unmarkAsFavorite/:id', QuizController.unmarkAsFavorite);
 
 // Save
-app.post('/save', QuizController.save);
-app.put('/unsave/:id', QuizController.unsave);
+app.post('/markAsSaved', QuizController.markAsSaved);
+app.put('/unmarkAsSaved/:id', QuizController.unmarkAsSaved);
 
 export default app;  
