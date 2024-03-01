@@ -3,6 +3,7 @@ import QuizService from '../services/QuizService.ts';
 import Helpers from '../utils/Helpers.ts';
 import { authorizedUserId } from "../index.ts";
 import { type ICreate, type IEdit, type IMarkAsFavorite, type IMarkAsSaved, type IUnmarkAsFavorite } from "../constants/Types/Quiz/QuizType.ts";
+import { VisibilityEnums } from "../constants/Enums/Enums.ts";
 
 interface IError {
   type: boolean;
@@ -26,7 +27,10 @@ class QuizController {
       return Helpers.responseMessage(res, false, "'Id' field is required!");
     }
     try {
-      const params = { id: req.params.id };
+      const params = { 
+        id: req.params.id, 
+        isRemoved: req.params.isRemoved === "true"
+      };
       const result = await QuizService.getById(params);
       Helpers.responseJSON(res, result);
     } catch (error) {

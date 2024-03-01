@@ -8,14 +8,17 @@ import QuizPreviewFooter from './QuizPreviewFooter';
 import QuizPreviewBody from './QuizPreviewBody';
 import { CustomTooltip } from '@/Components/Tooltip';
 import defaultImage from '@/Pngs/DefaultQuizImg.png';
-import { type IQuiz } from '../../../../../common/ApiModels';
 import DashboardThunks from '../Store/Dashboard.thunk';
 import { Loading } from '@/Core/Components';
 import { useThunk } from '@/Core/Hooks';
+import { IQuizResponse } from '@/Constants/ResponseTypes';
+import { useState } from 'react';
 
-const QuizPreview = (props: { data: IQuiz }) => {
+const QuizPreview = (props: { data: IQuizResponse }) => {
    const { id, name, description, totalTime, image, isFavorite, isSaved } = props.data;
    const theme = useTheme();
+   const [showFavoriteTooltip, setShowFavoriteTooltip] = useState(false);
+   const [showSaveTooltip, setShowSaveTooltip] = useState(false);
 
    const { isLoading: isLoadingMarkFavorite } = useThunk("markQuizAsFavorite");
    const { isLoading: isLoadingUnmarkFavorite } = useThunk("unmarkQuizAsFavorite");
@@ -24,18 +27,22 @@ const QuizPreview = (props: { data: IQuiz }) => {
 
    const markQuizAsFavorite = () => {
       DashboardThunks.markQuizAsFavorite({ quizId: id });
+      setShowFavoriteTooltip(false);
    }
 
    const unmarkQuizAsFavorite = () => {
       DashboardThunks.unmarkQuizAsFavorite(id);
+      setShowFavoriteTooltip(false);
    }
 
    const markQuizAsSaved = () => {
       DashboardThunks.markQuizAsSaved({ quizId: id });
+      setShowSaveTooltip(false);
    }
 
    const unmarkQuizAsSaved = () => {
       DashboardThunks.unmarkQuizAsSaved(id);
+      setShowSaveTooltip(false);
    }
 
    return (
@@ -58,6 +65,9 @@ const QuizPreview = (props: { data: IQuiz }) => {
                <CustomTooltip 
                   arrow 
                   placement="top" 
+                  open={showFavoriteTooltip} 
+                  onOpen={() => setShowFavoriteTooltip(true)}
+                  onClose={() => setShowFavoriteTooltip(false)}
                   title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
                >
                   <S.LikeButton 
@@ -74,6 +84,9 @@ const QuizPreview = (props: { data: IQuiz }) => {
                <CustomTooltip 
                   arrow 
                   placement="top" 
+                  open={showSaveTooltip} 
+                  onOpen={() => setShowSaveTooltip(true)}
+                  onClose={() => setShowSaveTooltip(false)}
                   title={isSaved ? 'Remove from saved' : 'Add to saved'}
                >
                   <S.LikeButton 

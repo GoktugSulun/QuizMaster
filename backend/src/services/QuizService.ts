@@ -6,14 +6,26 @@ import { VisibilityEnums } from "../constants/Enums/Enums.ts";
 import Favorite from "../models/Favorite.ts";
 import Save from "../models/Save.ts";
 import { type IEdit, type ICreate, type IGetAll, type IGetById, IMarkAsFavorite, type IUnmarkAsFavorite, type IMarkAsSaved, type IUnmarkAsSaved } from "../constants/Types/Quiz/QuizType.ts";
+import { type IQuizResponse } from "../constants/Types/Quiz/QuizResponseTypes.ts";
 
 class QuizService {
   static async getAll(params: IGetAll): Promise<IResponse> {
-    const { isRemoved } = params;
-
-    const data = await Quiz.find({ visibility: VisibilityEnums.PUBLIC, isRemoved });
-
     try {
+      const { isRemoved } = params;
+
+      const quizData = await Quiz.find({ visibility: VisibilityEnums.PUBLIC, isRemoved });
+      
+      const data = await Promise.all(quizData.map(async (quiz) => {
+        const favoriteData = await Favorite.findOne({ quizId: quiz.id, userId: authorizedUserId, isRemoved: false });
+        const saveData = await Save.findOne({ quizId: quiz.id, userId: authorizedUserId, isRemoved: false });
+
+        return {
+          ...quiz.toJSON(),
+          isFavorite: !!favoriteData,
+          isSaved: !!saveData,
+        }
+      }));
+
       return {
         type: true,
         message: 'All quizzes has been fetched',
@@ -25,14 +37,30 @@ class QuizService {
   }
 
   static async getById(params: IGetById): Promise<IResponse> {
-    const { id } = params;
-    const data = await Quiz.find({ _id: id, creatorId: authorizedUserId });
-
     try {
+      const { id, isRemoved } = params;
+
+      const quizData = await Quiz.findOne({ _id: id, creatorId: authorizedUserId, isRemoved });
+      const favoriteData = await Favorite.findOne({ quizId: id, userId: authorizedUserId, isRemoved: false });
+      const saveData = await Save.findOne({ quizId: id, userId: authorizedUserId, isRemoved: false });
+
+      if (!quizData) {
+        return {
+          type: false,
+          message: `Quiz with id '${id}' couldn't find!`,
+        }
+      }
+      
+      const data = {
+        ...quizData.toJSON(),
+        isFavorite: !!favoriteData,
+        isSaved: !!saveData,
+      } as IQuizResponse;
+
       return {
         type: true,
         message: `Quiz with id '${id}' has been fetched successfully`,
-        data: data[0] || {}
+        data
       };
     } catch (error) {
       return Helpers.responseError(error)
@@ -131,12 +159,11 @@ class QuizService {
           type: false, 
           message: `Quiz with id '${quizId}' hasn't been add to favorites yet!`,
         };
-      }
+      };
       
-      await Favorite.findByIdAndUpdate(
-        { _id: quizId }, 
+      await Favorite.findOneAndUpdate(
+        { quizId, userId: authorizedUserId, isRemoved: false }, 
         { $set: { isRemoved: true } },
-        { returnOriginal: false }
       );
       
       return { 
@@ -161,7 +188,7 @@ class QuizService {
         }
       }
 
-      const isExisted = await Favorite.exists({ userId: authorizedUserId, quizId, isRemoved: false });
+      const isExisted = await Save.exists({ userId: authorizedUserId, quizId, isRemoved: false });
       if (isExisted) {
         return { 
           type: false, 
@@ -194,7 +221,7 @@ class QuizService {
         }
       }
 
-      const isExisted = await Favorite.exists({ userId: authorizedUserId, quizId, isRemoved: false });
+      const isExisted = await Save.exists({ userId: authorizedUserId, quizId, isRemoved: false });
       if (!isExisted) {
         return { 
           type: false, 
@@ -202,16 +229,14 @@ class QuizService {
         };
       }
       
-      const data = await Save.findByIdAndUpdate(
-        { _id: quizId }, 
-        { $set: { isRemoved: true } },
-        { returnOriginal: false }
+      await Save.findOneAndUpdate(
+        { quizId, userId: authorizedUserId, isRemoved: false }, 
+        { isRemoved: true },
       );
       
       return { 
         type: true, 
-        message: `Quiz with id '${quizId}' has been removed from saves`,
-        data
+        message: `Quiz with id '${quizId}' has been removed from saves`
       };
 
     } catch (error) {

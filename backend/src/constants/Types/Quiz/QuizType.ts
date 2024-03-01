@@ -6,6 +6,7 @@ export interface IGetAll {
 
 export interface IGetById {
    id: string;
+   isRemoved: boolean;
 }
 
 export interface ICreate {

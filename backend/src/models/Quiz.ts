@@ -1,7 +1,21 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import { VisibilityEnums } from '../constants/Enums/Enums.ts';
 
-export const quizSchema = new mongoose.Schema({
+interface IQuizSchema {
+   id: Types.ObjectId;
+   createdAt: Date;
+   updatedAt: Date;
+   name: string;
+   description: string;
+   totalTime: number;
+   visibility: VisibilityEnums;
+   image: String | null;
+   creatorId: string;
+   isRemoved: boolean;
+   format(): any; 
+}
+
+export const quizSchema = new mongoose.Schema<IQuizSchema>({
    name: { 
       type: String, 
       trim: true, 
@@ -26,7 +40,7 @@ export const quizSchema = new mongoose.Schema({
       required: true
    },
    image: {
-      type: [String, null],
+      type: String || null,
       default: null
    },
    creatorId: {
@@ -40,5 +54,21 @@ export const quizSchema = new mongoose.Schema({
    }
 }, { timestamps: true });
 
-const Quiz = mongoose.model('Quiz', quizSchema);
+// quizSchema.method("toJSON", function toJSON() {
+//    const { _id, ...object} = this.toObject();
+//    return {
+//      id: _id,
+//      ...object
+//    };
+//  });
+
+// quizSchema.methods.format = function(type: IQuizDocument) {
+//    const quiz = this.toObject();
+//    quiz.id = quiz._id;
+//    delete quiz._id;
+//    delete quiz.__v;
+//    return quiz;
+// };
+
+const Quiz = mongoose.model<IQuizSchema>('Quiz', quizSchema);
 export default Quiz;
