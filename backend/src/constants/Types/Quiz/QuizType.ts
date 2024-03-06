@@ -27,11 +27,3 @@ export interface IEdit {
    body: ICreate;
    id: string;
 }
-
-export interface IMarkAsSaved {
-   quizId: string;
-}
-
-export interface IUnmarkAsSaved {
-   quizId: string;
-}

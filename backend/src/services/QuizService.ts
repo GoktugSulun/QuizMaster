@@ -5,7 +5,7 @@ import { authorizedUserId } from "../index.ts";
 import { VisibilityEnums } from "../constants/Enums/Enums.ts";
 import Favorite from "../models/Favorite.ts";
 import Save from "../models/Save.ts";
-import { type IEdit, type ICreate, type IGetAll, type IGetById, type IMarkAsSaved, type IUnmarkAsSaved } from "../constants/Types/Quiz/QuizType.ts";
+import { type IEdit, type ICreate, type IGetAll, type IGetById } from "../constants/Types/Quiz/QuizType.ts";
 import { type IQuizResponse } from "../constants/Types/Quiz/QuizResponseTypes.ts";
 
 class QuizService {
@@ -126,74 +126,6 @@ class QuizService {
         type: true, 
         message: `Quiz with id '${id}' has been updated successfully!`, 
         data
-      };
-
-    } catch (error) {
-      return Helpers.responseError(error)
-    }
-  }
-
-  static async markAsSaved(params: IMarkAsSaved): Promise<IResponse> {
-    try {
-      const { quizId } = params;
-
-      const isQuizExisted = await Quiz.exists({ _id: quizId });
-      if (!isQuizExisted) {
-        return {
-          type: false,
-          message: `Quiz with id '${quizId}' couldn't find!`,
-        }
-      }
-
-      const isExisted = await Save.exists({ userId: authorizedUserId, quizId, isRemoved: false });
-      if (isExisted) {
-        return { 
-          type: false, 
-          message: `Quiz with id '${quizId}' has been already saved!`,
-        };
-      }
-      
-      const newSavedData = new Save({ quizId, userId: authorizedUserId });
-      await newSavedData.save();
-      
-      return { 
-        type: true, 
-        message: `Quiz with id '${quizId}' has been saved successfully!`,
-      };
-
-    } catch (error) {
-      return Helpers.responseError(error)
-    }
-  }
-
-  static async unmarkAsSaved(params: IUnmarkAsSaved): Promise<IResponse> {
-    try {
-      const { quizId } = params;
-
-      const isQuizExisted = await Quiz.exists({ _id: quizId });
-      if (!isQuizExisted) {
-        return {
-          type: false,
-          message: `Quiz with id '${quizId}' couldn't find!`,
-        }
-      }
-
-      const isExisted = await Save.exists({ userId: authorizedUserId, quizId, isRemoved: false });
-      if (!isExisted) {
-        return { 
-          type: false, 
-          message: `Quiz with id '${quizId}' hasn't been saved yet!`,
-        };
-      }
-      
-      await Save.findOneAndUpdate(
-        { quizId, userId: authorizedUserId, isRemoved: false }, 
-        { isRemoved: true },
-      );
-      
-      return { 
-        type: true, 
-        message: `Quiz with id '${quizId}' has been removed from saves`
       };
 
     } catch (error) {
