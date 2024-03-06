@@ -1,7 +1,12 @@
-import { VisibilityEnums } from "../../Enums/Enums";
+import { QuizTypeEnums, VisibilityEnums } from "../../Enums/Enums";
 
 export interface IGetAll {
    isRemoved: boolean;
+}
+
+export interface IGetByType {
+   isRemoved: boolean;
+   type: QuizTypeEnums;
 }
 
 export interface IGetById {
@@ -21,14 +26,6 @@ export interface ICreate {
 export interface IEdit {
    body: ICreate;
    id: string;
-}
-
-export interface IMarkAsFavorite {
-   quizId: string;
-}
-
-export interface IUnmarkAsFavorite {
-   quizId: string;
 }
 
 export interface IMarkAsSaved {
