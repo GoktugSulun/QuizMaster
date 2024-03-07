@@ -36,8 +36,8 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
     }
     
     switch (pathname) {
-      case '/':
-        return 'Home'
+      case '/feed':
+        return 'All Quizzes'
       case '/quiz':
         return (
           // TODO : Responsive
