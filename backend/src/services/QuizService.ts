@@ -1,19 +1,24 @@
-import { IResponse } from "../types/Types.ts";
 import Helpers from "../utils/Helpers.ts";
 import Quiz from "../models/Quiz.ts";
 import { authorizedUserId } from "../index.ts";
-import { VisibilityEnums } from "../constants/Enums/Enums.ts";
 import Favorite from "../models/Favorite.ts";
 import Save from "../models/Save.ts";
-import { type IEdit, type ICreate, type IGetAll, type IGetById } from "../constants/Types/Quiz/QuizType.ts";
+import { type IEdit, type ICreate, type IGet, type IGetById, type IGetAll } from "../constants/Types/Quiz/QuizType.ts";
+import { type IResponse } from "../types/Types.ts";
 import { type IQuizResponse } from "../constants/Types/Quiz/QuizResponseTypes.ts";
+import FavoriteService from "./FavoriteService.ts";
+import { QuizTypeEnums, VisibilityEnums } from "../constants/Enums/Enums.ts";
 
 class QuizService {
   static async getAll(params: IGetAll): Promise<IResponse> {
     try {
-      const { isRemoved } = params;
+      const { page, limit, isRemoved } = params;
+      const skip = page === 1 ? 0 : (page - 1) * limit;
 
-      const quizData = await Quiz.find({ visibility: VisibilityEnums.PUBLIC, isRemoved });
+      const quizData = await Quiz
+        .find({ visibility: VisibilityEnums.PUBLIC, isRemoved })
+        .skip(skip)
+        .limit(limit);
       
       const data = await Promise.all(quizData.map(async (quiz) => {
         const favoriteData = await Favorite.findOne({ quizId: quiz.id, userId: authorizedUserId, isRemoved: false });
@@ -28,7 +33,7 @@ class QuizService {
 
       return {
         type: true,
-        message: 'All quizzes has been fetched',
+        message: `All quizzes has been fetched`,
         data
       };
     } catch (error) {
@@ -36,26 +41,53 @@ class QuizService {
     }
   }
 
-  static async getByType(params: IGetAll): Promise<IResponse> {
+  static async get(params: IGet): Promise<IResponse> {
     try {
-      const { isRemoved } = params;
+      const { page, limit, type, isRemoved } = params;
 
-      const quizData = await Quiz.find({ visibility: VisibilityEnums.PUBLIC, isRemoved });
-      
-      const data = await Promise.all(quizData.map(async (quiz) => {
-        const favoriteData = await Favorite.findOne({ quizId: quiz.id, userId: authorizedUserId, isRemoved: false });
-        const saveData = await Save.findOne({ quizId: quiz.id, userId: authorizedUserId, isRemoved: false });
-
-        return {
-          ...quiz.toJSON(),
-          isFavorite: !!favoriteData,
-          isSaved: !!saveData,
+      const data = await (
+        async () => {
+          switch (type) {
+            case QuizTypeEnums.ALL: {
+              const result = await QuizService.getAll({ page, limit, isRemoved });
+              if (!result.type) {
+                throw new Error(result.message);
+              }
+              console.log(result.data, ' all');
+              
+              return result.data;
+            }
+            case QuizTypeEnums.FAVORITES: {
+              const result = await FavoriteService.getFavoriteQuizzes({ page, limit, isRemoved });
+              if (!result.type) {
+                throw new Error(result.message);
+              }
+              console.log(result.data, ' favorites');
+              
+              return result.data;
+            }
+            default:
+              throw new Error(`Invalid quiz type, it must be one of the QuizTypeEnums!`);
+          }
         }
-      }));
+      )();  
+
+      // const favoriteServiceResult = await FavoriteService.getAll({ isRemoved, page, limit });
+      // if (!favoriteServiceResult.type) { 
+      //   throw new Error(favoriteServiceResult.message); 
+      // }
+      
+      // const data = await Promise.all(favoriteServiceResult.data.map(async (item) => {
+      //   const quizData = await QuizService.getById({ id: item.quizId, isRemoved: false});
+      //   if (!quizData.type) {
+      //     throw new Error(quizData.message);
+      //   }
+      //   return quizData.data;
+      // }));
 
       return {
         type: true,
-        message: 'All quizzes has been fetched',
+        message: 'Quizzes has been fetched',
         data
       };
     } catch (error) {

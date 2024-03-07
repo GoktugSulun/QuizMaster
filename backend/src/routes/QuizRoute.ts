@@ -6,7 +6,7 @@ import SaveController from '../controllers/SaveController.ts';
 const app = express();
 
 // Get
-app.get('/all', QuizController.getAll);
+app.get('/', QuizController.get);
 app.get('/:id', QuizController.getById);
 
 // Create

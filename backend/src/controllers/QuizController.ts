@@ -4,12 +4,26 @@ import Helpers from '../utils/Helpers.ts';
 import { authorizedUserId } from "../index.ts";
 import { type ICreate, type IEdit } from "../constants/Types/Quiz/QuizType.ts";
 import { type IError } from "../constants/Types/Error/ErrorType.ts";
+import { QuizTypeEnums } from "../constants/Enums/Enums.ts";
 
 class QuizController {
-  static async getAll(req: Request, res: Response) {
+  static async get(req: Request, res: Response) {
     try {
-      const params = { isRemoved: req.params.isRemoved === "true" }
-      const result = await QuizService.getAll(params);
+      const { page=1, limit=10, isRemoved=false, type=QuizTypeEnums.ALL } = req.query;
+
+      const validTypes = Object.values(QuizTypeEnums);
+      const isValidType = validTypes.includes(type as unknown as QuizTypeEnums);
+      if (!isValidType) {
+        return Helpers.responseMessage(res, false, "Invalid 'Type' field! It must be one of the QuizTypeEnums values.");
+      }
+
+      const params = { 
+        page: Number(page), 
+        limit: Number(limit), 
+        type: type as QuizTypeEnums,
+        isRemoved: isRemoved === "true",
+      };
+      const result = await QuizService.get(params);
       Helpers.responseJSON(res, result);
     } catch (error) {
       const err = error as IError;
