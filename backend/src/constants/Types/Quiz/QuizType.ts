@@ -1,17 +1,21 @@
 import { QuizTypeEnums, VisibilityEnums } from "../../Enums/Enums";
 
-export interface IGetAll {
+export interface IGet {
+   page: number;
+   limit: number;
+   type: QuizTypeEnums
    isRemoved: boolean;
-}
-
-export interface IGetByType {
-   isRemoved: boolean;
-   type: QuizTypeEnums;
 }
 
 export interface IGetById {
    id: string;
    isRemoved: boolean;
+}
+
+export interface IGetAll {
+   isRemoved: boolean;
+   page: number;
+   limit: number;
 }
 
 export interface ICreate {

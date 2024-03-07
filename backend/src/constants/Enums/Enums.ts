@@ -15,8 +15,9 @@ export enum PointEnums {
 }
 
 export enum QuizTypeEnums {
-   FAVORITES = 'Favorites',
-   SAVES = 'Saves',
-   COMPLETED = 'Completed',
-   CREATED = 'Created'
+   ALL = 'all',
+   FAVORITES = 'favorites',
+   SAVED = 'saved',
+   COMPLETED = 'completed',
+   CREATED = 'created'
 }

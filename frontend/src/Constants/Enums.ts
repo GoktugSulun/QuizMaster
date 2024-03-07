@@ -22,3 +22,11 @@ export enum RouteEnums {
    // Test route
    TEST = '/test',
 }
+
+export enum QuizTypeEnums {
+   ALL = 'all',
+   FAVORITES = 'favorites',
+   SAVED = 'saved',
+   COMPLETED = 'completed',
+   CREATED = 'created'
+}
