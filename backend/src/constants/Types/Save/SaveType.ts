@@ -12,3 +12,9 @@ export interface IMarkAsSaved {
 export interface IUnmarkAsSaved {
    quizId: string;
 }
+
+export interface IGetSavedQuizzes {
+   isRemoved: boolean;
+   page: number;
+   limit: number;
+}

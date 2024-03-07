@@ -21,7 +21,7 @@ class FavoriteService {
 
          return {
             type: true,
-            message: 'Favorite quizzes has been fetched',
+            message: 'Favorite data has been fetched',
             data
          };
       } catch (error) {

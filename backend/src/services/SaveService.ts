@@ -1,21 +1,56 @@
 import { authorizedUserId } from "../index.ts";
 import Quiz from "../models/Quiz.ts";
-import { type IMarkAsSaved, type IGetAll, IUnmarkAsSaved } from "../constants/Types/Save/SaveType.ts";
-import { type IResponse } from "../types/Types.ts";
 import Helpers from "../utils/Helpers.ts";
 import Save from "../models/Save.ts";
+import { type IQuizResponse } from "../constants/Types/Quiz/QuizResponseTypes.ts";
+import { type IMarkAsSaved, type IGetAll, type IUnmarkAsSaved, type IGetSavedQuizzes } from "../constants/Types/Save/SaveType.ts";
+import { type IResponse } from "../types/Types.ts";
+import { type ResponseType } from "../constants/Types/Common/CommonType.ts";
+import QuizService from "./QuizService.ts";
 
 class SaveService {
    static async getAll(params: IGetAll): Promise<IResponse> {
       try {
          const { page, limit, isRemoved } = params;
+         const skip = page === 1 ? 0 : (page - 1) * limit;
 
-         // Todo : get favorites
+         const savedQuizDatas = await Save
+            .find({ isRemoved, userId: authorizedUserId })
+            .skip(skip)
+            .limit(limit);
 
          return {
             type: true,
-            message: 'All quizzes has been fetched',
+            message: 'Saved data has been fetched',
             data: null
+         };
+      } catch (error) {
+         return Helpers.responseError(error)
+      }
+   }
+
+   static async getSavedQuizzes(params: IGetSavedQuizzes): Promise<ResponseType<IQuizResponse>> {
+      try {
+         const { page, limit, isRemoved } = params;
+         const skip = page === 1 ? 0 : (page - 1) * limit;
+
+         const savedQuizDatas = await Save
+            .find({ isRemoved, userId: authorizedUserId })
+            .skip(skip)
+            .limit(limit);
+
+         const data = await Promise.all(savedQuizDatas.map(async (item) => {
+            const quizData = await QuizService.getById({ id: item.quizId, isRemoved: false});
+            if (!quizData.type) {
+               throw new Error(quizData.message);
+            }
+            return quizData.data;
+         }))
+
+         return {
+            type: true,
+            message: 'Saved quizzes has been fetched',
+            data
          };
       } catch (error) {
          return Helpers.responseError(error)

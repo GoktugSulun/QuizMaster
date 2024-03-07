@@ -8,6 +8,7 @@ import { type IResponse } from "../types/Types.ts";
 import { type IQuizResponse } from "../constants/Types/Quiz/QuizResponseTypes.ts";
 import FavoriteService from "./FavoriteService.ts";
 import { QuizTypeEnums, VisibilityEnums } from "../constants/Enums/Enums.ts";
+import SaveService from "./SaveService.ts";
 
 class QuizService {
   static async getAll(params: IGetAll): Promise<IResponse> {
@@ -53,8 +54,6 @@ class QuizService {
               if (!result.type) {
                 throw new Error(result.message);
               }
-              console.log(result.data, ' all');
-              
               return result.data;
             }
             case QuizTypeEnums.FAVORITES: {
@@ -62,8 +61,13 @@ class QuizService {
               if (!result.type) {
                 throw new Error(result.message);
               }
-              console.log(result.data, ' favorites');
-              
+              return result.data;
+            }
+            case QuizTypeEnums.SAVED: {
+              const result = await SaveService.getSavedQuizzes({ page, limit, isRemoved });
+              if (!result.type) {
+                throw new Error(result.message);
+              }
               return result.data;
             }
             default:
