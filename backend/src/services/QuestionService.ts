@@ -4,7 +4,7 @@ import Helpers from "../utils/Helpers.ts";
 import Question from "../models/Question.ts";
 import mongoose from "mongoose";
 import OptionService from "./OptionService.ts";
-import { QuestionEnums } from "../enums/Enums.ts";
+import { QuestionEnums } from "../constants/Enums/Enums.ts";
 import Option from "../models/Option.ts";
 
 class QuestionService {

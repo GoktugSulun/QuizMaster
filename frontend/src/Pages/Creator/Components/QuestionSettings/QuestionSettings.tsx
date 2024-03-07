@@ -2,7 +2,7 @@ import * as S from '../../Style/Creator.style';
 import QuizIcon from '@mui/icons-material/Quiz';
 import RewardIcon from '@mui/icons-material/MilitaryTech';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from '../../Model/Creator.model';
+import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from '../../Types/CreatorTypes';
 import { Button, Divider, IconButton, Stack, alpha, useTheme } from '@mui/material';
 import OptionsIcon from '@mui/icons-material/Apps';
 import { CustomTooltip } from '@/Components/Tooltip';

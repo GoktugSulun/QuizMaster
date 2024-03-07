@@ -1,12 +1,26 @@
 import express from 'express';
 import QuizController from '../controllers/QuizController.ts';
+import FavoriteController from '../controllers/FavoriteController.ts';
+import SaveController from '../controllers/SaveController.ts';
 
 const app = express();
 
-app.get('/all', QuizController.getAll);
+// Get
+app.get('/', QuizController.get);
 app.get('/:id', QuizController.getById);
-app.post('/', QuizController.create);
-app.put('/:id', QuizController.edit);
-// app.delete('/:id', QuizController.delete);
 
-export default app;
+// Create
+app.post('/', QuizController.create);
+
+// Edit
+app.put('/:id', QuizController.edit);
+
+// Favorite
+app.post('/markAsFavorite', FavoriteController.markAsFavorite);
+app.put('/unmarkAsFavorite/:id', FavoriteController.unmarkAsFavorite);
+
+// Save
+app.post('/markAsSaved', SaveController.markAsSaved);
+app.put('/unmarkAsSaved/:id', SaveController.unmarkAsSaved);
+
+export default app;  

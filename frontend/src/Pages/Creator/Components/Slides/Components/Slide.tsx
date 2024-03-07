@@ -1,7 +1,7 @@
 import { Box, Grid, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import * as S from '../../../Style/Creator.style';
 import ImageIcon from '@mui/icons-material/Image';
-import { QuestionEnums, type QuestionType } from '@/Pages/Creator/Model/Creator.model';
+import { QuestionEnums, type QuestionType } from '@/Pages/Creator/Types/CreatorTypes';
 import { useFormContext } from 'react-hook-form';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DuplicateIcon from '@mui/icons-material/ContentCopy';

@@ -12,10 +12,17 @@ export const authorizedUserId = "1";
 dotenv.config();
 
 // Mongoose config
+mongoose.set("toObject", {
+  virtuals: true,
+  versionKey: false,
+  transform(_, ret) {
+    delete ret._id
+  },
+});
 mongoose.set("toJSON", {
   virtuals: true,
   versionKey: false,
-  transform(doc, ret, options) {
+  transform(_, ret) {
     delete ret._id
   },
 });

@@ -1,5 +1,6 @@
 import { Response } from "express";
 import mongoose from "mongoose";
+import { type ResponseErrorType } from "../constants/Types/Common/CommonType";
 
 class Helpers {
    static responseMessage(res: Response, type: boolean, message: string, data?: any): void {
@@ -15,7 +16,7 @@ class Helpers {
       }
    }
 
-   static responseError(error?: unknown, message?: string) {
+   static responseError(error?: unknown, message?: string): ResponseErrorType {
       if (error instanceof mongoose.Error.ValidationError) {
          const [schema, field, customMessage] = error.message.split(':')
          return {

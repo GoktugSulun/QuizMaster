@@ -3,7 +3,7 @@ import * as S from '../../Style/Creator.style';
 import Slide from './Components/Slide';
 import { Box, Button, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from '../../Model/Creator.model';
+import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from '../../Types/CreatorTypes';
 
 const Slides = () => {
    const form = useFormContext();

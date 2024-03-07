@@ -12,7 +12,7 @@ const QuizPreviewList = () => {
     <Box
       display="grid"
       gap="40px"
-      gridTemplateColumns={`repeat(auto-fit, minmax(${minWidth}, 1fr))}`}
+      gridTemplateColumns={`repeat(auto-fit, minmax(${minWidth}, ${quizzes.length < 4 ? "450px" : "1fr"}))}`}
     >
       {
         quizzes.map((quiz) => (

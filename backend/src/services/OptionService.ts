@@ -3,7 +3,7 @@ import { IResponse } from "../types/Types.ts";
 import Helpers from "../utils/Helpers.ts";
 import Option from "../models/Option.ts";
 import { type ObjectId } from "mongodb";
-import { QuestionEnums } from "../enums/Enums.ts";
+import { QuestionEnums } from "../constants/Enums/Enums.ts";
 
 class OptionService {
   static async getAll(): Promise<IResponse> {

@@ -4,7 +4,7 @@ import { QuestionSettings } from './Components/QuestionSettings';
 import { Slides } from './Components/Slides';
 import * as S from './Style/Creator.style';
 import { FormProvider, useForm } from 'react-hook-form';
-import { VisibilityEnums, CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from './Model/Creator.model';
+import { VisibilityEnums, CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from './Types/CreatorTypes';
 import { Header } from '@/Components/Header';
 import { useEffect } from 'react';
 import { QuizSettings } from './Components/QuizSettings';

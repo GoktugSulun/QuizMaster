@@ -1,18 +1,40 @@
-import { Request } from "express";
-import { IResponse } from "../types/Types.ts";
 import Helpers from "../utils/Helpers.ts";
 import Quiz from "../models/Quiz.ts";
 import { authorizedUserId } from "../index.ts";
-import { VisibilityEnums } from "../enums/Enums.ts";
+import Favorite from "../models/Favorite.ts";
+import Save from "../models/Save.ts";
+import { type IEdit, type ICreate, type IGet, type IGetById, type IGetAll } from "../constants/Types/Quiz/QuizType.ts";
+import { type IResponse } from "../types/Types.ts";
+import { type IQuizResponse } from "../constants/Types/Quiz/QuizResponseTypes.ts";
+import FavoriteService from "./FavoriteService.ts";
+import { QuizTypeEnums, VisibilityEnums } from "../constants/Enums/Enums.ts";
+import SaveService from "./SaveService.ts";
 
 class QuizService {
-  static async getAll(): Promise<IResponse> {
-    const data = await Quiz.find({ visibility: VisibilityEnums.PUBLIC });
-
+  static async getAll(params: IGetAll): Promise<IResponse> {
     try {
+      const { page, limit, isRemoved } = params;
+      const skip = page === 1 ? 0 : (page - 1) * limit;
+
+      const quizData = await Quiz
+        .find({ visibility: VisibilityEnums.PUBLIC, isRemoved })
+        .skip(skip)
+        .limit(limit);
+      
+      const data = await Promise.all(quizData.map(async (quiz) => {
+        const favoriteData = await Favorite.findOne({ quizId: quiz.id, userId: authorizedUserId, isRemoved: false });
+        const saveData = await Save.findOne({ quizId: quiz.id, userId: authorizedUserId, isRemoved: false });
+
+        return {
+          ...quiz.toJSON(),
+          isFavorite: !!favoriteData,
+          isSaved: !!saveData,
+        }
+      }));
+
       return {
         type: true,
-        message: 'All quizzes has been fetched',
+        message: `All quizzes has been fetched`,
         data
       };
     } catch (error) {
@@ -20,26 +42,99 @@ class QuizService {
     }
   }
 
-  static async getById(req: Request): Promise<IResponse> {
-    const { id } = req.params;
-    const data = await Quiz.find({ _id: id, creatorId: authorizedUserId });
-
+  static async get(params: IGet): Promise<IResponse> {
     try {
+      const { page, limit, type, isRemoved } = params;
+
+      const data = await (
+        async () => {
+          switch (type) {
+            case QuizTypeEnums.ALL: {
+              const result = await QuizService.getAll({ page, limit, isRemoved });
+              if (!result.type) {
+                throw new Error(result.message);
+              }
+              return result.data;
+            }
+            case QuizTypeEnums.FAVORITES: {
+              const result = await FavoriteService.getFavoriteQuizzes({ page, limit, isRemoved });
+              if (!result.type) {
+                throw new Error(result.message);
+              }
+              return result.data;
+            }
+            case QuizTypeEnums.SAVED: {
+              const result = await SaveService.getSavedQuizzes({ page, limit, isRemoved });
+              if (!result.type) {
+                throw new Error(result.message);
+              }
+              return result.data;
+            }
+            default:
+              throw new Error(`Invalid quiz type, it must be one of the QuizTypeEnums!`);
+          }
+        }
+      )();  
+
+      // const favoriteServiceResult = await FavoriteService.getAll({ isRemoved, page, limit });
+      // if (!favoriteServiceResult.type) { 
+      //   throw new Error(favoriteServiceResult.message); 
+      // }
+      
+      // const data = await Promise.all(favoriteServiceResult.data.map(async (item) => {
+      //   const quizData = await QuizService.getById({ id: item.quizId, isRemoved: false});
+      //   if (!quizData.type) {
+      //     throw new Error(quizData.message);
+      //   }
+      //   return quizData.data;
+      // }));
+
       return {
         type: true,
-        message: `Quiz with id '${id}' has been fetched successfully`,
-        data: data[0] || {}
+        message: 'Quizzes has been fetched',
+        data
       };
     } catch (error) {
       return Helpers.responseError(error)
     }
   }
 
-  static async create(req: Request): Promise<IResponse> {
+  static async getById(params: IGetById): Promise<IResponse> {
     try {
-      const quizData = req.body as typeof Quiz;
+      const { id, isRemoved } = params;
+
+      const quizData = await Quiz.findOne({ _id: id, creatorId: authorizedUserId, isRemoved });
+      const favoriteData = await Favorite.findOne({ quizId: id, userId: authorizedUserId, isRemoved: false });
+      const saveData = await Save.findOne({ quizId: id, userId: authorizedUserId, isRemoved: false });
+
+      if (!quizData) {
+        return {
+          type: false,
+          message: `Quiz with id '${id}' couldn't find!`,
+        }
+      }
       
-      const quiz = new Quiz({ ...quizData, creatorId: authorizedUserId });
+      const data = {
+        ...quizData.toJSON(),
+        isFavorite: !!favoriteData,
+        isSaved: !!saveData,
+      } as IQuizResponse;
+
+      return {
+        type: true,
+        message: `Quiz with id '${id}' has been fetched successfully`,
+        data
+      };
+    } catch (error) {
+      return Helpers.responseError(error)
+    }
+  }
+
+  static async create(params: ICreate): Promise<IResponse> {
+    try {
+      const quizData = params;
+      
+      const quiz = new Quiz(quizData);
       const data = await quiz.save();
       
       return { 
@@ -53,10 +148,9 @@ class QuizService {
     }
   }
 
-  static async edit(req: Request): Promise<IResponse> {
+  static async edit(params: IEdit): Promise<IResponse> {
     try {
-      const quizData = req.body as typeof Quiz;
-      const { id } = req.params;
+      const { body: quizData, id } = params;
       
       const data = await Quiz.findByIdAndUpdate(
         { _id: id }, 

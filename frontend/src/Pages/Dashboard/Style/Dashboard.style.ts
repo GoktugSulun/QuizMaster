@@ -1,11 +1,11 @@
-import { Box, IconButton, Typography, alpha, styled } from "@mui/material";
+import { Box, IconButton, Stack, Typography, alpha, styled } from "@mui/material";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { shouldForwardProp } from "@/Core/Utils";
 import { PageWrapper } from "@/Core/Layout";
 
 export const Dashboard = styled(PageWrapper)({});
 
-export const QuizPreview = styled(Box)(({ theme }) => ({
+export const QuizPreview = styled(Stack)(({ theme }) => ({
    background: theme.palette.common.white,
    borderRadius: 20,
    height: '100%',
@@ -30,7 +30,7 @@ export const Link = styled(ReactRouterLink)(({ theme }) => ({
    }
 }));
 
-export const EllipsisText = styled(Typography, { shouldForwardProp })<{ $maxRow?: number }>(({ theme, $maxRow }) => ({
+export const EllipsisText = styled(Typography, { shouldForwardProp })<{ $maxRow?: number }>(({ $maxRow }) => ({
    display: '-webkit-box',
    WebkitLineClamp: $maxRow || 1,
    WebkitBoxOrient: 'vertical',
@@ -43,12 +43,15 @@ export const LikeButton = styled(IconButton)(({ theme }) => ({
    '&:hover': {
       background: alpha(theme.palette.primary.main, .3),
    },
+   '&.Mui-disabled': {
+      background: theme.palette.custom.light,
+   },
    '& .MuiSvgIcon-root': {
       color: theme.palette.primary.main
    }
 }));
 
-export const Category = styled(Box, { shouldForwardProp })<{ color: string, $bgColor: string }>(({ theme, color, $bgColor }) => ({
+export const Category = styled(Box, { shouldForwardProp })<{ color: string, $bgColor: string }>(({ color, $bgColor }) => ({
    background: $bgColor,
    color: alpha(color, .8),
    borderRadius: 50

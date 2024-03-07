@@ -1,6 +1,6 @@
 import { Stack } from "@mui/material"
 import MultipleChoice from "./MultipleChoice"
-import { QuestionEnums } from "@/Pages/Creator/Model/Creator.model"
+import { QuestionEnums } from "@/Pages/Creator/Types/CreatorTypes"
 import { useFormContext } from "react-hook-form"
 import OpenEnded from "./ShortAnswer"
 

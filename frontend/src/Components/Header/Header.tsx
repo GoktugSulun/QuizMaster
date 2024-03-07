@@ -25,6 +25,7 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
   const isCreatorPage = pathname.includes('/creator');
   const doesQuizIdExist = !!useAppSelector((state) => state.Creator.quiz.id);
 
+  // TODO : Fix this title
   const pageTitle = (() => {
     if (is404) {
       return 'Page Not Found';
@@ -35,8 +36,8 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
     }
     
     switch (pathname) {
-      case '/':
-        return 'Home'
+      case '/feed':
+        return 'All Quizzes'
       case '/quiz':
         return (
           // TODO : Responsive
@@ -59,26 +60,29 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
   })();
 
   return (
-    <S.Header>
-      <Stack flexDirection="row" height="100%">
-        <Stack flexDirection="row" alignItems="center">
-          <S.PageTitle fontWeight="bold" variant="h4"> {pageTitle} </S.PageTitle>
-          { isCreatorPage && doesQuizIdExist && <CreatorInput /> }
+    <S.HeaderWrapper>
+      <Box sx={{ backdropFilter: "blur(2px)", height: "10px" }} />
+      <S.Header>
+        <Stack flexDirection="row" height="100%">
+          <Stack flexDirection="row" alignItems="center">
+            <S.PageTitle fontWeight="bold" variant="h4"> {pageTitle} </S.PageTitle>
+            { isCreatorPage && doesQuizIdExist && <CreatorInput /> }
+          </Stack>
+          <Stack 
+            flex={1}
+            flexDirection="row" 
+            justifyContent="flex-end" 
+            alignItems="center"
+            gap={2}
+            height="100%"
+            paddingRight={5}
+          >
+            { isCreatorPage && doesQuizIdExist && <CreatorButtons /> }
+            <ProfileMenu />
+          </Stack>
         </Stack>
-        <Stack 
-          flex={1}
-          flexDirection="row" 
-          justifyContent="flex-end" 
-          alignItems="center"
-          gap={2}
-          height="100%"
-          paddingRight={5}
-        >
-          { isCreatorPage && doesQuizIdExist && <CreatorButtons /> }
-          <ProfileMenu />
-        </Stack>
-      </Stack>
-    </S.Header>
+      </S.Header>
+    </S.HeaderWrapper>
   )
 }
 

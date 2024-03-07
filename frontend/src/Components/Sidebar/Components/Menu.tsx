@@ -11,19 +11,19 @@ import { ListItemText } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CustomTooltip } from '@/Components/Tooltip';
 import { useAppSelector } from '@/Core/Hooks';
+import { RouteEnums } from '@/Constants/Enums';
 
 const Menu = () => {
-   const location = useLocation();
+   const { pathname } = useLocation();
    const navigate = useNavigate();
    const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
-   const queryParams = new URLSearchParams(location.search);
 
-   const navigateHandler = (url: string) => {
-      queryParams.set("page", "1");
-      queryParams.set("limit", "10");
-
-      const newSearch = `?${queryParams.toString()}`;
-      navigate({ pathname: url, search: newSearch });
+   const navigateHandler = (targetPath: string) => {
+      if (pathname === targetPath) {
+         console.log('aynı sayfa zaten');
+         return;
+      }
+      navigate(targetPath);
    }
 
    return (
@@ -35,9 +35,9 @@ const Menu = () => {
             arrow
          >
             <S.Item 
-               $isActive={location.pathname === '/'}  
+               $isActive={pathname === RouteEnums.FEED} 
                $isOpen={isOpenSidebar}
-               onClick={() => navigate('/')}
+               onClick={() => navigateHandler(RouteEnums.FEED)}
                disableRipple
             >
                <ListItemIcon> <HomeIcon /> </ListItemIcon>
@@ -51,9 +51,9 @@ const Menu = () => {
             arrow
          >
             <S.Item 
-               $isActive={location.pathname.includes('favorites')} 
+               $isActive={pathname === RouteEnums.FAVORITES} 
                $isOpen={isOpenSidebar}
-               onClick={() => navigateHandler('/favorites')}
+               onClick={() => navigateHandler(RouteEnums.FAVORITES)}
                disableRipple
             >
                <ListItemIcon> <FavoriteIcon /> </ListItemIcon>
@@ -67,9 +67,9 @@ const Menu = () => {
             arrow
          >
             <S.Item 
-               $isActive={location.pathname === '/saved'} 
+               $isActive={pathname === RouteEnums.SAVED} 
                $isOpen={isOpenSidebar}
-               onClick={() => navigate('/saved')}
+               onClick={() => navigateHandler(RouteEnums.SAVED)}
                disableRipple
             >
                <ListItemIcon> <BookmarkIcon /> </ListItemIcon>
@@ -83,9 +83,9 @@ const Menu = () => {
             arrow
          >
             <S.Item 
-               $isActive={location.pathname === '/completed'} 
+               $isActive={pathname === RouteEnums.COMPLETED} 
                $isOpen={isOpenSidebar}
-               onClick={() => navigate('/completed')}
+               onClick={() => navigateHandler(RouteEnums.COMPLETED)}
                disableRipple
             >
                <ListItemIcon> <AssignmentTurnedInIcon /> </ListItemIcon>
@@ -99,9 +99,9 @@ const Menu = () => {
             arrow
          >
             <S.Item 
-               $isActive={location.pathname === '/created'} 
+               $isActive={pathname === RouteEnums.CREATED} 
                $isOpen={isOpenSidebar}
-               onClick={() => navigate('/created')}
+               onClick={() => navigateHandler(RouteEnums.CREATED)}
                disableRipple
             >
                <ListItemIcon> <FolderIcon /> </ListItemIcon>

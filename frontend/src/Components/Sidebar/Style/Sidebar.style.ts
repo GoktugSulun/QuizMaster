@@ -16,7 +16,8 @@ export const Sidebar = styled('div')<SidebarProps>(({ theme, isOpen }) => ({
    boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
    borderTop: '1px solid rgba(0, 0, 0, 0.16)',
    transition: 'min-width 350ms, width 350ms',
-   position: 'relative',
+   position: 'sticky',
+   top: 10,
    '& .MuiIconButton-root.toggle': {
       position: 'absolute',
       top: isOpen ? 100 : 140,

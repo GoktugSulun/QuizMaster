@@ -2,20 +2,34 @@ import { CircularProgress, styled, useTheme } from '@mui/material';
 import { type ReactNode } from 'react';
 
 type LoadingProps = {
-   fullWidth?: boolean,
-   blur?: boolean | number,
-   size?: number,
-   color?: string,
-   margin?: string
+   fullWidth?: boolean;
+   blur?: boolean | number;
+   size?: number;
+   color?: string;
+   margin?: string;
+   thickness?: number;
 }
 
 const Loading = (props: LoadingProps) => {
    const theme = useTheme();
-   const { fullWidth=false, blur=false, size=50, color=theme.palette.primary.main, margin='0' } = props;
+   const { 
+      fullWidth=false, 
+      blur=false, 
+      size=50, 
+      color=theme.palette.primary.main, 
+      margin='0', 
+      thickness=5 
+   } = props;
    
    return (
-      <LoadingWrapper fullWidth={fullWidth} margin={margin} color={color} blur={blur}>
-         <CircularProgress size={size} />
+      <LoadingWrapper 
+         fullWidth={fullWidth} 
+         margin={margin} 
+         color={color} 
+         blur={blur}
+         thickness={thickness}
+      >
+         <CircularProgress thickness={thickness} size={size} />
       </LoadingWrapper>
    );
 };
@@ -23,11 +37,12 @@ const Loading = (props: LoadingProps) => {
 export default Loading;
 
 type LoadingWrapperProps = {
-   fullWidth: boolean,
-   blur: boolean | number,
-   color: string,
-   margin: string,
-   children: ReactNode,
+   fullWidth: boolean;
+   blur: boolean | number;
+   color: string;
+   margin: string;
+   thickness?: number;
+   children: ReactNode;
 }
 
 const LoadingWrapper = styled('div')<LoadingWrapperProps>(({ theme, ...props }) => ({
@@ -37,7 +52,7 @@ const LoadingWrapper = styled('div')<LoadingWrapperProps>(({ theme, ...props }) 
    width: props.fullWidth ? '100%' : 'auto',
    height: "100%",
    margin: props.margin,
-   zIndex: 10,
+   // zIndex: 10,
    ...(props.blur ? {
       position: 'absolute',
       top: 0,

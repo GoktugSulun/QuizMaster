@@ -1,7 +1,20 @@
-import mongoose from 'mongoose';
-import { VisibilityEnums } from '../enums/Enums.ts';
+import mongoose, { Types } from 'mongoose';
+import { VisibilityEnums } from '../constants/Enums/Enums.ts';
 
-export const quizSchema = new mongoose.Schema({
+interface IQuizSchema {
+   id: Types.ObjectId;
+   createdAt: Date;
+   updatedAt: Date;
+   name: string;
+   description: string;
+   totalTime: number;
+   visibility: VisibilityEnums;
+   image: String | null;
+   creatorId: string;
+   isRemoved: boolean;
+}
+
+export const quizSchema = new mongoose.Schema<IQuizSchema>({
    name: { 
       type: String, 
       trim: true, 
@@ -26,18 +39,19 @@ export const quizSchema = new mongoose.Schema({
       required: true
    },
    image: {
-      type: [String, null],
+      type: String || null,
       default: null
    },
    creatorId: {
       type: String,
       required: true
    },
-   // isRemoved: {
-   //    type: Boolean,
-   //    required: true
-   // }
+   isRemoved: {
+      type: Boolean,
+      required: true,
+      default: false
+   }
 }, { timestamps: true });
 
-const Quiz = mongoose.model('Quiz', quizSchema);
+const Quiz = mongoose.model<IQuizSchema>('Quiz', quizSchema);
 export default Quiz;

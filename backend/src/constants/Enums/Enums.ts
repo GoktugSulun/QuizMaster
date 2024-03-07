@@ -13,3 +13,11 @@ export enum PointEnums {
    STANDART = 'Standart',
    DOUBLE_UP = 'Double Up',
 }
+
+export enum QuizTypeEnums {
+   ALL = 'all',
+   FAVORITES = 'favorites',
+   SAVED = 'saved',
+   COMPLETED = 'completed',
+   CREATED = 'created'
+}

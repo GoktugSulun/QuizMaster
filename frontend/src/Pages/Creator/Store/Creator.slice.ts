@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { VisibilityEnums, type QuestionWithIdType, type QuizWithIdType } from '../Model/Creator.model';
+import { VisibilityEnums, type QuestionWithIdType, type QuizWithIdType } from '../Types/CreatorTypes';
 
 const NAME = 'Creator';
 
