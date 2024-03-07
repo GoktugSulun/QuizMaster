@@ -1,6 +1,6 @@
 import * as QuestionStyle from "@/Components/Question/Style/Question.style";
 import { TextInput } from "@/Core/Inputs";
-import { type OptionType } from "@/Pages/Creator/Model/Creator.model";
+import { type OptionType } from "@/Pages/Creator/Types/CreatorTypes";
 import { Grid, Radio, alpha, useTheme } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 

@@ -3,12 +3,13 @@ import { request } from '../../../Core/Request';
 import { DashboardActions } from './Dashboard.slice';
 import { IQuizResponse } from '@/Constants/ResponseTypes';
 import { snackbar } from '@/Core/Utils';
+import { QuizTypeEnums } from '@/Constants/Enums';
 
 const DashboardThunks = {
-  getAllQuizzes: () => request({
+  getQuizzes: (type: QuizTypeEnums) => request({
     method: 'GET',
-    url: `${ApiURL.QUIZ}/all`,
-    key: 'getAllQuizzes',
+    url: `${ApiURL.QUIZ}?type=${type}`,
+    key: 'getQuizzes',
     success: ({ data, thunkAPI }) => {
       const payload = data as IQuizResponse[];
       thunkAPI.dispatch(DashboardActions.setQuizzes(payload));

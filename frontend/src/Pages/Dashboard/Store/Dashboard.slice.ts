@@ -1,10 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IQuiz } from '../../../../../common/ApiModels';
+import { IQuizResponse } from '@/Constants/ResponseTypes';
 
 const NAME = 'Dashboard';
 
 type InitialStateTypes = {
-  quizzes: IQuiz[]
+  quizzes: IQuizResponse[]
 }
 
 const initialState: InitialStateTypes = {
@@ -15,10 +15,10 @@ const DashboardSlice = createSlice({
   name: NAME,
   initialState,
   reducers: {
-    setQuizzes: (state, action: PayloadAction<IQuiz[]>) => {
+    setQuizzes: (state, action: PayloadAction<IQuizResponse[]>) => {
       state.quizzes = action.payload;
     },
-    setQuiz: (state, action: PayloadAction<IQuiz>) => {
+    setQuiz: (state, action: PayloadAction<IQuizResponse>) => {
       const index = state.quizzes.findIndex((quiz) => quiz.id === action.payload.id);
       state.quizzes[index] = action.payload;
     },

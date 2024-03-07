@@ -6,7 +6,7 @@ import Header from './Components/Header';
 import Body from './Components/Body';
 import Footer from './Components/Footer';
 import { FormProvider, useForm } from 'react-hook-form';
-import { VisibilityEnums } from '../../Model/Creator.model';
+import { VisibilityEnums } from '../../Types/CreatorTypes';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Divider } from '@mui/material';

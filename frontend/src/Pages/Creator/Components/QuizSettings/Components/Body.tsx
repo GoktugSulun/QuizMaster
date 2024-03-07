@@ -1,5 +1,5 @@
 import { Autocomplete, TextInput } from "@/Core/Inputs";
-import { VisibilityEnums } from "@/Pages/Creator/Model/Creator.model";
+import { VisibilityEnums } from "@/Pages/Creator/Types/CreatorTypes";
 import { FormControlLabel, Radio, RadioGroup, Stack, Typography } from "@mui/material";
 import { useFormContext, useFormState, useWatch } from "react-hook-form";
 import Image from "./Image";

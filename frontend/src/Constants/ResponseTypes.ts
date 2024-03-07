@@ -1,4 +1,4 @@
-import { VisibilityEnums } from "@/Pages/Creator/Model/Creator.model";
+import { VisibilityEnums } from "@/Pages/Creator/Types/CreatorTypes";
 
 export interface IQuizResponse {
    id: string;

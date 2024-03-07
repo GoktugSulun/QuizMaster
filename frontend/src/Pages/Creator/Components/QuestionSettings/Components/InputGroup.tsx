@@ -1,5 +1,5 @@
 import { SelectInput } from "@/Core/Inputs";
-import { CorrectOptionEnums, QuestionEnums } from "@/Pages/Creator/Model/Creator.model";
+import { CorrectOptionEnums, QuestionEnums } from "@/Pages/Creator/Types/CreatorTypes";
 import { Stack, type SvgIconProps, Typography, Box, SelectChangeEvent } from "@mui/material"
 import { useFormContext } from "react-hook-form";
 import { OptionsMap } from "../../Question/Components/Options";

@@ -1,5 +1,5 @@
 import { snackbar } from "@/Core/Utils";
-import { type QuizType } from "@/Pages/Creator/Model/Creator.model";
+import { type QuizType } from "@/Pages/Creator/Types/CreatorTypes";
 import CreatorThunks from "@/Pages/Creator/Store/Creator.thunk";
 import { Button, Stack } from "@mui/material";
 import { useFormContext } from "react-hook-form";
