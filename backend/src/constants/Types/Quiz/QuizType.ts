@@ -17,6 +17,7 @@ export interface IGetAll {
    page: number;
    limit: number;
    creatorId?: string;
+   visibility?: VisibilityEnums;
 }
 
 export interface ICreate {
