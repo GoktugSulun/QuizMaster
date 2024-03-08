@@ -1,7 +1,7 @@
 export enum QuestionEnums {
-   MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
-   TRUE_FALSE = 'TRUE_FALSE',
-   SHORT_ANSWER = 'SHORT_ANSWER'
+   MULTIPLE_CHOICE = 'Multiple Choice',
+   TRUE_FALSE = 'True/False',
+   SHORT_ANSWER = 'Short Answer'
 }
 
 export enum VisibilityEnums {
@@ -20,4 +20,9 @@ export enum QuizTypeEnums {
    SAVED = 'saved',
    COMPLETED = 'completed',
    CREATED = 'created'
+}
+
+export enum CorrectOptionEnums {
+   SINGLE_OPTION = 'Single Option',
+   MULTIPLE_OPTIONS = 'Multiple Options',
 }

@@ -90,19 +90,6 @@ class QuizService {
         }
       )();  
 
-      // const favoriteServiceResult = await FavoriteService.getAll({ isRemoved, page, limit });
-      // if (!favoriteServiceResult.type) { 
-      //   throw new Error(favoriteServiceResult.message); 
-      // }
-      
-      // const data = await Promise.all(favoriteServiceResult.data.map(async (item) => {
-      //   const quizData = await QuizService.getById({ id: item.quizId, isRemoved: false});
-      //   if (!quizData.type) {
-      //     throw new Error(quizData.message);
-      //   }
-      //   return quizData.data;
-      // }));
-
       return {
         type: true,
         message: 'Quizzes has been fetched',
