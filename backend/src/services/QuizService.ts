@@ -13,11 +13,11 @@ import SaveService from "./SaveService.ts";
 class QuizService {
   static async getAll(params: IGetAll): Promise<IResponse> {
     try {
-      const { page, limit, isRemoved } = params;
+      const { page, limit, isRemoved, creatorId } = params;
       const skip = page === 1 ? 0 : (page - 1) * limit;
 
       const quizData = await Quiz
-        .find({ visibility: VisibilityEnums.PUBLIC, isRemoved })
+        .find({ visibility: VisibilityEnums.PUBLIC, isRemoved, ...(creatorId ? { creatorId } : {}) })
         .skip(skip)
         .limit(limit);
       
@@ -65,6 +65,16 @@ class QuizService {
             }
             case QuizTypeEnums.SAVED: {
               const result = await SaveService.getSavedQuizzes({ page, limit, isRemoved });
+              if (!result.type) {
+                throw new Error(result.message);
+              }
+              return result.data;
+            }
+            case QuizTypeEnums.COMPLETED: {
+              console.log('get completed quizzes');
+            }
+            case QuizTypeEnums.CREATED: {
+              const result = await QuizService.getAll({ page, limit, isRemoved, creatorId: authorizedUserId });
               if (!result.type) {
                 throw new Error(result.message);
               }

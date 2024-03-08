@@ -16,6 +16,7 @@ export interface IGetAll {
    isRemoved: boolean;
    page: number;
    limit: number;
+   creatorId?: string;
 }
 
 export interface ICreate {
