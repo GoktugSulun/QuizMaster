@@ -50,59 +50,58 @@ const QuizPreview = (props: { data: IQuizResponse }) => {
          <S.Image src={image || defaultImage} alt="quiz" />
          <Stack 
             flexDirection="row" 
-            justifyContent="space-between" 
-            alignItems="center"
-            padding="10px 15px"
+            alignItems="center" 
+            gap={1}
+            position="absolute"
+            top="10px"
+            right="10px"
          >
-            <S.Category 
-               color={alpha(theme.palette.primary.main, .6)} 
-               $bgColor={theme.palette.custom.light}
-               padding="5px 15px"
-            > 
-               {"Default category"} 
-            </S.Category>
-            <Stack flexDirection="row" alignItems="center" gap={1}>
-               <CustomTooltip 
-                  arrow 
-                  placement="top" 
-                  open={showFavoriteTooltip} 
-                  onOpen={() => setShowFavoriteTooltip(true)}
-                  onClose={() => setShowFavoriteTooltip(false)}
-                  title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            <CustomTooltip 
+               arrow 
+               placement="top" 
+               open={showFavoriteTooltip} 
+               onOpen={() => setShowFavoriteTooltip(true)}
+               onClose={() => setShowFavoriteTooltip(false)}
+               title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            >
+               <S.LikeButton 
+                  disabled={isLoadingMarkFavorite || isLoadingUnmarkFavorite} 
+                  onClick={isFavorite ? unmarkQuizAsFavorite : markQuizAsFavorite}
+                  sx={{ filter: "drop-shadow(4px 2px 6px #999)" }}
                >
-                  <S.LikeButton 
-                     disabled={isLoadingMarkFavorite || isLoadingUnmarkFavorite} 
-                     onClick={isFavorite ? unmarkQuizAsFavorite : markQuizAsFavorite}
-                  >
-                     { 
-                        (isLoadingMarkFavorite || isLoadingUnmarkFavorite) 
-                           ? <Loading size={24} /> 
-                           : isFavorite ? <FilledLikeIcon /> : <LikeIcon /> 
-                     }
-                  </S.LikeButton>
-               </CustomTooltip>
-               <CustomTooltip 
-                  arrow 
-                  placement="top" 
-                  open={showSaveTooltip} 
-                  onOpen={() => setShowSaveTooltip(true)}
-                  onClose={() => setShowSaveTooltip(false)}
-                  title={isSaved ? 'Remove from saved' : 'Add to saved'}
+                  { 
+                     (isLoadingMarkFavorite || isLoadingUnmarkFavorite) 
+                        ? <Loading size={24} /> 
+                        : isFavorite ? <FilledLikeIcon /> : <LikeIcon /> 
+                  }
+               </S.LikeButton>
+            </CustomTooltip>
+            <CustomTooltip 
+               arrow 
+               placement="top" 
+               open={showSaveTooltip} 
+               onOpen={() => setShowSaveTooltip(true)}
+               onClose={() => setShowSaveTooltip(false)}
+               title={isSaved ? 'Remove from saved' : 'Add to saved'}
+            >
+               <S.SaveButton 
+                  disabled={isLoadingMarkSaved || isLoadingUnmarkSaved} 
+                  onClick={isSaved ? unmarkQuizAsSaved : markQuizAsSaved}
+                  sx={{ filter: "drop-shadow(4px 2px 6px #999)" }}
                >
-                  <S.LikeButton 
-                     disabled={isLoadingMarkSaved || isLoadingUnmarkSaved} 
-                     onClick={isSaved ? unmarkQuizAsSaved : markQuizAsSaved}
-                  >
-                     { 
-                        (isLoadingMarkSaved || isLoadingUnmarkSaved) 
-                           ? <Loading size={24} /> 
-                           : isSaved ? <FilledSaveIcon /> : <SaveIcon /> 
-                     }
-                  </S.LikeButton>
-               </CustomTooltip>
-            </Stack>
+                  { 
+                     (isLoadingMarkSaved || isLoadingUnmarkSaved) 
+                        ? <Loading size={24} /> 
+                        : isSaved ? <FilledSaveIcon /> : <SaveIcon /> 
+                  }
+               </S.SaveButton>
+            </CustomTooltip>
          </Stack>
-         <Stack flex={1} gap={4}>
+         <Stack 
+            paddingTop="10px"
+            flex={1} 
+            gap={4}
+         >
             <QuizPreviewBody 
                id={id} 
                name={name} 
