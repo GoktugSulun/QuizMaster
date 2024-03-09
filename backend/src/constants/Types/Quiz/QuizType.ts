@@ -10,6 +10,7 @@ export interface IGet {
 export interface IGetById {
    id: string;
    isRemoved: boolean;
+   creatorId?: string;
 }
 
 export interface IGetAll {

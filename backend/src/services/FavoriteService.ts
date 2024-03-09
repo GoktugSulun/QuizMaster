@@ -38,7 +38,7 @@ class FavoriteService {
             .find({ isRemoved, userId: authorizedUserId })
             .skip(skip)
             .limit(limit);
-
+         
          const data = await Promise.all(favoriteQuizDatas.map(async (item) => {
             const quizData = await QuizService.getById({ id: item.quizId, isRemoved: false});
             if (!quizData.type) {

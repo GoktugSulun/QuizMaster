@@ -103,9 +103,9 @@ class QuizService {
 
   static async getById(params: IGetById): Promise<IResponse> {
     try {
-      const { id, isRemoved } = params;
+      const { id, isRemoved, creatorId } = params;
 
-      const quizData = await Quiz.findOne({ _id: id, creatorId: authorizedUserId, isRemoved });
+      const quizData = await Quiz.findOne({ _id: id, isRemoved, ...(creatorId ? { creatorId } : {}) });
       const favoriteData = await Favorite.findOne({ quizId: id, userId: authorizedUserId, isRemoved: false });
       const saveData = await Save.findOne({ quizId: id, userId: authorizedUserId, isRemoved: false });
 
