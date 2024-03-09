@@ -1,10 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
+
+export interface IOptionSchema {
+   id: Types.ObjectId;
+   createdAt: Date;
+   updatedAt: Date;
+   name: String;
+   isCorrect: boolean;
+}
 
 export const optionSchema = new mongoose.Schema({
-   question_id: {
-      type: Number,
-      required: true
-   },
    name: { 
       type: String, 
       trim: true, 
@@ -14,7 +18,7 @@ export const optionSchema = new mongoose.Schema({
       type: Boolean,
       required: true
    },
-});
+}, { timestamps: true });
 
 const Option = mongoose.model('Option', optionSchema);
 export default Option;

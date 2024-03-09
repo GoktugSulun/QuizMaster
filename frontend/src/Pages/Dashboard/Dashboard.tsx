@@ -12,6 +12,7 @@ const Dashboard = () => {
   const { isLoading } = useThunk("getQuizzes");
 
   useEffect(() => {
+    // todo : cancel service when location is changed
     const path = location.pathname.split('/')[1];
     const type = (path === 'feed' ? QuizTypeEnums.ALL : path) as QuizTypeEnums;
     DashboardThunks.getQuizzes(type);

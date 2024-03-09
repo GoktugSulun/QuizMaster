@@ -26,7 +26,7 @@ export const quizSchema = new mongoose.Schema<IQuizSchema>({
       type: String, 
       trim: true, 
       minLength: [10, "Description must have minimum ten(10) characters"],
-      maxLength: [100, "Description must have maximum hundred(100) characters"],
+      maxLength: [150, "Description must have maximum hundred(100) characters"],
       required: true,
    },
    totalTime: { 

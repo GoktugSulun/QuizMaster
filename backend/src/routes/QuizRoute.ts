@@ -8,6 +8,7 @@ const app = express();
 // Get
 app.get('/', QuizController.get);
 app.get('/:id', QuizController.getById);
+app.get('/:id/withQuestions', QuizController.getByIdWithQuestions);
 
 // Create
 app.post('/', QuizController.create);

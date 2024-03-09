@@ -27,9 +27,8 @@ const QuestionSettings = () => {
    };
 
    const duplicateQuestionHandler = () => {
-      const field = form.getValues(`questions.${activeIndex}`)
-      const { id, ...fieldData } = field;
-      const duplicatedQuestion = { ...fieldData };
+      const field = form.getValues(`questions.${activeIndex}`) as QuestionType;
+      const duplicatedQuestion = { ...field };
       questions.insert(activeIndex + 1, duplicatedQuestion);
       form.setValue("activeIndex", activeIndex + 1);
    };

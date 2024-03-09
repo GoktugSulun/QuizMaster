@@ -13,12 +13,12 @@ import { useAppDispatch, useAppSelector, useThunk } from '@/Core/Hooks';
 import { CreatorActions } from './Store/Creator.slice';
 import CreatorThunks from './Store/Creator.thunk';
 import { Loading } from '@/Core/Components';
+import { InfoModal } from './Components/InfoModal';
 
 type DefaultValuesType = {
   name: string;
   description: string;
   visibility: VisibilityEnums,
-  quizId: number;
   activeIndex: number;
   questions: QuestionType[];
 }
@@ -28,10 +28,10 @@ const defaultValues: DefaultValuesType = (
     name: "",
     description: "",
     visibility: VisibilityEnums.PUBLIC,
-    quizId: 1,
     activeIndex: 0,
     questions: [
       { 
+        quizId: "",
         name: "", 
         options: [1,2,3,4].map(() => ({ name: "", isCorrect: false })), 
         type: QuestionEnums.MULTIPLE_CHOICE,
@@ -58,25 +58,41 @@ const Creator = () => {
   const dispatch = useAppDispatch();
   const form = useForm({ defaultValues });
   const quizId = useAppSelector((state) => state.Creator.quiz.id);
+  const questions = useAppSelector((state) => state.Creator.questions);
 
-  // const formValues = useWatch({ control: form.control });
-  // console.log(formValues, ' formValues');
-
-  const { isLoading } = useThunk("getQuizByIdWithQuestions");
+  const { isLoading, isSuccess } = useThunk("getQuizByIdWithQuestions");
+  const { isSuccess: isSuccessCreateQuiz } = useThunk("createQuiz");
 
   useEffect(() => {
-    //* Create a new quiz
+    if (isSuccess) {
+      if (!questions.length) {
+        form.setValue("questions.0.quizId", quizId);
+      } else {
+        form.setValue("questions", questions);
+        dispatch(CreatorActions.setIsEditing(true));
+      }
+    }
+ }, [isSuccess]);
+
+  useEffect(() => {
+    if (isSuccessCreateQuiz) {
+      form.setValue("questions.0.quizId", quizId);
+    }
+  }, [isSuccessCreateQuiz]);
+
+  useEffect(() => {
+    // Create a new quiz
     if (!params.quizId) {
        dispatch(CreatorActions.setIsOpenQuizSettingsModal('OPEN'));
     }
 
-    //* Edit an existing quiz whether it has questions or not.
+    // Edit an existing quiz whether it has questions or not.
     if (params.quizId && !quizId) {
-      CreatorThunks.getQuizById(params.quizId);
+      CreatorThunks.getQuizByIdWithQuestions(params.quizId);
     }
  }, [params.quizId]);
 
-  //* Navigate slides using keyboard
+  // Navigate slides using keyboard
   useEffect(() => {
     const keydownHandler = (event: KeyboardEvent) => {
       if (event.code === "ArrowUp") {
@@ -101,6 +117,10 @@ const Creator = () => {
       dispatch(CreatorActions.reset());
     };
   }, []);
+
+  if (params.quizId && !quizId) {
+    return <Loading size={80} />
+  }
   
   return (
     <FormProvider {...form}>
@@ -122,6 +142,7 @@ const Creator = () => {
         </Stack>
       </S.Creator>
       <QuizSettings />
+      <InfoModal />
     </FormProvider>
   )
 }

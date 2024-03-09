@@ -4,6 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import QuizRoute from './routes/QuizRoute.ts';
+import QuestionRoute from './routes/QuestionRoute.ts';
 
 // TODO : change it later
 export const authorizedUserId = "1";
@@ -42,6 +43,7 @@ app.get('/health', (req: Request, res: Response) => {
 
 // app.use('/Auth', AuthRoute);
 app.use(`/v1/quizzes`, QuizRoute);
+app.use(`/v1/questions`, QuestionRoute);
 
 try {
   mongoose.connect(process.env.DB_CONNECTION_URL!)

@@ -33,11 +33,13 @@ const schema = yup.object({
       .string()
       .trim()
       .min(3, "Name must have minimum 3 characters")
+      .max(40, "Name must have maximum 40 characters")
       .required("Name required"),
    description: yup
       .string()
       .trim()
       .min(10, "Description must have minimum 10 characters")
+      .max(150, "Description must have maximum 150 characters")
       .required("Description required"),
    visibility: yup
       .mixed()
@@ -78,6 +80,7 @@ const QuizSettings = () => {
    const handleClose = () => {
       if (!params.quizId) {
          navigate('/', { replace: true });
+         return;
       }
       dispatch(CreatorActions.setIsOpenQuizSettingsModal('CLOSE'));
    }

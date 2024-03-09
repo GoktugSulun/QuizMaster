@@ -8,6 +8,7 @@ type LoadingProps = {
    color?: string;
    margin?: string;
    thickness?: number;
+   disableShrink?: boolean;
 }
 
 const Loading = (props: LoadingProps) => {
@@ -18,7 +19,8 @@ const Loading = (props: LoadingProps) => {
       size=50, 
       color=theme.palette.primary.main, 
       margin='0', 
-      thickness=5 
+      thickness=5,
+      disableShrink=false
    } = props;
    
    return (
@@ -29,7 +31,11 @@ const Loading = (props: LoadingProps) => {
          blur={blur}
          thickness={thickness}
       >
-         <CircularProgress thickness={thickness} size={size} />
+         <CircularProgress 
+            disableShrink={disableShrink}
+            thickness={thickness} 
+            size={size} 
+         />
       </LoadingWrapper>
    );
 };

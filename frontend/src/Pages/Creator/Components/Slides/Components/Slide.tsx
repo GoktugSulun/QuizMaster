@@ -30,7 +30,7 @@ const Slide = (props: SliceProps) => {
          onClick={setActiveSlideHandler} 
          $isActive={isActive} 
          flexDirection="row"
-         id={props.field.id}
+         id={`${props.index}`}
       >
          <Stack alignSelf="flex-end">
             <CustomTooltip title="Duplicate" arrow placement="left">

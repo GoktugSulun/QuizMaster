@@ -10,12 +10,15 @@ export interface IGet {
 export interface IGetById {
    id: string;
    isRemoved: boolean;
+   creatorId?: string;
 }
 
 export interface IGetAll {
    isRemoved: boolean;
    page: number;
    limit: number;
+   creatorId?: string;
+   visibility?: VisibilityEnums;
 }
 
 export interface ICreate {
