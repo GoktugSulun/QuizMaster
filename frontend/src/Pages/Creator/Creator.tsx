@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector, useThunk } from '@/Core/Hooks';
 import { CreatorActions } from './Store/Creator.slice';
 import CreatorThunks from './Store/Creator.thunk';
 import { Loading } from '@/Core/Components';
+import { InfoModal } from './Components/InfoModal';
 
 type DefaultValuesType = {
   name: string;
@@ -60,16 +61,24 @@ const Creator = () => {
   const questions = useAppSelector((state) => state.Creator.questions);
 
   const { isLoading, isSuccess } = useThunk("getQuizByIdWithQuestions");
+  const { isSuccess: isSuccessCreateQuiz } = useThunk("createQuiz");
 
   useEffect(() => {
     if (isSuccess) {
       if (!questions.length) {
-        form.setValue("questions.0.quizId", quizId)
+        form.setValue("questions.0.quizId", quizId);
       } else {
-        form.setValue("questions", questions)
+        form.setValue("questions", questions);
+        dispatch(CreatorActions.setIsEditing(true));
       }
     }
  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isSuccessCreateQuiz) {
+      form.setValue("questions.0.quizId", quizId);
+    }
+  }, [isSuccessCreateQuiz]);
 
   useEffect(() => {
     // Create a new quiz
@@ -133,6 +142,7 @@ const Creator = () => {
         </Stack>
       </S.Creator>
       <QuizSettings />
+      <InfoModal />
     </FormProvider>
   )
 }

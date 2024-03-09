@@ -15,7 +15,7 @@ const CreatorThunks = {
          thunkAPI.dispatch(CreatorActions.setQuiz(payload));
       },
    }),
-   editQuiz: ({ id, image: file, ...payload }: QuizWithIdType) => request({
+   editQuiz: ({ id, image: file, ...payload }: QuizType & { id: string; }) => request({
       method: 'PUT',
       url: `${ApiURL.QUIZ}/${id}`,
       key: 'editQuiz',

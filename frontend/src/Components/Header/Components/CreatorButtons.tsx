@@ -6,12 +6,15 @@ import EyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useFormContext } from "react-hook-form";
 import CreatorThunks from "@/Pages/Creator/Store/Creator.thunk";
 import { type QuestionType } from "@/Pages/Creator/Types/CreatorTypes";
-import { useAppSelector, useThunk } from "@/Core/Hooks";
-import { Loading } from "@/Core/Components";
+import { useAppDispatch, useAppSelector, useThunk } from "@/Core/Hooks";
+import { CreatorActions } from "@/Pages/Creator/Store/Creator.slice";
 
 const CreatorButtons = () => {
    const navigate = useNavigate();
    const form = useFormContext();
+   const questionsInStore = useAppSelector((state) => state.Creator.questions);
+   const quizId = useAppSelector((state) => state.Creator.quiz.id);
+   const dispatch = useAppDispatch();
 
    const { isLoading } = useThunk("createQuestions");
 
@@ -29,22 +32,21 @@ const CreatorButtons = () => {
    }
 
    const saveQuizHandler = () => {
-      // todo : Modal açarsın loading ve başarılı iconu koy
       const questions = form.getValues("questions");
       if (!validateQuestions(questions)) {
          // todo : Güzel bir error mesajı göster, belki eksik slide'lar tespit edilip bir icon çıkartılabilir üzerlerinde
          return alert("Error");
       }
 
-      const questionsInStore = useAppSelector((state) => state.Creator.questions);
       // Edit
       if (questionsInStore.length) {
-         const quizId = useAppSelector((state) => state.Creator.quiz.id);
          CreatorThunks.editQuestions({ quizId, questions });
+         dispatch(CreatorActions.setIsOpenInfoModal("OPEN"));
          return;
       }
       // Create
       CreatorThunks.createQuestions(questions);
+      dispatch(CreatorActions.setIsOpenInfoModal("OPEN"));
    }
    
    return (
@@ -77,9 +79,7 @@ const CreatorButtons = () => {
             arrow 
             title="Save this quiz"
          >
-            <S.SaveButton disabled={isLoading} onClick={saveQuizHandler}> 
-               { isLoading ? <Loading size={25} color="#FFFFFF" /> : "Save"} 
-            </S.SaveButton>
+            <S.SaveButton disabled={isLoading} onClick={saveQuizHandler}> Save </S.SaveButton>
          </CustomTooltip>
       </Stack>
    )

@@ -1,12 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { HttpResponseEnums } from '../Constants/Enums';
-import { InitialStateTypes } from './AppConfig.model';
+import { InitialStateTypes } from './AppConfigTypes';
 
 const NAME = 'AppConfig';
 
 const initialState: InitialStateTypes = {
   notifications: [],
-  isOpenSidebar: true,
+  isOpenSidebar: false,
   loadings: {},
   requestStatuses: {},
   errors: {}

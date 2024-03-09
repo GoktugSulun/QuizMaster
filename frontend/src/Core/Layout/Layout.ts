@@ -10,6 +10,8 @@ export const FullSizeLoadingWrapper = styled('div')({
 });
 
 export const MainWrapper = styled('div')({
+   width: '100vw',
+   minHeight: '100vh',
    display: 'flex',
    padding: "0 20px 10px 10px",
    gap: 30

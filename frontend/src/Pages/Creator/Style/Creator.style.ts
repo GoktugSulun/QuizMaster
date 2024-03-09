@@ -62,7 +62,7 @@ export const QuestionSettings = styled(Stack)(({ theme }) => ({
    }
 }));
 
-// Modal
+// Quiz Settings Modal
 export const QuizSettings = styled(Stack)(({ theme }) => ({
    position: "absolute",
    top: "50%",
@@ -89,4 +89,22 @@ export const VisuallyHiddenInput = styled('input')({
    left: 0,
    whiteSpace: 'nowrap',
    width: 1,
- });
+});
+
+// Info Modal
+export const InfoModal = styled(Stack)(({ theme }) => ({
+   position: "absolute",
+   top: "50%",
+   left: "50%",
+   transform: "translate(-50%, -50%)",
+   background: theme.palette.common.white,
+   borderRadius: "10px",
+   outline: "none",
+   minWidth: 600,
+   maxHeight: '95vh',
+   transition: "min-width 350ms",
+   padding: "15px 20px 20px 20px",
+   [theme.breakpoints.down("md")]: {
+      minWidth: "90%",
+   }
+}));

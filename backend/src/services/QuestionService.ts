@@ -45,7 +45,6 @@ class QuestionService {
     }
   }
 
-  // todo : make it
   static async edit(params: IEdit): Promise<IResponse> {
     try {
       const { quizId, questions  } = params;
@@ -53,17 +52,20 @@ class QuestionService {
       // todo : find all questions belongs to quizId
       // todo : update isRemoved: true for this questions data
       // todo : insert new questions
-
-      // const data = await Quiz.findByIdAndUpdate(
-      //   { _id: id }, 
-      //   { $set: { ...quizData, creatorId: authorizedUserId } },
-      //   { returnOriginal: false }
-      // );
+      
+      console.log(1);
+      
+      const removeResult = await Question.updateMany({ quizId, isRemoved: false }, { isRemoved: true });
+      
+      console.log(2, ' update yaptı eskileri sildi');
+      const data = await Question.insertMany(questions);
+      console.log(3, ' yenilerini ekledi');
+      console.log(4, data);
         
       return { 
         type: true, 
         message: 'Questions has been created successfully!', 
-        data: []
+        data
       };
 
     } catch (error) {

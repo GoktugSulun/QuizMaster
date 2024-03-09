@@ -80,6 +80,7 @@ const QuizSettings = () => {
    const handleClose = () => {
       if (!params.quizId) {
          navigate('/', { replace: true });
+         return;
       }
       dispatch(CreatorActions.setIsOpenQuizSettingsModal('CLOSE'));
    }

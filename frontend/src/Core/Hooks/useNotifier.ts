@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { AppConfigActions } from '../Store/AppConfig.slice';
 import useAppSelector from './useAppSelector';
 import useAppDispatch from './useAppDispatch';
-import { NotificationTypes } from '../Store/AppConfig.model';
+import { NotificationTypes } from '../Store/AppConfigTypes';
 
 let displayed: SnackbarKey[] = [];
 
