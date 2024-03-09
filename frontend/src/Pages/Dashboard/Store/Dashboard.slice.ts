@@ -22,6 +22,9 @@ const DashboardSlice = createSlice({
       const index = state.quizzes.findIndex((quiz) => quiz.id === action.payload.id);
       state.quizzes[index] = action.payload;
     },
+    deleteQuiz: (state, action: PayloadAction<string>) => {
+      state.quizzes = state.quizzes.filter((quiz) => quiz.id !== action.payload);
+    },
     updateFavoriteField: (state, action: PayloadAction<{ quizId: string, value: boolean; }>) => {
       const index = state.quizzes.findIndex((quiz) => quiz.id === action.payload.quizId);
       state.quizzes[index].isFavorite = action.payload.value;

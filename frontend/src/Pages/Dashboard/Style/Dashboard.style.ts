@@ -53,6 +53,8 @@ export const LikeButton = styled(IconButton)(({ theme }) => ({
 }));
 
 export const SaveButton = styled(LikeButton)({});
+export const EditButton = styled(LikeButton)({});
+export const DeleteButton = styled(LikeButton)({});
 
 export const Category = styled(Box, { shouldForwardProp })<{ color: string, $bgColor: string }>(({ color, $bgColor }) => ({
    background: $bgColor,

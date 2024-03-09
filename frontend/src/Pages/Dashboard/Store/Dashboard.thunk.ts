@@ -53,6 +53,15 @@ const DashboardThunks = {
       snackbar("Quiz has been removed from saves");
     }
   }),
+  deleteQuiz: (quizId: string) => request({
+    method: 'DELETE',
+    url: `${ApiURL.QUIZ}/${quizId}`,
+    key: 'deleteQuiz',
+    success: ({ thunkAPI }) => {
+      thunkAPI.dispatch(DashboardActions.deleteQuiz(quizId));
+      snackbar("Quiz has been deleted");
+    }
+  })
 };
 
 export default DashboardThunks;
