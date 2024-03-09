@@ -23,6 +23,7 @@ class QuizService {
           ...(creatorId ? { creatorId } : {}),
           ...(visibility ? { visibility } : {})
         })
+        .sort({ createdAt: "desc" })
         .skip(skip)
         .limit(limit);
       
@@ -76,6 +77,7 @@ class QuizService {
               return result.data;
             }
             case QuizTypeEnums.COMPLETED: {
+              // todo : do it later
               console.log('get completed quizzes');
             }
             case QuizTypeEnums.CREATED: {

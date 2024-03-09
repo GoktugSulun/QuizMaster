@@ -36,6 +36,7 @@ class SaveService {
 
          const savedQuizDatas = await Save
             .find({ isRemoved, userId: authorizedUserId })
+            .sort({ createdAt: "desc" })
             .skip(skip)
             .limit(limit);
 
