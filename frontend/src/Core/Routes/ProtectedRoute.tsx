@@ -39,7 +39,7 @@ const ProtectedRoute = (props: ProtectedRouteProps) => {
       <Sidebar /> 
       <ContentWrapper>
         { !isCreatorPage && <Header is404={is404} /> } 
-        <Suspense fallback={<Loading size={80} />}>
+        <Suspense fallback={<Loading fullWidth size={80} />}>
           <Outlet />
         </Suspense>
       </ContentWrapper>

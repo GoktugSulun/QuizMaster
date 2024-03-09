@@ -3,19 +3,19 @@ import { request } from '../../../Core/Request';
 import { DashboardActions } from './Dashboard.slice';
 import { IQuizResponse } from '@/Constants/ResponseTypes';
 import { snackbar } from '@/Core/Utils';
-import { QuizTypeEnums } from '@/Constants/Enums';
+import { type unmarkQuizAsFavoriteTypes, type getQuizzesTypes, type markQuizAsFavoriteTypes, type markQuizAsSavedTypes, type unmarkQuizAsSavedTypes, type deleteQuizTypes } from '../Types/DashboardTypes';
 
 const DashboardThunks = {
-  getQuizzes: (type: QuizTypeEnums) => request({
+  getQuizzes: ({ type, page, limit } : getQuizzesTypes) => request({
     method: 'GET',
-    url: `${ApiURL.QUIZ}?type=${type}`,
+    url: `${ApiURL.QUIZ}?type=${type}&page=${page}&limit=${limit}`,
     key: 'getQuizzes',
     success: ({ data, thunkAPI }) => {
       const payload = data as IQuizResponse[];
       thunkAPI.dispatch(DashboardActions.setQuizzes(payload));
     }
   }),
-  markQuizAsFavorite: (payload: { quizId: string; }) => request({
+  markQuizAsFavorite: (payload: markQuizAsFavoriteTypes) => request({
     method: 'POST',
     url: `${ApiURL.MARK_QUIZ_AS_FAVORITE}`,
     key: 'markQuizAsFavorite',
@@ -25,7 +25,7 @@ const DashboardThunks = {
       snackbar("Quiz has been added to favorites");
     }
   }),
-  unmarkQuizAsFavorite: (quizId: string) => request({
+  unmarkQuizAsFavorite: (quizId: unmarkQuizAsFavoriteTypes) => request({
     method: 'PUT',
     url: `${ApiURL.UNMARK_QUIZ_AS_FAVORITE}/${quizId}`,
     key: 'unmarkQuizAsFavorite',
@@ -34,7 +34,7 @@ const DashboardThunks = {
       snackbar("Quiz has been removed from favorites");
     }
   }),
-  markQuizAsSaved: (payload: { quizId: string; }) => request({
+  markQuizAsSaved: (payload: markQuizAsSavedTypes) => request({
     method: 'POST',
     url: `${ApiURL.MARK_QUIZ_AS_SAVED}`,
     key: 'markQuizAsSaved',
@@ -44,7 +44,7 @@ const DashboardThunks = {
       snackbar("Quiz has been saved");
     }
   }),
-  unmarkQuizAsSaved: (quizId: string) => request({
+  unmarkQuizAsSaved: (quizId: unmarkQuizAsSavedTypes) => request({
     method: 'PUT',
     url: `${ApiURL.UNMARK_QUIZ_AS_SAVED}/${quizId}`,
     key: 'unmarkQuizAsSaved',
@@ -53,7 +53,7 @@ const DashboardThunks = {
       snackbar("Quiz has been removed from saves");
     }
   }),
-  deleteQuiz: (quizId: string) => request({
+  deleteQuiz: (quizId: deleteQuizTypes) => request({
     method: 'DELETE',
     url: `${ApiURL.QUIZ}/${quizId}`,
     key: 'deleteQuiz',
