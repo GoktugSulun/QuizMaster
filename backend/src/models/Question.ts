@@ -8,7 +8,7 @@ interface IQuestionSchema {
    updatedAt: Date;
    quizId: String;
    name: String;
-   optionType: CorrectOptionEnums;
+   optionType: CorrectOptionEnums | null;
    point: PointEnums;
    type: QuestionEnums;
    options: IOptionSchema[],
@@ -26,9 +26,8 @@ export const questionSchema = new mongoose.Schema<IQuestionSchema>({
       required: true 
    },
    optionType: {
-      type: String,
+      type: String || null,
       enum: Object.values(CorrectOptionEnums),
-      required: true
    },
    point: {
       type: String,

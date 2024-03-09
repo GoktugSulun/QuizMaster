@@ -4,10 +4,12 @@ import Slide from './Components/Slide';
 import { Box, Button, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from '../../Types/CreatorTypes';
+import { useAppSelector } from '@/Core/Hooks';
 
 const Slides = () => {
    const form = useFormContext();
    const questions = useFieldArray({ name: "questions", control: form.control });
+   const quizId = useAppSelector((state) => state.Creator.quiz.id);
 
    const watchedQuestions = form.watch("questions") as QuestionType[];
    const controlledQuestions = watchedQuestions.map((field, index) => {
@@ -19,6 +21,7 @@ const Slides = () => {
 
    const addQuestionHandler = () => {
       const newQuestion: Omit<QuestionType, "id"> = { 
+         quizId,
          name: "", 
          options: [1,2,3,4].map(() => ({ name: "", isCorrect: false })),
          type: QuestionEnums.MULTIPLE_CHOICE,
@@ -32,8 +35,7 @@ const Slides = () => {
 
    const duplicateQuestionHandler = (event: React.MouseEvent<HTMLButtonElement>, field: QuestionType, index: number) => {
       event.stopPropagation();
-      const { id, ...fieldData } = field;
-      const duplicatedQuestion = { ...fieldData };
+      const duplicatedQuestion = { ...field };
       questions.insert(index + 1, duplicatedQuestion);
       form.setValue("activeIndex", index + 1);
    };
@@ -61,7 +63,7 @@ const Slides = () => {
          >
             {controlledQuestions.map((field, index) => (
                <Slide 
-                  key={field.id || index} 
+                  key={`${field.name}-${index}` || index} 
                   duplicateQuestionHandler={duplicateQuestionHandler}
                   removeQuestionHandler={removeQuestionHandler}
                   field={field as QuestionType} 

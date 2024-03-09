@@ -38,9 +38,26 @@ class QuizController {
     try {
       const params = { 
         id: req.params.id, 
-        isRemoved: req.params.isRemoved === "true"
+        isRemoved: false
       };
       const result = await QuizService.getById(params);
+      Helpers.responseJSON(res, result);
+    } catch (error) {
+      const err = error as IError;
+      Helpers.responseMessage(res, false, err.message);
+    }
+  }
+
+  static async getByIdWithQuestions(req: Request, res: Response) {
+    if (!req.params.id) { 
+      return Helpers.responseMessage(res, false, "'Id' field is required!");
+    }
+    try {
+      const params = { 
+        id: req.params.id, 
+        isRemoved: false
+      };
+      const result = await QuizService.getByIdWithQuestions(params);
       Helpers.responseJSON(res, result);
     } catch (error) {
       const err = error as IError;

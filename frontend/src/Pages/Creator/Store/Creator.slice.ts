@@ -17,7 +17,10 @@ const initialState: InitialStateTypes = {
     description: "",
     visibility: VisibilityEnums.PUBLIC,
     image: null,
-    totalTime: 0
+    totalTime: 0,
+    createdAt: "", 
+    updatedAt: "",
+    userId: "",
   },
   questions: []
 };

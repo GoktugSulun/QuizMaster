@@ -28,16 +28,29 @@ export type QuizType = {
 }
 
 export type QuizWithIdType = QuizType 
-   & { id: string; userId: string; createdAt: string; updatedAt: string; }
+   & { 
+      id: string; 
+      userId: string; 
+      createdAt: string; 
+      updatedAt: string; 
+      isRemoved: boolean;
+   }
 
 export type OptionType = {
    name: string; 
    isCorrect: boolean;
 }
 
-export type OptionWithIdType = OptionType & { id: string; }
+export type OptionWithIdType = OptionType 
+   & { 
+      id: string; 
+      createdAt: string; 
+      updatedAt: string; 
+      isRemoved: boolean;
+   }
 
 export type QuestionType = {
+   quizId: string;
    name: string;
    options: OptionType[];
    type: QuestionEnums;
@@ -46,7 +59,13 @@ export type QuestionType = {
 }
 
 export type QuestionWithIdType = Omit<QuestionType, "options"> 
-   & { id: string; options: OptionWithIdType[] }
+   & { 
+      id: string; 
+      options: OptionWithIdType[],
+      createdAt: string; 
+      updatedAt: string; 
+      isRemoved: boolean;
+   }
 
 export type QuizWithQuestions = QuizWithIdType & {
    questions: QuestionWithIdType[]

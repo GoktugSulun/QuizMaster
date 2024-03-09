@@ -36,7 +36,7 @@ const CreatorThunks = {
          thunkAPI.dispatch(CreatorActions.setQuiz(payload));
       },
    }),
-   getQuizByIdWithQuestions: (id: number | string) => request({
+   getQuizByIdWithQuestions: (id: string) => request({
       method: 'GET',
       url: `${ApiURL.QUIZ}/${id}/withQuestions`,
       key: 'getQuizByIdWithQuestions',
@@ -56,16 +56,16 @@ const CreatorThunks = {
          thunkAPI.dispatch(CreatorActions.setQuestions(payload));
       },
    }),
-   editQuestions: (payload: QuestionType[] & { id?: string; }) => request({
+   editQuestions: (payload: { quizId: string; questions: QuestionWithIdType[] }) => request({
       method: 'PUT',
-      url: `${ApiURL.QUESTION}`,
+      url: `${ApiURL.QUESTION}/${payload.quizId}`,
       key: 'editQuestions',
-      payload,
+      payload: payload.questions,
       success: ({ data, thunkAPI }) => {
          const payload = data as QuestionWithIdType[];
          thunkAPI.dispatch(CreatorActions.setQuestions(payload));
       },
-   }),
+   })
 };
 
 export default CreatorThunks;
