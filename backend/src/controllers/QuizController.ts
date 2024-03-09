@@ -2,7 +2,7 @@ import { type Request, type Response } from "express";
 import QuizService from '../services/QuizService.ts';
 import Helpers from '../utils/Helpers.ts';
 import { authorizedUserId } from "../index.ts";
-import { type ICreate, type IEdit } from "../constants/Types/Quiz/QuizType.ts";
+import { IDelete, type ICreate, type IEdit } from "../constants/Types/Quiz/QuizType.ts";
 import { type IError } from "../constants/Types/Error/ErrorType.ts";
 import { QuizTypeEnums } from "../constants/Enums/Enums.ts";
 
@@ -85,6 +85,20 @@ class QuizController {
       // Todo : Validate req.body
       const params = { body: req.body, id: req.params.id } as IEdit;
       const result = await QuizService.edit(params);
+      Helpers.responseJSON(res, result);
+    } catch (error) {
+      const err = error as IError;
+      Helpers.responseMessage(res, false, err.message);
+    }
+  }
+
+  static async delete(req: Request, res: Response) {
+    if (!req.params.id) { 
+      return Helpers.responseMessage(res, false, "'Id' field is required!");
+    }
+    try {
+      const params = { id: req.params.id } as IDelete;
+      const result = await QuizService.delete(params);
       Helpers.responseJSON(res, result);
     } catch (error) {
       const err = error as IError;

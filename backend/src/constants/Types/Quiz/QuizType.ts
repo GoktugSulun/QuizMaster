@@ -34,3 +34,7 @@ export interface IEdit {
    body: ICreate;
    id: string;
 }
+
+export interface IDelete {
+   id: string;
+}

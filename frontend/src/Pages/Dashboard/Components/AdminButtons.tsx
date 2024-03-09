@@ -6,6 +6,8 @@ import * as S from '../Style/Dashboard.style';
 import { type TooltipTypes } from "../Types/DashboardTypes";
 import DeleteIcon from '@mui/icons-material/Delete';
 import DashboardThunks from "../Store/Dashboard.thunk";
+import { useThunk } from "@/Core/Hooks";
+import { Loading } from "@/Core/Components";
 
 type AdminButtonsProps = {
    tooltipState: [TooltipTypes, React.Dispatch<React.SetStateAction<TooltipTypes>>];
@@ -15,6 +17,8 @@ type AdminButtonsProps = {
 const AdminButtons = (props: AdminButtonsProps) => {
    const navigate = useNavigate();
    const [tooltip, setTooltip] = props.tooltipState;
+
+   const { isLoading: isLoadingDelete } = useThunk("deleteQuiz");
 
    const editHandler = () => {
       navigate(`/creator/${props.id}`);
@@ -40,9 +44,10 @@ const AdminButtons = (props: AdminButtonsProps) => {
          >
             <S.DeleteButton 
                onClick={deleteHandler}
+               disabled={isLoadingDelete}
                sx={{ filter: "drop-shadow(4px 2px 6px #999)" }}
             >
-               <DeleteIcon />
+               { isLoadingDelete ? <Loading size={24} /> : <DeleteIcon /> }
             </S.DeleteButton>
          </CustomTooltip>
          <CustomTooltip 

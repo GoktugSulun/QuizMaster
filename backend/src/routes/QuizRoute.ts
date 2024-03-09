@@ -24,4 +24,7 @@ app.put('/unmarkAsFavorite/:id', FavoriteController.unmarkAsFavorite);
 app.post('/markAsSaved', SaveController.markAsSaved);
 app.put('/unmarkAsSaved/:id', SaveController.unmarkAsSaved);
 
+// Delete
+app.delete('/:id', QuizController.delete);
+
 export default app;  
