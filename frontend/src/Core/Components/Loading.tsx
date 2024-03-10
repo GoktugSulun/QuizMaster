@@ -56,7 +56,7 @@ const LoadingWrapper = styled('div')<LoadingWrapperProps>(({ theme, ...props }) 
    justifyContent: 'center',
    alignItems: 'center',
    width: props.fullWidth ? '100%' : 'auto',
-   height: "100%",
+   height: props.fullWidth ? '100%' : 'initial',
    margin: props.margin,
    // zIndex: 10,
    ...(props.blur ? {

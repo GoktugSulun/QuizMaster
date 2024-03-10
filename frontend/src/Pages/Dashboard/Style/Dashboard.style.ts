@@ -10,6 +10,7 @@ export const QuizPreview = styled(Stack)(({ theme }) => ({
    borderRadius: 20,
    height: '100%',
    boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
+   position: "relative"
 }));
 
 export const Image = styled('img')({
@@ -41,7 +42,7 @@ export const EllipsisText = styled(Typography, { shouldForwardProp })<{ $maxRow?
 export const LikeButton = styled(IconButton)(({ theme }) => ({
    background: theme.palette.custom.light,
    '&:hover': {
-      background: alpha(theme.palette.primary.main, .3),
+      background: theme.palette.secondary.main,
    },
    '&.Mui-disabled': {
       background: theme.palette.custom.light,
@@ -50,6 +51,10 @@ export const LikeButton = styled(IconButton)(({ theme }) => ({
       color: theme.palette.primary.main
    }
 }));
+
+export const SaveButton = styled(LikeButton)({});
+export const EditButton = styled(LikeButton)({});
+export const DeleteButton = styled(LikeButton)({});
 
 export const Category = styled(Box, { shouldForwardProp })<{ color: string, $bgColor: string }>(({ color, $bgColor }) => ({
    background: $bgColor,

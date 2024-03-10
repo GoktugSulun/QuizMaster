@@ -1,108 +1,51 @@
-import { Stack, alpha, useTheme } from '@mui/material';
+import { Stack } from '@mui/material';
 import * as S from '../Style/Dashboard.style';
-import LikeIcon from '@mui/icons-material/FavoriteBorder';
-import FilledLikeIcon from '@mui/icons-material/Favorite';
-import SaveIcon from '@mui/icons-material/BookmarkBorder';
-import FilledSaveIcon from '@mui/icons-material/Bookmark';
 import QuizPreviewFooter from './QuizPreviewFooter';
 import QuizPreviewBody from './QuizPreviewBody';
-import { CustomTooltip } from '@/Components/Tooltip';
 import defaultImage from '@/Pngs/DefaultQuizImg.png';
-import DashboardThunks from '../Store/Dashboard.thunk';
-import { Loading } from '@/Core/Components';
-import { useThunk } from '@/Core/Hooks';
 import { IQuizResponse } from '@/Constants/ResponseTypes';
-import { useState } from 'react';
+import { Ref, forwardRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { RouteEnums } from '@/Constants/Enums';
+import AdminButtons from './AdminButtons';
+import { TooltipTypes } from '../Types/DashboardTypes';
+import UserButtons from './UserButtons';
 
-const QuizPreview = (props: { data: IQuizResponse }) => {
+type QuizPreviewType = {
+   data: IQuizResponse,
+}
+
+const QuizPreview = forwardRef((props: QuizPreviewType, ref: Ref<HTMLDivElement> | null) => {
    const { id, name, description, totalTime, image, isFavorite, isSaved } = props.data;
-   const theme = useTheme();
-   const [showFavoriteTooltip, setShowFavoriteTooltip] = useState(false);
-   const [showSaveTooltip, setShowSaveTooltip] = useState(false);
-
-   const { isLoading: isLoadingMarkFavorite } = useThunk("markQuizAsFavorite");
-   const { isLoading: isLoadingUnmarkFavorite } = useThunk("unmarkQuizAsFavorite");
-   const { isLoading: isLoadingMarkSaved } = useThunk("markQuizAsSaved");
-   const { isLoading: isLoadingUnmarkSaved } = useThunk("unmarkQuizAsSaved");
-
-   const markQuizAsFavorite = () => {
-      DashboardThunks.markQuizAsFavorite({ quizId: id });
-      setShowFavoriteTooltip(false);
-   }
-
-   const unmarkQuizAsFavorite = () => {
-      DashboardThunks.unmarkQuizAsFavorite(id);
-      setShowFavoriteTooltip(false);
-   }
-
-   const markQuizAsSaved = () => {
-      DashboardThunks.markQuizAsSaved({ quizId: id });
-      setShowSaveTooltip(false);
-   }
-
-   const unmarkQuizAsSaved = () => {
-      DashboardThunks.unmarkQuizAsSaved(id);
-      setShowSaveTooltip(false);
-   }
+   const location = useLocation();
+   const [tooltip, setTooltip] = useState<TooltipTypes>({ delete: false, edit: false, favorite: false, save: false });
+   const isInCreatedPage = location.pathname === RouteEnums.CREATED;
 
    return (
-      <S.QuizPreview>
+      <S.QuizPreview {...(ref) ? { ref } : {}}>
          <S.Image src={image || defaultImage} alt="quiz" />
-         <Stack 
+         <Stack
             flexDirection="row" 
-            justifyContent="space-between" 
-            alignItems="center"
-            padding="10px 15px"
+            alignItems="center" 
+            justifyContent={isInCreatedPage ? "space-between" : "flex-end"}
+            gap={1}
+            position="absolute"
+            padding="10px"
+            width="100%"
          >
-            <S.Category 
-               color={alpha(theme.palette.primary.main, .6)} 
-               $bgColor={theme.palette.custom.light}
-               padding="5px 15px"
-            > 
-               {"Default category"} 
-            </S.Category>
-            <Stack flexDirection="row" alignItems="center" gap={1}>
-               <CustomTooltip 
-                  arrow 
-                  placement="top" 
-                  open={showFavoriteTooltip} 
-                  onOpen={() => setShowFavoriteTooltip(true)}
-                  onClose={() => setShowFavoriteTooltip(false)}
-                  title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-               >
-                  <S.LikeButton 
-                     disabled={isLoadingMarkFavorite || isLoadingUnmarkFavorite} 
-                     onClick={isFavorite ? unmarkQuizAsFavorite : markQuizAsFavorite}
-                  >
-                     { 
-                        (isLoadingMarkFavorite || isLoadingUnmarkFavorite) 
-                           ? <Loading size={24} /> 
-                           : isFavorite ? <FilledLikeIcon /> : <LikeIcon /> 
-                     }
-                  </S.LikeButton>
-               </CustomTooltip>
-               <CustomTooltip 
-                  arrow 
-                  placement="top" 
-                  open={showSaveTooltip} 
-                  onOpen={() => setShowSaveTooltip(true)}
-                  onClose={() => setShowSaveTooltip(false)}
-                  title={isSaved ? 'Remove from saved' : 'Add to saved'}
-               >
-                  <S.LikeButton 
-                     disabled={isLoadingMarkSaved || isLoadingUnmarkSaved} 
-                     onClick={isSaved ? unmarkQuizAsSaved : markQuizAsSaved}
-                  >
-                     { 
-                        (isLoadingMarkSaved || isLoadingUnmarkSaved) 
-                           ? <Loading size={24} /> 
-                           : isSaved ? <FilledSaveIcon /> : <SaveIcon /> 
-                     }
-                  </S.LikeButton>
-               </CustomTooltip>
-            </Stack>
+            { isInCreatedPage && <AdminButtons tooltipState={[tooltip, setTooltip]} id={id} /> }
+            <UserButtons
+               tooltipState={[tooltip, setTooltip]}
+               isFavorite={isFavorite}
+               isSaved={isSaved}
+               id={id}
+            />
          </Stack>
-         <Stack flex={1} gap={4}>
+         <Stack 
+            paddingTop="10px"
+            flex={1} 
+            gap={4}
+         >
             <QuizPreviewBody 
                id={id} 
                name={name} 
@@ -115,6 +58,6 @@ const QuizPreview = (props: { data: IQuizResponse }) => {
          </Stack>
       </S.QuizPreview>
    )
-}
+});
 
 export default QuizPreview;

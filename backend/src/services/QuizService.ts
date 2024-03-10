@@ -3,7 +3,7 @@ import Quiz from "../models/Quiz.ts";
 import { authorizedUserId } from "../index.ts";
 import Favorite from "../models/Favorite.ts";
 import Save from "../models/Save.ts";
-import { type IEdit, type ICreate, type IGet, type IGetById, type IGetAll } from "../constants/Types/Quiz/QuizType.ts";
+import { type IEdit, type ICreate, type IGet, type IGetById, type IGetAll, IDelete } from "../constants/Types/Quiz/QuizType.ts";
 import { type IResponse } from "../types/Types.ts";
 import { IQuizWithQuestions, type IQuizResponse } from "../constants/Types/Quiz/QuizResponseTypes.ts";
 import FavoriteService from "./FavoriteService.ts";
@@ -23,6 +23,7 @@ class QuizService {
           ...(creatorId ? { creatorId } : {}),
           ...(visibility ? { visibility } : {})
         })
+        .sort({ createdAt: "desc" })
         .skip(skip)
         .limit(limit);
       
@@ -76,6 +77,7 @@ class QuizService {
               return result.data;
             }
             case QuizTypeEnums.COMPLETED: {
+              // todo : do it later
               console.log('get completed quizzes');
             }
             case QuizTypeEnums.CREATED: {
@@ -204,6 +206,22 @@ class QuizService {
         type: true, 
         message: `Quiz with id '${id}' has been updated successfully!`, 
         data
+      };
+
+    } catch (error) {
+      return Helpers.responseError(error)
+    }
+  }
+
+  static async delete(params: IDelete): Promise<IResponse> {
+    try {
+      const { id } = params;
+      
+      await Quiz.findByIdAndUpdate({ _id: id }, { isRemoved: true });
+      
+      return { 
+        type: true, 
+        message: `Quiz with id '${id}' has been deleted successfully!`, 
       };
 
     } catch (error) {

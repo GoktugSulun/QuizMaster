@@ -1,7 +1,7 @@
 import { Box, Stack, alpha, useTheme } from '@mui/material';
 import * as S from './Style/Header.style';
 import ProfileMenu from './Components/Menu';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import CreatorInput from './Components/CreatorInput';
 import CreatorButtons from './Components/CreatorButtons';
 import { useAppSelector } from '@/Core/Hooks';
@@ -21,6 +21,7 @@ const capitilize = (pathname: string): string => {
 
 const Header = ({ is404=false }: { is404?: boolean; }) => {
   const { pathname } = useLocation();
+  const params = useParams();
   const theme = useTheme();
   const isCreatorPage = pathname.includes('/creator');
   const doesQuizIdExist = !!useAppSelector((state) => state.Creator.quiz.id);
@@ -66,7 +67,7 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
         <Stack flexDirection="row" height="100%">
           <Stack flexDirection="row" alignItems="center">
             <S.PageTitle fontWeight="bold" variant="h4"> {pageTitle} </S.PageTitle>
-            { isCreatorPage && doesQuizIdExist && <CreatorInput /> }
+            { isCreatorPage && doesQuizIdExist && params.quizId && <CreatorInput /> }
           </Stack>
           <Stack 
             flex={1}
@@ -77,7 +78,7 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
             height="100%"
             paddingRight={5}
           >
-            { isCreatorPage && doesQuizIdExist && <CreatorButtons /> }
+            { isCreatorPage && doesQuizIdExist && params.quizId && <CreatorButtons /> }
             <ProfileMenu />
           </Stack>
         </Stack>

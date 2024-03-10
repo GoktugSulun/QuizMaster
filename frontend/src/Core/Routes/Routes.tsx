@@ -25,7 +25,7 @@ const RouteList = () => {
     */
   //  console.log('path => ', location.pathname);
    
-   console.log(location, ' loccc');
+  //  console.log(location, ' loccc');
    
     window.scrollTo(0, 0);
   }, [location.pathname]);

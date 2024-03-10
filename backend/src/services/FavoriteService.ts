@@ -36,6 +36,7 @@ class FavoriteService {
 
          const favoriteQuizDatas = await Favorite
             .find({ isRemoved, userId: authorizedUserId })
+            .sort({ createdAt: "desc" })
             .skip(skip)
             .limit(limit);
          
