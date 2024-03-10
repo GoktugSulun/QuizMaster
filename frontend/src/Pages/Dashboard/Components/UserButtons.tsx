@@ -9,6 +9,7 @@ import FilledLikeIcon from '@mui/icons-material/Favorite';
 import SaveIcon from '@mui/icons-material/BookmarkBorder';
 import FilledSaveIcon from '@mui/icons-material/Bookmark';
 import * as S from '../Style/Dashboard.style';
+import { useLocation, useNavigate } from "react-router-dom";
 
 type UserButtonsProps = {
    tooltipState: [TooltipTypes, React.Dispatch<React.SetStateAction<TooltipTypes>>];
@@ -20,19 +21,25 @@ type UserButtonsProps = {
 const UserButtons = (props: UserButtonsProps) => {
    const { tooltipState, isFavorite, isSaved, id } = props;
    const [tooltip, setTooltip] = tooltipState;
+   const navigate = useNavigate();
+   const location = useLocation();
 
    const { isLoading: isLoadingMarkFavorite } = useThunk("markQuizAsFavorite");
    const { isLoading: isLoadingUnmarkFavorite } = useThunk("unmarkQuizAsFavorite");
    const { isLoading: isLoadingMarkSaved } = useThunk("markQuizAsSaved");
    const { isLoading: isLoadingUnmarkSaved } = useThunk("unmarkQuizAsSaved");
 
-   const markQuizAsFavorite = () => {
-      DashboardThunks.markQuizAsFavorite({ quizId: id });
-      setTooltip((prev) => ({ ...prev, favorite: false }));
-   }
-
-   const unmarkQuizAsFavorite = () => {
-      DashboardThunks.unmarkQuizAsFavorite(id);
+   const onClickFavoriteButton = () => {
+      const token = localStorage.getItem("token");
+      if (!token){
+         navigate("/auth/login", { state: { loginLocation: location }});
+         return;
+      }
+      if (isFavorite) {
+         DashboardThunks.unmarkQuizAsFavorite(id);
+      } else {
+         DashboardThunks.markQuizAsFavorite({ quizId: id });
+      }
       setTooltip((prev) => ({ ...prev, favorite: false }));
    }
 
@@ -62,7 +69,7 @@ const UserButtons = (props: UserButtonsProps) => {
          >
             <S.LikeButton 
                disabled={isLoadingMarkFavorite || isLoadingUnmarkFavorite} 
-               onClick={isFavorite ? unmarkQuizAsFavorite : markQuizAsFavorite}
+               onClick={onClickFavoriteButton}
                sx={{ filter: "drop-shadow(4px 2px 6px #999)" }}
             >
                { 

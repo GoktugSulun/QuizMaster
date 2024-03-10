@@ -6,30 +6,23 @@ import { Sidebar } from '@/Components/Sidebar';
 import { ContentWrapper, MainWrapper } from '../Layout';
 
 type ProtectedRouteProps = {
-  isAllowed?: boolean,
-  redirectPath?: string,
-  is404?: boolean
+  isPrivate?: boolean;
+  isAllowed?: boolean;
+  redirectPath?: string;
+  is404?: boolean;
 }
 
 const ProtectedRoute = (props: ProtectedRouteProps) => {
-  const { isAllowed = false, redirectPath = '/', is404 = false } = props;
+  const { isAllowed = false, redirectPath = '/', is404 = false, isPrivate = false } = props;
   const token = localStorage.getItem('token');
 
-  if (!token) {
-    return (
-      <Suspense fallback={<Fallback size={80} />}>
-        <Navigate to="/login" replace />
-      </Suspense>
-    );
-  };
-
-  if (!isAllowed) {
-    return (
-      <Suspense fallback={<Fallback size={80} />}>
-        <Navigate to={redirectPath} replace />
-      </Suspense>
-    );
-  };
+  // if (isPrivate && !token) {
+  //   return (
+  //     <Suspense fallback={<Fallback size={80} />}>
+  //       <Navigate to="/login" replace />
+  //     </Suspense>
+  //   );
+  // }
 
   const { pathname } = useLocation();
   const isCreatorPage = pathname.includes("/creator")

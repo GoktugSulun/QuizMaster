@@ -29,7 +29,8 @@ const Dashboard = () => {
       dispatch(DashboardActions.setPage({ newPage: 1 }));
       return;
     }
-  }, [location]);
+    console.log('location-1 ', location.pathname);
+  }, [location.pathname]);
 
   useEffect(() => {
     getQuizzesHandler();

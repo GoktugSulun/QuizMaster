@@ -16,8 +16,7 @@ export enum RouteEnums {
    CREATOR = '/creator/:quizId?',
 
    // Auth
-   LOGIN = '/login',
-   REGISTER = '/register',
+   AUTH = '/auth/:type',
 
    // Test route
    TEST = '/test',
@@ -29,4 +28,9 @@ export enum QuizTypeEnums {
    SAVED = 'saved',
    COMPLETED = 'completed',
    CREATED = 'created'
+}
+
+export enum AuthEnums {
+   LOGIN = 'login',
+   REGISTER = 'register'
 }
