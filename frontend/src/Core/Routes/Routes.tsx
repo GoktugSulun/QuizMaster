@@ -10,7 +10,9 @@ const QuizRules = lazy(() => import('@/Pages/QuizRules/QuizRules'));
 const QuizResult = lazy(() => import('@/Pages/QuizResult/QuizResult'));
 const Creator = lazy(() => import('@/Pages/Creator/Creator'));
 
-const AuthModal = lazy(() => import('@/Pages/Auth/Auth'));
+// todo : lazy olduğunda fallback'e düşüp geliyor onu düzenleyebiliriz fallback'i modal içinde yapabiliriz
+// const AuthModal = lazy(() => import('@/Pages/Auth/Auth'));
+import { Auth as AuthModal } from '@/Pages/Auth';
 
 // TODO : Change route structure and use useBlocker to prevent navigation in some cases
 // TODO : HomePage will be global route, and others will be protected
@@ -27,30 +29,40 @@ const RouteList = () => {
   return (
     <Suspense fallback={<div />}>
       <Routes location={authLocation || location}>
-        {/* Protected Route */}
-        <Route element={<ProtectedRoute isAllowed />}>
+
+        {/* Public Routes */}
+        <Route element={<ProtectedRoute />}>
           <Route path={RouteEnums.DEFAULT} element={<Navigate to={RouteEnums.FEED} replace />} />
           <Route path={RouteEnums.FEED} element={<Dashboard />} />
+          <Route path={RouteEnums.TEST} element={<Test />} />
+          <Route path={RouteEnums.AUTH} element={<AuthModal />} />
+        </Route>
+
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute isPrivate />}>
           <Route path={RouteEnums.FAVORITES} element={<Dashboard />} />
           <Route path={RouteEnums.SAVED} element={<Dashboard />} />
           <Route path={RouteEnums.COMPLETED} element={<Dashboard />} />
           <Route path={RouteEnums.CREATED} element={<Dashboard />} />
-
           <Route path={RouteEnums.QUIZ} element={<Quiz />} />
           <Route path={RouteEnums.QUIZ_RULES} element={<QuizRules />} />
           <Route path={RouteEnums.QUIZ_RESULTS} element={<QuizResult />} />
-          <Route path={RouteEnums.TEST} element={<Test />} />
           <Route path={RouteEnums.CREATOR} element={<Creator />} />
-
-          <Route path={RouteEnums.AUTH} element={<AuthModal />} />
         </Route>
 
         {/* 404 Page */}
-        <Route element={<ProtectedRoute is404 isAllowed />}>
+        <Route element={<ProtectedRoute is404 />}>
           <Route path="*" element={<div> Page Not Found! </div>} />
         </Route>
       </Routes>
-      { authLocation && <Route path={RouteEnums.AUTH} element={<AuthModal />} /> }
+      { 
+        authLocation 
+          && (
+            <Routes>
+              <Route path={RouteEnums.AUTH} element={<AuthModal />} />
+            </Routes> 
+          )
+      }
     </Suspense>
   );
 };

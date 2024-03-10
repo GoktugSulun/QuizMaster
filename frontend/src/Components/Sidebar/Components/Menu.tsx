@@ -14,16 +14,19 @@ import { useAppSelector } from '@/Core/Hooks';
 import { RouteEnums } from '@/Constants/Enums';
 
 const Menu = () => {
-   const { pathname } = useLocation();
+   const location = useLocation();
    const navigate = useNavigate();
    const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
 
    const navigateHandler = (targetPath: string) => {
-      if (pathname === targetPath) {
-         console.log('aynı sayfa zaten');
-         return;
+      if (location.pathname !== targetPath) {
+         const token = localStorage.getItem("token");
+         if (!token) {
+            navigate("/auth/login", { state: { from: location.pathname, authLocation: location, to: targetPath } });
+         } else {
+            navigate(targetPath);
+         }
       }
-      navigate(targetPath);
    }
 
    return (
@@ -35,7 +38,7 @@ const Menu = () => {
             arrow
          >
             <S.Item 
-               $isActive={pathname === RouteEnums.FEED} 
+               $isActive={location.pathname === RouteEnums.FEED} 
                $isOpen={isOpenSidebar}
                onClick={() => navigateHandler(RouteEnums.FEED)}
                disableRipple
@@ -51,7 +54,7 @@ const Menu = () => {
             arrow
          >
             <S.Item 
-               $isActive={pathname === RouteEnums.FAVORITES} 
+               $isActive={location.pathname === RouteEnums.FAVORITES} 
                $isOpen={isOpenSidebar}
                onClick={() => navigateHandler(RouteEnums.FAVORITES)}
                disableRipple
@@ -67,7 +70,7 @@ const Menu = () => {
             arrow
          >
             <S.Item 
-               $isActive={pathname === RouteEnums.SAVED} 
+               $isActive={location.pathname === RouteEnums.SAVED} 
                $isOpen={isOpenSidebar}
                onClick={() => navigateHandler(RouteEnums.SAVED)}
                disableRipple
@@ -83,7 +86,7 @@ const Menu = () => {
             arrow
          >
             <S.Item 
-               $isActive={pathname === RouteEnums.COMPLETED} 
+               $isActive={location.pathname === RouteEnums.COMPLETED} 
                $isOpen={isOpenSidebar}
                onClick={() => navigateHandler(RouteEnums.COMPLETED)}
                disableRipple
@@ -99,7 +102,7 @@ const Menu = () => {
             arrow
          >
             <S.Item 
-               $isActive={pathname === RouteEnums.CREATED} 
+               $isActive={location.pathname === RouteEnums.CREATED} 
                $isOpen={isOpenSidebar}
                onClick={() => navigateHandler(RouteEnums.CREATED)}
                disableRipple

@@ -32,7 +32,7 @@ const UserButtons = (props: UserButtonsProps) => {
    const onClickFavoriteButton = () => {
       const token = localStorage.getItem("token");
       if (!token){
-         navigate("/auth/login", { state: { loginLocation: location }});
+         navigate("/auth/login", { state: { authLocation: location }});
          return;
       }
       if (isFavorite) {
@@ -43,13 +43,17 @@ const UserButtons = (props: UserButtonsProps) => {
       setTooltip((prev) => ({ ...prev, favorite: false }));
    }
 
-   const markQuizAsSaved = () => {
-      DashboardThunks.markQuizAsSaved({ quizId: id });
-      setTooltip((prev) => ({ ...prev, save: false }));
-   }
-
-   const unmarkQuizAsSaved = () => {
-      DashboardThunks.unmarkQuizAsSaved(id);
+   const onClickSaveButton = () => {
+      const token = localStorage.getItem("token");
+      if (!token){
+         navigate("/auth/login", { state: { authLocation: location }});
+         return;
+      }
+      if (isSaved) {
+         DashboardThunks.unmarkQuizAsSaved(id);
+      } else {
+         DashboardThunks.markQuizAsSaved({ quizId: id });
+      }
       setTooltip((prev) => ({ ...prev, save: false }));
    }
 
@@ -89,7 +93,7 @@ const UserButtons = (props: UserButtonsProps) => {
          >
             <S.SaveButton 
                disabled={isLoadingMarkSaved || isLoadingUnmarkSaved} 
-               onClick={isSaved ? unmarkQuizAsSaved : markQuizAsSaved}
+               onClick={onClickSaveButton}
                sx={{ filter: "drop-shadow(4px 2px 6px #999)" }}
             >
                { 

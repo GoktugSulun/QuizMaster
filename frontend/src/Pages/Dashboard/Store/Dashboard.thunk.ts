@@ -12,7 +12,8 @@ const DashboardThunks = {
     key: 'getQuizzes',
     success: ({ data, thunkAPI }) => {
       const payload = data as IQuizResponse[];
-      thunkAPI.dispatch(DashboardActions.setQuizzes(payload));
+      thunkAPI.dispatch(DashboardActions.setQuizzes({ data: payload, page }));
+      thunkAPI.dispatch(DashboardActions.setPage({ newPage: page + 1 }));
     }
   }),
   markQuizAsFavorite: (payload: markQuizAsFavoriteTypes) => request({

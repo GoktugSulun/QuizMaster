@@ -3,6 +3,7 @@ import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { AuthEnums, RouteEnums } from '@/Constants/Enums';
 import * as S from './Style/Auth.style';
 import AuthHeader from './Components/AuthHeader';
+import { Button } from '@mui/material';
 
 const Auth = () => {
    const location = useLocation();
@@ -18,6 +19,18 @@ const Auth = () => {
       navigate(from, { replace: true });
    };
 
+   const go = () => {
+      const to = location.state?.to;
+      console.log(to, ' to');
+      localStorage.setItem("token", "aaaa")
+      
+      if (to) {
+         navigate(to, { replace: true });
+         return;
+      }
+      navigate(-1);
+   };
+
    if (params.type !== AuthEnums.LOGIN && params.type !== AuthEnums.REGISTER) {
       return <Navigate to={`/auth/${AuthEnums.LOGIN}`} replace />
    }
@@ -30,6 +43,7 @@ const Auth = () => {
          >
             <S.Auth>
                <AuthHeader />
+               <Button onClick={go}> Login </Button>
                { isLoginActive && "Login component" }
                { isRegisterActive && "Register component" }
             </S.Auth>

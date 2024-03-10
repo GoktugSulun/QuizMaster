@@ -1,6 +1,6 @@
 import { Stack } from "@mui/material";
 import * as S from '../Style/Auth.style';
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { AuthEnums } from "@/Constants/Enums";
 
 const AuthHeader = () => {
@@ -8,16 +8,26 @@ const AuthHeader = () => {
    const isLoginActive = type === AuthEnums.LOGIN;
    const isRegisterActive = type === AuthEnums.REGISTER;
    const navigate = useNavigate();
+   const location = useLocation();
+
+   const options = {
+      state: { 
+         authLocation: location.state?.authLocation,
+         to: location.state?.to,
+         from: location.state?.from
+      }, 
+      replace: true
+   }
 
    const navigateToLogin = () => {
       if (type !== AuthEnums.LOGIN) {
-         navigate(`/auth/${AuthEnums.LOGIN}`);
+         navigate(`/auth/${AuthEnums.LOGIN}`, options);
       }
    }
 
    const navigateToRegister = () => {
       if (type !== AuthEnums.REGISTER) {
-         navigate(`/auth/${AuthEnums.REGISTER}`);
+         navigate(`/auth/${AuthEnums.REGISTER}`, options);
       }
    }
 
