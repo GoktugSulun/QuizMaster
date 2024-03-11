@@ -17,7 +17,7 @@ const AuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
       return res.status(401).json({ type: false, message: 'Authentication failed' });
    }
    
-   jwt.verify(token, process.env.TOKEN_SECRET as string, (err: any, decoded: any) => {
+   jwt.verify(token, process.env.TOKEN_SECRET || "token_secret", (err: any, decoded: any) => {
       if (err) {
          return res.status(401).json({ type: false, message: 'Invalid token' });
       }

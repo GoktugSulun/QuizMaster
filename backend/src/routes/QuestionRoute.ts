@@ -4,10 +4,6 @@ import AuthMiddleware from '../middlewares/AuthMiddleware.ts';
 
 const app = express();
 
-// Get
-// app.get('/', QuestionController.get);
-// app.get('/:id', QuestionController.getById);
-
 // Create
 app.post('/', AuthMiddleware, QuestionController.create);
 
