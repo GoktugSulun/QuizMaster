@@ -11,9 +11,9 @@ export const handleError = (error: Error) => {
     }
  
     if (error?.response?.status === 401) {
-      snackbar(message || 'Unauthorized!');
+      snackbar(message || 'Unauthorized!', { variant: "error" });
       localStorage.clear();
-      window.location.replace('#/login');
+      window.location.replace('/auth/login');
       return; 
     }
 

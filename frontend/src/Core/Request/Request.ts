@@ -47,11 +47,13 @@ const payloadWithFiles = (payload: any, files: File | File[]) => {
 
 export const request = async ({ method='GET', url, payload, files, key, success, failure }: RequestProps) => {
   const thunk = createAsyncThunk(`request/${key}`, async (_, thunkAPI) => {
-    try {
-      // Todo: delete
-      await new Promise(resolve => setTimeout(resolve, 3000));
+    try { 
+      const token = localStorage.getItem("token");
+      const headers = { 
+        'Authorization': `Bearer ${token}`,
+      };
       const data = files ? payloadWithFiles(payload, files) : payload;
-      const response = await axios({ method, baseURL, url, data });
+      const response = await axios({ method, headers, baseURL, url, data });
       if (response.data.type) {
         return success?.({ data: response.data.data, thunkAPI });
       }

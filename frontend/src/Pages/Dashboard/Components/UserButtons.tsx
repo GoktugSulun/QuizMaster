@@ -30,11 +30,11 @@ const UserButtons = (props: UserButtonsProps) => {
    const { isLoading: isLoadingUnmarkSaved } = useThunk("unmarkQuizAsSaved");
 
    const onClickFavoriteButton = () => {
-      const token = localStorage.getItem("token");
-      if (!token){
-         navigate("/auth/login", { state: { authLocation: location }});
-         return;
-      }
+      // const token = localStorage.getItem("token");
+      // if (!token){
+      //    navigate("/auth/login", { state: { authLocation: location }});
+      //    return;
+      // }
       if (isFavorite) {
          DashboardThunks.unmarkQuizAsFavorite(id);
       } else {

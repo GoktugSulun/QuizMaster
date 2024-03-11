@@ -2,6 +2,7 @@ import express from 'express';
 import QuizController from '../controllers/QuizController.ts';
 import FavoriteController from '../controllers/FavoriteController.ts';
 import SaveController from '../controllers/SaveController.ts';
+import AuthMiddleware from '../middlewares/AuthMiddleware.ts';
 
 const app = express();
 
@@ -11,20 +12,20 @@ app.get('/:id', QuizController.getById);
 app.get('/:id/withQuestions', QuizController.getByIdWithQuestions);
 
 // Create
-app.post('/', QuizController.create);
+app.post('/', AuthMiddleware, QuizController.create);
 
 // Edit
-app.put('/:id', QuizController.edit);
+app.put('/:id', AuthMiddleware, QuizController.edit);
 
 // Favorite
-app.post('/markAsFavorite', FavoriteController.markAsFavorite);
-app.put('/unmarkAsFavorite/:id', FavoriteController.unmarkAsFavorite);
+app.post('/markAsFavorite', AuthMiddleware, FavoriteController.markAsFavorite);
+app.put('/unmarkAsFavorite/:id', AuthMiddleware, FavoriteController.unmarkAsFavorite);
 
 // Save
-app.post('/markAsSaved', SaveController.markAsSaved);
-app.put('/unmarkAsSaved/:id', SaveController.unmarkAsSaved);
+app.post('/markAsSaved', AuthMiddleware, SaveController.markAsSaved);
+app.put('/unmarkAsSaved/:id', AuthMiddleware, SaveController.unmarkAsSaved);
 
 // Delete
-app.delete('/:id', QuizController.delete);
+app.delete('/:id', AuthMiddleware, QuizController.delete);
 
 export default app;  

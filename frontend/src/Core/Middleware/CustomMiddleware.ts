@@ -34,9 +34,9 @@ const customMiddleWare: Middleware = (store) => (next) => (action: Action) => {
       requestStatusValue: getStatus(actionStatus as ActionStatus),
       errorValue: actionStatus === ThunkEnums.REJECTED ? action.payload : null
     }));
-    if (actionStatus === ThunkEnums.REJECTED) {
-      snackbar(action.payload, { variant: 'error' })
-    }
+    // if (actionStatus === ThunkEnums.REJECTED) {
+    //   snackbar(action.payload, { variant: 'error' })
+    // }
   }
 
   next(action);
