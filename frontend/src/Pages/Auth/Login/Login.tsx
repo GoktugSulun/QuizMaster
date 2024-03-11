@@ -5,10 +5,14 @@ import * as yup from "yup";
 import { TextInput } from '@/Core/Inputs';
 import { Button, IconButton, Stack, useTheme } from '@mui/material';
 import { snackbar } from '@/Core/Utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { CustomTooltip } from '@/Components/Tooltip';
+import { useThunk } from '@/Core/Hooks';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { RouteEnums } from '@/Constants/Enums';
+import { Loading } from '@/Core/Components';
 
 type DefaultValuesType = {
    email: string;
@@ -33,8 +37,12 @@ const schema = yup.object({
 
 const Login = () => {
    const theme = useTheme();
-   const [showPassword, setShowPassword] = useState(false);
+   const location = useLocation();
+   const navigate = useNavigate();
    const form = useForm<DefaultValuesType>({ defaultValues, resolver: yupResolver(schema), mode: "onChange" });
+   const [showPassword, setShowPassword] = useState(false);
+
+   const { isLoading, isSuccess, setIdle } = useThunk("login");
 
    const loginHandler = async () => {
       const isValid = await form.trigger();
@@ -44,6 +52,23 @@ const Login = () => {
       }
       console.log(form.getValues(), ' data');
    };
+
+   useEffect(() => {
+      if (isSuccess) {
+         setIdle();
+         const to = location.state?.to;
+         const from = location.state?.from;
+         if (to) {
+            navigate(to, { replace: true });
+            return;
+         }
+         if (from) {
+            navigate(from, { replace: true });
+            return;
+         }
+         navigate(RouteEnums.FEED);
+      }
+   }, [isSuccess]);
    
    return (
       <S.Login>
@@ -60,6 +85,7 @@ const Login = () => {
                label="Email"
                control={form.control}
                name="email"
+               disabled={isLoading}
             />
             <TextInput
                placeholder="Your password"
@@ -68,9 +94,10 @@ const Login = () => {
                control={form.control}
                name="password"
                type={showPassword ? "text" : "password"}
+               disabled={isLoading}
                endAdornment={
                   <CustomTooltip arrow title={showPassword ? "Hide" : "Show"} placement="top">
-                     <IconButton onClick={() => setShowPassword((prev) => !prev)}> 
+                     <IconButton disabled={isLoading} onClick={() => setShowPassword((prev) => !prev)}> 
                         { showPassword ? <VisibilityIcon sx={{ color: "primary.main" }} /> : <VisibilityOffIcon sx={{ color: "primary.main" }} />   } 
                      </IconButton>
                   </CustomTooltip>
@@ -87,8 +114,9 @@ const Login = () => {
                   } 
                }}
                onClick={loginHandler}
+               disabled={isLoading}
             > 
-               Login 
+              { isLoading ? <Loading size={25} color={theme.palette.common.white} /> : "Login" }
             </Button>
          </Stack>
       </S.Login>

@@ -21,7 +21,7 @@ const TextInput = <TFieldValues extends FieldValues, TName extends FieldPath<TFi
           error: props.error
         } 
     };
-  const error = !!fieldState.error;
+  const error = props.error || !!fieldState.error;
   const helperText = (typeof fieldState.error === 'object' && 'message' in fieldState.error) 
     ? fieldState.error.message 
     : props.helperText
@@ -47,7 +47,7 @@ const TextInput = <TFieldValues extends FieldValues, TName extends FieldPath<TFi
         ref={field.ref}
         disabled={props.disabled ?? field.disabled}
         notched={shrink}
-        endAdornment={props.endAdornment || (error && <ErrorIcon color="error" />)}
+        endAdornment={<> {props.endAdornment} {error && <ErrorIcon color="error" />} </>}
       />
       <FormHelperText
         error={error} 

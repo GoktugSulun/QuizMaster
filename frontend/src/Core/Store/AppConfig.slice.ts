@@ -1,10 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { HttpResponseEnums } from '../Constants/Enums';
-import { InitialStateTypes } from './AppConfigTypes';
+import { InitialStateTypes, UserType } from './AppConfigTypes';
 
 const NAME = 'AppConfig';
 
 const initialState: InitialStateTypes = {
+  authorizedUser: {},
   notifications: [],
   isOpenSidebar: false,
   loadings: {},
@@ -49,6 +50,9 @@ const AppConfigSlice = createSlice({
       state.requestStatuses[actionName] = HttpResponseEnums.IDLE;
       state.errors[actionName] = null;
       state.loadings[actionName] = false;
+    },
+    setAuthorizedUser: (state, action: PayloadAction<{ user: UserType }>) => {
+      state.authorizedUser = action.payload.user;
     }
   }
 });

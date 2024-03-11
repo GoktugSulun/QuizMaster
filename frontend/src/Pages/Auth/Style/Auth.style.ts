@@ -1,4 +1,4 @@
-import { Button, Stack, styled } from "@mui/material";
+import { Button, styled } from "@mui/material";
 import { shouldForwardProp } from "@/Core/Utils";
 
 export const Auth = styled("div")(({ theme }) => ({
@@ -17,18 +17,15 @@ export const Auth = styled("div")(({ theme }) => ({
    }
 }));
 
-export const Login = styled("div")(({ theme }) => ({
-   
-}));
+export const Login = styled("div")({});
 
-export const Register = styled("div")(({ theme }) => ({
- 
-}));
+export const Register = styled("div")({});
 
 export const AuthButton = styled(Button, { shouldForwardProp })<{ $isActive?: boolean; }>(({ theme, $isActive }) => ({
    width: 150,
    background: $isActive ? theme.palette.primary.main : 'inherit',
    color: $isActive ? theme.palette.common.white : theme.palette.primary.main,
+   transition: "background 0ms",
    '&:hover': {
       background: $isActive ? theme.palette.primary.main : 'inherit',
       color: $isActive ? theme.palette.common.white : theme.palette.primary.main,

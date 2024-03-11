@@ -5,10 +5,13 @@ import * as yup from "yup";
 import { TextInput } from '@/Core/Inputs';
 import { Button, IconButton, Stack, useTheme } from '@mui/material';
 import { snackbar } from '@/Core/Utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { CustomTooltip } from '@/Components/Tooltip';
+import { useThunk } from '@/Core/Hooks';
+import { useNavigate } from 'react-router-dom';
+import { Loading } from '@/Core/Components';
 
 type DefaultValuesType = {
    name: string;
@@ -50,9 +53,12 @@ const schema = yup.object({
 
 const Register = () => {
    const theme = useTheme();
+   const navigate = useNavigate();
    const [showPassword, setShowPassword] = useState(false);
    const [showRpassword, setShowRpassword] = useState(false);
    const form = useForm<DefaultValuesType>({ defaultValues, resolver: yupResolver(schema), mode: "onChange" });
+
+   const { isLoading, isSuccess, setIdle } = useThunk("register");
 
    const registerHandler = async () => {
       const isValid = await form.trigger();
@@ -68,9 +74,20 @@ const Register = () => {
    }
 
    const rpassword = useWatch({ control: form.control, name: "rpassword" });
-   if (rpassword && !!form.getValues("password")) {
-      triggerPassword();
-   }
+   const isErrorPassword = !!form.formState.errors?.password;
+   
+   useEffect(() => {
+      if (rpassword && !!form.getValues("password")) {
+         triggerPassword();
+      }
+   }, [rpassword]);
+   
+   useEffect(() => {
+      if (isSuccess) {
+         setIdle();
+         navigate("/auth/login", { replace: true });
+      }
+   }, [isSuccess]);
    
    return (
       <S.Register>
@@ -87,6 +104,7 @@ const Register = () => {
                label="Name"
                control={form.control}
                name="name"
+               disabled={isLoading}
             />
             <TextInput
                placeholder="Your surname"
@@ -94,6 +112,7 @@ const Register = () => {
                label="Surname"
                control={form.control}
                name="surname"
+               disabled={isLoading}
             />
             <TextInput
                placeholder="Your email"
@@ -101,6 +120,7 @@ const Register = () => {
                label="Email"
                control={form.control}
                name="email"
+               disabled={isLoading}
             />
             <TextInput
                placeholder="Your password"
@@ -109,9 +129,10 @@ const Register = () => {
                control={form.control}
                name="password"
                type={showPassword ? "text" : "password"}
+               disabled={isLoading}
                endAdornment={
                   <CustomTooltip arrow title={showPassword ? "Hide" : "Show"} placement="top">
-                     <IconButton onClick={() => setShowPassword((prev) => !prev)}> 
+                     <IconButton disabled={isLoading} onClick={() => setShowPassword((prev) => !prev)}> 
                         { showPassword ? <VisibilityIcon sx={{ color: "primary.main" }} /> : <VisibilityOffIcon sx={{ color: "primary.main" }} />   } 
                      </IconButton>
                   </CustomTooltip>
@@ -124,13 +145,15 @@ const Register = () => {
                control={form.control}
                name="rpassword"
                type={showRpassword ? "text" : "password"}
+               disabled={isLoading}
                endAdornment={
                   <CustomTooltip arrow title={showRpassword ? "Hide" : "Show"} placement="top">
-                     <IconButton onClick={() => setShowRpassword((prev) => !prev)}> 
+                     <IconButton disabled={isLoading} onClick={() => setShowRpassword((prev) => !prev)}> 
                         { showRpassword ?  <VisibilityIcon sx={{ color: "primary.main" }} /> : <VisibilityOffIcon sx={{ color: "primary.main" }} /> } 
                      </IconButton>
                   </CustomTooltip>
                }
+               error={isErrorPassword}
             />
          </Stack>
          <Stack alignItems="center">
@@ -143,8 +166,9 @@ const Register = () => {
                   } 
                }}
                onClick={registerHandler}
+               disabled={isLoading}
             > 
-               Register 
+               { isLoading ? <Loading size={25} color={theme.palette.common.white} /> : "Register" }    
             </Button>
          </Stack>
       </S.Register>

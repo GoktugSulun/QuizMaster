@@ -1,5 +1,5 @@
 export enum ApiURL {
-   // Quizzes
+   // Quiz
    QUIZ = "v1/quizzes",
    MARK_QUIZ_AS_FAVORITE = "v1/quizzes/markAsFavorite",
    UNMARK_QUIZ_AS_FAVORITE = "v1/quizzes/unmarkAsFavorite",
@@ -8,4 +8,8 @@ export enum ApiURL {
 
    // Question
    QUESTION = "v1/questions",
+
+   // Auth
+   AUTH_LOGIN = "v1/auth/login",
+   AUTH_REGISTER = "v1/auth/register"
 }
