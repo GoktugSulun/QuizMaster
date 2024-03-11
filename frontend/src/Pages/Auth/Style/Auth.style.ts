@@ -1,4 +1,4 @@
-import { Button, styled } from "@mui/material";
+import { Button, Stack, styled } from "@mui/material";
 import { shouldForwardProp } from "@/Core/Utils";
 
 export const Auth = styled("div")(({ theme }) => ({
@@ -22,7 +22,7 @@ export const Login = styled("div")(({ theme }) => ({
 }));
 
 export const Register = styled("div")(({ theme }) => ({
-   
+ 
 }));
 
 export const AuthButton = styled(Button, { shouldForwardProp })<{ $isActive?: boolean; }>(({ theme, $isActive }) => ({
