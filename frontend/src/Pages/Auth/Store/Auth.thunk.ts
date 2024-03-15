@@ -13,7 +13,7 @@ const AuthThunks = {
       payload,
       success: ({ data, thunkAPI }) => {
          const { user, token } = data as { user: UserType; token: string; };
-         thunkAPI.dispatch(AppConfigActions.setAuthorizedUser({ user }));
+         thunkAPI.dispatch(AppConfigActions.setAuthorizedUser(user));
          localStorage.setItem("token", token);
       }
    }),

@@ -60,8 +60,8 @@ const AppConfigSlice = createSlice({
       state.errors[actionName] = null;
       state.loadings[actionName] = false;
     },
-    setAuthorizedUser: (state, action: PayloadAction<{ user: UserType }>) => {
-      state.authorizedUser = action.payload.user;
+    setAuthorizedUser: (state, action: PayloadAction<UserType>) => {
+      state.authorizedUser = action.payload;
     }
   }
 });

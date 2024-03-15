@@ -1,12 +1,12 @@
 import { IResponse } from "../types/Types.ts";
 import Helpers from "../utils/Helpers.ts";
 import { IRegister, ILogin, IGet, IUser } from "../constants/Types/User/UserType.ts";
-import { IGetResponse, ILoginResponse } from "../constants/Types/User/UserResponseType.ts";
+import { ILoginResponse } from "../constants/Types/User/UserResponseType.ts";
 import { type ResponseType } from "../constants/Types/Common/CommonType.ts";
 import jwt from 'jsonwebtoken';
 import User from "../models/User.ts";
 
-class UserService {
+class AuthService {
    static async get(params: IGet): Promise<ResponseType<IUser>> {
       try {
          const query = {} as { [key: string]: string };
@@ -40,7 +40,7 @@ class UserService {
          const userData = params;
          const token = jwt.sign(userData, process.env.TOKEN_SECRET || "token_secret", { expiresIn: '72h' });
 
-         const userResult = await UserService.get(userData);
+         const userResult = await AuthService.get(userData);
          if (!userResult.type) {
             return {
                type: false,
@@ -88,4 +88,4 @@ class UserService {
    }
 }
   
-export default UserService;
+export default AuthService;
