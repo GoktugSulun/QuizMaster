@@ -4,22 +4,25 @@ import { IRegister, ILogin, IGet, IUser } from "../constants/Types/User/UserType
 import { IGetResponse, ILoginResponse } from "../constants/Types/User/UserResponseType.ts";
 import { type ResponseType } from "../constants/Types/Common/CommonType.ts";
 import jwt from 'jsonwebtoken';
+import User from "../models/User.ts";
 
 class UserService {
    static async get(params: IGet): Promise<ResponseType<IUser>> {
       try {
-         const { email, password } = params;
+         const query = {} as { [key: string]: string };
+         Object.entries(params).forEach(([key, value]) => {
+            if (value) {
+               query[key] = value;
+            }
+         });
 
-         // todo : find user
-         const data = {
-            id: "111",
-            name: "111",
-            email: "111",
-            password: "111",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            isRemoved: false,
-         } as IUser;
+         const data = await User.findOne(query);
+         if (!data) {
+            return {
+               type: false,
+               message: "The information you entered is incorrect, please check it!"
+            }
+         }
          
          return { 
             type: true, 
@@ -61,7 +64,18 @@ class UserService {
 
    static async register(params: IRegister): Promise<IResponse> {
       try {
-         // todo : create user
+         const newUser = params;
+
+         const isQuizExisted = await User.exists({ email: newUser.email });
+         if (isQuizExisted) {
+            return {
+               type: false,
+               message: "This email is being used, try another one!"
+            }
+         }
+
+         const user = new User(newUser);
+         await user.save();
          
          return { 
             type: true, 

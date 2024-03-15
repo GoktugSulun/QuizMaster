@@ -22,6 +22,7 @@ export interface IUser {
 }
 
 export interface IGet {
-   email: string;
-   password: string;
+   email?: string;
+   password?: string;
+   id?: string;
 }

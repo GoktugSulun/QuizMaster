@@ -9,7 +9,7 @@ interface IQuizSchema {
    description: string;
    totalTime: number;
    visibility: VisibilityEnums;
-   image: String | null;
+   image: string | null;
    creatorId: string;
    isRemoved: boolean;
 }

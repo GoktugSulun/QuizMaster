@@ -4,10 +4,11 @@ export interface IUserSchema {
    id: Types.ObjectId;
    createdAt: Date;
    updatedAt: Date;
-   name: String;
-   surname: String;
-   email: String;
-   password: String;
+   name: string;
+   surname: string;
+   email: string;
+   password: string;
+   isRemoved: boolean;
 }
 
 export const userSchema = new mongoose.Schema<IUserSchema>({
@@ -31,6 +32,10 @@ export const userSchema = new mongoose.Schema<IUserSchema>({
       trim: true, 
       required: true
    },
+   isRemoved: {
+      type: Boolean,
+      default: false
+   }
 }, { timestamps: true });
 
 const User = mongoose.model<IUserSchema>('User', userSchema);

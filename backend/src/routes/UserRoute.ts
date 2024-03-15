@@ -1,12 +1,15 @@
 import express from 'express';
-import UserService from '../services/UserService.ts';
+import UserController from '../controllers/UserController.ts';
 
 const app = express();
 
+// Get
+app.get('/', UserController.get);
+
 // Login
-app.post('/login', UserService.login);
+app.post('/login', UserController.login);
 
 // Register
-app.post('/register', UserService.register);
+app.post('/register', UserController.register);
 
 export default app;  
