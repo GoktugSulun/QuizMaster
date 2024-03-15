@@ -10,6 +10,7 @@ export enum ApiURL {
    QUESTION = "v1/questions",
 
    // Auth
+   AUTH = "v1/auth",
    AUTH_LOGIN = "v1/auth/login",
-   AUTH_REGISTER = "v1/auth/register"
+   AUTH_REGISTER = "v1/auth/register",
 }

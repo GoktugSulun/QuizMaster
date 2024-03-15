@@ -1,20 +1,22 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { HttpResponseEnums } from '../Constants/Enums';
-import { InitialStateTypes, UserType } from './AppConfigTypes';
+import { type InitialStateTypes, type UserType } from './AppConfigTypes';
 
 const NAME = 'AppConfig';
 
+const defaultAuthorizedUser: UserType = {
+  id: "",
+  name: "",
+  surname: "",
+  email: "",
+  password: "",
+  createdAt: "",
+  updatedAt: "",
+  isRemoved: false
+}
+
 const initialState: InitialStateTypes = {
-  authorizedUser: {
-    id: "",
-    name: "",
-    surname: "",
-    email: "",
-    password: "",
-    createdAt: "",
-    updatedAt: "",
-    isRemoved: false
-  },
+  authorizedUser: defaultAuthorizedUser,
   notifications: [],
   isOpenSidebar: false,
   loadings: {},
@@ -62,6 +64,9 @@ const AppConfigSlice = createSlice({
     },
     setAuthorizedUser: (state, action: PayloadAction<UserType>) => {
       state.authorizedUser = action.payload;
+    },
+    resetAuthorizedUser: (state) => {
+      state.authorizedUser = defaultAuthorizedUser;
     }
   }
 });

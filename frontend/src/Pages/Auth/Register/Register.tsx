@@ -10,8 +10,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { CustomTooltip } from '@/Components/Tooltip';
 import { useThunk } from '@/Core/Hooks';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Loading } from '@/Core/Components';
+import AuthThunks from '../Store/Auth.thunk';
 
 type DefaultValuesType = {
    name: string;
@@ -54,6 +55,7 @@ const schema = yup.object({
 const Register = () => {
    const theme = useTheme();
    const navigate = useNavigate();
+   const location = useLocation();
    const [showPassword, setShowPassword] = useState(false);
    const [showRpassword, setShowRpassword] = useState(false);
    const form = useForm<DefaultValuesType>({ defaultValues, resolver: yupResolver(schema), mode: "onChange" });
@@ -66,7 +68,8 @@ const Register = () => {
          snackbar("Please fill all the required fields!", { variant: "error" });
          return;
       }
-      console.log(form.getValues(), ' data');
+      const { rpassword, ...data } = form.getValues();
+      AuthThunks.register(data);
    };
 
    const triggerPassword = async () => {
@@ -85,7 +88,7 @@ const Register = () => {
    useEffect(() => {
       if (isSuccess) {
          setIdle();
-         navigate("/auth/login", { replace: true });
+         navigate("/auth/login", { replace: true, state: location.state });
       }
    }, [isSuccess]);
    

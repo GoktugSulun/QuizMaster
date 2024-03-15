@@ -14,6 +14,9 @@ const Creator = lazy(() => import('@/Pages/Creator/Creator'));
 // const AuthModal = lazy(() => import('@/Pages/Auth/Auth'));
 import { Auth as AuthModal } from '@/Pages/Auth';
 import useAuth from '@/Hooks/useAuth';
+import AppConfigThunks from '../Store/AppConfig.thunk';
+import { FullSizeLoadingWrapper } from '../Layout';
+import { Loading } from '../Components';
 
 // TODO : Change route structure and use useBlocker to prevent navigation in some cases
 // TODO : HomePage will be global route, and others will be protected
@@ -26,7 +29,7 @@ const RouteList = () => {
 
   useEffect(() => {
     if (token && !authorizedUser.id) {
-      console.log("fetch user");
+      AppConfigThunks.getUser();
     }
   }, [authorizedUser.id]);
 
@@ -34,6 +37,14 @@ const RouteList = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  if (!authorizedUser.id && token) {
+    return (
+      <FullSizeLoadingWrapper>
+        <Loading size={80} />
+      </FullSizeLoadingWrapper>
+    );
+  }
 
   return (
     <Suspense fallback={<div />}>

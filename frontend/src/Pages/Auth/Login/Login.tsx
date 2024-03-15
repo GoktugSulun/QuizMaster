@@ -13,6 +13,7 @@ import { useThunk } from '@/Core/Hooks';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RouteEnums } from '@/Constants/Enums';
 import { Loading } from '@/Core/Components';
+import AuthThunks from '../Store/Auth.thunk';
 
 type DefaultValuesType = {
    email: string;
@@ -50,7 +51,7 @@ const Login = () => {
          snackbar("Please fill all the required fields!", { variant: "error" });
          return;
       }
-      console.log(form.getValues(), ' data => for login request');
+      AuthThunks.login(form.getValues());
    };
 
    useEffect(() => {

@@ -15,6 +15,7 @@ const AuthThunks = {
          const { user, token } = data as { user: UserType; token: string; };
          thunkAPI.dispatch(AppConfigActions.setAuthorizedUser(user));
          localStorage.setItem("token", token);
+         snackbar("You have been logged in successfully");
       }
    }),
    register: (payload: RegisterType) => request({
