@@ -12,7 +12,7 @@ const Auth = () => {
    const navigate = useNavigate();
    const params = useParams();
    const isOpenAuthModal = location.pathname.includes('/auth');
-   
+
    const isLoginActive = params.type === AuthEnums.LOGIN;
    const isRegisterActive = params.type === AuthEnums.REGISTER;
 

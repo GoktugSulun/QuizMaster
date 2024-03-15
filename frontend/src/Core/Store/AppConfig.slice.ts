@@ -5,7 +5,16 @@ import { InitialStateTypes, UserType } from './AppConfigTypes';
 const NAME = 'AppConfig';
 
 const initialState: InitialStateTypes = {
-  authorizedUser: {},
+  authorizedUser: {
+    id: "",
+    name: "",
+    surname: "",
+    email: "",
+    password: "",
+    createdAt: "",
+    updatedAt: "",
+    isRemoved: false
+  },
   notifications: [],
   isOpenSidebar: false,
   loadings: {},

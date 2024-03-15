@@ -1,7 +1,6 @@
 import { type Middleware } from '@reduxjs/toolkit';
 import { HttpResponseEnums, ThunkEnums } from '../Constants/Enums';
 import { AppConfigActions } from '../Store/AppConfig.slice';
-import { snackbar } from '../Utils';
 
 type Action = {
   type: string;
@@ -24,21 +23,28 @@ const getStatus = (actionStatus: ActionStatus): HttpResponseEnums => {
 };
 
 const customMiddleWare: Middleware = (store) => (next) => (action: Action) => {
-  
-  // Api request
-  if (action.type.includes('request')) {
-    const [, actionName, actionStatus] = action.type.split('/');
-    store.dispatch(AppConfigActions.setRequestResult({ 
-      actionName, 
-      loadingValue: actionStatus === ThunkEnums.PENDING, 
-      requestStatusValue: getStatus(actionStatus as ActionStatus),
-      errorValue: actionStatus === ThunkEnums.REJECTED ? action.payload : null
-    }));
-    // if (actionStatus === ThunkEnums.REJECTED) {
-    //   snackbar(action.payload, { variant: 'error' })
-    // }
-  }
 
+  if (!action.type.includes('request')) {
+    next(action);
+    return;
+  }
+  
+  const [, actionName, actionStatus] = action.type.split('/');
+
+  console.log(actionName, ' actionName');
+  console.log(actionStatus, ' actionStatus');
+  
+
+  store.dispatch(AppConfigActions.setRequestResult({ 
+    actionName, 
+    loadingValue: actionStatus === ThunkEnums.PENDING, 
+    requestStatusValue: getStatus(actionStatus as ActionStatus),
+    errorValue: actionStatus === ThunkEnums.REJECTED ? action.payload : null
+  }));
+
+  // if (actionStatus === ThunkEnums.REJECTED) {
+  //   snackbar(action.payload?.message || "Something went wrong with the server", { variant: 'error' })
+  // }
   next(action);
 };
 

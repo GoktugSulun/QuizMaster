@@ -1,5 +1,5 @@
 import express from 'express';
-import UserService from '../services/UserService';
+import UserService from '../services/UserService.ts';
 
 const app = express();
 

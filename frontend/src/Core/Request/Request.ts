@@ -65,7 +65,6 @@ export const request = async ({ method='GET', url, payload, files, key, success,
         failure?.(error);
         return thunkAPI.rejectWithValue(error.message);
       }
-      console.error(error, ' error');
     }
   });
   return store.dispatch(thunk());

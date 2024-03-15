@@ -10,6 +10,7 @@ import SaveIcon from '@mui/icons-material/BookmarkBorder';
 import FilledSaveIcon from '@mui/icons-material/Bookmark';
 import * as S from '../Style/Dashboard.style';
 import { useLocation, useNavigate } from "react-router-dom";
+import useAuth from "@/Hooks/useAuth";
 
 type UserButtonsProps = {
    tooltipState: [TooltipTypes, React.Dispatch<React.SetStateAction<TooltipTypes>>];
@@ -29,12 +30,13 @@ const UserButtons = (props: UserButtonsProps) => {
    const { isLoading: isLoadingMarkSaved } = useThunk("markQuizAsSaved");
    const { isLoading: isLoadingUnmarkSaved } = useThunk("unmarkQuizAsSaved");
 
+   const { isAuthorized } = useAuth();
+
    const onClickFavoriteButton = () => {
-      // const token = localStorage.getItem("token");
-      // if (!token){
-      //    navigate("/auth/login", { state: { authLocation: location }});
-      //    return;
-      // }
+      if (!isAuthorized){
+         navigate("/auth/login", { state: { authLocation: location }});
+         return;
+      }
       if (isFavorite) {
          DashboardThunks.unmarkQuizAsFavorite(id);
       } else {
@@ -44,8 +46,7 @@ const UserButtons = (props: UserButtonsProps) => {
    }
 
    const onClickSaveButton = () => {
-      const token = localStorage.getItem("token");
-      if (!token){
+      if (!isAuthorized){
          navigate("/auth/login", { state: { authLocation: location }});
          return;
       }

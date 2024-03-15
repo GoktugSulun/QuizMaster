@@ -16,9 +16,7 @@ export const handleError = (error: Error) => {
       window.location.replace('/auth/login');
       return; 
     }
-
-    return snackbar(message || 'Something went wrong with the server', { variant: 'error' });
   }
 
-  console.error(error);
+  return snackbar(error.message || "Something went wrong with the server", { variant: 'error' });
 };

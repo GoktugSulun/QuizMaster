@@ -33,7 +33,7 @@ export type UserType = {
 }
 
 export type InitialStateTypes = {
-   authorizedUser: UserType | {};
+   authorizedUser: UserType;
    notifications: NotificationTypes[];
    isOpenSidebar: boolean;
    loadings: LoadingTypes;

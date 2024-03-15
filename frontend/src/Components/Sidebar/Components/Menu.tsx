@@ -12,19 +12,21 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { CustomTooltip } from '@/Components/Tooltip';
 import { useAppSelector } from '@/Core/Hooks';
 import { RouteEnums } from '@/Constants/Enums';
+import useAuth from '@/Hooks/useAuth';
 
 const Menu = () => {
    const location = useLocation();
    const navigate = useNavigate();
    const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
 
+   const { isAuthorized } = useAuth();
+
    const navigateHandler = (targetPath: string) => {
       if (location.pathname !== targetPath) {
-         const token = localStorage.getItem("token");
-         if (!token) {
-            navigate("/auth/login", { state: { from: location.pathname, authLocation: location, to: targetPath } });
-         } else {
+         if (isAuthorized) {
             navigate(targetPath);
+         } else {
+            navigate("/auth/login", { state: { from: location.pathname, authLocation: location, to: targetPath } });
          }
       }
    }

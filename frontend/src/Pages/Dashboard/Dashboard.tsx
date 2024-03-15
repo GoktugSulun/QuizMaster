@@ -9,7 +9,7 @@ import { QuizTypeEnums } from '@/Constants/Enums';
 
 const Dashboard = () => {
   const location = useLocation();
-  const { isLoading, isSuccess, setIdle } = useThunk("getQuizzes");
+  const { isLoading, isSuccess, isError, setIdle } = useThunk("getQuizzes");
   const { page, limit } = useAppSelector((state) => state.Dashboard);
   const [isLoadingGlobal, setIsLoadingGlobal] = useState(true);
 
@@ -28,11 +28,11 @@ const Dashboard = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || isError) {
       setIdle();
       setIsLoadingGlobal(false);
     }
-  }, [isSuccess]);
+  }, [isSuccess, isError]);
 
   return (
     <S.Dashboard>
