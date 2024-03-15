@@ -13,13 +13,22 @@ const Creator = lazy(() => import('@/Pages/Creator/Creator'));
 // todo : lazy olduğunda fallback'e düşüp geliyor onu düzenleyebiliriz fallback'i modal içinde yapabiliriz
 // const AuthModal = lazy(() => import('@/Pages/Auth/Auth'));
 import { Auth as AuthModal } from '@/Pages/Auth';
+import useAuth from '@/Hooks/useAuth';
 
 // TODO : Change route structure and use useBlocker to prevent navigation in some cases
 // TODO : HomePage will be global route, and others will be protected
 const RouteList = () => {
-  // const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const location = useLocation();
   const authLocation = location.state?.authLocation;
+  
+  const { authorizedUser } = useAuth();
+
+  useEffect(() => {
+    if (token && !authorizedUser.id) {
+      console.log("fetch user");
+    }
+  }, [authorizedUser.id]);
 
   // Reset scroll and start page from the top when page is reload or path is changed
   useEffect(() => {

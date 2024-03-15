@@ -31,10 +31,6 @@ const customMiddleWare: Middleware = (store) => (next) => (action: Action) => {
   
   const [, actionName, actionStatus] = action.type.split('/');
 
-  console.log(actionName, ' actionName');
-  console.log(actionStatus, ' actionStatus');
-  
-
   store.dispatch(AppConfigActions.setRequestResult({ 
     actionName, 
     loadingValue: actionStatus === ThunkEnums.PENDING, 

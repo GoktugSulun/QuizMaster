@@ -22,7 +22,8 @@ const ProtectedRoute = (props: ProtectedRouteProps) => {
             replace 
             state={{ 
                to: location.pathname, 
-               from: location.state?.from 
+               from: location.state?.from, 
+               search: location.state?.search
             }} 
          />
       );

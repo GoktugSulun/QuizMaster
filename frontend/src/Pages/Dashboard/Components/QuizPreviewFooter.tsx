@@ -1,7 +1,8 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { formatTime } from "@/Core/Helper";
+import useAuth from "@/Hooks/useAuth";
 
 type QuizPreviewFooterProps = {
    id: string;
@@ -10,11 +11,18 @@ type QuizPreviewFooterProps = {
 
 const QuizPreviewFooter = ({ id, totalTime }: QuizPreviewFooterProps) => { 
    const navigate = useNavigate();
+   const location = useLocation();
    const { minute, second } = formatTime(totalTime);
+
+   const { isAuthorized } = useAuth();
 
    const navigateHandler = () => {
       const searchParams = createSearchParams({ id: `${id}` });
-      navigate({ pathname: '/rules/quiz', search: `?${searchParams}` });
+      if (isAuthorized) {
+         navigate({ pathname: "/rules/quiz", search: `?${searchParams}` });
+      } else {
+         navigate("/auth/login", { state: { from: location.pathname, to: "/rules/quiz", authLocation: location, search: `?${searchParams}` } });
+      }
    };
 
    return (

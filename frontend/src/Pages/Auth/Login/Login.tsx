@@ -50,7 +50,7 @@ const Login = () => {
          snackbar("Please fill all the required fields!", { variant: "error" });
          return;
       }
-      console.log(form.getValues(), ' data');
+      console.log(form.getValues(), ' data => for login request');
    };
 
    useEffect(() => {
@@ -58,8 +58,9 @@ const Login = () => {
          setIdle();
          const to = location.state?.to;
          const from = location.state?.from;
+         const search = location.state?.search;
          if (to) {
-            navigate(to, { replace: true });
+            navigate({ pathname: to, search }, { replace: true });
             return;
          }
          if (from) {

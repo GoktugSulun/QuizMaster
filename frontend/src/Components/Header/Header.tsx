@@ -5,6 +5,8 @@ import { useLocation, useParams } from 'react-router-dom';
 import CreatorInput from './Components/CreatorInput';
 import CreatorButtons from './Components/CreatorButtons';
 import { useAppSelector } from '@/Core/Hooks';
+import useAuth from '@/Hooks/useAuth';
+import AuthButtons from './Components/AuthButtons';
 
 const extract = (pathname: string): string => {
   if (pathname.includes('/')) {
@@ -25,6 +27,8 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
   const theme = useTheme();
   const isCreatorPage = pathname.includes('/creator');
   const doesQuizIdExist = !!useAppSelector((state) => state.Creator.quiz.id);
+
+  const { isAuthorized } = useAuth();
 
   // TODO : Fix this title
   const pageTitle = (() => {
@@ -79,7 +83,7 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
             paddingRight={5}
           >
             { isCreatorPage && doesQuizIdExist && params.quizId && <CreatorButtons /> }
-            <ProfileMenu />
+            { isAuthorized ? <ProfileMenu /> : <AuthButtons />}
           </Stack>
         </Stack>
       </S.Header>
