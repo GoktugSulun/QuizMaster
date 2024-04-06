@@ -19,12 +19,18 @@ export type markQuizAsFavoriteTypes = {
    quizId: string; 
 }
 
-export type unmarkQuizAsFavoriteTypes = string;
+export type unmarkQuizAsFavoriteTypes = {
+   quizId: string; 
+   updateStore: boolean;
+};
 
 export type markQuizAsSavedTypes = { 
    quizId: string; 
 }
 
-export type unmarkQuizAsSavedTypes = string;
+export type unmarkQuizAsSavedTypes = { 
+   quizId: string; 
+   updateStore: boolean;
+};
 
 export type deleteQuizTypes = string;

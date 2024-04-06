@@ -40,13 +40,19 @@ const DashboardSlice = createSlice({
     deleteQuiz: (state, action: PayloadAction<string>) => {
       state.quizzes = state.quizzes.filter((quiz) => quiz.id !== action.payload);
     },
-    updateFavoriteField: (state, action: PayloadAction<{ quizId: string, value: boolean; }>) => {
+    updateFavoriteField: (state, action: PayloadAction<{ quizId: string; value: boolean; updateStore?: boolean; }>) => {
       const index = state.quizzes.findIndex((quiz) => quiz.id === action.payload.quizId);
       state.quizzes[index].isFavorite = action.payload.value;
+      if (action.payload.updateStore) {
+        state.quizzes.splice(index, 1);
+      }
     },
-    updateSaveField: (state, action: PayloadAction<{ quizId: string, value: boolean; }>) => {
+    updateSaveField: (state, action: PayloadAction<{ quizId: string, value: boolean; updateStore?: boolean; }>) => {
       const index = state.quizzes.findIndex((quiz) => quiz.id === action.payload.quizId);
       state.quizzes[index].isSaved = action.payload.value;
+      if (action.payload.updateStore) {
+        state.quizzes.splice(index, 1);
+      }
     },
     setPage: (state, action: PayloadAction<{ newPage: number; }>) => {
       state.page = action.payload.newPage;

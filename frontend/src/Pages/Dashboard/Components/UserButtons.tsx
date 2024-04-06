@@ -11,6 +11,7 @@ import FilledSaveIcon from '@mui/icons-material/Bookmark';
 import * as S from '../Style/Dashboard.style';
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "@/Hooks/useAuth";
+import { RouteEnums } from "@/Constants/Enums";
 
 type UserButtonsProps = {
    tooltipState: [TooltipTypes, React.Dispatch<React.SetStateAction<TooltipTypes>>];
@@ -37,8 +38,9 @@ const UserButtons = (props: UserButtonsProps) => {
          navigate("/auth/login", { state: { authLocation: location }});
          return;
       }
+      const updateStore = location.pathname === RouteEnums.FAVORITES;
       if (isFavorite) {
-         DashboardThunks.unmarkQuizAsFavorite(id);
+         DashboardThunks.unmarkQuizAsFavorite({ quizId: id, updateStore });
       } else {
          DashboardThunks.markQuizAsFavorite({ quizId: id });
       }
@@ -50,8 +52,9 @@ const UserButtons = (props: UserButtonsProps) => {
          navigate("/auth/login", { state: { authLocation: location }});
          return;
       }
+      const updateStore = location.pathname === RouteEnums.SAVED;
       if (isSaved) {
-         DashboardThunks.unmarkQuizAsSaved(id);
+         DashboardThunks.unmarkQuizAsSaved({ quizId: id, updateStore });
       } else {
          DashboardThunks.markQuizAsSaved({ quizId: id });
       }
