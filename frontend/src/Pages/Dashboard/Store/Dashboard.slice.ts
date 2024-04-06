@@ -1,7 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IQuizResponse } from '@/Constants/ResponseTypes';
-import { RouteEnums } from '@/Constants/Enums';
-import { type ActivePathnameTypes } from '../Types/DashboardTypes';
 
 const NAME = 'Dashboard';
 
@@ -9,7 +7,6 @@ type InitialStateTypes = {
   page: number;
   limit: number;
   canBeMoreQuiz: boolean;
-  activePathname: ActivePathnameTypes,
   quizzes: IQuizResponse[];
 }
 
@@ -17,18 +14,23 @@ const initialState: InitialStateTypes = {
   quizzes: [],
   page: 1,
   limit: 10,
-  activePathname: RouteEnums.FEED,
   canBeMoreQuiz: true
 };
 
-const DashboardSlice = createSlice({
+const DashboardSlice = createSlice({  
   name: NAME,
   initialState,
   reducers: {
-    setQuizzes: (state, action: PayloadAction<IQuizResponse[]>) => {
-      state.quizzes = [...state.quizzes, ...action.payload];
-      if (action.payload.length < state.limit) {
+    setQuizzes: (state, action: PayloadAction<{ data: IQuizResponse[]; page: number; }>) => {
+      if (action.payload.page === 1) {
+        state.quizzes = action.payload.data;
+      } else {
+        state.quizzes = [...state.quizzes, ...action.payload.data];
+      }
+      if (action.payload.data.length < state.limit) {
         state.canBeMoreQuiz = false;
+      } else {
+        state.canBeMoreQuiz = true;
       }
     },
     setQuiz: (state, action: PayloadAction<IQuizResponse>) => {
@@ -38,26 +40,23 @@ const DashboardSlice = createSlice({
     deleteQuiz: (state, action: PayloadAction<string>) => {
       state.quizzes = state.quizzes.filter((quiz) => quiz.id !== action.payload);
     },
-    updateFavoriteField: (state, action: PayloadAction<{ quizId: string, value: boolean; }>) => {
+    updateFavoriteField: (state, action: PayloadAction<{ quizId: string; value: boolean; updateStore?: boolean; }>) => {
       const index = state.quizzes.findIndex((quiz) => quiz.id === action.payload.quizId);
       state.quizzes[index].isFavorite = action.payload.value;
+      if (action.payload.updateStore) {
+        state.quizzes.splice(index, 1);
+      }
     },
-    updateSaveField: (state, action: PayloadAction<{ quizId: string, value: boolean; }>) => {
+    updateSaveField: (state, action: PayloadAction<{ quizId: string, value: boolean; updateStore?: boolean; }>) => {
       const index = state.quizzes.findIndex((quiz) => quiz.id === action.payload.quizId);
       state.quizzes[index].isSaved = action.payload.value;
+      if (action.payload.updateStore) {
+        state.quizzes.splice(index, 1);
+      }
     },
     setPage: (state, action: PayloadAction<{ newPage: number; }>) => {
       state.page = action.payload.newPage;
-      if (action.payload.newPage === 1) {
-        state.quizzes = [];
-        state.canBeMoreQuiz = true;
-      }
     },
-    setActivePathname: (state, action: PayloadAction<ActivePathnameTypes>) => {
-      state.activePathname = action.payload;
-      state.quizzes = [];
-      state.canBeMoreQuiz = true;
-    }
   },
 });
 

@@ -9,6 +9,9 @@ import FilledLikeIcon from '@mui/icons-material/Favorite';
 import SaveIcon from '@mui/icons-material/BookmarkBorder';
 import FilledSaveIcon from '@mui/icons-material/Bookmark';
 import * as S from '../Style/Dashboard.style';
+import { useLocation, useNavigate } from "react-router-dom";
+import useAuth from "@/Hooks/useAuth";
+import { RouteEnums } from "@/Constants/Enums";
 
 type UserButtonsProps = {
    tooltipState: [TooltipTypes, React.Dispatch<React.SetStateAction<TooltipTypes>>];
@@ -20,29 +23,41 @@ type UserButtonsProps = {
 const UserButtons = (props: UserButtonsProps) => {
    const { tooltipState, isFavorite, isSaved, id } = props;
    const [tooltip, setTooltip] = tooltipState;
+   const navigate = useNavigate();
+   const location = useLocation();
 
    const { isLoading: isLoadingMarkFavorite } = useThunk("markQuizAsFavorite");
    const { isLoading: isLoadingUnmarkFavorite } = useThunk("unmarkQuizAsFavorite");
    const { isLoading: isLoadingMarkSaved } = useThunk("markQuizAsSaved");
    const { isLoading: isLoadingUnmarkSaved } = useThunk("unmarkQuizAsSaved");
 
-   const markQuizAsFavorite = () => {
-      DashboardThunks.markQuizAsFavorite({ quizId: id });
+   const { isAuthorized } = useAuth();
+
+   const onClickFavoriteButton = () => {
+      if (!isAuthorized){
+         navigate("/auth/login", { state: { authLocation: location }});
+         return;
+      }
+      const updateStore = location.pathname === RouteEnums.FAVORITES;
+      if (isFavorite) {
+         DashboardThunks.unmarkQuizAsFavorite({ quizId: id, updateStore });
+      } else {
+         DashboardThunks.markQuizAsFavorite({ quizId: id });
+      }
       setTooltip((prev) => ({ ...prev, favorite: false }));
    }
 
-   const unmarkQuizAsFavorite = () => {
-      DashboardThunks.unmarkQuizAsFavorite(id);
-      setTooltip((prev) => ({ ...prev, favorite: false }));
-   }
-
-   const markQuizAsSaved = () => {
-      DashboardThunks.markQuizAsSaved({ quizId: id });
-      setTooltip((prev) => ({ ...prev, save: false }));
-   }
-
-   const unmarkQuizAsSaved = () => {
-      DashboardThunks.unmarkQuizAsSaved(id);
+   const onClickSaveButton = () => {
+      if (!isAuthorized){
+         navigate("/auth/login", { state: { authLocation: location }});
+         return;
+      }
+      const updateStore = location.pathname === RouteEnums.SAVED;
+      if (isSaved) {
+         DashboardThunks.unmarkQuizAsSaved({ quizId: id, updateStore });
+      } else {
+         DashboardThunks.markQuizAsSaved({ quizId: id });
+      }
       setTooltip((prev) => ({ ...prev, save: false }));
    }
 
@@ -62,7 +77,7 @@ const UserButtons = (props: UserButtonsProps) => {
          >
             <S.LikeButton 
                disabled={isLoadingMarkFavorite || isLoadingUnmarkFavorite} 
-               onClick={isFavorite ? unmarkQuizAsFavorite : markQuizAsFavorite}
+               onClick={onClickFavoriteButton}
                sx={{ filter: "drop-shadow(4px 2px 6px #999)" }}
             >
                { 
@@ -82,7 +97,7 @@ const UserButtons = (props: UserButtonsProps) => {
          >
             <S.SaveButton 
                disabled={isLoadingMarkSaved || isLoadingUnmarkSaved} 
-               onClick={isSaved ? unmarkQuizAsSaved : markQuizAsSaved}
+               onClick={onClickSaveButton}
                sx={{ filter: "drop-shadow(4px 2px 6px #999)" }}
             >
                { 

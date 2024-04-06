@@ -3,6 +3,7 @@ import { handleError } from './HandleError';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { store } from '@/main';
 import { GetThunkAPI } from '@reduxjs/toolkit/dist/createAsyncThunk';
+import { snackbar } from '../Utils';
 
 type AsyncThunkConfig = {
   state?: ReturnType<typeof store.getState>
@@ -47,14 +48,17 @@ const payloadWithFiles = (payload: any, files: File | File[]) => {
 
 export const request = async ({ method='GET', url, payload, files, key, success, failure }: RequestProps) => {
   const thunk = createAsyncThunk(`request/${key}`, async (_, thunkAPI) => {
-    try {
-      // Todo: delete
-      await new Promise(resolve => setTimeout(resolve, 3000));
+    try { 
+      const token = localStorage.getItem("token");
+      const headers = { 
+        'Authorization': `Bearer ${token}`,
+      };
       const data = files ? payloadWithFiles(payload, files) : payload;
-      const response = await axios({ method, baseURL, url, data });
+      const response = await axios({ method, headers, baseURL, url, data });
       if (response.data.type) {
         return success?.({ data: response.data.data, thunkAPI });
       }
+      snackbar(response.data?.message || "Something went wrong with the server", { variant: "error" });
       failure?.(response.data);
       return thunkAPI.rejectWithValue(response.data?.message || "Error occurs!");
     } catch (error) {
@@ -63,7 +67,6 @@ export const request = async ({ method='GET', url, payload, files, key, success,
         failure?.(error);
         return thunkAPI.rejectWithValue(error.message);
       }
-      console.error(error, ' error');
     }
   });
   return store.dispatch(thunk());

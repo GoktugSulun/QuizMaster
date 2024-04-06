@@ -21,7 +21,19 @@ export type ErrorTypes = {
    [actionName: string]: string | null;
 }
 
+export type UserType = {
+   name: string;
+   surname: string;
+   email: string;
+   password: string;
+   id: string;
+   createdAt: string;
+   updatedAt: string;
+   isRemoved: false;
+}
+
 export type InitialStateTypes = {
+   authorizedUser: UserType;
    notifications: NotificationTypes[];
    isOpenSidebar: boolean;
    loadings: LoadingTypes;

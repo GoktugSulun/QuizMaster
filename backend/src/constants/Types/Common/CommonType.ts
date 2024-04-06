@@ -7,7 +7,7 @@ export type ResponseErrorType = {
 export type ResponseType<T> = {
    type: true;
    message: string;
-   data: T[]
+   data: T | T[]
 } | {
    type: false;
    message: string;

@@ -4,7 +4,7 @@ export interface IOptionSchema {
    id: Types.ObjectId;
    createdAt: Date;
    updatedAt: Date;
-   name: String;
+   name: string;
    isCorrect: boolean;
 }
 

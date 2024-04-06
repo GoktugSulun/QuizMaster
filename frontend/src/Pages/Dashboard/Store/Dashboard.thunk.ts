@@ -12,7 +12,8 @@ const DashboardThunks = {
     key: 'getQuizzes',
     success: ({ data, thunkAPI }) => {
       const payload = data as IQuizResponse[];
-      thunkAPI.dispatch(DashboardActions.setQuizzes(payload));
+      thunkAPI.dispatch(DashboardActions.setQuizzes({ data: payload, page }));
+      thunkAPI.dispatch(DashboardActions.setPage({ newPage: page + 1 }));
     }
   }),
   markQuizAsFavorite: (payload: markQuizAsFavoriteTypes) => request({
@@ -25,12 +26,12 @@ const DashboardThunks = {
       snackbar("Quiz has been added to favorites");
     }
   }),
-  unmarkQuizAsFavorite: (quizId: unmarkQuizAsFavoriteTypes) => request({
+  unmarkQuizAsFavorite: (payload: unmarkQuizAsFavoriteTypes) => request({
     method: 'PUT',
-    url: `${ApiURL.UNMARK_QUIZ_AS_FAVORITE}/${quizId}`,
+    url: `${ApiURL.UNMARK_QUIZ_AS_FAVORITE}/${payload.quizId}`,
     key: 'unmarkQuizAsFavorite',
     success: ({ thunkAPI }) => {
-      thunkAPI.dispatch(DashboardActions.updateFavoriteField({ quizId: quizId, value: false }));
+      thunkAPI.dispatch(DashboardActions.updateFavoriteField({ quizId: payload.quizId, value: false, updateStore: payload.updateStore }));
       snackbar("Quiz has been removed from favorites");
     }
   }),
@@ -44,12 +45,12 @@ const DashboardThunks = {
       snackbar("Quiz has been saved");
     }
   }),
-  unmarkQuizAsSaved: (quizId: unmarkQuizAsSavedTypes) => request({
+  unmarkQuizAsSaved: (payload: unmarkQuizAsSavedTypes) => request({
     method: 'PUT',
-    url: `${ApiURL.UNMARK_QUIZ_AS_SAVED}/${quizId}`,
+    url: `${ApiURL.UNMARK_QUIZ_AS_SAVED}/${payload.quizId}`,
     key: 'unmarkQuizAsSaved',
     success: ({ thunkAPI }) => {
-      thunkAPI.dispatch(DashboardActions.updateSaveField({ quizId, value: false }));
+      thunkAPI.dispatch(DashboardActions.updateSaveField({ quizId: payload.quizId, value: false, updateStore: payload.updateStore }));
       snackbar("Quiz has been removed from saves");
     }
   }),

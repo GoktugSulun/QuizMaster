@@ -3,14 +3,22 @@ import * as S from '../Style/Sidebar.style';
 import AddIcon from '@mui/icons-material/Add';
 import { CustomTooltip } from "@/Components/Tooltip";
 import { useAppSelector } from "@/Core/Hooks";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CreateQuiz = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
 
   const navigateToCreator = () => {
-    navigate('/creator');
+    if (location.pathname !== '/creator') {
+      const token = localStorage.getItem("token");
+      if (!token) {
+         navigate("/auth/login", { state: { from: location.pathname, authLocation: location, to: '/creator' } });
+      } else {
+         navigate('/creator');
+      }
+   }
   };
 
   if (!isOpenSidebar) {

@@ -3,14 +3,14 @@ import QuizPreview from './QuizPreview';
 import { useAppSelector } from '@/Core/Hooks';
 import { useIntersectionObserver } from "@/Hooks";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { DashboardActions } from "../Store/Dashboard.slice";
 
-const QuizPreviewList = () => {
-  const dispatch = useDispatch();
+type QuizPreviewListProps = {
+  getQuizzesHandler: (argument?: { newPage?: number }) => void
+}
+
+const QuizPreviewList = ({ getQuizzesHandler } : QuizPreviewListProps) => {
   const quizzes = useAppSelector((state) => state.Dashboard.quizzes);
   const canBeMoreQuiz = useAppSelector((state) => state.Dashboard.canBeMoreQuiz); 
-  const page = useAppSelector((state) => state.Dashboard.page); 
   const isBelowLg = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
   const isBelowMd= useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
   const minWidth = isBelowMd ? "250px" : isBelowLg ? "300px" : "350px";  
@@ -19,7 +19,7 @@ const QuizPreviewList = () => {
 
   useEffect(() => {
     if (isIntersecting) {
-      dispatch(DashboardActions.setPage({ newPage: page + 1 }));
+      getQuizzesHandler();
     }
  }, [isIntersecting]);
 
