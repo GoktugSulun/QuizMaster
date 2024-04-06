@@ -9,20 +9,21 @@ import { QuizTypeEnums } from '@/Constants/Enums';
 
 const Dashboard = () => {
   const location = useLocation();
-  const { isLoading, isSuccess, isError, setIdle } = useThunk("getQuizzes");
-  const { page, limit } = useAppSelector((state) => state.Dashboard);
   const [isLoadingGlobal, setIsLoadingGlobal] = useState(true);
+  const { page, limit } = useAppSelector((state) => state.Dashboard);
+  const { isLoading, isSuccess, isError, setIdle } = useThunk("getQuizzes");
 
-  const getQuizzesHandler = ({ newPage }: { newPage?: number } = {}) => {
-    // todo : cancel service when location is changed
+  const getQuizzesHandler = ({ newPage, signal }: { newPage?: number, signal?: AbortSignal } = {}) => {
     const path = location.pathname.split('/')[1];
     const type = (path === 'feed' ? QuizTypeEnums.ALL : path) as QuizTypeEnums;
-    DashboardThunks.getQuizzes({ type, page: newPage || page, limit });
+    DashboardThunks.getQuizzes({ type, page: newPage || page, limit, signal });
   };
 
   useEffect(() => {
-    getQuizzesHandler({ newPage: 1 });
+    const controller = new AbortController();
+    getQuizzesHandler({ newPage: 1, signal: controller.signal });
     return () => {
+      controller.abort();
       setIsLoadingGlobal(true);
     }
   }, [location.pathname]);

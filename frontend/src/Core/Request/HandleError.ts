@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import { AxiosError, CanceledError } from 'axios';
 import { snackbar } from '../Utils';
 
 export const handleError = (error: Error) => {
@@ -16,6 +16,10 @@ export const handleError = (error: Error) => {
       window.location.replace('/auth/login');
       return; 
     }
+  }
+
+  if (error instanceof CanceledError) {
+    return;
   }
 
   return snackbar(error.message || "Something went wrong with the server", { variant: 'error' });
