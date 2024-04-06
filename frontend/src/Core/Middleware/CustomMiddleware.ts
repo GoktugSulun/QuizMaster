@@ -23,6 +23,7 @@ const getStatus = (actionStatus: ActionStatus): HttpResponseEnums => {
 };
 
 const customMiddleWare: Middleware = (store) => (next) => (action: Action) => {
+  
 
   if (!action.type.includes('request')) {
     next(action);

@@ -14,6 +14,7 @@ import { CreatorActions } from './Store/Creator.slice';
 import CreatorThunks from './Store/Creator.thunk';
 import { Loading } from '@/Core/Components';
 import { InfoModal } from './Components/InfoModal';
+import { FullSizeLoadingWrapper } from '@/Core/Layout';
 
 type DefaultValuesType = {
   name: string;
@@ -119,7 +120,11 @@ const Creator = () => {
   }, []);
 
   if (params.quizId && !quizId) {
-    return <Loading size={80} />
+    return (
+      <FullSizeLoadingWrapper $autoHeight> 
+        <Loading size={80} /> 
+      </FullSizeLoadingWrapper>
+    )
   }
   
   return (

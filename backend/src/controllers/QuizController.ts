@@ -8,29 +8,27 @@ import { QuizTypeEnums } from "../constants/Enums/Enums.ts";
 
 class QuizController {
   static async get(req: Request, res: Response) {
-    setTimeout(async () => {
-      try {
-        const { page=1, limit=10, isRemoved=false, type=QuizTypeEnums.ALL } = req.query;
-  
-        const validTypes = Object.values(QuizTypeEnums);
-        const isValidType = validTypes.includes(type as unknown as QuizTypeEnums);
-        if (!isValidType) {
-          return Helpers.responseMessage(res, false, "Invalid 'Type' field! It must be one of the QuizTypeEnums values.");
-        }
-  
-        const params = { 
-          page: Number(page), 
-          limit: Number(limit), 
-          type: type as QuizTypeEnums,
-          isRemoved: isRemoved === "true",
-        };
-        const result = await QuizService.get(params);
-        Helpers.responseJSON(res, result);
-      } catch (error) {
-        const err = error as IError;
-        Helpers.responseMessage(res, false, err.message);
+    try {
+      const { page=1, limit=10, isRemoved=false, type=QuizTypeEnums.ALL } = req.query;
+
+      const validTypes = Object.values(QuizTypeEnums);
+      const isValidType = validTypes.includes(type as unknown as QuizTypeEnums);
+      if (!isValidType) {
+        return Helpers.responseMessage(res, false, "Invalid 'Type' field! It must be one of the QuizTypeEnums values.");
       }
-    }, 3000);
+
+      const params = { 
+        page: Number(page), 
+        limit: Number(limit), 
+        type: type as QuizTypeEnums,
+        isRemoved: isRemoved === "true",
+      };
+      const result = await QuizService.get(params);
+      Helpers.responseJSON(res, result);
+    } catch (error) {
+      const err = error as IError;
+      Helpers.responseMessage(res, false, err.message);
+    }
   }
 
   static async getById(req: Request, res: Response) {

@@ -48,29 +48,30 @@ const payloadWithFiles = (payload: any, files: File | File[]) => {
 };
 
 export const request = async ({ method='GET', url, payload, files, key, success, failure, signal }: RequestProps) => {
-  const thunk = createAsyncThunk(`request/${key}`, async (_, thunkAPI) => {
-    try { 
-      const token = localStorage.getItem("token");
-      const headers = { 
-        'Authorization': `Bearer ${token}`,
-      };
-      const data = files ? payloadWithFiles(payload, files) : payload;
-      const response = await axios({ method, headers, baseURL, url, data, signal });
-      if (response.data.type) {
-        return success?.({ data: response.data.data, thunkAPI });
-      }
-      snackbar(response.data?.message || "Something went wrong with the server", { variant: "error" });
-      failure?.(response.data);
-      return thunkAPI.rejectWithValue(response.data?.message || "Error occurs!");
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log("error => ", error);
-        
-        handleError(error);
-        failure?.(error);
-        return thunkAPI.rejectWithValue(error.message);
+  const thunk = createAsyncThunk(
+    `request/${key}`, 
+    async (_, thunkAPI) => {
+      try { 
+        const token = localStorage.getItem("token");
+        const headers = { 
+          'Authorization': `Bearer ${token}`,
+        };
+        const data = files ? payloadWithFiles(payload, files) : payload;
+        const response = await axios({ method, headers, baseURL, url, data, signal });
+        if (response.data.type) {
+          return success?.({ data: response.data.data, thunkAPI });
+        }
+        snackbar(response.data?.message || "Something went wrong with the server", { variant: "error" });
+        failure?.(response.data);
+        return thunkAPI.rejectWithValue(response.data?.message || "Error occurs!");
+      } catch (error) {
+        if (error instanceof Error) {
+          handleError(error);
+          failure?.(error);
+          return thunkAPI.rejectWithValue(error.message);
+        }
       }
     }
-  });
+  );
   return store.dispatch(thunk());
 };

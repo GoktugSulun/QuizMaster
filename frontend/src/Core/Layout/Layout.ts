@@ -1,13 +1,14 @@
 import { styled } from "@mui/material";
+import { shouldForwardProp } from "../Utils";
 
-export const FullSizeLoadingWrapper = styled('div')({
+export const FullSizeLoadingWrapper = styled('div', { shouldForwardProp })<{$autoHeight?: boolean;}>(({ $autoHeight }) => ({
    width: '100vw',
-   height: '100vh',
+   height: $autoHeight ? '100%' : '100vh',
    overflow: 'hidden',
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
-});
+}));
 
 export const MainWrapper = styled('div')({
    width: '100vw',

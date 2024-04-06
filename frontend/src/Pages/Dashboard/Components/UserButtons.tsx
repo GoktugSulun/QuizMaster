@@ -76,12 +76,12 @@ const UserButtons = (props: UserButtonsProps) => {
             title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
          >
             <S.LikeButton 
-               disabled={isLoadingMarkFavorite || isLoadingUnmarkFavorite} 
+               disabled={(isLoadingMarkFavorite || isLoadingUnmarkFavorite)} 
                onClick={onClickFavoriteButton}
                sx={{ filter: "drop-shadow(4px 2px 6px #999)" }}
             >
                { 
-                  (isLoadingMarkFavorite || isLoadingUnmarkFavorite) 
+                  (isLoadingMarkFavorite || isLoadingUnmarkFavorite)
                      ? <Loading size={24} /> 
                      : isFavorite ? <FilledLikeIcon /> : <LikeIcon /> 
                }
@@ -96,12 +96,12 @@ const UserButtons = (props: UserButtonsProps) => {
             title={isSaved ? 'Remove from saved' : 'Add to saved'}
          >
             <S.SaveButton 
-               disabled={isLoadingMarkSaved || isLoadingUnmarkSaved} 
+               disabled={(isLoadingMarkSaved || isLoadingUnmarkSaved)} 
                onClick={onClickSaveButton}
                sx={{ filter: "drop-shadow(4px 2px 6px #999)" }}
             >
                { 
-                  (isLoadingMarkSaved || isLoadingUnmarkSaved) 
+                  (isLoadingMarkSaved || isLoadingUnmarkSaved)
                      ? <Loading size={24} /> 
                      : isSaved ? <FilledSaveIcon /> : <SaveIcon /> 
                }
