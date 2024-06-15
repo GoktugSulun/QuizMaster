@@ -5,7 +5,7 @@ import { useIntersectionObserver } from "@/Hooks";
 import { useEffect } from "react";
 
 type QuizPreviewListProps = {
-  getQuizzesHandler: (argument?: { newPage?: number }) => void
+  getQuizzesHandler: (argument?: { newPage?: number, signal?: AbortSignal }) => void
 }
 
 const QuizPreviewList = ({ getQuizzesHandler } : QuizPreviewListProps) => {

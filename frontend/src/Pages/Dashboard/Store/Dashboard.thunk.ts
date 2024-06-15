@@ -6,10 +6,11 @@ import { snackbar } from '@/Core/Utils';
 import { type unmarkQuizAsFavoriteTypes, type getQuizzesTypes, type markQuizAsFavoriteTypes, type markQuizAsSavedTypes, type unmarkQuizAsSavedTypes, type deleteQuizTypes } from '../Types/DashboardTypes';
 
 const DashboardThunks = {
-  getQuizzes: ({ type, page, limit } : getQuizzesTypes) => request({
+  getQuizzes: ({ type, page, limit, signal } : getQuizzesTypes) => request({
     method: 'GET',
     url: `${ApiURL.QUIZ}?type=${type}&page=${page}&limit=${limit}`,
     key: 'getQuizzes',
+    signal,
     success: ({ data, thunkAPI }) => {
       const payload = data as IQuizResponse[];
       thunkAPI.dispatch(DashboardActions.setQuizzes({ data: payload, page }));

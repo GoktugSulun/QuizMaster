@@ -5,22 +5,6 @@ import { type IUnmarkAsFavorite, type IMarkAsFavorite } from "../constants/Types
 import { type IError } from "../constants/Types/Error/ErrorType.ts";
 
 class FavoriteController {
-   // static async getAll(req: Request, res: Response) {
-   //    try {
-   //       const { page=1, limit=10, isRemoved=false } = req.query;
-   //       const params = { 
-   //          page: Number(page), 
-   //          limit: Number(limit), 
-   //          isRemoved: isRemoved === "true" 
-   //       };
-   //       const result = await FavoriteService.getAll(params);
-   //       Helpers.responseJSON(res, result);
-   //    } catch (error) {
-   //       const err = error as IError;
-   //       Helpers.responseMessage(res, false, err.message);
-   //    }
-   // }
-
    static async markAsFavorite(req: Request, res: Response) {
       try {
          // Todo : Validate req.body

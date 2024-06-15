@@ -10,9 +10,10 @@ export type TooltipTypes = {
 }
 
 export type getQuizzesTypes = { 
-   type: QuizTypeEnums, 
-   page: number, 
-   limit: number, 
+   type: QuizTypeEnums; 
+   page: number; 
+   limit: number;
+   signal?: AbortSignal
 }
 
 export type markQuizAsFavoriteTypes = { 
