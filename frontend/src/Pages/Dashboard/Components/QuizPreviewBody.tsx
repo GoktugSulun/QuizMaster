@@ -37,7 +37,7 @@ const QuizPreviewBody = ({ id, name, description }: QuizPreviewBodyProps) => {
                variant="h6"
                lineHeight={1.4}
             > 
-               <S.Link to={{ pathname: "rules/quiz", search: `?id=${id}` }}> {name} </S.Link> 
+               <S.Link to={{ pathname: "/rules/quiz", search: `?id=${id}` }}> {name} </S.Link> 
             </S.EllipsisText >
          </CustomTooltip>
          <S.EllipsisText 
