@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '@/Core/Hooks';
-import { Question } from '../Models/Quiz.model';
+import { Question } from '../Types/QuizTypes';
 import { useEffect, useRef, useState } from 'react';
 import QuestionHeader from '@/Components/Question/QuestionHeader';
 

@@ -1,20 +1,20 @@
 export type Option = {
-   id: number;
+   id: string;
    name: string;
    isCorrect: boolean;
 }
 
 export type Question = {
-   id: number;
+   id: string;
    name: string;
    time: number | null;
    image?: string;
    options: Option[];
-   selectedOptionId?: number;
+   selectedOptionId?: string;
 }
 
 export type Quiz = {
-   id: number | null;
+   id: string | null;
    time: number;
    name: string;
    description: string;
@@ -22,9 +22,9 @@ export type Quiz = {
 }
 
 export type Answer = {
-   questionId: number,
+   questionId: string,
 } & ( 
-   { answerId: number | null, answer?: never } 
+   { answerId: string | null, answer?: never } 
    | { answerId?: never, answer: string | null }
 )
 

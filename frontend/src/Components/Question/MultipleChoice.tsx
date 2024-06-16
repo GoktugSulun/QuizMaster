@@ -1,6 +1,6 @@
 import { FormControlLabel, Grid, Radio, alpha, useTheme } from "@mui/material";
 import * as S from './Style/Question.style';
-import { type Option } from "@/Pages/Quiz/Models/Quiz.model";
+import { type Option } from "@/Pages/Quiz/Types/Quiz.model";
 
 type DisabledProps = {
   readOnly?: true;

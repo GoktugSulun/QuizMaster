@@ -1,4 +1,4 @@
-import { type Question as QuestionType } from '@/Pages/Quiz/Models/Quiz.model';
+import { type Question as QuestionType } from '@/Pages/Quiz/Types/Quiz.model';
 import * as S from '../Style/QuizResult.style';
 import Question from './Question';
 

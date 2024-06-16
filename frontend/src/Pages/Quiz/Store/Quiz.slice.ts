@@ -1,20 +1,27 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { type Quiz, type Answer } from '../Models/Quiz.model';
+import { type Answer } from '../Types/QuizTypes';
+import { VisibilityEnums, type QuizWithQuestions } from '@/Pages/Creator/Types/CreatorTypes';
 
 const NAME = 'Quiz';
 
 type InitialStateTypes = {
-   quiz: Quiz,
+   quiz: QuizWithQuestions,
    answers: Answer[]
 }
 
 const initialState: InitialStateTypes = {
    quiz: {
-      id: null,
-      time: 0,
-      name: '',
-      description: '',
-      questions: []
+      id: "", 
+      userId: "", 
+      createdAt: "", 
+      updatedAt: "", 
+      isRemoved: false,
+      questions: [],
+      name: "",
+      description: "",
+      visibility: VisibilityEnums.PRIVATE,
+      image: null,
+      totalTime: 0,
    },
    answers: []// data for backend
 };
@@ -23,7 +30,7 @@ const QuizSlice = createSlice({
    name: NAME,
    initialState,
    reducers: {
-      setQuiz: (state, action: PayloadAction<Quiz>) => {
+      setQuiz: (state, action: PayloadAction<QuizWithQuestions>) => {
          state.quiz = action.payload;
          state.answers = action.payload.questions.map((question) => ({ questionId: question.id, answerId: null }))
       },

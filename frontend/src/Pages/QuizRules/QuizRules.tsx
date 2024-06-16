@@ -30,25 +30,25 @@ const data = {
 
 const QuizRules = () => {
    const [searchParams] = useSearchParams();
-   const navigate = useNavigate();
+   const id = searchParams.get("id") as string;
+   
+   if (!id) {
+      return <Navigate to="/" replace />
+   }
 
-   const { isLoading, isSuccess, setIdle } = useThunk('getQuestions');
+   const navigate = useNavigate();
+   const { isLoading, isSuccess, setIdle } = useThunk('getQuizByIdWithQuestions');
 
    const navigateToQuizHandler = () => {
-      QuizThunks.getQuestions();
+      QuizThunks.getQuizByIdWithQuestions(id);
    };
 
    useEffect(() => {
       if (isSuccess) {
          setIdle();
-         const id = searchParams.get("id") as string;
          navigate({ pathname: '/quiz', search: `?id=${id}&question=1` }, { replace: true });
       }
    }, [isSuccess]);
-   
-   if (!searchParams.get("id")) {
-      return <Navigate to="/" replace />
-   }
 
    return (
       <S.QuizRules>

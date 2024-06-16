@@ -1,15 +1,16 @@
 import { request } from "@/Core/Request";
 import { QuizActions } from "./Quiz.slice";
-import { type Question } from "../Models/Quiz.model";
-
+import { ApiURL } from "@/Constants/ApiURL";
+import { QuizWithQuestions } from "@/Pages/Creator/Types/CreatorTypes";
 
 export const QuizThunks = {
-   getQuestions: () => request({
-      url: `/quizzes/1`,
-      key: 'getQuestions',
+   getQuizByIdWithQuestions: (id: string) => request({
       method: 'GET',
+      url: `${ApiURL.QUIZ}/${id}/withQuestions`,
+      key: 'getQuizByIdWithQuestions',
       success: ({ data, thunkAPI }) => {
-         thunkAPI.dispatch(QuizActions.setQuiz(data));
-      }
+         const quiz = data as QuizWithQuestions;
+         thunkAPI.dispatch(QuizActions.setQuiz(quiz));
+      },
    }),
 }
