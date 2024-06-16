@@ -2,25 +2,24 @@ import { Stack, Typography, type TypographyProps } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { ReactNode } from "react";
+import { useAppSelector } from "@/Core/Hooks";
 
 const QuizRuleQuestionTypes = () => {
+   const quizRules = useAppSelector((state) => state.QuizRules.quizRules);
+
    return (
       <Stack gap={1} >
          <Stack flexDirection="row" alignItems="center" gap={2}>
-            <CheckCircleIcon color="success" sx={{ width: 25, height: 25 }} /> 
-            <QuizRuleQuestionType> Multiple Choice </QuizRuleQuestionType>
+            <QuestionTypeIcon type={quizRules.multipleChoice} />
+            <QuizRuleQuestionType error={!quizRules.multipleChoice}> Multiple Choice </QuizRuleQuestionType>
          </Stack>
          <Stack flexDirection="row" alignItems="center" gap={2}>
-            <CheckCircleIcon color="success" sx={{ width: 25, height: 25 }} /> 
-            <QuizRuleQuestionType> Matching </QuizRuleQuestionType>
+             <QuestionTypeIcon type={quizRules.trueFalse} />
+            <QuizRuleQuestionType error={!quizRules.trueFalse}> True/False </QuizRuleQuestionType>
          </Stack>
          <Stack flexDirection="row" alignItems="center" gap={2}>
-            <CheckCircleIcon color="success" sx={{ width: 25, height: 25 }} /> 
-            <QuizRuleQuestionType> True/False </QuizRuleQuestionType>
-         </Stack>
-         <Stack flexDirection="row" alignItems="center" gap={2}>
-            <CancelIcon color="error" sx={{ width: 25, height: 25 }} /> 
-            <QuizRuleQuestionType error> Writing </QuizRuleQuestionType>
+            <QuestionTypeIcon type={quizRules.shortAnswer} />
+            <QuizRuleQuestionType error={!quizRules.shortAnswer}> Short Answer </QuizRuleQuestionType>
          </Stack>     
       </Stack>
    )
@@ -43,3 +42,13 @@ const QuizRuleQuestionType = ({ children, error=false }: QuizRuleQuestionTypePro
       {children} 
    </Typography>
 )
+
+type QuestionTypeIconProps = { type: boolean; }
+
+const QuestionTypeIcon = ({ type }: QuestionTypeIconProps) => {
+   if (type) {
+      return <CheckCircleIcon color="success" sx={{ width: 25, height: 25 }} />;
+   }
+
+   return <CancelIcon color="error" sx={{ width: 25, height: 25 }} />;
+}

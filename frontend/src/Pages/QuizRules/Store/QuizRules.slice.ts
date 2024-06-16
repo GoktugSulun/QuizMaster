@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { type QuizRules } from "../Types/QuizRulesTypes";
+import { VisibilityEnums } from '@/Pages/Creator/Types/CreatorTypes';
 
 const NAME = 'QuizRules';
 
@@ -8,13 +9,31 @@ type InitialStateTypes = {
 }
 
 const initialState: InitialStateTypes = {
-   quizRules: {}
+   quizRules: {
+      id: '',
+      userId: "", 
+      createdAt: "", 
+      updatedAt: "", 
+      isRemoved: false,
+      name: "",
+      description: "",
+      visibility: VisibilityEnums.PRIVATE,
+      image: null,
+      totalTime: 0,
+      numberOfQuestions: 0,
+      questionTime: null,
+      repeat: null,
+      multipleChoice: false,
+      trueFalse: false,
+      shortAnswer: false,
+   }
 };
 
 const QuizRulesSlice = createSlice({
    name: NAME,
    initialState,
    reducers: {
+      reset: () => initialState,
       setQuizRules: (state, action: PayloadAction<QuizRules>) => {
          state.quizRules = action.payload;
       },

@@ -2,25 +2,15 @@ import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import * as S from './Style/QuizRules.style';
 import { useEffect } from 'react';
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
-import img1 from '../../Pngs/img-1.jpg';
 import QuizRuleHeader from './Components/QuizRuleHeader';
 import QuizRuleInfos from './Components/QuizRuleInfos';
 import QuizRuleQuestionTypes from './Components/QuizRuleQuestionTypes';
 import { QuizThunks } from '../Quiz/Store/Quiz.thunk';
-import { useThunk } from '@/Core/Hooks';
+import { useAppSelector, useThunk } from '@/Core/Hooks';
 import { Loading } from '@/Core/Components';
-
-const data = {
-   id: 1, 
-   title: 'Asal Sayılar adpajpokasopdap padasdsapodsak adpakaspokdsaop sosos ososods', 
-   description: '1-Asıl sayılara dair en önemli bilgilerin yer aldığı bu quizi çöz ve eskiklerini tamamla, bizimle başarıya ulaş! 1-Asıl sayılara dair en önemli bilgilerin yer aldığı bu quizi çöz ve eskiklerini tamamla, bizimle başarıya ulaş! 1-Asıl sayılara dair en önemli bilgilerin yer aldığı bu quizi çöz ve eskiklerini tamamla, bizimle başarıya ulaş!',
-   category: "Mathematics",
-   created_at: new Date(),
-   updated_at: new Date(),
-   img: img1,
-   time: '00:30 sec',
-   liked: true,
-};
+import { QuizRulesThunks } from './Store/QuizRules.thunk';
+import { QuizRulesActions } from './Store/QuizRules.slice';
+import { useDispatch } from 'react-redux';
 
 /* 
    ? Required searchParam => id
@@ -31,13 +21,20 @@ const data = {
 const QuizRules = () => {
    const [searchParams] = useSearchParams();
    const id = searchParams.get("id") as string;
+   const quizRules = useAppSelector((state) => state.QuizRules.quizRules);
    
    if (!id) {
       return <Navigate to="/" replace />
    }
 
+   const dispatch = useDispatch();
    const navigate = useNavigate();
    const { isLoading, isSuccess, setIdle } = useThunk('getQuizByIdWithQuestions');
+   const { 
+      isLoading: isLoadingGetQuizRulesById, 
+      isSuccess: isSuccessGetQuizRulesById, 
+      setIdle: setIdleGetQuizRulesById, 
+   } = useThunk('getQuizRulesById');
 
    const navigateToQuizHandler = () => {
       QuizThunks.getQuizByIdWithQuestions(id);
@@ -50,17 +47,37 @@ const QuizRules = () => {
       }
    }, [isSuccess]);
 
+   useEffect(() => {
+      if (isSuccessGetQuizRulesById) {
+         setIdleGetQuizRulesById();
+      }
+   }, [isSuccessGetQuizRulesById]);
+
+   useEffect(() => {
+      QuizRulesThunks.getQuizRulesById(id);
+
+      return () => {
+         dispatch(QuizRulesActions.reset());
+      }
+   }, []);
+
    return (
       <S.QuizRules>
          <S.QuizRulesContent>
-            <Typography color="primary" textAlign="center" fontWeight="bold" variant="h4">
+            { isLoadingGetQuizRulesById && <Loading blur /> }
+            <Typography 
+               color="primary" 
+               textAlign="center" 
+               fontWeight="bold" 
+               variant="h4"
+               marginBottom="10px"
+            >
                Quiz Rules
             </Typography>
             <QuizRuleHeader 
-               img={data.img} 
-               title={data.title} 
-               description={data.description} 
-               category={data.category}
+               img={quizRules.image}
+               name={quizRules.name} 
+               description={quizRules.description} 
             />
             <Divider sx={{ margin: '40px 0' }} />
             <Stack flex={1} flexDirection="row">

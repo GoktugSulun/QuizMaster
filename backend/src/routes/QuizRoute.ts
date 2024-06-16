@@ -10,6 +10,7 @@ const app = express();
 app.get('/', QuizController.get);
 app.get('/:id', QuizController.getById);
 app.get('/:id/withQuestions', QuizController.getByIdWithQuestions);
+app.get('/:id/rules', QuizController.getRulesById);
 
 // Create
 app.post('/', AuthMiddleware, QuizController.create);

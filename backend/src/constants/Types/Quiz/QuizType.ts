@@ -38,3 +38,8 @@ export interface IEdit {
 export interface IDelete {
    id: string;
 }
+
+export interface IGetRulesById {
+   id: string;
+   isRemoved: boolean;
+}

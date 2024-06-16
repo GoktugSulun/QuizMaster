@@ -1,24 +1,30 @@
 import { Stack, Typography } from "@mui/material";
 import InfoIcon from '@mui/icons-material/Info';
 import { CustomTooltip } from "@/Components/Tooltip";
+import { useAppSelector } from "@/Core/Hooks";
+import { formatTime } from "@/Core/Helper";
 
 const QuizRuleInfos = () => {
+   const quizRules = useAppSelector((state) => state.QuizRules.quizRules);
+
+   const { minute, second } = formatTime(quizRules.totalTime);
+
    return (
       <Stack gap={1}>
          <QuizRuleInfo 
             keyValue="Number of Questions" 
-            value="20" 
-            description="There are 20 questions in this quiz."
+            value={quizRules.numberOfQuestions}
+            description={`There are ${quizRules.numberOfQuestions} questions in this quiz.`}
          />
          <QuizRuleInfo 
             keyValue="Question Time" 
-            value="-" 
+            value="-"
             description="There is no time limit for a question."
          />
          <QuizRuleInfo 
             keyValue="Total Time" 
-            value="20:00 min" 
-            description="You have 20:00 minutes to complete this quiz."
+            value={`${minute.name}:${second.name} min`} 
+            description={`You have ${minute.name}:${second.name} minutes to complete this quiz.`}
          />
          <QuizRuleInfo 
             keyValue="Repeat" 
@@ -33,7 +39,7 @@ export default QuizRuleInfos;
 
 type QuizRuleInfoProps = {
    keyValue: string;
-   value: string;
+   value: number | string;
    description: string;
 };
 

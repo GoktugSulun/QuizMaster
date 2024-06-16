@@ -105,6 +105,23 @@ class QuizController {
       Helpers.responseMessage(res, false, err.message);
     }
   }
+
+  static async getRulesById(req: Request, res: Response) {
+    if (!req.params.id) { 
+      return Helpers.responseMessage(res, false, "'Id' field is required!");
+    }
+    try {
+      const params = { 
+        id: req.params.id, 
+        isRemoved: false
+      };
+      const result = await QuizService.getRulesById(params);
+      Helpers.responseJSON(res, result);
+    } catch (error) {
+      const err = error as IError;
+      Helpers.responseMessage(res, false, err.message);
+    }
+  }
 }
   
 export default QuizController;

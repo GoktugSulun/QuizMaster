@@ -3,10 +3,11 @@ import { styled } from "@mui/material";
 
 export const QuizRules = styled(PageWrapper)({});
 
-export const QuizRulesContent = styled(PageContent)(({ theme }) => ({
+export const QuizRulesContent = styled(PageContent)(() => ({
    display: 'flex',
    flexDirection: 'column',
    padding: '25px 50px',
+   position: 'relative',
 }));
 
 export const Image = styled('img')({
