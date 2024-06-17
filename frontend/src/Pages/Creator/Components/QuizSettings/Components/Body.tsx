@@ -20,7 +20,7 @@ const Body = () => {
    const timeError = !!errors?.second;
 
    const triggerTimeValidation = () => {
-      form.trigger()
+      form.trigger("second")
    };   
    
    return (
