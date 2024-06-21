@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import QuizRoute from './routes/QuizRoute.ts';
 import QuestionRoute from './routes/QuestionRoute.ts';
 import AuthRoute from './routes/AuthRoute.ts';
+import QuizSessionRoute from './routes/QuizSession.ts';
 
 // TODO : change it later
 export const authorizedUserId = "1";
@@ -45,6 +46,7 @@ app.get('/health', (req: Request, res: Response) => {
 app.use(`/v1/quizzes`, QuizRoute);
 app.use(`/v1/questions`, QuestionRoute);
 app.use(`/v1/auth`, AuthRoute);
+app.use(`/v1/quizSessions`, QuizSessionRoute);
 
 try {
   mongoose.connect(process.env.DB_CONNECTION_URL!)
