@@ -33,7 +33,7 @@ const Quiz = () => {
 
    useEffect(() => {
       if (!quiz.id) {
-         QuizThunks.getQuestions();
+         QuizThunks.getQuizByIdWithQuestions(id);
       }
    }, [quiz]);
 
@@ -42,9 +42,18 @@ const Quiz = () => {
    }, [isSuccess]);
 
    useEffect(() => {
-      // TODO : param değişince render oluyorsa bunu iptal et, bu sayfaya yönlendirmeden önce kapat sidebar'ı
       if (isOpenSidebar) {
          dispatch(AppConfigActions.setIsOpenSidebar('CLOSE'));
+      }
+      
+      const beforeUnloadHandler = (e: BeforeUnloadEvent) => {
+         e.preventDefault();
+         (e || window).returnValue = true; 
+      }
+
+      window.addEventListener("beforeunload", beforeUnloadHandler);
+      return () => {
+         window.removeEventListener("beforeunload", beforeUnloadHandler)
       }
    }, []);
 
@@ -52,7 +61,7 @@ const Quiz = () => {
       return (
          <S.Quiz>
             <S.QuizContent>
-               <Loading size={80} />
+               <Loading fullWidth size={80} />
             </S.QuizContent>
          </S.Quiz>
       )

@@ -10,11 +10,12 @@ const Options = () => {
    const { quiz: { questions }, answers } = useAppSelector((state) => state.Quiz);
 
    const questionId = searchParams.get("question") as string;
-   const options = questions.find((question) => question.id === +questionId)?.options || [];
+   const question = questions[Number(questionId) - 1];
+   const options = question?.options  || [];
    
-   const setAnswerHandler = (selectedId: number) => {
+   const setAnswerHandler = (selectedId: string) => {
       const isSelected = !!answers.find((answer) => answer.answerId === selectedId);
-      dispatch(QuizActions.setAnswer({ questionId: +questionId, answerId: isSelected ? null : selectedId }));
+      dispatch(QuizActions.setAnswer({ questionId: question.id, answerId: isSelected ? null : selectedId }));
    };
 
    if (!options) {
@@ -28,6 +29,7 @@ const Options = () => {
          justifyContent="center" 
          alignItems="center"
          padding="0 50px"
+         margin={{ xs: "20px 0" }}
       >
          <MultipleChoice
             onClick={(option) => setAnswerHandler(option.id)}

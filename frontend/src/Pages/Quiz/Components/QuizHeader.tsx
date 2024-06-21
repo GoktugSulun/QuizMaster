@@ -1,6 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '@/Core/Hooks';
-import { Question } from '../Types/QuizTypes';
 import { useEffect, useRef, useState } from 'react';
 import QuestionHeader from '@/Components/Question/QuestionHeader';
 
@@ -14,21 +13,21 @@ const formattedTime = (time: number | null): string => {
 };
 
 const QuizHeader = () => {
-   // Todo : check interval type
-   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-   const [searchParams] = useSearchParams();
-   const questions = useAppSelector((state) => state.Quiz.quiz.questions);
    const [remainingTime, setRemainingTime] = useState<number | null>(null); // second
+   const intervalRef = useRef<NodeJS.Timeout | null>(null);  // Todo : check interval type
+   const [searchParams] = useSearchParams();
+   const quiz = useAppSelector((state) => state.Quiz.quiz);
+   const questions = quiz.questions;
 
    const questionNumber = searchParams.get("question") as string;
-   const question = questions.find((_, index) => +questionNumber === index + 1) as Question;
+   const question = questions[Number(questionNumber) - 1];
 
    if (remainingTime !== null && remainingTime === 0 && intervalRef.current) {
       clearInterval(intervalRef.current);
    }
 
    useEffect(() => {
-      setRemainingTime(question.time);
+      setRemainingTime(quiz.totalTime);
       intervalRef.current = setInterval(() => {
          setRemainingTime((prevTime) => {
             if (prevTime) return prevTime - 1;
