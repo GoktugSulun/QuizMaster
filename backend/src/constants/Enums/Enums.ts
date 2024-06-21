@@ -26,3 +26,8 @@ export enum CorrectOptionEnums {
    SINGLE_OPTION = 'Single Option',
    MULTIPLE_OPTIONS = 'Multiple Options',
 }
+
+export enum QuizSessionEnums {
+   STARTED = 'Started',
+   COMPLETED = 'Completed'
+}
