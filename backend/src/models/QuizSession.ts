@@ -8,7 +8,7 @@ interface IQuizSessionSchema {
    updatedAt: Date;
    quizId: string;
    userId: string;
-   status: 'Started' | 'Completed';
+   status: QuizSessionEnums;
    startTime: number;
    totalTime: number;
    totalRepeat: number;
