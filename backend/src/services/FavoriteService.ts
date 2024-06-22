@@ -9,7 +9,7 @@ import { type IQuizResponse } from "../constants/Types/Quiz/QuizResponseTypes.ts
 import QuizService from "./QuizService.ts";
 
 class FavoriteService {
-   static async getAll(params: IGetAll): Promise<ResponseType<IFavoriteSchema>> {
+   static async getAll(params: IGetAll): Promise<ResponseType<IFavoriteSchema[]>> {
       try {
          const { page, limit, isRemoved } = params;
          const skip = page === 1 ? 0 : (page - 1) * limit;
@@ -29,7 +29,7 @@ class FavoriteService {
       }
    }
 
-   static async getFavoriteQuizzes(params: IGetFavoriteQuizzes): Promise<ResponseType<IQuizResponse>> {
+   static async getFavoriteQuizzes(params: IGetFavoriteQuizzes): Promise<ResponseType<IQuizResponse[]>> {
       try {
          const { page, limit, isRemoved } = params;
          const skip = page === 1 ? 0 : (page - 1) * limit;

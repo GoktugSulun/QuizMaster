@@ -1,14 +1,16 @@
 import Helpers from "../utils/Helpers.ts";
 import { type Request, type Response } from "express";
 import { type IError } from "../constants/Types/Error/ErrorType.ts";
-import { IComplete, IEnd, IGetAlreadyStarted, IStart } from "../constants/Types/QuizSession/QuizSessionType.ts";
+import { type IComplete, type IEnd } from "../constants/Types/QuizSession/QuizSessionType.ts";
 import QuizSessionService from "../services/QuizSessionService.ts";
 
 class QuizSessionController {
    static async start(req: Request, res: Response) {
+      if (!req.params.id) { 
+         return Helpers.responseMessage(res, false, "'Id' field is required!");
+      }
       try {
-         // Todo : Validate req.body
-         const params = req.body as IStart;
+         const params = { quizId: req.params.id };
          const result = await QuizSessionService.start(params);
          Helpers.responseJSON(res, result);
       } catch (error) {
@@ -42,9 +44,11 @@ class QuizSessionController {
    }
 
    static async getAlreadyStarted(req: Request, res: Response) {
+      if (!req.params.id) { 
+         return Helpers.responseMessage(res, false, "'Id' field is required!");
+      }
       try {
-         // Todo : Validate req.body
-         const params = req.body as IGetAlreadyStarted;
+         const params = { quizId: req.params.id };
          const result = await QuizSessionService.getAlreadyStarted(params);
          Helpers.responseJSON(res, result);
       } catch (error) {

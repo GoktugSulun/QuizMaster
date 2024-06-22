@@ -1,4 +1,4 @@
-  import Helpers from "../utils/Helpers.ts";
+import Helpers from "../utils/Helpers.ts";
 import Quiz from "../models/Quiz.ts";
 import { authorizedUserId } from "../index.ts";
 import Favorite from "../models/Favorite.ts";
@@ -10,7 +10,6 @@ import FavoriteService from "./FavoriteService.ts";
 import { QuestionEnums, QuizTypeEnums, VisibilityEnums } from "../constants/Enums/Enums.ts";
 import SaveService from "./SaveService.ts";
 import QuestionService from "./QuestionService.ts";
-import Question from "../models/Question.ts";
 import { IQuestion } from "../constants/Types/Question/QuestionResponseType.ts";
 
 class QuizService {

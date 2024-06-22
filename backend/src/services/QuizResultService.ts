@@ -26,7 +26,7 @@ class QuizResultService {
          return { 
             type: true, 
             message: 'quiz result service getById', 
-            data: []
+            data: {} as IGetResultById
          };
 
       } catch (error) {

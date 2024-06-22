@@ -31,3 +31,8 @@ export enum QuizSessionEnums {
    STARTED = 'Started',
    COMPLETED = 'Completed'
 }
+
+export enum QuizStatusEnums {
+   START_NEW_QUIZ = 'Start New Quiz',
+   CONTINUE_STARTED_QUIZ = 'Continue Started Quiz',
+}

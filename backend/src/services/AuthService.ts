@@ -66,8 +66,8 @@ class AuthService {
       try {
          const newUser = params;
 
-         const isQuizExisted = await User.exists({ email: newUser.email });
-         if (isQuizExisted) {
+         const isUserExist = await User.exists({ email: newUser.email });
+         if (isUserExist) {
             return {
                type: false,
                message: "This email is being used, try another one!"
