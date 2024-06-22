@@ -22,6 +22,7 @@ export enum VisibilityEnums {
 export type QuizType = {
    name: string;
    description: string;
+   totalAttempt: number;
    visibility: VisibilityEnums;
    image: File | null;
    totalTime: number;

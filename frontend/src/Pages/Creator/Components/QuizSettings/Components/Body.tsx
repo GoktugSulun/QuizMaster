@@ -8,13 +8,14 @@ import PublicIcon from '@mui/icons-material/Public';
 import { getTimeOptions } from "@/Core/Helper";
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import { type TimeType } from "../QuizSettings";
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 const Body = () => {
    const form = useFormContext();
    
-   const [visibility, minute, second] = useWatch({ 
+   const [visibility, totalAttempt, minute, second] = useWatch({ 
       control: form.control, 
-      name: ["visibility", "minute", "second"] }) as [VisibilityEnums, TimeType | null, TimeType | null];
+      name: ["visibility", "totalAttempt", "minute", "second"] }) as [VisibilityEnums, number, TimeType | null, TimeType | null];
 
    const { errors } = useFormState({ control: form.control, name: ["minute", "second"] });
    const timeError = !!errors?.second;
@@ -127,6 +128,48 @@ const Body = () => {
                variant="h6"
                color="primary.main"
             >
+               Total Attempt
+            </Typography>
+            <RadioGroup
+               row
+               value={totalAttempt}
+               onChange={(e: React.ChangeEvent<HTMLInputElement>) => form.setValue("totalAttempt", Number(e.target.value))}
+            >
+               <FormControlLabel 
+                  control={<Radio />} 
+                  value={1} 
+                  label={1} 
+               />
+               <FormControlLabel 
+                  control={<Radio />} 
+                  value={2} 
+                  label={2} 
+               />
+               <FormControlLabel 
+                  control={<Radio />} 
+                  value={3} 
+                  label={3} 
+               />
+            </RadioGroup>
+            <Stack 
+               marginTop="5px"
+               flexDirection="row" 
+               alignItems="center" 
+               gap="10px"
+            >
+               <WarningAmberIcon sx={{ color: "primary.main" }} />
+               <Typography fontSize={14} paragraph>
+                  The quiz allows up to {totalAttempt} {totalAttempt === 1 ? "attempt" : "attempts"} per quiz solver when started.
+               </Typography>
+            </Stack>
+         </Stack>
+         <Stack marginTop="10px">
+            <Typography 
+               marginTop="10px" 
+               fontSize={18} 
+               variant="h6"
+               color="primary.main"
+            >
                Visibility
             </Typography>
             <RadioGroup
@@ -135,13 +178,13 @@ const Body = () => {
                onChange={(e: React.ChangeEvent<HTMLInputElement>) => form.setValue("visibility", e.target.value)}
             >
                <FormControlLabel 
-                  value={VisibilityEnums.PRIVATE} 
                   control={<Radio />} 
+                  value={VisibilityEnums.PRIVATE} 
                   label={VisibilityEnums.PRIVATE} 
                />
                <FormControlLabel 
-                  value={VisibilityEnums.PUBLIC} 
                   control={<Radio />} 
+                  value={VisibilityEnums.PUBLIC} 
                   label={VisibilityEnums.PUBLIC} 
                />
             </RadioGroup>

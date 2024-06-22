@@ -19,7 +19,7 @@ const QuizRuleInfos = () => {
          <QuizRuleInfo 
             keyValue="Question Time" 
             value="-"
-            description="There is no time limit for a question."
+            description="There is no different time limit for each question."
          />
          <QuizRuleInfo 
             keyValue="Total Time" 
@@ -27,9 +27,9 @@ const QuizRuleInfos = () => {
             description={`You have ${minute.name}:${second.name} minutes to complete this quiz.`}
          />
          <QuizRuleInfo 
-            keyValue="Repeat" 
-            value="1" 
-            description="You have only 1 chance to complete this quiz. If you quit before you complete it, you cannot access it again."
+            keyValue="Total Attempt" 
+            value={quizRules.totalAttempt} 
+            description={`You have ${quizRules.totalAttempt} attempt to complete this quiz.`}
          />
       </Stack>
    )

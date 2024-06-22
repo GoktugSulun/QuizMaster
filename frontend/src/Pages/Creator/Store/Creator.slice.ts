@@ -19,6 +19,7 @@ const initialState: InitialStateTypes = {
     id: "",
     name: "",
     description: "",
+    totalAttempt: 1,
     visibility: VisibilityEnums.PUBLIC,
     image: null,
     totalTime: 0,
