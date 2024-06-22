@@ -10,7 +10,7 @@ class QuizSessionService {
 
          return {
             type: true,
-            message: '',
+            message: 'start quiz session',
          };
       } catch (error) {
          return Helpers.responseError(error)
@@ -23,7 +23,7 @@ class QuizSessionService {
 
          return {
             type: true,
-            message: '',
+            message: 'complete quiz session',
          };
       } catch (error) {
          return Helpers.responseError(error)
@@ -36,7 +36,7 @@ class QuizSessionService {
 
          return {
             type: true,
-            message: '',
+            message: 'end quiz session',
          };
       } catch (error) {
          return Helpers.responseError(error)
@@ -49,7 +49,7 @@ class QuizSessionService {
 
          return {
             type: true,
-            message: '',
+            message: 'getAlreadyStarted quiz session',
          };
       } catch (error) {
          return Helpers.responseError(error)
