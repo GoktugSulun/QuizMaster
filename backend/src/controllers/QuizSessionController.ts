@@ -1,16 +1,14 @@
 import Helpers from "../utils/Helpers.ts";
 import { type Request, type Response } from "express";
 import { type IError } from "../constants/Types/Error/ErrorType.ts";
-import { type IComplete, type IEnd } from "../constants/Types/QuizSession/QuizSessionType.ts";
+import { type IStart, type IComplete, type IEnd } from "../constants/Types/QuizSession/QuizSessionType.ts";
 import QuizSessionService from "../services/QuizSessionService.ts";
 
 class QuizSessionController {
    static async start(req: Request, res: Response) {
-      if (!req.params.id) { 
-         return Helpers.responseMessage(res, false, "'Id' field is required!");
-      }
       try {
-         const params = { quizId: req.params.id };
+         // Todo : Validate req.body
+         const params = req.body as IStart;
          const result = await QuizSessionService.start(params);
          Helpers.responseJSON(res, result);
       } catch (error) {

@@ -20,7 +20,7 @@ const initialState: InitialStateTypes = {
       visibility: VisibilityEnums.PRIVATE,
       image: null,
       totalTime: 0,
-      totalAttempt: 1,
+      maxAttempt: 1,
       numberOfQuestions: 0,
       questionTime: null,
       repeat: null,

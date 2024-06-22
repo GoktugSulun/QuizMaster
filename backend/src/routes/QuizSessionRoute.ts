@@ -7,11 +7,11 @@ const app = express();
 // Get
 app.get('/alreadyStarted/:id', AuthMiddleware, QuizSessionController.getAlreadyStarted);
 
-// Start
-app.get('/start/:id', AuthMiddleware, QuizSessionController.start);
+// Create
+app.post('/start', AuthMiddleware, QuizSessionController.start);
 
-// Finish
-app.post('/complete', AuthMiddleware, QuizSessionController.complete);
-app.post('/end', AuthMiddleware, QuizSessionController.end);
+// Edit
+app.put('/complete', AuthMiddleware, QuizSessionController.complete);
+app.put('/end', AuthMiddleware, QuizSessionController.end);
 
 export default app;  

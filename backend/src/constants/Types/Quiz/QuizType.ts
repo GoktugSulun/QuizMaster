@@ -26,6 +26,7 @@ export interface ICreate {
    description: string;
    visibility: VisibilityEnums;
    image: File | null;
+   totalAttempt: number;
    totalTime: number;
    creatorId: string;
 }

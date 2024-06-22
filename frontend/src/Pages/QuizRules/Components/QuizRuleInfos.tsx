@@ -28,8 +28,8 @@ const QuizRuleInfos = () => {
          />
          <QuizRuleInfo 
             keyValue="Total Attempt" 
-            value={quizRules.totalAttempt} 
-            description={`You have ${quizRules.totalAttempt} attempt to complete this quiz.`}
+            value={quizRules.maxAttempt} 
+            description={`You have ${quizRules.maxAttempt} attempt to complete this quiz.`}
          />
       </Stack>
    )

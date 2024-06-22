@@ -12,6 +12,7 @@ interface IQuizSchema {
    image: string | null;
    creatorId: string;
    isRemoved: boolean;
+   maxAttempt: number;
 }
 
 export const quizSchema = new mongoose.Schema<IQuizSchema>({
@@ -45,6 +46,11 @@ export const quizSchema = new mongoose.Schema<IQuizSchema>({
    creatorId: {
       type: String,
       required: true
+   },
+   maxAttempt: {
+      type: Number,
+      required: true,
+      default: 1
    },
    isRemoved: {
       type: Boolean,

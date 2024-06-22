@@ -4,6 +4,7 @@ import { type IGetById, type IGetAll } from "../constants/Types/QuizResult/QuizR
 import { type IGetResultById, type IQuizResultId } from "../constants/Types/QuizResult/QuizResultResponseType.ts";
 
 class QuizResultService {
+   
    static async getAll(params: IGetAll): Promise<ResponseType<IQuizResultId[]>> {
       try {
          console.log("quiz result service getAll");

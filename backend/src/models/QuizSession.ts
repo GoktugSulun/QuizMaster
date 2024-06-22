@@ -11,7 +11,7 @@ interface IQuizSessionSchema {
    status: QuizSessionEnums;
    startTime: number;
    totalTime: number;
-   totalRepeat: number;
+   maxAttempt: number;
    totalAttempt: number;
    answers: IAnswer[];
 }
@@ -28,23 +28,27 @@ export const quizSessionSchema = new mongoose.Schema<IQuizSessionSchema>({
    status: {
       type: String,
       enum: Object.values(QuizSessionEnums),
-      required: true
+      default: QuizSessionEnums.STARTED,
+      required: true,
    },
    startTime: {
       type: Number,
-      required: true
+      required: true,
+      default: new Date().getTime()
    },
    totalTime: {
       type: Number,
       required: true
    },
-   totalRepeat: {
+   maxAttempt: {
       type: Number,
-      required: true
+      required: true,
+      default: 1,
    },
    totalAttempt: {
       type: Number,
-      required: true
+      required: true,
+      default: 1
    },
    answers: {
       type: [{

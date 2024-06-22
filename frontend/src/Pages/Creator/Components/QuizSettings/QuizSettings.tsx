@@ -22,7 +22,7 @@ export type TimeType = {
 export type DefaultValuesType = {
    name: string;
    description: string;
-   totalAttempt: number;
+   maxAttempt: number;
    visibility: VisibilityEnums;
    image: File | null;
    minute: TimeType | null;
@@ -42,7 +42,7 @@ const schema = yup.object({
       .min(10, "Description must have minimum 10 characters")
       .max(150, "Description must have maximum 150 characters")
       .required("Description required"),
-   totalAttempt: yup
+   maxAttempt: yup
       .number()
       .required(),
    visibility: yup
@@ -67,7 +67,7 @@ const schema = yup.object({
 const defaultValues: DefaultValuesType = {
    name: "",
    description: "",
-   totalAttempt: 1,
+   maxAttempt: 1,
    visibility: VisibilityEnums.PRIVATE,
    image: null,
    minute: { id: 0, name: "00"},
@@ -96,7 +96,7 @@ const QuizSettings = () => {
          form.reset({
             name: quiz.name,
             description: quiz.description,
-            totalAttempt: quiz.totalAttempt,
+            maxAttempt: quiz.maxAttempt,
             visibility: VisibilityEnums.PRIVATE,
             image: null,
             minute,

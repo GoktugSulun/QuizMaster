@@ -13,9 +13,9 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 const Body = () => {
    const form = useFormContext();
    
-   const [visibility, totalAttempt, minute, second] = useWatch({ 
+   const [visibility, maxAttempt, minute, second] = useWatch({ 
       control: form.control, 
-      name: ["visibility", "totalAttempt", "minute", "second"] }) as [VisibilityEnums, number, TimeType | null, TimeType | null];
+      name: ["visibility", "maxAttempt", "minute", "second"] }) as [VisibilityEnums, number, TimeType | null, TimeType | null];
 
    const { errors } = useFormState({ control: form.control, name: ["minute", "second"] });
    const timeError = !!errors?.second;
@@ -132,8 +132,8 @@ const Body = () => {
             </Typography>
             <RadioGroup
                row
-               value={totalAttempt}
-               onChange={(e: React.ChangeEvent<HTMLInputElement>) => form.setValue("totalAttempt", Number(e.target.value))}
+               value={maxAttempt}
+               onChange={(e: React.ChangeEvent<HTMLInputElement>) => form.setValue("maxAttempt", Number(e.target.value))}
             >
                <FormControlLabel 
                   control={<Radio />} 
@@ -159,7 +159,7 @@ const Body = () => {
             >
                <WarningAmberIcon sx={{ color: "primary.main" }} />
                <Typography fontSize={14} paragraph>
-                  The quiz allows up to {totalAttempt} {totalAttempt === 1 ? "attempt" : "attempts"} per quiz solver when started.
+                  The quiz allows up to {maxAttempt} {maxAttempt === 1 ? "attempt" : "attempts"} per quiz solver when started.
                </Typography>
             </Stack>
          </Stack>

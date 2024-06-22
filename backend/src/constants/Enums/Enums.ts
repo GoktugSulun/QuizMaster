@@ -29,10 +29,20 @@ export enum CorrectOptionEnums {
 
 export enum QuizSessionEnums {
    STARTED = 'Started',
-   COMPLETED = 'Completed'
+   COMPLETED = 'Completed',
+   TIMEOUT = 'Timeout',
+   EXCEED_ATTEMPT = 'Exceed Attempt'
+}
+
+export enum QuizSessionEndEnums {
+   COMPLETED = 'Completed',
+   TIMEOUT = 'Timeout',
+   EXCEED_ATTEMPT = 'Exceed Attempt'
 }
 
 export enum QuizStatusEnums {
    START_NEW_QUIZ = 'Start New Quiz',
    CONTINUE_STARTED_QUIZ = 'Continue Started Quiz',
+   TIMEOUT = 'Timeout',
+   EXCEED_ATTEMPT = 'Exceed Attempt'
 }
