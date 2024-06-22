@@ -4,11 +4,13 @@ import QuizSessionController from '../controllers/QuizSessionController.ts';
 
 const app = express();
 
-// Get - "start" and "getAlreadyStarted"
-app.get('/start/:id', AuthMiddleware, QuizSessionController.start);
+// Get
 app.get('/alreadyStarted/:id', AuthMiddleware, QuizSessionController.getAlreadyStarted);
 
-// Post - "complete" and "end"
+// Start
+app.get('/start/:id', AuthMiddleware, QuizSessionController.start);
+
+// Finish
 app.post('/complete', AuthMiddleware, QuizSessionController.complete);
 app.post('/end', AuthMiddleware, QuizSessionController.end);
 

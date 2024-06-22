@@ -36,7 +36,7 @@ class SaveController {
    static async unmarkAsSaved(req: Request, res: Response) {
       if (!req.params.id) { 
          return Helpers.responseMessage(res, false, "'Id' field is required!");
-         }
+      }
       try {
          const params = { quizId: req.params.id };
          const result = await SaveService.unmarkAsSaved(params);
