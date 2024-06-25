@@ -29,23 +29,23 @@ const QuizRules = () => {
 
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const { isLoading, isSuccess, setIdle } = useThunk('getQuizByIdWithQuestions');
+   const { isLoading, isSuccess, setIdle } = useThunk('startQuiz');
    const { 
       isLoading: isLoadingGetQuizRulesById, 
       isSuccess: isSuccessGetQuizRulesById, 
       setIdle: setIdleGetQuizRulesById, 
    } = useThunk('getQuizRulesById');
 
-   const navigateToQuizHandler = () => {
-      QuizThunks.getQuizByIdWithQuestions(id);
+   const startQuizHandler = () => {
+      QuizRulesThunks.startQuiz({ quizId: id })
    };
 
-   useEffect(() => {
-      if (isSuccess) {
-         setIdle();
-         navigate({ pathname: '/quiz', search: `?id=${id}&question=1` }, { replace: true });
-      }
-   }, [isSuccess]);
+   // useEffect(() => {
+   //    if (isSuccess) {
+   //       setIdle();
+   //       navigate({ pathname: '/quiz', search: `?id=${id}&question=1` }, { replace: true });
+   //    }
+   // }, [isSuccess]);
 
    useEffect(() => {
       if (isSuccessGetQuizRulesById) {
@@ -55,7 +55,6 @@ const QuizRules = () => {
 
    useEffect(() => {
       QuizRulesThunks.getQuizRulesById(id);
-
       return () => {
          dispatch(QuizRulesActions.reset());
       }
@@ -92,7 +91,7 @@ const QuizRules = () => {
             <Divider sx={{ margin: '40px 0' }} />
             <Stack alignItems="center">
                <Button 
-                  onClick={navigateToQuizHandler} 
+                  onClick={startQuizHandler} 
                   sx={{ padding: "8px 60px", ":hover": { padding: "8px 80px" } }} 
                   disabled={isLoading}
                >
