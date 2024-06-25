@@ -7,7 +7,7 @@ import QuizRoute from './routes/QuizRoute.ts';
 import QuestionRoute from './routes/QuestionRoute.ts';
 import AuthRoute from './routes/AuthRoute.ts';
 import QuizSessionRoute from './routes/QuizSessionRoute.ts';
-import QuizResultRoute from './routes/QuizResult.ts';
+import QuizResultRoute from './routes/QuizResultRoute.ts';
 
 // TODO : change it later
 export const authorizedUserId = "1";

@@ -7,6 +7,8 @@ import { type IQuizSessionResponse, type IStartResponse } from "../constants/Typ
 import { QuizSessionEndEnums, QuizSessionEnums, QuizStatusEnums } from "../constants/Enums/Enums.ts";
 import QuizSession from "../models/QuizSession.ts";
 import Quiz from "../models/Quiz.ts";
+import QuizService from "./QuizService.ts";
+import { IQuizWithQuestions } from "../constants/Types/Quiz/QuizResponseTypes.ts";
 
 class QuizSessionService {
    static async create(params: ICreate): Promise<ResponseType<IQuizSessionResponse>> {
@@ -64,7 +66,19 @@ class QuizSessionService {
                message: `Quiz with id '${quizId}' couldn't find!`,
            }
          }
- 
+
+         // Get quizWithQuestions to use it for START_NEW_QUIZ and CONTINUE_STARTED_QUIZ
+         const quizServiceResult = await QuizService.getByIdWithQuestions({ id: quizId, isRemoved: false });
+         if (!quizServiceResult.type) {
+            return {
+               type: false,
+               message: quizServiceResult.message 
+            }
+         }
+
+         // Todo: IQuizSessionQuizResponse tipini kullan ve optionlar içinde isCorrect dönme
+         const quizWithQuestions = quizServiceResult.data as IQuizWithQuestions;
+
          const quizSessions = await QuizSession.find({ quizId, userId: authorizedUserId });
          if (!quizSessions) {
             const result = await QuizSessionService.create({ quizId });
@@ -74,12 +88,13 @@ class QuizSessionService {
                   message: result.message
                }
             }
-
+            
             return {
                type: true,
                message: `Quiz session has been created`,
                data: {
                   status: QuizStatusEnums.START_NEW_QUIZ,
+                  quiz: quizWithQuestions
                }
             }
          }
@@ -100,6 +115,7 @@ class QuizSessionService {
                message: `Quiz session has been created`,
                data: {
                   status: QuizStatusEnums.START_NEW_QUIZ,
+                  quiz: quizWithQuestions
                }
             }
          }
@@ -175,7 +191,8 @@ class QuizSessionService {
             data: {
                status: QuizStatusEnums.CONTINUE_STARTED_QUIZ,
                totalAttempt: data.totalAttempt,
-               maxAttempt: data.maxAttempt
+               maxAttempt: data.maxAttempt,
+               quiz: quizWithQuestions
             }
          };
       } catch (error) {

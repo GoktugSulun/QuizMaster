@@ -3,7 +3,6 @@ import QuizController from '../controllers/QuizController.ts';
 import FavoriteController from '../controllers/FavoriteController.ts';
 import SaveController from '../controllers/SaveController.ts';
 import AuthMiddleware from '../middlewares/AuthMiddleware.ts';
-import Quiz from '../models/Quiz.ts';
 
 const app = express();
 
