@@ -17,6 +17,7 @@ const initialState: InitialStateTypes = {
       updatedAt: "", 
       isRemoved: false,
       questions: [],
+      maxAttempt: 1,
       name: "",
       description: "",
       visibility: VisibilityEnums.PRIVATE,

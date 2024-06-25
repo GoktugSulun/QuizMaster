@@ -1,11 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { type QuizRules } from "../Types/QuizRulesTypes";
+import { type StartQuizResponseTypes, type QuizRules } from "../Types/QuizRulesTypes";
 import { VisibilityEnums } from '@/Pages/Creator/Types/CreatorTypes';
 
 const NAME = 'QuizRules';
 
 type InitialStateTypes = {
-   quizRules: QuizRules
+   quizRules: QuizRules,
+   startQuizResponse: StartQuizResponseTypes | null
 }
 
 const initialState: InitialStateTypes = {
@@ -27,7 +28,8 @@ const initialState: InitialStateTypes = {
       multipleChoice: false,
       trueFalse: false,
       shortAnswer: false,
-   }
+   },
+   startQuizResponse: null
 };
 
 const QuizRulesSlice = createSlice({
@@ -37,6 +39,9 @@ const QuizRulesSlice = createSlice({
       reset: () => initialState,
       setQuizRules: (state, action: PayloadAction<QuizRules>) => {
          state.quizRules = action.payload;
+      },
+      setStartQuizResponse: (state, action: PayloadAction<StartQuizResponseTypes>) => {
+         state.startQuizResponse = action.payload;
       },
    },
 });

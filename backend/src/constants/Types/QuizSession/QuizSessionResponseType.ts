@@ -1,16 +1,16 @@
 
 import { CorrectOptionEnums, PointEnums, QuestionEnums, QuizSessionEnums, QuizStatusEnums } from "../../Enums/Enums";
-import { type IQuizResponse } from "../Quiz/QuizResponseTypes";
+import { type IQuizWithQuestions, type IQuizResponse } from "../Quiz/QuizResponseTypes";
 import { type IAnswer } from "./QuizSessionType";
 
 export type IStartResponse = { 
    status: QuizStatusEnums.START_NEW_QUIZ,
-   quiz: IQuizSessionQuizResponse
+   quiz: IQuizWithQuestions // Todo: IQuizSessionQuizResponse => bunu kullan service kısmından düzenleme yaptıktan sonra "isCorrect" göndermemek için
 } | {
    status: QuizStatusEnums.CONTINUE_STARTED_QUIZ;
    maxAttempt: number;
    totalAttempt: number;
-   quiz: IQuizSessionQuizResponse
+   quiz: IQuizWithQuestions // Todo: IQuizSessionQuizResponse => bunu kullan service kısmından düzenleme yaptıktan sonra "isCorrect" göndermemek için
 }  | {
    status: QuizStatusEnums.EXCEED_ATTEMPT;
    maxAttempt: number;

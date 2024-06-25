@@ -5,12 +5,14 @@ import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import QuizRuleHeader from './Components/QuizRuleHeader';
 import QuizRuleInfos from './Components/QuizRuleInfos';
 import QuizRuleQuestionTypes from './Components/QuizRuleQuestionTypes';
-import { QuizThunks } from '../Quiz/Store/Quiz.thunk';
 import { useAppSelector, useThunk } from '@/Core/Hooks';
 import { Loading } from '@/Core/Components';
 import { QuizRulesThunks } from './Store/QuizRules.thunk';
 import { QuizRulesActions } from './Store/QuizRules.slice';
 import { useDispatch } from 'react-redux';
+import { QuizStatusEnums } from '@/Constants/Enums';
+import { QuizActions } from '../Quiz/Store/Quiz.slice';
+import { type QuizWithQuestions } from '../Creator/Types/CreatorTypes';
 
 /* 
    ? Required searchParam => id
@@ -21,7 +23,6 @@ import { useDispatch } from 'react-redux';
 const QuizRules = () => {
    const [searchParams] = useSearchParams();
    const id = searchParams.get("id") as string;
-   const quizRules = useAppSelector((state) => state.QuizRules.quizRules);
    
    if (!id) {
       return <Navigate to="/" replace />
@@ -29,6 +30,8 @@ const QuizRules = () => {
 
    const dispatch = useDispatch();
    const navigate = useNavigate();
+   const quizRules = useAppSelector((state) => state.QuizRules.quizRules);
+   const startQuizResponse = useAppSelector((state) => state.QuizRules.startQuizResponse);
    const { isLoading, isSuccess, setIdle } = useThunk('startQuiz');
    const { 
       isLoading: isLoadingGetQuizRulesById, 
@@ -40,12 +43,34 @@ const QuizRules = () => {
       QuizRulesThunks.startQuiz({ quizId: id })
    };
 
-   // useEffect(() => {
-   //    if (isSuccess) {
-   //       setIdle();
-   //       navigate({ pathname: '/quiz', search: `?id=${id}&question=1` }, { replace: true });
-   //    }
-   // }, [isSuccess]);
+   const navigateToQuiz = (quiz: QuizWithQuestions) => {
+      if (startQuizResponse?.status) {
+         dispatch(QuizActions.setQuiz(quiz));
+         navigate({ pathname: '/quiz', search: `?id=${id}&question=1` }, { replace: true });
+      }
+   }
+
+   useEffect(() => {
+      if (isSuccess && startQuizResponse) {
+         switch (startQuizResponse.status) {
+            case QuizStatusEnums.START_NEW_QUIZ:
+               navigateToQuiz(startQuizResponse.quiz);
+               break;
+            case QuizStatusEnums.CONTINUE_STARTED_QUIZ:
+               navigateToQuiz(startQuizResponse.quiz);
+               break; 
+            case QuizStatusEnums.EXCEED_ATTEMPT:
+               alert("Exceed Attempt");
+               break;
+            case QuizStatusEnums.TIMEOUT:
+               alert("Timeout");
+               break;
+            default:
+               throw new Error("Unknown QuizStatusEnums");
+         }
+         setIdle();
+      }
+   }, [isSuccess, startQuizResponse]);
 
    useEffect(() => {
       if (isSuccessGetQuizRulesById) {
