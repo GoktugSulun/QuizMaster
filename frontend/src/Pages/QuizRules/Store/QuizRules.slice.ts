@@ -5,8 +5,9 @@ import { VisibilityEnums } from '@/Pages/Creator/Types/CreatorTypes';
 const NAME = 'QuizRules';
 
 type InitialStateTypes = {
-   quizRules: QuizRules,
-   startQuizResponse: StartQuizResponseTypes | null
+   quizRules: QuizRules;
+   startQuizResponse: StartQuizResponseTypes | null;
+   isOpenSessionInfoModal: boolean;
 }
 
 const initialState: InitialStateTypes = {
@@ -29,7 +30,8 @@ const initialState: InitialStateTypes = {
       trueFalse: false,
       shortAnswer: false,
    },
-   startQuizResponse: null
+   startQuizResponse: null,
+   isOpenSessionInfoModal: false,
 };
 
 const QuizRulesSlice = createSlice({
@@ -43,6 +45,14 @@ const QuizRulesSlice = createSlice({
       setStartQuizResponse: (state, action: PayloadAction<StartQuizResponseTypes>) => {
          state.startQuizResponse = action.payload;
       },
+      setIsOpenSessionModal: (state, action: PayloadAction<"OPEN" | "CLOSE" | "TOGGLE">) => {
+         const valueMap = {
+           "TOGGLE": !state.isOpenSessionInfoModal,
+           "OPEN": true,
+           "CLOSE": false
+         }
+         state.isOpenSessionInfoModal = valueMap[action.payload];
+       },
    },
 });
 

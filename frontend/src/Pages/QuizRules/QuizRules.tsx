@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import { QuizStatusEnums } from '@/Constants/Enums';
 import { QuizActions } from '../Quiz/Store/Quiz.slice';
 import { type QuizWithQuestions } from '../Creator/Types/CreatorTypes';
+import QuizSessionInfoModal from './Components/QuizSessionInfoModal/QuizSessionInfoModal';
 
 /* 
    ? Required searchParam => id
@@ -60,10 +61,10 @@ const QuizRules = () => {
                navigateToQuiz(startQuizResponse.quiz);
                break; 
             case QuizStatusEnums.EXCEED_ATTEMPT:
-               alert("Exceed Attempt");
+               dispatch(QuizRulesActions.setIsOpenSessionModal("OPEN"));
                break;
             case QuizStatusEnums.TIMEOUT:
-               alert("Timeout");
+               dispatch(QuizRulesActions.setIsOpenSessionModal("OPEN"));
                break;
             default:
                throw new Error("Unknown QuizStatusEnums");
@@ -124,6 +125,7 @@ const QuizRules = () => {
                </Button>
             </Stack>
          </S.QuizRulesContent>
+         <QuizSessionInfoModal />
       </S.QuizRules>
    )
 }
