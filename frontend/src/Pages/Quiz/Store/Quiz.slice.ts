@@ -1,11 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { type Answer } from '../Types/QuizTypes';
+import { type QuizSessionResponse, type Answer } from '../Types/QuizTypes';
 import { VisibilityEnums, type QuizWithQuestions } from '@/Pages/Creator/Types/CreatorTypes';
 
 const NAME = 'Quiz';
 
 type InitialStateTypes = {
    quiz: QuizWithQuestions,
+   quizSession: QuizSessionResponse,
    answers: Answer[]
 }
 
@@ -24,7 +25,20 @@ const initialState: InitialStateTypes = {
       image: null,
       totalTime: 0,
    },
-   answers: []// data for backend
+   quizSession: {
+      id: "",   
+      createdAt: null,
+      updatedAt: null,
+      quizId: "",
+      userId: "",
+      status: null,
+      startTime: 0,
+      totalTime: 0,
+      maxAttempt: 0,
+      totalAttempt: 0,
+      answers: []
+   },
+   answers: [] // data for backend
 };
 
 const QuizSlice = createSlice({
@@ -39,6 +53,9 @@ const QuizSlice = createSlice({
          const { questionId } = action.payload;
          const index = state.answers.findIndex((answer) => answer.questionId === questionId)
          state.answers[index] = action.payload;
+      },
+      setQuizSession: (state, action: PayloadAction<QuizSessionResponse>) => {
+         state.quizSession = action.payload;
       }
    },
 });

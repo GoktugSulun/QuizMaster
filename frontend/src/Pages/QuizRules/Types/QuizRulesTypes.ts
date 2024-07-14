@@ -1,5 +1,6 @@
 import { CorrectOptionEnums, PointEnums, QuestionEnums, QuizStatusEnums, VisibilityEnums } from "@/Constants/Enums";
 import { type QuizWithQuestions, type QuizWithIdType } from "@/Pages/Creator/Types/CreatorTypes";
+import { type QuizSessionResponse } from "@/Pages/Quiz/Types/QuizTypes";
 
 export type QuizRules = Omit<QuizWithIdType, "image"> & {
    image: null | string;
@@ -47,13 +48,13 @@ export interface IQuizWithQuestions extends IQuizResponse {
 }
 
 export type StartQuizResponseTypes = { 
-   status: QuizStatusEnums.START_NEW_QUIZ,
-   quiz: QuizWithQuestions // Todo: Service'den dönen tipi düzeltiğinde burayı da düzelt, "isCorrect" datası gelmemeli
+   status: QuizStatusEnums.START_NEW_QUIZ;
+   quiz: QuizWithQuestions; // Todo: Service'den dönen tipi düzeltiğinde burayı da düzelt, "isCorrect" datası gelmemeli
+   quizSession: QuizSessionResponse;
 } | {
    status: QuizStatusEnums.CONTINUE_STARTED_QUIZ;
-   maxAttempt: number;
-   totalAttempt: number;
-   quiz: QuizWithQuestions // Todo: Service'den dönen tipi düzeltiğinde burayı da düzelt, "isCorrect" datası gelmemeli
+   quiz: QuizWithQuestions; // Todo: Service'den dönen tipi düzeltiğinde burayı da düzelt, "isCorrect" datası gelmemeli
+   quizSession: QuizSessionResponse;
 }  | {
    status: QuizStatusEnums.EXCEED_ATTEMPT;
    maxAttempt: number;

@@ -12,8 +12,9 @@ import { QuizRulesActions } from './Store/QuizRules.slice';
 import { useDispatch } from 'react-redux';
 import { QuizStatusEnums } from '@/Constants/Enums';
 import { QuizActions } from '../Quiz/Store/Quiz.slice';
-import { type QuizWithQuestions } from '../Creator/Types/CreatorTypes';
 import QuizSessionInfoModal from './Components/QuizSessionInfoModal/QuizSessionInfoModal';
+import { type QuizWithQuestions } from '../Creator/Types/CreatorTypes';
+import { type QuizSessionResponse } from '../Quiz/Types/QuizTypes';
 
 /* 
    ? Required searchParam => id
@@ -44,8 +45,11 @@ const QuizRules = () => {
       QuizRulesThunks.startQuiz({ quizId: id })
    };
 
-   const navigateToQuiz = (quiz: QuizWithQuestions) => {
+   const navigateToQuiz = (quiz: QuizWithQuestions, quizSession?: QuizSessionResponse) => {
       if (startQuizResponse?.status) {
+         if (quizSession) {
+            dispatch(QuizActions.setQuizSession(quizSession));
+         }
          dispatch(QuizActions.setQuiz(quiz));
          navigate({ pathname: '/quiz', search: `?id=${id}&question=1` }, { replace: true });
       }
@@ -53,12 +57,13 @@ const QuizRules = () => {
 
    useEffect(() => {
       if (isSuccess && startQuizResponse) {
+         setIdle();
          switch (startQuizResponse.status) {
             case QuizStatusEnums.START_NEW_QUIZ:
-               navigateToQuiz(startQuizResponse.quiz);
+               navigateToQuiz(startQuizResponse.quiz, startQuizResponse.quizSession);
                break;
             case QuizStatusEnums.CONTINUE_STARTED_QUIZ:
-               navigateToQuiz(startQuizResponse.quiz);
+               navigateToQuiz(startQuizResponse.quiz, startQuizResponse.quizSession);
                break; 
             case QuizStatusEnums.EXCEED_ATTEMPT:
                dispatch(QuizRulesActions.setIsOpenSessionModal("OPEN"));
@@ -69,7 +74,6 @@ const QuizRules = () => {
             default:
                throw new Error("Unknown QuizStatusEnums");
          }
-         setIdle();
       }
    }, [isSuccess, startQuizResponse]);
 

@@ -16,6 +16,7 @@ const QuizHeader = () => {
    const [remainingTime, setRemainingTime] = useState<number | null>(null); // second
    const intervalRef = useRef<NodeJS.Timeout | null>(null);  // Todo : check interval type
    const [searchParams] = useSearchParams();
+   const quizSession = useAppSelector((state) => state.Quiz.quizSession);
    const quiz = useAppSelector((state) => state.Quiz.quiz);
    const questions = quiz.questions;
 
@@ -27,19 +28,30 @@ const QuizHeader = () => {
    }
 
    useEffect(() => {
-      setRemainingTime(quiz.totalTime);
-      intervalRef.current = setInterval(() => {
-         setRemainingTime((prevTime) => {
-            if (prevTime) return prevTime - 1;
-            return prevTime;
-         });
-      }, 1000);
+      if (!quizSession.id) {
+         return;
+      }
+      const diff = (new Date().getTime() - quizSession.startTime) / 1000; 
+      const isTimeout = Math.ceil(diff) >= quizSession.totalTime;
+      
+      if (isTimeout) {
+         setRemainingTime(0);
+      } else {
+         setRemainingTime(quizSession.totalTime - diff);
+         intervalRef.current = setInterval(() => {
+            setRemainingTime((prevTime) => {
+               if (prevTime) return prevTime - 1;
+               return prevTime;
+            });
+         }, 1000);
+      }
+      
       return () => {
          if (intervalRef.current) {
             clearInterval(intervalRef.current);
          }
       };
-   }, []);
+   }, [quizSession]);
 
    return (
       <QuestionHeader 

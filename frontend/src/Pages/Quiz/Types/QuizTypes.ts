@@ -1,3 +1,5 @@
+import { QuizSessionEnums } from "@/Constants/Enums";
+
 export type Option = {
    id: string;
    name: string;
@@ -27,5 +29,22 @@ export type Answer = {
    { answerId: string | null, answer?: never } 
    | { answerId?: never, answer: string | null }
 )
+
+export type QuizSessionResponse = {
+   id: string;   
+   createdAt: Date | null;
+   updatedAt: Date | null;
+   quizId: string;
+   userId: string;
+   status: QuizSessionEnums | null;
+   startTime: number;
+   totalTime: number;
+   maxAttempt: number;
+   totalAttempt: number;
+   answers: {
+      questionId: string; 
+      answerdId: string;
+   }[];
+}
 
 

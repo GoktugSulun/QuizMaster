@@ -94,7 +94,8 @@ class QuizSessionService {
                message: `Quiz session has been created`,
                data: {
                   status: QuizStatusEnums.START_NEW_QUIZ,
-                  quiz: quizWithQuestions
+                  quiz: quizWithQuestions,
+                  quizSession: result.data
                }
             }
          }
@@ -115,7 +116,8 @@ class QuizSessionService {
                message: `Quiz session has been created`,
                data: {
                   status: QuizStatusEnums.START_NEW_QUIZ,
-                  quiz: quizWithQuestions
+                  quiz: quizWithQuestions,
+                  quizSession: result.data
                }
             }
          }
@@ -190,9 +192,8 @@ class QuizSessionService {
             message: `Attempt: ${data.totalAttempt}/${data.maxAttempt}`,
             data: {
                status: QuizStatusEnums.CONTINUE_STARTED_QUIZ,
-               totalAttempt: data.totalAttempt,
-               maxAttempt: data.maxAttempt,
-               quiz: quizWithQuestions
+               quiz: quizWithQuestions,
+               quizSession: data
             }
          };
       } catch (error) {

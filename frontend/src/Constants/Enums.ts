@@ -62,3 +62,10 @@ export enum QuizStatusEnums {
    TIMEOUT = 'Timeout',
    EXCEED_ATTEMPT = 'Exceed Attempt'
 }
+
+export enum QuizSessionEnums {
+   STARTED = 'Started',
+   COMPLETED = 'Completed',
+   TIMEOUT = 'Timeout',
+   EXCEED_ATTEMPT = 'Exceed Attempt'
+}

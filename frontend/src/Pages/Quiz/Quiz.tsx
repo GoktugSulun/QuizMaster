@@ -34,6 +34,7 @@ const Quiz = () => {
    useEffect(() => {
       if (!quiz.id) {
          QuizThunks.getQuizByIdWithQuestions(id);
+         // Todo: session start
       }
    }, [quiz]);
 

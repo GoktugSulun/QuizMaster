@@ -4,13 +4,13 @@ import { type IQuizWithQuestions, type IQuizResponse } from "../Quiz/QuizRespons
 import { type IAnswer } from "./QuizSessionType";
 
 export type IStartResponse = { 
-   status: QuizStatusEnums.START_NEW_QUIZ,
-   quiz: IQuizWithQuestions // Todo: IQuizSessionQuizResponse => bunu kullan service kısmından düzenleme yaptıktan sonra "isCorrect" göndermemek için
+   status: QuizStatusEnums.START_NEW_QUIZ;
+   quiz: IQuizWithQuestions; // Todo: IQuizSessionQuizResponse => bunu kullan service kısmından düzenleme yaptıktan sonra "isCorrect" göndermemek için
+   quizSession: IQuizSessionResponse;
 } | {
    status: QuizStatusEnums.CONTINUE_STARTED_QUIZ;
-   maxAttempt: number;
-   totalAttempt: number;
-   quiz: IQuizWithQuestions // Todo: IQuizSessionQuizResponse => bunu kullan service kısmından düzenleme yaptıktan sonra "isCorrect" göndermemek için
+   quiz: IQuizWithQuestions; // Todo: IQuizSessionQuizResponse => bunu kullan service kısmından düzenleme yaptıktan sonra "isCorrect" göndermemek için
+   quizSession: IQuizSessionResponse;
 }  | {
    status: QuizStatusEnums.EXCEED_ATTEMPT;
    maxAttempt: number;
