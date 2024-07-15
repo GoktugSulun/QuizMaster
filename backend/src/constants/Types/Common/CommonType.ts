@@ -4,10 +4,10 @@ export type ResponseErrorType = {
    message: string;
 }
 
-export type ResponseType<T> = {
+export type ResponseType<T = null> = {
    type: true;
    message: string;
-   data: T | T[]
+   data: T
 } | {
    type: false;
    message: string;

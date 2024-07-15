@@ -9,6 +9,13 @@ export enum ApiURL {
    // Question
    QUESTION = "v1/questions",
 
+   // QuizSession
+   QUIZ_SESSION = "v1/quizSessions",
+   START_QUIZ_SESSION = "v1/quizSessions/start",
+
+   // QuizSession
+   QUIZ_RESULTS = "v1/quizResults",
+
    // Auth
    AUTH = "v1/auth",
    AUTH_LOGIN = "v1/auth/login",

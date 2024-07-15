@@ -2,25 +2,19 @@ import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import * as S from './Style/QuizRules.style';
 import { useEffect } from 'react';
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
-import img1 from '../../Pngs/img-1.jpg';
 import QuizRuleHeader from './Components/QuizRuleHeader';
 import QuizRuleInfos from './Components/QuizRuleInfos';
 import QuizRuleQuestionTypes from './Components/QuizRuleQuestionTypes';
-import { QuizThunks } from '../Quiz/Store/Quiz.thunk';
-import { useThunk } from '@/Core/Hooks';
+import { useAppSelector, useThunk } from '@/Core/Hooks';
 import { Loading } from '@/Core/Components';
-
-const data = {
-   id: 1, 
-   title: 'Asal Sayılar adpajpokasopdap padasdsapodsak adpakaspokdsaop sosos ososods', 
-   description: '1-Asıl sayılara dair en önemli bilgilerin yer aldığı bu quizi çöz ve eskiklerini tamamla, bizimle başarıya ulaş! 1-Asıl sayılara dair en önemli bilgilerin yer aldığı bu quizi çöz ve eskiklerini tamamla, bizimle başarıya ulaş! 1-Asıl sayılara dair en önemli bilgilerin yer aldığı bu quizi çöz ve eskiklerini tamamla, bizimle başarıya ulaş!',
-   category: "Mathematics",
-   created_at: new Date(),
-   updated_at: new Date(),
-   img: img1,
-   time: '00:30 sec',
-   liked: true,
-};
+import { QuizRulesThunks } from './Store/QuizRules.thunk';
+import { QuizRulesActions } from './Store/QuizRules.slice';
+import { useDispatch } from 'react-redux';
+import { QuizStatusEnums } from '@/Constants/Enums';
+import { QuizActions } from '../Quiz/Store/Quiz.slice';
+import QuizSessionInfoModal from './Components/QuizSessionInfoModal/QuizSessionInfoModal';
+import { type QuizWithQuestions } from '../Creator/Types/CreatorTypes';
+import { type QuizSessionResponse } from '../Quiz/Types/QuizTypes';
 
 /* 
    ? Required searchParam => id
@@ -30,37 +24,89 @@ const data = {
 
 const QuizRules = () => {
    const [searchParams] = useSearchParams();
-   const navigate = useNavigate();
-
-   const { isLoading, isSuccess, setIdle } = useThunk('getQuestions');
-
-   const navigateToQuizHandler = () => {
-      QuizThunks.getQuestions();
-   };
-
-   useEffect(() => {
-      if (isSuccess) {
-         setIdle();
-         const id = searchParams.get("id") as string;
-         navigate({ pathname: '/quiz', search: `?id=${id}&question=1` }, { replace: true });
-      }
-   }, [isSuccess]);
+   const id = searchParams.get("id") as string;
    
-   if (!searchParams.get("id")) {
+   if (!id) {
       return <Navigate to="/" replace />
    }
+
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
+   const quizRules = useAppSelector((state) => state.QuizRules.quizRules);
+   const startQuizResponse = useAppSelector((state) => state.QuizRules.startQuizResponse);
+   const { isLoading, isSuccess, setIdle } = useThunk('startQuiz');
+   const { 
+      isLoading: isLoadingGetQuizRulesById, 
+      isSuccess: isSuccessGetQuizRulesById, 
+      setIdle: setIdleGetQuizRulesById, 
+   } = useThunk('getQuizRulesById');
+
+   const startQuizHandler = () => {
+      QuizRulesThunks.startQuiz({ quizId: id })
+   };
+
+   const navigateToQuiz = (quiz: QuizWithQuestions, quizSession?: QuizSessionResponse) => {
+      if (startQuizResponse?.status) {
+         if (quizSession) {
+            dispatch(QuizActions.setQuizSession(quizSession));
+         }
+         dispatch(QuizActions.setQuiz(quiz));
+         navigate({ pathname: '/quiz', search: `?id=${id}&question=1` });
+      }
+   }
+
+   useEffect(() => {
+      if (isSuccess && startQuizResponse) {
+         setIdle();
+         switch (startQuizResponse.status) {
+            case QuizStatusEnums.START_NEW_QUIZ:
+               navigateToQuiz(startQuizResponse.quiz, startQuizResponse.quizSession);
+               break;
+            case QuizStatusEnums.CONTINUE_STARTED_QUIZ:
+               navigateToQuiz(startQuizResponse.quiz, startQuizResponse.quizSession);
+               break; 
+            case QuizStatusEnums.EXCEED_ATTEMPT:
+               dispatch(QuizRulesActions.setIsOpenSessionModal("OPEN"));
+               break;
+            case QuizStatusEnums.TIMEOUT:
+               dispatch(QuizRulesActions.setIsOpenSessionModal("OPEN"));
+               break;
+            default:
+               throw new Error("Unknown QuizStatusEnums");
+         }
+      }
+   }, [isSuccess, startQuizResponse]);
+
+   useEffect(() => {
+      if (isSuccessGetQuizRulesById) {
+         setIdleGetQuizRulesById();
+      }
+   }, [isSuccessGetQuizRulesById]);
+
+   useEffect(() => {
+      QuizRulesThunks.getQuizRulesById(id);
+      return () => {
+         dispatch(QuizRulesActions.reset());
+      }
+   }, []);
 
    return (
       <S.QuizRules>
          <S.QuizRulesContent>
-            <Typography color="primary" textAlign="center" fontWeight="bold" variant="h4">
+            { isLoadingGetQuizRulesById && <Loading blur /> }
+            <Typography 
+               color="primary" 
+               textAlign="center" 
+               fontWeight="bold" 
+               variant="h4"
+               marginBottom="10px"
+            >
                Quiz Rules
             </Typography>
             <QuizRuleHeader 
-               img={data.img} 
-               title={data.title} 
-               description={data.description} 
-               category={data.category}
+               img={quizRules.image}
+               name={quizRules.name} 
+               description={quizRules.description} 
             />
             <Divider sx={{ margin: '40px 0' }} />
             <Stack flex={1} flexDirection="row">
@@ -75,7 +121,7 @@ const QuizRules = () => {
             <Divider sx={{ margin: '40px 0' }} />
             <Stack alignItems="center">
                <Button 
-                  onClick={navigateToQuizHandler} 
+                  onClick={startQuizHandler} 
                   sx={{ padding: "8px 60px", ":hover": { padding: "8px 80px" } }} 
                   disabled={isLoading}
                >
@@ -83,6 +129,7 @@ const QuizRules = () => {
                </Button>
             </Stack>
          </S.QuizRulesContent>
+         <QuizSessionInfoModal />
       </S.QuizRules>
    )
 }

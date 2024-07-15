@@ -1,15 +1,16 @@
-  import Helpers from "../utils/Helpers.ts";
+import Helpers from "../utils/Helpers.ts";
 import Quiz from "../models/Quiz.ts";
 import { authorizedUserId } from "../index.ts";
 import Favorite from "../models/Favorite.ts";
 import Save from "../models/Save.ts";
-import { type IEdit, type ICreate, type IGet, type IGetById, type IGetAll, IDelete } from "../constants/Types/Quiz/QuizType.ts";
+import { type IEdit, type ICreate, type IGet, type IGetById, type IGetAll, IDelete, IGetRulesById } from "../constants/Types/Quiz/QuizType.ts";
 import { type IResponse } from "../types/Types.ts";
-import { IQuizWithQuestions, type IQuizResponse } from "../constants/Types/Quiz/QuizResponseTypes.ts";
+import { type IQuizRules, type IQuizWithQuestions, type IQuizResponse } from "../constants/Types/Quiz/QuizResponseTypes.ts";
 import FavoriteService from "./FavoriteService.ts";
-import { QuizTypeEnums, VisibilityEnums } from "../constants/Enums/Enums.ts";
+import { QuestionEnums, QuizTypeEnums, VisibilityEnums } from "../constants/Enums/Enums.ts";
 import SaveService from "./SaveService.ts";
 import QuestionService from "./QuestionService.ts";
+import { IQuestion } from "../constants/Types/Question/QuestionResponseType.ts";
 
 class QuizService {
   static async getAll(params: IGetAll): Promise<IResponse> {
@@ -224,6 +225,74 @@ class QuizService {
         message: `Quiz with id '${id}' has been deleted successfully!`, 
       };
 
+    } catch (error) {
+      return Helpers.responseError(error)
+    }
+  }
+
+  static async getRulesById(params: IGetRulesById): Promise<IResponse> {
+    try {
+      const { id, isRemoved } = params;
+
+      const quiz = await QuizService.getById({ id, isRemoved });
+      if (!quiz.type) {
+        return {
+          type: false,
+          message: quiz.message
+        }
+      }
+
+      const questions = await QuestionService.get({ quizId: id, isRemoved: false });
+      if (!questions.type) {
+        return {
+          type: false,
+          message: questions.message
+        }
+      }
+      
+      const questionData = questions.data as IQuestion[];
+      const numberOfQuestions = questionData.length;
+      const initial = {
+        multipleChoice: false,
+        trueFalse: false,
+        shortAnswer: false,
+      }
+      
+      const {
+        multipleChoice,
+        trueFalse,
+        shortAnswer,
+      } = questionData.reduce((acc, question) => {
+        if (question.type === QuestionEnums.MULTIPLE_CHOICE) {
+          return { ...acc, multipleChoice: true }
+        }
+
+        if (question.type === QuestionEnums.TRUE_FALSE) {
+          return { ...acc, trueFalse: true }
+        }
+
+        if (question.type === QuestionEnums.SHORT_ANSWER) {
+          return { ...acc, shortAnswer: true }
+        }
+
+        return acc;
+      }, initial);
+      
+      const data: IQuizRules = {
+        ...quiz.data,
+        numberOfQuestions: numberOfQuestions,
+        questionTime: null,
+        repeat: 1,
+        multipleChoice,
+        trueFalse,
+        shortAnswer,
+      };
+
+      return {
+        type: true,
+        message: `Quiz rules with id '${id}' has been fetched successfully`,
+        data
+      };
     } catch (error) {
       return Helpers.responseError(error)
     }

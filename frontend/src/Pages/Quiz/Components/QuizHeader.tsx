@@ -1,6 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '@/Core/Hooks';
-import { Question } from '../Models/Quiz.model';
 import { useEffect, useRef, useState } from 'react';
 import QuestionHeader from '@/Components/Question/QuestionHeader';
 
@@ -14,33 +13,45 @@ const formattedTime = (time: number | null): string => {
 };
 
 const QuizHeader = () => {
-   // Todo : check interval type
-   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-   const [searchParams] = useSearchParams();
-   const questions = useAppSelector((state) => state.Quiz.quiz.questions);
    const [remainingTime, setRemainingTime] = useState<number | null>(null); // second
+   const intervalRef = useRef<NodeJS.Timeout | null>(null);  // Todo : check interval type
+   const [searchParams] = useSearchParams();
+   const quizSession = useAppSelector((state) => state.Quiz.quizSession);
+   const quiz = useAppSelector((state) => state.Quiz.quiz);
+   const questions = quiz.questions;
 
    const questionNumber = searchParams.get("question") as string;
-   const question = questions.find((_, index) => +questionNumber === index + 1) as Question;
+   const question = questions[Number(questionNumber) - 1];
 
    if (remainingTime !== null && remainingTime === 0 && intervalRef.current) {
       clearInterval(intervalRef.current);
    }
 
    useEffect(() => {
-      setRemainingTime(question.time);
-      intervalRef.current = setInterval(() => {
-         setRemainingTime((prevTime) => {
-            if (prevTime) return prevTime - 1;
-            return prevTime;
-         });
-      }, 1000);
+      if (!quizSession.id) {
+         return;
+      }
+      const diff = (new Date().getTime() - quizSession.startTime) / 1000; 
+      const isTimeout = Math.ceil(diff) >= quizSession.totalTime;
+      
+      if (isTimeout) {
+         setRemainingTime(0);
+      } else {
+         setRemainingTime(quizSession.totalTime - diff);
+         intervalRef.current = setInterval(() => {
+            setRemainingTime((prevTime) => {
+               if (prevTime) return prevTime - 1;
+               return prevTime;
+            });
+         }, 1000);
+      }
+      
       return () => {
          if (intervalRef.current) {
             clearInterval(intervalRef.current);
          }
       };
-   }, []);
+   }, [quizSession]);
 
    return (
       <QuestionHeader 

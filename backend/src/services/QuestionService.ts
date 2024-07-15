@@ -10,12 +10,12 @@ class QuestionService {
         const { quizId, isRemoved } = params;
 
         const isQuizExisted = await Quiz.exists({ _id: quizId });
-         if (!isQuizExisted) {
-            return {
-               type: false,
-               message: `Quiz with id '${quizId}' couldn't find!`,
-            }
-         }
+        if (!isQuizExisted) {
+          return {
+              type: false,
+              message: `Quiz with id '${quizId}' couldn't find!`,
+          }
+        }
 
         const data = await Question.find({ quizId, isRemoved });
         

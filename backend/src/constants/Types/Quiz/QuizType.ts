@@ -26,6 +26,7 @@ export interface ICreate {
    description: string;
    visibility: VisibilityEnums;
    image: File | null;
+   totalAttempt: number;
    totalTime: number;
    creatorId: string;
 }
@@ -37,4 +38,9 @@ export interface IEdit {
 
 export interface IDelete {
    id: string;
+}
+
+export interface IGetRulesById {
+   id: string;
+   isRemoved: boolean;
 }

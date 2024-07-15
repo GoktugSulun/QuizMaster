@@ -34,3 +34,12 @@ export interface IQuizWithQuestions extends IQuizResponse {
       isRemoved: Boolean;
    }[]
 }
+
+export interface IQuizRules extends IQuizResponse {
+   numberOfQuestions: number;
+   questionTime: null;
+   repeat: number;
+   multipleChoice: boolean;
+   trueFalse: boolean;
+   shortAnswer: boolean;
+}

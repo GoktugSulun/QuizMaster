@@ -7,14 +7,14 @@ export const QuizResult = styled(PageWrapper)({
    gap: 50,
 });
 
-export const QuizResultContent = styled(PageContent)(({ theme }) => ({
+export const QuizResultContent = styled(PageContent)(() => ({
    display: 'flex',
    flexDirection: 'column',
    minHeight: 'calc(100vh - 80px  - 100px)',
    height: 'auto'
 }));
 
-export const Answers = styled('div')(({ theme }) => ({
+export const Answers = styled('div')(() => ({
    display: 'flex',
    flexDirection: 'column',
    minHeight: 'calc(100vh - 80px)',

@@ -22,14 +22,14 @@ class SaveService {
          return {
             type: true,
             message: 'Saved data has been fetched',
-            data: null
+            data: savedQuizDatas
          };
       } catch (error) {
          return Helpers.responseError(error)
       }
    }
 
-   static async getSavedQuizzes(params: IGetSavedQuizzes): Promise<ResponseType<IQuizResponse>> {
+   static async getSavedQuizzes(params: IGetSavedQuizzes): Promise<ResponseType<IQuizResponse[]>> {
       try {
          const { page, limit, isRemoved } = params;
          const skip = page === 1 ? 0 : (page - 1) * limit;

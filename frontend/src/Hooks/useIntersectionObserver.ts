@@ -43,7 +43,6 @@ const useIntersectionObserver = ({
         setIsIntersecting(entry.isIntersecting);
         setIntersectionRatio(Math.round(entry.intersectionRatio * 100));
         if (entry.isIntersecting && triggerOnce) {
-          console.log('gördüm çık');
           observer.unobserve(ref.current!);
         }
       });

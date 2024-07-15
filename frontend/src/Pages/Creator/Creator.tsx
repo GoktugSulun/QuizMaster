@@ -19,7 +19,7 @@ import { FullSizeLoadingWrapper } from '@/Core/Layout';
 type DefaultValuesType = {
   name: string;
   description: string;
-  visibility: VisibilityEnums,
+  visibility: VisibilityEnums;
   activeIndex: number;
   questions: QuestionType[];
 }

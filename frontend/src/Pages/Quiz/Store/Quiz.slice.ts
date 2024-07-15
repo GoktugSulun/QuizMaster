@@ -1,29 +1,55 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { type Quiz, type Answer } from '../Models/Quiz.model';
+import { type QuizSessionResponse, type Answer } from '../Types/QuizTypes';
+import { VisibilityEnums, type QuizWithQuestions } from '@/Pages/Creator/Types/CreatorTypes';
 
 const NAME = 'Quiz';
 
 type InitialStateTypes = {
-   quiz: Quiz,
+   quiz: QuizWithQuestions,
+   quizSession: QuizSessionResponse,
    answers: Answer[]
 }
 
+const quizInitialState = {
+   id: "", 
+   userId: "", 
+   createdAt: "", 
+   updatedAt: "", 
+   isRemoved: false,
+   questions: [],
+   maxAttempt: 1,
+   name: "",
+   description: "",
+   visibility: VisibilityEnums.PRIVATE,
+   image: null,
+   totalTime: 0
+}
+
+const quizSessionInitialState = {
+   id: "",   
+   createdAt: null,
+   updatedAt: null,
+   quizId: "",
+   userId: "",
+   status: null,
+   startTime: 0,
+   totalTime: 0,
+   maxAttempt: 0,
+   totalAttempt: 0,
+   answers: []
+}
+
 const initialState: InitialStateTypes = {
-   quiz: {
-      id: null,
-      time: 0,
-      name: '',
-      description: '',
-      questions: []
-   },
-   answers: []// data for backend
+   quiz: quizInitialState,
+   quizSession: quizSessionInitialState,
+   answers: [] // data for backend
 };
 
 const QuizSlice = createSlice({
    name: NAME,
    initialState,
    reducers: {
-      setQuiz: (state, action: PayloadAction<Quiz>) => {
+      setQuiz: (state, action: PayloadAction<QuizWithQuestions>) => {
          state.quiz = action.payload;
          state.answers = action.payload.questions.map((question) => ({ questionId: question.id, answerId: null }))
       },
@@ -31,6 +57,9 @@ const QuizSlice = createSlice({
          const { questionId } = action.payload;
          const index = state.answers.findIndex((answer) => answer.questionId === questionId)
          state.answers[index] = action.payload;
+      },
+      setQuizSession: (state, action: PayloadAction<QuizSessionResponse>) => {
+         state.quizSession = action.payload;
       }
    },
 });
