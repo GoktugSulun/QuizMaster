@@ -10,34 +10,38 @@ type InitialStateTypes = {
    answers: Answer[]
 }
 
+const quizInitialState = {
+   id: "", 
+   userId: "", 
+   createdAt: "", 
+   updatedAt: "", 
+   isRemoved: false,
+   questions: [],
+   maxAttempt: 1,
+   name: "",
+   description: "",
+   visibility: VisibilityEnums.PRIVATE,
+   image: null,
+   totalTime: 0
+}
+
+const quizSessionInitialState = {
+   id: "",   
+   createdAt: null,
+   updatedAt: null,
+   quizId: "",
+   userId: "",
+   status: null,
+   startTime: 0,
+   totalTime: 0,
+   maxAttempt: 0,
+   totalAttempt: 0,
+   answers: []
+}
+
 const initialState: InitialStateTypes = {
-   quiz: {
-      id: "", 
-      userId: "", 
-      createdAt: "", 
-      updatedAt: "", 
-      isRemoved: false,
-      questions: [],
-      maxAttempt: 1,
-      name: "",
-      description: "",
-      visibility: VisibilityEnums.PRIVATE,
-      image: null,
-      totalTime: 0,
-   },
-   quizSession: {
-      id: "",   
-      createdAt: null,
-      updatedAt: null,
-      quizId: "",
-      userId: "",
-      status: null,
-      startTime: 0,
-      totalTime: 0,
-      maxAttempt: 0,
-      totalAttempt: 0,
-      answers: []
-   },
+   quiz: quizInitialState,
+   quizSession: quizSessionInitialState,
    answers: [] // data for backend
 };
 

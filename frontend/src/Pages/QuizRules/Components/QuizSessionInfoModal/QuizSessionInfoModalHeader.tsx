@@ -4,10 +4,11 @@ import { useAppSelector } from "@/Core/Hooks";
 import { QuizStatusEnums } from "@/Constants/Enums";
 
 type QuizSessionInfoModalHeader = {
-   handleClose: () => void;
+   handleClose: (navigateBack?: boolean) => void;
+   isQuizPage?: boolean;
 }
 
-const QuizSessionInfoModalHeader = ({ handleClose }: QuizSessionInfoModalHeader) => {
+const QuizSessionInfoModalHeader = ({ isQuizPage, handleClose }: QuizSessionInfoModalHeader) => {
    const theme = useTheme();
    const startQuizResponse = useAppSelector((state) => state.QuizRules.startQuizResponse);
 
@@ -31,7 +32,7 @@ const QuizSessionInfoModalHeader = ({ handleClose }: QuizSessionInfoModalHeader)
                '&:hover': { backgroundColor: "primary.main" },
                '&:hover .MuiSvgIcon-root': { color: "common.white" } 
             }} 
-            onClick={handleClose}
+            onClick={() => handleClose(isQuizPage)}
          >
             <CloseIcon sx={{ color: "primary.main" }} />
          </IconButton>

@@ -1,4 +1,4 @@
-import { QuizSessionEnums } from "@/Constants/Enums";
+import { QuizSessionEnums, VisibilityEnums } from "@/Constants/Enums";
 
 export type Option = {
    id: string;
@@ -47,4 +47,26 @@ export type QuizSessionResponse = {
    }[];
 }
 
+export type QuizType = {
+   name: string;
+   description: string;
+   maxAttempt: number;
+   visibility: VisibilityEnums;
+   image: File | null;
+   totalTime: number;
+}
+
+export type QuizWithIdType = QuizType 
+   & { 
+      id: string; 
+      userId: string; 
+      createdAt: string; 
+      updatedAt: string; 
+      isRemoved: boolean;
+   }
+
+export type QuizAlreadyStarted = {
+   quiz: QuizWithIdType,
+   quizSession: QuizSessionResponse
+}
 

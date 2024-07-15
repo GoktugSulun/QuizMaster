@@ -3,9 +3,12 @@ import { useAppSelector } from '@/Core/Hooks';
 import { QuizStatusEnums } from '@/Constants/Enums';
 import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import { formatDateTime } from '@/Core/Helper';
 
 const QuizSessionInfoModalBody = () => {
    const startQuizResponse = useAppSelector((state) => state.QuizRules.startQuizResponse);
+   const callFormatDateTime = startQuizResponse?.status === QuizStatusEnums.TIMEOUT || startQuizResponse?.status === QuizStatusEnums.EXCEED_ATTEMPT;
+   const { date, time } = callFormatDateTime ? formatDateTime(new Date(startQuizResponse.date)) : { date: null, time: null };
    
    return (
       <Stack
@@ -27,7 +30,7 @@ const QuizSessionInfoModalBody = () => {
                color={"primary.main"}
                fontWeight={"bold"}
             > 
-               12th February 2024 
+               { date }
             </Typography> 
             at 
             <Typography 
@@ -38,7 +41,7 @@ const QuizSessionInfoModalBody = () => {
                color={"primary.main"}
                fontWeight={"bold"}
             > 
-               6:30 PM
+               { time }
             </Typography> 
             { startQuizResponse?.status === QuizStatusEnums.TIMEOUT && 'has expired.' }
             { startQuizResponse?.status === QuizStatusEnums.EXCEED_ATTEMPT && 'has exceeded the allowed number of attempts.' }

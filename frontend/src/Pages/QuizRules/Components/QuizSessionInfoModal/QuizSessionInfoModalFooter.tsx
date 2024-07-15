@@ -3,17 +3,27 @@ import { QuizRulesThunks } from "../../Store/QuizRules.thunk";
 import { useSearchParams } from "react-router-dom";
 
 type QuizSessionInfoModalFooterProps = {
-   handleClose: () => void;
+   handleClose: (navigateBack?: boolean) => void;
+   isQuizPage?: boolean;
 }
 
-const QuizSessionInfoModalFooter = ({ handleClose }: QuizSessionInfoModalFooterProps) => {
+const QuizSessionInfoModalFooter = ({ handleClose, isQuizPage }: QuizSessionInfoModalFooterProps) => {
    const [searchParams] = useSearchParams();
    const id = searchParams.get("id") as string;
 
    const startQuizHandler = () => {
-      QuizRulesThunks.startQuiz({ quizId: id });
-      handleClose();
+      if (isQuizPage) {
+         window.location.reload();
+         handleClose();
+      } else {
+         QuizRulesThunks.startQuiz({ quizId: id });
+         handleClose();
+      }
    };
+
+   const cancelHandler = () => {
+      handleClose(true);
+   }
 
    return (
       <Stack
@@ -33,7 +43,7 @@ const QuizSessionInfoModalFooter = ({ handleClose }: QuizSessionInfoModalFooterP
                   color: "common.black",
                }
             }}
-            onClick={handleClose}
+            onClick={cancelHandler}
          >
             Cancel
          </Button>

@@ -1,9 +1,8 @@
 import { authorizedUserId } from "../index.ts";
 import Helpers from "../utils/Helpers.ts";
-import { type IResponse } from "../types/Types.ts";
 import { type ICreateQuizSession, type IComplete, type IEnd, type IGetAlreadyStarted, type IStart, type ICreate } from "../constants/Types/QuizSession/QuizSessionType.ts";
 import { ResponseType } from "../constants/Types/Common/CommonType.ts";
-import { type IQuizSessionResponse, type IStartResponse } from "../constants/Types/QuizSession/QuizSessionResponseType.ts";
+import { type IStartedQuizSessionResponse, type IQuizSessionResponse, type IStartResponse } from "../constants/Types/QuizSession/QuizSessionResponseType.ts";
 import { QuizSessionEndEnums, QuizSessionEnums, QuizStatusEnums } from "../constants/Enums/Enums.ts";
 import QuizSession from "../models/QuizSession.ts";
 import Quiz from "../models/Quiz.ts";
@@ -149,7 +148,8 @@ class QuizSessionService {
                data: {
                   status: QuizStatusEnums.TIMEOUT,
                   startTime: incompletedQuizSession.startTime,
-                  totalTime: incompletedQuizSession.totalTime
+                  totalTime: incompletedQuizSession.totalTime,
+                  date: incompletedQuizSession.createdAt
                }
             }
          }
@@ -170,7 +170,8 @@ class QuizSessionService {
                data: {
                   status: QuizStatusEnums.EXCEED_ATTEMPT,
                   totalAttempt: incompletedQuizSession.totalAttempt,
-                  maxAttempt: incompletedQuizSession.maxAttempt
+                  maxAttempt: incompletedQuizSession.maxAttempt,
+                  date: incompletedQuizSession.createdAt
                }
             }
          }
@@ -265,19 +266,6 @@ class QuizSessionService {
             type: true,
             message: `Quiz session has been ended because status is ${newStatus}`,
             data
-         };
-      } catch (error) {
-         return Helpers.responseError(error)
-      }
-   }
-
-   static async getAlreadyStarted(params: IGetAlreadyStarted): Promise<IResponse> {
-      try {
-         console.log("getAlreadyStarted quiz session");
-
-         return {
-            type: true,
-            message: 'getAlreadyStarted quiz session',
          };
       } catch (error) {
          return Helpers.responseError(error)

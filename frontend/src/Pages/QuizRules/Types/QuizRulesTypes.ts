@@ -55,12 +55,14 @@ export type StartQuizResponseTypes = {
    status: QuizStatusEnums.CONTINUE_STARTED_QUIZ;
    quiz: QuizWithQuestions; // Todo: Service'den dönen tipi düzeltiğinde burayı da düzelt, "isCorrect" datası gelmemeli
    quizSession: QuizSessionResponse;
-}  | {
+} | {
    status: QuizStatusEnums.EXCEED_ATTEMPT;
    maxAttempt: number;
    totalAttempt: number;
-}| {
+   date: Date;
+} | {
    status: QuizStatusEnums.TIMEOUT;
    startTime: number;
    totalTime: number;
+   date: Date;
 }
