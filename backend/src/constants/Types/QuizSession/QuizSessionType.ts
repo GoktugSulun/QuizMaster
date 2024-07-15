@@ -20,10 +20,6 @@ export interface IEnd {
    status?: QuizSessionEndEnums
 }
 
-export interface IGetAlreadyStarted { 
-   quizId: string; 
-}
-
 export interface ICreateQuizSession {
    quizId: string;
    userId: string;
@@ -37,5 +33,11 @@ export interface ICreateQuizSession {
 
 export interface ICreate {
    quizId: string;
+}
+
+export interface ISave { 
+   quizId: string; 
+   quizSessionId: string;
+   answers: IAnswer[];
 }
 

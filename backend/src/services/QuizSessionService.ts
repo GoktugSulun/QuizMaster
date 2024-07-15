@@ -1,8 +1,8 @@
 import { authorizedUserId } from "../index.ts";
 import Helpers from "../utils/Helpers.ts";
-import { type ICreateQuizSession, type IComplete, type IEnd, type IGetAlreadyStarted, type IStart, type ICreate } from "../constants/Types/QuizSession/QuizSessionType.ts";
+import { type ICreateQuizSession, type IComplete, type IEnd, type IStart, type ICreate, type ISave } from "../constants/Types/QuizSession/QuizSessionType.ts";
 import { ResponseType } from "../constants/Types/Common/CommonType.ts";
-import { type IStartedQuizSessionResponse, type IQuizSessionResponse, type IStartResponse } from "../constants/Types/QuizSession/QuizSessionResponseType.ts";
+import { type IQuizSessionResponse, type IStartResponse } from "../constants/Types/QuizSession/QuizSessionResponseType.ts";
 import { QuizSessionEndEnums, QuizSessionEnums, QuizStatusEnums } from "../constants/Enums/Enums.ts";
 import QuizSession from "../models/QuizSession.ts";
 import Quiz from "../models/Quiz.ts";
@@ -266,6 +266,33 @@ class QuizSessionService {
             type: true,
             message: `Quiz session has been ended because status is ${newStatus}`,
             data
+         };
+      } catch (error) {
+         return Helpers.responseError(error)
+      }
+   }
+
+   static async save(params: ISave): Promise<ResponseType<null>> {
+      try {
+         const { quizId, quizSessionId, answers } = params;
+
+         const quiz = await Quiz.findOne({ _id: quizId, isRemoved: false }); 
+         if (!quiz) {
+           return {
+               type: false,
+               message: `Quiz with id '${quizId}' couldn't find!`,
+           }
+         }
+
+         await QuizSession.findOneAndUpdate(
+            { quizId, userId: authorizedUserId, status: QuizSessionEnums.STARTED }, 
+            { $set: { answers } },
+         );
+         
+         return {
+            type: true,
+            message: `Answers has been saved successfully`,
+            data: null
          };
       } catch (error) {
          return Helpers.responseError(error)

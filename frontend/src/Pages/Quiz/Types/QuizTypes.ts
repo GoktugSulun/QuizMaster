@@ -41,10 +41,7 @@ export type QuizSessionResponse = {
    totalTime: number;
    maxAttempt: number;
    totalAttempt: number;
-   answers: {
-      questionId: string; 
-      answerdId: string;
-   }[];
+   answers: Answer[];
 }
 
 export type QuizType = {
@@ -65,8 +62,16 @@ export type QuizWithIdType = QuizType
       isRemoved: boolean;
    }
 
-export type QuizAlreadyStarted = {
-   quiz: QuizWithIdType,
-   quizSession: QuizSessionResponse
+
+export type SavedAnswer = {
+   questionId: string, 
+   answerId: string 
 }
+
+export type SaveQuizSessionType = {
+   quizSessionId: string;
+   quizId: string;
+   answers: Answer[];
+}
+
 

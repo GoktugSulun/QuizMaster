@@ -85,9 +85,6 @@ const QuizRules = () => {
 
    useEffect(() => {
       QuizRulesThunks.getQuizRulesById(id);
-      return () => {
-         dispatch(QuizRulesActions.reset());
-      }
    }, []);
 
    return (

@@ -4,14 +4,12 @@ import QuizSessionController from '../controllers/QuizSessionController.ts';
 
 const app = express();
 
-// Get
-app.get('/alreadyStarted/:id', AuthMiddleware, QuizSessionController.getAlreadyStarted);
-
 // Create
 app.post('/start', AuthMiddleware, QuizSessionController.start);
 
 // Edit
 app.put('/complete', AuthMiddleware, QuizSessionController.complete);
 app.put('/end', AuthMiddleware, QuizSessionController.end);
+app.put('/save', AuthMiddleware, QuizSessionController.save);
 
 export default app;  

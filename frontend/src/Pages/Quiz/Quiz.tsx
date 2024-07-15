@@ -5,7 +5,7 @@ import { Divider } from '@mui/material';
 import QuizPagination from './Components/QuizPagination';
 import Options from './Components/Options';
 import { useAppDispatch, useAppSelector, useThunk } from '@/Core/Hooks';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Loading } from '@/Core/Components';
 import { AppConfigActions } from '@/Core/Store/AppConfig.slice';
 import { QuizRulesThunks } from '../QuizRules/Store/QuizRules.thunk';
@@ -15,6 +15,7 @@ import { type QuizWithQuestions } from '../Creator/Types/CreatorTypes';
 import { type QuizSessionResponse } from './Types/QuizTypes';
 import { QuizRulesActions } from '../QuizRules/Store/QuizRules.slice';
 import QuizSessionInfoModal from '../QuizRules/Components/QuizSessionInfoModal/QuizSessionInfoModal';
+import { QuizThunks } from './Store/Quiz.thunk';
 
 /*
    ? Required searchParams => id & question
@@ -25,9 +26,10 @@ import QuizSessionInfoModal from '../QuizRules/Components/QuizSessionInfoModal/Q
 const Quiz = () => {
    const [searchParams] = useSearchParams();
    const dispatch = useAppDispatch();
-   const quiz = useAppSelector((state) => state.Quiz.quiz);
+   const { quiz, quizSession, answers } = useAppSelector((state) => state.Quiz);
    const { startQuizResponse, isOpenSessionInfoModal } = useAppSelector((state) => state.QuizRules);
    const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
+   const answersRef = useRef(answers);
    
    const id = searchParams.get("id");
    const question = searchParams.get("question");
@@ -44,6 +46,10 @@ const Quiz = () => {
          QuizRulesThunks.startQuiz({ quizId: id })
       }
    }, [quiz]);
+
+   useEffect(() => {
+      answersRef.current = answers;
+   }, [answers]);
 
    const setQuizInfo = (quiz: QuizWithQuestions, quizSession?: QuizSessionResponse) => {
       if (startQuizResponse?.status) {
@@ -81,17 +87,27 @@ const Quiz = () => {
    }, [isSuccess]);
 
    useEffect(() => {
+      if (quiz.id) {
+         if (quizSession?.answers?.length) {
+            dispatch(QuizActions.setAnswers(quizSession?.answers || []))
+         }
+      }
+   }, [quiz, quizSession]);
+
+   useEffect(() => {
       if (isOpenSidebar) {
          dispatch(AppConfigActions.setIsOpenSidebar('CLOSE'));
       }
       
       const beforeUnloadHandler = (e: BeforeUnloadEvent) => {
+         QuizThunks.saveQuizSession({ quizId: id, quizSessionId: quizSession.id, answers: answersRef.current })
          e.preventDefault();
          (e || window).returnValue = true; 
       }
 
       window.addEventListener("beforeunload", beforeUnloadHandler);
       return () => {
+         QuizThunks.saveQuizSession({ quizId: id, quizSessionId: quizSession.id, answers: answersRef.current })
          window.removeEventListener("beforeunload", beforeUnloadHandler);
       }
    }, []);

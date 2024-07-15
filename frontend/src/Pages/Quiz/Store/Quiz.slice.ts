@@ -51,12 +51,25 @@ const QuizSlice = createSlice({
    reducers: {
       setQuiz: (state, action: PayloadAction<QuizWithQuestions>) => {
          state.quiz = action.payload;
-         state.answers = action.payload.questions.map((question) => ({ questionId: question.id, answerId: null }))
+         if (!state.answers.length) {
+            state.answers = action.payload.questions.map((question) => ({ questionId: question.id, answerId: null }))
+         }
       },
       setAnswer: (state, action: PayloadAction<Answer>) => {
          const { questionId } = action.payload;
          const index = state.answers.findIndex((answer) => answer.questionId === questionId)
          state.answers[index] = action.payload;
+      },
+      setAnswers: (state, action: PayloadAction<Answer[]>) => {
+         const newAnswers = action.payload;
+         state.answers = state.answers.map((answer) => {
+            const newAnswer = newAnswers.find((newAnswer) => newAnswer.questionId === answer.questionId);
+            if (newAnswer) {
+               return newAnswer;
+            } else {
+               return answer;
+            }
+         })
       },
       setQuizSession: (state, action: PayloadAction<QuizSessionResponse>) => {
          state.quizSession = action.payload;
