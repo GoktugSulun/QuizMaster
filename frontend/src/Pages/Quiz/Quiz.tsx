@@ -1,4 +1,4 @@
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import * as S from './Style/Quiz.style';
 import QuizHeader from './Components/QuizHeader';
 import { Divider } from '@mui/material';
@@ -9,7 +9,7 @@ import { useEffect, useRef } from 'react';
 import { Loading } from '@/Core/Components';
 import { AppConfigActions } from '@/Core/Store/AppConfig.slice';
 import { QuizRulesThunks } from '../QuizRules/Store/QuizRules.thunk';
-import { QuizStatusEnums } from '@/Constants/Enums';
+import { QuizStatusEnums, RouteEnums } from '@/Constants/Enums';
 import { QuizActions } from './Store/Quiz.slice';
 import { type QuizWithQuestions } from '../Creator/Types/CreatorTypes';
 import { type QuizSessionResponse } from './Types/QuizTypes';
@@ -26,16 +26,18 @@ import { QuizThunks } from './Store/Quiz.thunk';
 const Quiz = () => {
    const [searchParams] = useSearchParams();
    const dispatch = useAppDispatch();
+   const navigate = useNavigate();
    const { quiz, quizSession, answers } = useAppSelector((state) => state.Quiz);
    const { startQuizResponse, isOpenSessionInfoModal } = useAppSelector((state) => state.QuizRules);
    const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
-   const answersRef = useRef(answers);
+   const answersRef = useRef({ answers, canContinue: quizSession.totalAttempt <= quizSession.maxAttempt });
    
    const id = searchParams.get("id");
    const question = searchParams.get("question");
 
    const { isSuccess, setIdle } = useThunk("getQuestions");
    const { isSuccess: isSuccessStartQuiz, setIdle: setIdleStartQuiz } = useThunk("startQuiz");
+   const { isSuccess: isSuccessCompleteQuizSession, setIdle: setIdleCompleteQuizSession } = useThunk("completeQuizSession");
 
    if (!id || !question) {
       return <Navigate to="/" replace />
@@ -48,8 +50,8 @@ const Quiz = () => {
    }, [quiz]);
 
    useEffect(() => {
-      answersRef.current = answers;
-   }, [answers]);
+      answersRef.current = { answers, canContinue: quizSession.totalAttempt <= quizSession.maxAttempt };
+   }, [answers, quizSession]);
 
    const setQuizInfo = (quiz: QuizWithQuestions, quizSession?: QuizSessionResponse) => {
       if (startQuizResponse?.status) {
@@ -87,6 +89,13 @@ const Quiz = () => {
    }, [isSuccess]);
 
    useEffect(() => {
+      if (isSuccessCompleteQuizSession) {
+         setIdleCompleteQuizSession();
+         navigate({ pathname: RouteEnums.QUIZ_RESULTS, search: `?id=${id}` }, { replace: true });
+      }
+   }, [isSuccessCompleteQuizSession]);
+
+   useEffect(() => {
       if (quiz.id) {
          if (quizSession?.answers?.length) {
             dispatch(QuizActions.setAnswers(quizSession?.answers || []))
@@ -100,19 +109,23 @@ const Quiz = () => {
       }
       
       const beforeUnloadHandler = (e: BeforeUnloadEvent) => {
-         QuizThunks.saveQuizSession({ quizId: id, quizSessionId: quizSession.id, answers: answersRef.current })
+         // if (answersRef.current.canContinue) {
+         //    QuizThunks.saveQuizSession({ quizId: id, quizSessionId: quizSession.id, answers: answersRef.current.answers })
+         // }
          e.preventDefault();
          (e || window).returnValue = true; 
       }
 
       window.addEventListener("beforeunload", beforeUnloadHandler);
       return () => {
-         QuizThunks.saveQuizSession({ quizId: id, quizSessionId: quizSession.id, answers: answersRef.current })
+         // if (answersRef.current.canContinue) {
+         //    QuizThunks.saveQuizSession({ quizId: id, quizSessionId: quizSession.id, answers: answersRef.current.answers })
+         // }
          window.removeEventListener("beforeunload", beforeUnloadHandler);
       }
    }, []);
 
-   if (!quiz.id || isOpenSessionInfoModal) {
+   if (!quiz.id || isOpenSessionInfoModal || isSuccessCompleteQuizSession) {
       return (
          <S.Quiz>
             <S.QuizContent>

@@ -2,6 +2,8 @@ import { useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '@/Core/Hooks';
 import { useEffect, useRef, useState } from 'react';
 import QuestionHeader from '@/Components/Question/QuestionHeader';
+import { snackbar } from '@/Core/Utils';
+import { QuizThunks } from '../Store/Quiz.thunk';
 
 const formattedTime = (time: number | null): string => {
    if (!time) return '00:00';
@@ -16,8 +18,7 @@ const QuizHeader = () => {
    const [remainingTime, setRemainingTime] = useState<number | null>(null); // second
    const intervalRef = useRef<NodeJS.Timeout | null>(null);  // Todo : check interval type
    const [searchParams] = useSearchParams();
-   const quizSession = useAppSelector((state) => state.Quiz.quizSession);
-   const quiz = useAppSelector((state) => state.Quiz.quiz);
+   const { quiz, quizSession, answers } = useAppSelector((state) => state.Quiz);
    const questions = quiz.questions;
 
    const questionNumber = searchParams.get("question") as string;
@@ -28,16 +29,29 @@ const QuizHeader = () => {
    }
 
    useEffect(() => {
+      console.table({ remainingTime, answers, quiz, quizSession });
+      if (remainingTime === 10) {
+         snackbar("Last 10 seconds until the end of the quiz", { variant: 'info' })
+      }
+      if (remainingTime === 0) {
+         if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+         }
+         QuizThunks.completeQuizSession({ quizId: quiz.id, quizSessionId: quizSession.id, answers })
+      }
+   }, [remainingTime, answers, quiz, quizSession]);
+
+   useEffect(() => {
       if (!quizSession.id) {
          return;
       }
       const diff = (new Date().getTime() - quizSession.startTime) / 1000; 
       const isTimeout = Math.ceil(diff) >= quizSession.totalTime;
-      
+
       if (isTimeout) {
          setRemainingTime(0);
       } else {
-         setRemainingTime(quizSession.totalTime - diff);
+         setRemainingTime(Math.floor(quizSession.totalTime - diff));
          intervalRef.current = setInterval(() => {
             setRemainingTime((prevTime) => {
                if (prevTime) return prevTime - 1;

@@ -62,13 +62,18 @@ export type QuizWithIdType = QuizType
       isRemoved: boolean;
    }
 
-
 export type SavedAnswer = {
    questionId: string, 
    answerId: string 
 }
 
 export type SaveQuizSessionType = {
+   quizSessionId: string;
+   quizId: string;
+   answers: Answer[];
+}
+
+export type CompleteQuizSessionType = {
    quizSessionId: string;
    quizId: string;
    answers: Answer[];
