@@ -92,7 +92,7 @@ const Quiz = () => {
 
       window.addEventListener("beforeunload", beforeUnloadHandler);
       return () => {
-         window.removeEventListener("beforeunload", beforeUnloadHandler)
+         window.removeEventListener("beforeunload", beforeUnloadHandler);
       }
    }, []);
 

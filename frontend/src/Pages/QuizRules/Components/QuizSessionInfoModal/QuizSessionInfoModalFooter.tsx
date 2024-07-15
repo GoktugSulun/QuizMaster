@@ -22,7 +22,7 @@ const QuizSessionInfoModalFooter = ({ handleClose, isQuizPage }: QuizSessionInfo
    };
 
    const cancelHandler = () => {
-      handleClose(true);
+      handleClose(isQuizPage);
    }
 
    return (

@@ -51,7 +51,7 @@ const QuizRules = () => {
             dispatch(QuizActions.setQuizSession(quizSession));
          }
          dispatch(QuizActions.setQuiz(quiz));
-         navigate({ pathname: '/quiz', search: `?id=${id}&question=1` }, { replace: true });
+         navigate({ pathname: '/quiz', search: `?id=${id}&question=1` });
       }
    }
 

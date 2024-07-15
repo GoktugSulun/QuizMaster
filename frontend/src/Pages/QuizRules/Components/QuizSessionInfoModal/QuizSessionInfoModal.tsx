@@ -31,7 +31,7 @@ const QuizSessionInfoModal = (props: QuizSessionInfoModalProps) => {
       <div>
          <Modal
             open={isOpen}
-            onClose={() => handleClose()}
+            onClose={() => handleClose(props.isQuizPage)}
          >
             <StyledQuizSessionInfoModal>
                <QuizSessionInfoModalHeader isQuizPage={props.isQuizPage} handleClose={handleClose} />
