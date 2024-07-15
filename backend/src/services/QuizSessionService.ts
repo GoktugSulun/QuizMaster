@@ -8,6 +8,7 @@ import QuizSession from "../models/QuizSession.ts";
 import Quiz from "../models/Quiz.ts";
 import QuizService from "./QuizService.ts";
 import { IQuizWithQuestions } from "../constants/Types/Quiz/QuizResponseTypes.ts";
+import QuizResultService from "./QuizResultService.ts";
 
 class QuizSessionService {
    static async create(params: ICreate): Promise<ResponseType<IQuizSessionResponse>> {
@@ -204,7 +205,7 @@ class QuizSessionService {
 
    static async complete(params: IComplete): Promise<ResponseType> {
       try {
-         const { quizId, answers, completeTime } = params;
+         const { quizId, quizSessionId, answers, completeTime } = params;
 
          const isQuizExisted = await Quiz.exists({ _id: quizId });
          if (!isQuizExisted) {
@@ -214,21 +215,22 @@ class QuizSessionService {
            }
          }
 
-         const targetQuizSession = await QuizSession.find({ quizId, userId: authorizedUserId, status: QuizSessionEnums.STARTED });
-         if (!targetQuizSession) {
+         await QuizSession.findOneAndUpdate(
+            { quizId, userId: authorizedUserId, status: QuizSessionEnums.STARTED }, 
+            { $set: { status: QuizSessionEnums.COMPLETED } },
+         );
+
+         const result = await QuizResultService.create(params);
+         if (!result.type) {
             return {
                type: false,
-               message: `Incompleted quiz session couldn't find for this user and quiz id with '${quizId}'`,
-           }
+               message: result.message
+            }
          }
-
-         // if () {
-
-         // }
 
          return {
             type: true,
-            message: 'complete quiz session',
+            message: 'Quiz session has been completed successfully',
             data: null
          };
       } catch (error) {

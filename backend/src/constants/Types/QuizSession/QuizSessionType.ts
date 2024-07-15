@@ -11,7 +11,8 @@ export interface IStart {
 
 export interface IComplete { 
    quizId: string; 
-   answers: IAnswer[]; 
+   quizSessionId: string;
+   answers: IAnswer[];
    completeTime: number; 
 }
 

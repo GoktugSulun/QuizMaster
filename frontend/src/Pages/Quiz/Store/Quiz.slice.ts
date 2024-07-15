@@ -5,9 +5,10 @@ import { VisibilityEnums, type QuizWithQuestions } from '@/Pages/Creator/Types/C
 const NAME = 'Quiz';
 
 type InitialStateTypes = {
-   quiz: QuizWithQuestions,
-   quizSession: QuizSessionResponse,
-   answers: Answer[]
+   quiz: QuizWithQuestions;
+   quizSession: QuizSessionResponse;
+   answers: Answer[];
+   isOpenInfoModal: boolean;
 }
 
 const quizInitialState = {
@@ -42,7 +43,8 @@ const quizSessionInitialState = {
 const initialState: InitialStateTypes = {
    quiz: quizInitialState,
    quizSession: quizSessionInitialState,
-   answers: [] // data for backend
+   answers: [], // data for backend
+   isOpenInfoModal: false
 };
 
 const QuizSlice = createSlice({
@@ -73,7 +75,15 @@ const QuizSlice = createSlice({
       },
       setQuizSession: (state, action: PayloadAction<QuizSessionResponse>) => {
          state.quizSession = action.payload;
-      }
+      },
+      setIsOpenInfoModal: (state, action: PayloadAction<"CLOSE" | "OPEN" | "TOGGLE">) => {
+         const valueMap = {
+           "TOGGLE": !state.isOpenInfoModal,
+           "OPEN": true,
+           "CLOSE": false
+         }
+         state.isOpenInfoModal = valueMap[action.payload];
+       },
    },
 });
 

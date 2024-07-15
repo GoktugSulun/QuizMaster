@@ -1,4 +1,4 @@
-import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import * as S from './Style/Quiz.style';
 import QuizHeader from './Components/QuizHeader';
 import { Divider } from '@mui/material';
@@ -9,13 +9,13 @@ import { useEffect, useRef } from 'react';
 import { Loading } from '@/Core/Components';
 import { AppConfigActions } from '@/Core/Store/AppConfig.slice';
 import { QuizRulesThunks } from '../QuizRules/Store/QuizRules.thunk';
-import { QuizStatusEnums, RouteEnums } from '@/Constants/Enums';
+import { QuizStatusEnums } from '@/Constants/Enums';
 import { QuizActions } from './Store/Quiz.slice';
 import { type QuizWithQuestions } from '../Creator/Types/CreatorTypes';
 import { type QuizSessionResponse } from './Types/QuizTypes';
 import { QuizRulesActions } from '../QuizRules/Store/QuizRules.slice';
 import QuizSessionInfoModal from '../QuizRules/Components/QuizSessionInfoModal/QuizSessionInfoModal';
-import { QuizThunks } from './Store/Quiz.thunk';
+import InfoModal from './Components/InfoModal';
 
 /*
    ? Required searchParams => id & question
@@ -26,7 +26,6 @@ import { QuizThunks } from './Store/Quiz.thunk';
 const Quiz = () => {
    const [searchParams] = useSearchParams();
    const dispatch = useAppDispatch();
-   const navigate = useNavigate();
    const { quiz, quizSession, answers } = useAppSelector((state) => state.Quiz);
    const { startQuizResponse, isOpenSessionInfoModal } = useAppSelector((state) => state.QuizRules);
    const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
@@ -37,7 +36,7 @@ const Quiz = () => {
 
    const { isSuccess, setIdle } = useThunk("getQuestions");
    const { isSuccess: isSuccessStartQuiz, setIdle: setIdleStartQuiz } = useThunk("startQuiz");
-   const { isSuccess: isSuccessCompleteQuizSession, setIdle: setIdleCompleteQuizSession } = useThunk("completeQuizSession");
+   const { isSuccess: isSuccessCompleteQuizSession } = useThunk("completeQuizSession");
 
    if (!id || !question) {
       return <Navigate to="/" replace />
@@ -90,8 +89,7 @@ const Quiz = () => {
 
    useEffect(() => {
       if (isSuccessCompleteQuizSession) {
-         setIdleCompleteQuizSession();
-         navigate({ pathname: RouteEnums.QUIZ_RESULTS, search: `?id=${id}` }, { replace: true });
+         dispatch(QuizActions.setIsOpenInfoModal("OPEN"));
       }
    }, [isSuccessCompleteQuizSession]);
 
@@ -131,6 +129,7 @@ const Quiz = () => {
             <S.QuizContent>
                <Loading fullWidth size={80} />
                <QuizSessionInfoModal isQuizPage />
+               <InfoModal />
             </S.QuizContent>
          </S.Quiz>
       )
@@ -144,6 +143,7 @@ const Quiz = () => {
             <Divider />
             <QuizPagination />
             <QuizSessionInfoModal isQuizPage />
+            <InfoModal />
          </S.QuizContent>
       </S.Quiz>
    )

@@ -16,3 +16,15 @@ export interface IGetAll {
 export interface IGetById {
    quizId: string;
 }
+
+export interface IAnswer { 
+   questionId: string; 
+   answerdId: string; 
+}
+
+export interface ICreate { 
+   quizId: string; 
+   quizSessionId: string;
+   answers: IAnswer[];
+   completeTime: number; 
+}
