@@ -77,6 +77,7 @@ export type CompleteQuizSessionType = {
    quizSessionId: string;
    quizId: string;
    answers: Answer[];
+   completeTime: number;
 }
 
 

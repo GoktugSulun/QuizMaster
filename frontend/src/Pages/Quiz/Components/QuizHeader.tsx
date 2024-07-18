@@ -29,17 +29,19 @@ const QuizHeader = () => {
    }
 
    useEffect(() => {
-      console.table({ remainingTime, answers, quiz, quizSession });
       if (remainingTime === 10) {
          snackbar("Last 10 seconds until the end of the quiz", { variant: 'info' })
+      }
+      if (remainingTime === 5) {
+         snackbar("Last 5 seconds until the end of the quiz", { variant: 'info' })
       }
       if (remainingTime === 0) {
          if (intervalRef.current) {
             clearInterval(intervalRef.current);
          }
-         QuizThunks.completeQuizSession({ quizId: quiz.id, quizSessionId: quizSession.id, answers })
+         QuizThunks.completeQuizSession({ quizId: quiz.id, quizSessionId: quizSession.id, answers, completeTime: remainingTime })
       }
-   }, [remainingTime, answers, quiz, quizSession]);
+   }, [remainingTime]);
 
    useEffect(() => {
       if (!quizSession.id) {

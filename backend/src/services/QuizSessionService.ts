@@ -205,7 +205,7 @@ class QuizSessionService {
 
    static async complete(params: IComplete): Promise<ResponseType> {
       try {
-         const { quizId, quizSessionId, answers, completeTime } = params;
+         const { quizId } = params;
 
          const isQuizExisted = await Quiz.exists({ _id: quizId });
          if (!isQuizExisted) {

@@ -119,6 +119,7 @@ const Quiz = () => {
          // if (answersRef.current.canContinue) {
          //    QuizThunks.saveQuizSession({ quizId: id, quizSessionId: quizSession.id, answers: answersRef.current.answers })
          // }
+         dispatch(QuizActions.reset());
          window.removeEventListener("beforeunload", beforeUnloadHandler);
       }
    }, []);

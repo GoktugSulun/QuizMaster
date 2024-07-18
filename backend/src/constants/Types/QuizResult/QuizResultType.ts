@@ -19,7 +19,7 @@ export interface IGetById {
 
 export interface IAnswer { 
    questionId: string; 
-   answerdId: string; 
+   answerId: string; 
 }
 
 export interface ICreate { 

@@ -51,6 +51,7 @@ const QuizSlice = createSlice({
    name: NAME,
    initialState,
    reducers: {
+      reset: () => initialState,
       setQuiz: (state, action: PayloadAction<QuizWithQuestions>) => {
          state.quiz = action.payload;
          if (!state.answers.length) {
