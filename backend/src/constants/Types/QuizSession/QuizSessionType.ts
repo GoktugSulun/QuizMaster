@@ -2,7 +2,7 @@ import { QuizSessionEndEnums, QuizSessionEnums } from "../../Enums/Enums";
 
 export interface IAnswer { 
    questionId: string; 
-   answerdId: string; 
+   answerId: string; 
 }
 
 export interface IStart { 

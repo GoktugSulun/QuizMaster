@@ -1,6 +1,7 @@
 
 import { CorrectOptionEnums, PointEnums, QuestionEnums, QuizSessionEnums, QuizStatusEnums } from "../../Enums/Enums";
 import { type IQuizWithQuestions, type IQuizResponse } from "../Quiz/QuizResponseTypes";
+import { ICreateResult } from "../QuizResult/QuizResultResponseType";
 import { type IAnswer } from "./QuizSessionType";
 
 export type IStartResponse = { 
@@ -60,4 +61,10 @@ export interface IQuizSessionQuizResponse extends IQuizResponse {
 export interface IStartedQuizSessionResponse {
    quiz: IQuizWithQuestions;
    quizSession: IQuizSessionResponse;
+}
+
+export interface ICompleteResponse extends ICreateResult {
+   id: string;
+   createdAt: Date;
+   updatedAt: Date;
 }

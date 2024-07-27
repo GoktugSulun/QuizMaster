@@ -2,13 +2,14 @@ import { authorizedUserId } from "../index.ts";
 import Helpers from "../utils/Helpers.ts";
 import { type ICreateQuizSession, type IComplete, type IEnd, type IStart, type ICreate, type ISave } from "../constants/Types/QuizSession/QuizSessionType.ts";
 import { ResponseType } from "../constants/Types/Common/CommonType.ts";
-import { type IQuizSessionResponse, type IStartResponse } from "../constants/Types/QuizSession/QuizSessionResponseType.ts";
+import { ICompleteResponse, type IQuizSessionResponse, type IStartResponse } from "../constants/Types/QuizSession/QuizSessionResponseType.ts";
 import { QuizSessionEndEnums, QuizSessionEnums, QuizStatusEnums } from "../constants/Enums/Enums.ts";
 import QuizSession from "../models/QuizSession.ts";
 import Quiz from "../models/Quiz.ts";
 import QuizService from "./QuizService.ts";
 import { IQuizWithQuestions } from "../constants/Types/Quiz/QuizResponseTypes.ts";
 import QuizResultService from "./QuizResultService.ts";
+import { type ICreate as ICreateResult } from "../constants/Types/QuizResult/QuizResultType.ts";
 
 class QuizSessionService {
    static async create(params: ICreate): Promise<ResponseType<IQuizSessionResponse>> {
@@ -203,9 +204,9 @@ class QuizSessionService {
       }
    }
 
-   static async complete(params: IComplete): Promise<ResponseType> {
+   static async complete(params: IComplete): Promise<ResponseType<ICompleteResponse>> {
       try {
-         const { quizId } = params;
+         const { quizId, quizSessionId, answers, completeTime } = params;
 
          const isQuizExisted = await Quiz.exists({ _id: quizId });
          if (!isQuizExisted) {
@@ -220,7 +221,8 @@ class QuizSessionService {
             { $set: { status: QuizSessionEnums.COMPLETED } },
          );
 
-         const result = await QuizResultService.create(params);
+         const resultParams: ICreateResult = { quizId, quizSessionId, answers, completeTime  }
+         const result = await QuizResultService.create(resultParams);
          if (!result.type) {
             return {
                type: false,
@@ -231,7 +233,7 @@ class QuizSessionService {
          return {
             type: true,
             message: 'Quiz session has been completed successfully',
-            data: null
+            data: result.data as ICompleteResponse
          };
       } catch (error) {
          return Helpers.responseError(error)
