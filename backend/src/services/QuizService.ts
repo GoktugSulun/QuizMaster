@@ -11,6 +11,7 @@ import { QuestionEnums, QuizTypeEnums, VisibilityEnums } from "../constants/Enum
 import SaveService from "./SaveService.ts";
 import QuestionService from "./QuestionService.ts";
 import { IQuestion } from "../constants/Types/Question/QuestionResponseType.ts";
+import { ResponseType } from "../constants/Types/Common/CommonType.ts";
 
 class QuizService {
   static async getAll(params: IGetAll): Promise<IResponse> {
@@ -135,7 +136,7 @@ class QuizService {
     }
   }
 
-  static async getByIdWithQuestions(params: IGetById): Promise<IResponse> {
+  static async getByIdWithQuestions(params: IGetById): Promise<ResponseType<IQuizWithQuestions>> {
     try {
       const { id, isRemoved } = params;
 

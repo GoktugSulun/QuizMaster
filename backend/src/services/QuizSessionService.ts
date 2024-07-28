@@ -1,13 +1,15 @@
 import { authorizedUserId } from "../index.ts";
 import Helpers from "../utils/Helpers.ts";
-import { type ICreateQuizSession, type IComplete, type IEnd, type IGetAlreadyStarted, type IStart, type ICreate } from "../constants/Types/QuizSession/QuizSessionType.ts";
+import { type ICreateQuizSession, type IComplete, type IEnd, type IStart, type ICreate, type ISave } from "../constants/Types/QuizSession/QuizSessionType.ts";
 import { ResponseType } from "../constants/Types/Common/CommonType.ts";
-import { type IStartedQuizSessionResponse, type IQuizSessionResponse, type IStartResponse } from "../constants/Types/QuizSession/QuizSessionResponseType.ts";
+import { ICompleteResponse, type IQuizSessionResponse, type IStartResponse } from "../constants/Types/QuizSession/QuizSessionResponseType.ts";
 import { QuizSessionEndEnums, QuizSessionEnums, QuizStatusEnums } from "../constants/Enums/Enums.ts";
 import QuizSession from "../models/QuizSession.ts";
 import Quiz from "../models/Quiz.ts";
 import QuizService from "./QuizService.ts";
 import { IQuizWithQuestions } from "../constants/Types/Quiz/QuizResponseTypes.ts";
+import QuizResultService from "./QuizResultService.ts";
+import { type ICreate as ICreateResult } from "../constants/Types/QuizResult/QuizResultType.ts";
 
 class QuizSessionService {
    static async create(params: ICreate): Promise<ResponseType<IQuizSessionResponse>> {
@@ -202,9 +204,9 @@ class QuizSessionService {
       }
    }
 
-   static async complete(params: IComplete): Promise<ResponseType> {
+   static async complete(params: IComplete): Promise<ResponseType<ICompleteResponse>> {
       try {
-         const { quizId, answers, completeTime } = params;
+         const { quizId, quizSessionId, answers, completeTime } = params;
 
          const isQuizExisted = await Quiz.exists({ _id: quizId });
          if (!isQuizExisted) {
@@ -214,22 +216,23 @@ class QuizSessionService {
            }
          }
 
-         const targetQuizSession = await QuizSession.find({ quizId, userId: authorizedUserId, status: QuizSessionEnums.STARTED });
-         if (!targetQuizSession) {
+         await QuizSession.findOneAndUpdate(
+            { quizId, userId: authorizedUserId, status: QuizSessionEnums.STARTED }, 
+            { $set: { status: QuizSessionEnums.COMPLETED } },
+         );
+
+         const resultParams: ICreateResult = { quizId, quizSessionId, answers, completeTime  }
+         const result = await QuizResultService.create(resultParams);
+         if (!result.type) {
             return {
                type: false,
-               message: `Incompleted quiz session couldn't find for this user and quiz id with '${quizId}'`,
-           }
+               message: result.message
+            }
          }
-
-         // if () {
-
-         // }
-
          return {
             type: true,
-            message: 'complete quiz session',
-            data: null
+            message: 'Quiz session has been completed successfully',
+            data: result.data as ICompleteResponse
          };
       } catch (error) {
          return Helpers.responseError(error)
@@ -266,6 +269,33 @@ class QuizSessionService {
             type: true,
             message: `Quiz session has been ended because status is ${newStatus}`,
             data
+         };
+      } catch (error) {
+         return Helpers.responseError(error)
+      }
+   }
+
+   static async save(params: ISave): Promise<ResponseType<null>> {
+      try {
+         const { quizId, quizSessionId, answers } = params;
+
+         const quiz = await Quiz.findOne({ _id: quizId, isRemoved: false }); 
+         if (!quiz) {
+           return {
+               type: false,
+               message: `Quiz with id '${quizId}' couldn't find!`,
+           }
+         }
+
+         await QuizSession.findOneAndUpdate(
+            { quizId, userId: authorizedUserId, status: QuizSessionEnums.STARTED }, 
+            { $set: { answers } },
+         );
+         
+         return {
+            type: true,
+            message: `Answers has been saved successfully`,
+            data: null
          };
       } catch (error) {
          return Helpers.responseError(error)

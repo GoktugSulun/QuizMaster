@@ -42,7 +42,14 @@ export const formatDateTime = (date: Date) => {
    const strMinutes = minutes < 10 ? '0' + minutes : minutes;
 
    return {
-   date: `${day} ${month} ${year}`,
-   time: `${hours}:${strMinutes} ${ampm}`
+      date: `${day} ${month} ${year}`,
+      time: `${hours}:${strMinutes} ${ampm}`
    }
+}
+
+//* date format => 2024-07-28T16:16:22.027Z
+export const formatDate = (date: string, format: '-' | '.' | '/' = '/') => {
+   const datePiece = date?.split?.('T')?.[0];
+   const formattedDate = datePiece?.split?.('-')?.reverse?.()?.join?.(format);
+   return formattedDate;
 }

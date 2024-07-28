@@ -23,7 +23,7 @@ class QuizResultController {
          return Helpers.responseMessage(res, false, "'Id' field is required!");
       }
       try {
-         const params = { quizId: req.params.id };
+         const params = { quizResultId: req.params.id };
          const result = await QuizResultService.getById(params);
          Helpers.responseJSON(res, result);
       } catch (error) {

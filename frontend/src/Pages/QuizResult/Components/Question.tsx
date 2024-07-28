@@ -4,6 +4,7 @@ import QuestionHeader from '@/Components/Question/QuestionHeader';
 import MultipleChoice from '@/Components/Question/MultipleChoice';
 import { Box } from '@mui/material';
 
+// TODO : Diğer optionları da listele
 const Question = ({ question, index }: { question: QuestionType, index: number }) => {   
 
    return (
@@ -12,6 +13,8 @@ const Question = ({ question, index }: { question: QuestionType, index: number }
             name={question.name}
             questionNumber={index + 1}
             isCorrect={!!question.options.find((option) => option.isCorrect && (option.id === question.selectedOptionId))}
+            isBlank={question.selectedOptionId === ""}
+            point={question.point}
          />
          <Box padding="40px">
             <MultipleChoice 

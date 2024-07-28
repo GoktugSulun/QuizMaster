@@ -1,7 +1,10 @@
+import { PointEnums } from "../../Enums/Enums";
+
 export interface IQuestionsWithResults { 
    id: string; 
    name: string; 
    selectedOptionId: string; 
+   point: PointEnums,
    options: { 
       id: string; 
       name: string; 
@@ -14,5 +17,17 @@ export interface IGetAll {
 }
 
 export interface IGetById {
-   quizId: string;
+   quizResultId: string;
+}
+
+export interface IAnswer { 
+   questionId: string; 
+   answerId: string; 
+}
+
+export interface ICreate { 
+   quizId: string; 
+   quizSessionId: string;
+   answers: IAnswer[];
+   completeTime: number; 
 }

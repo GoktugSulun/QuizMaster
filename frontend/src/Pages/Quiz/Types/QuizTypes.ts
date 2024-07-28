@@ -1,4 +1,4 @@
-import { QuizSessionEnums, VisibilityEnums } from "@/Constants/Enums";
+import { PointEnums, QuizSessionEnums, VisibilityEnums } from "@/Constants/Enums";
 
 export type Option = {
    id: string;
@@ -9,8 +9,9 @@ export type Option = {
 export type Question = {
    id: string;
    name: string;
-   time: number | null;
+   time?: number | null;
    image?: string;
+   point: PointEnums;
    options: Option[];
    selectedOptionId?: string;
 }
@@ -41,10 +42,7 @@ export type QuizSessionResponse = {
    totalTime: number;
    maxAttempt: number;
    totalAttempt: number;
-   answers: {
-      questionId: string; 
-      answerdId: string;
-   }[];
+   answers: Answer[];
 }
 
 export type QuizType = {
@@ -65,8 +63,48 @@ export type QuizWithIdType = QuizType
       isRemoved: boolean;
    }
 
-export type QuizAlreadyStarted = {
-   quiz: QuizWithIdType,
-   quizSession: QuizSessionResponse
+export type SavedAnswer = {
+   questionId: string, 
+   answerId: string 
 }
 
+export type SaveQuizSessionType = {
+   quizSessionId: string;
+   quizId: string;
+   answers: Answer[];
+}
+
+export type CompleteQuizSessionType = {
+   quizSessionId: string;
+   quizId: string;
+   answers: Answer[];
+   completeTime: number;
+}
+
+export type QuestionsWithResults = { 
+   id: string; 
+   name: string; 
+   selectedOptionId: string; 
+   options: { 
+      id: string; 
+      name: string; 
+      isCorrect: boolean 
+   }[]; 
+}
+
+export type QuizResultResponse = {
+   id: string;
+   createdAt: Date | null;
+   updatedAt: Date | null;
+   quizId: string;
+   userId: string;
+   totalQuestion: number;
+   totalCorrect: number;
+   totalWrong: number;
+   totalBlank: number;
+   grade: number;
+   spentDuration: number;
+   totalDuration: number;
+   completedDate: Date | null;
+   questionsWithResults: QuestionsWithResults[];
+}

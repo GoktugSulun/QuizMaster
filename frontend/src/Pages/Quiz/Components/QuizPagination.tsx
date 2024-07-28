@@ -6,6 +6,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DoneIcon from '@mui/icons-material/Done';
 import { useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '@/Core/Hooks';
+import { MutableRefObject } from 'react';
+import { QuizThunks } from '../Store/Quiz.thunk';
 
 /*
    TODO : 100 tane soru olduğunda aradaki sorulara ulaşmak çok zor
@@ -13,9 +15,14 @@ import { useAppSelector } from '@/Core/Hooks';
    * bu limitten yüksek olduğunda prev ve next buttonlarını paginationButton gibi yap
    * paginationButtonları en sağa ya da sola al, diğer tarafa da Autocomplete ekle, kullanıcı istediği soruya yazarak erişsin
 */
-const QuizPagination = () => {
+
+type QuizPaginationProps = {
+   intervalRef: MutableRefObject<ReturnType<typeof setInterval> | null>;
+}
+
+const QuizPagination = ({ intervalRef }: QuizPaginationProps) => {
    const [searchParams, setSearchParams] = useSearchParams();
-   const { quiz, answers } = useAppSelector((state) => state.Quiz);
+   const { quiz, answers, quizSession } = useAppSelector((state) => state.Quiz);
    
    const page = +(searchParams.get("question") as string);
    const { items } = usePagination({ page, count: quiz.questions.length });
@@ -43,8 +50,15 @@ const QuizPagination = () => {
 
    // Time interval will be reseted because of cleanup function in QuizHeader component
    const completeQuizHandler = () => {
-      console.log('complete quiz');
-      // Send request to complete quiz
+      if (intervalRef.current) {
+         clearInterval(intervalRef.current);
+      }
+      QuizThunks.completeQuizSession({ 
+         quizId: quiz.id, 
+         quizSessionId: quizSession.id, 
+         answers, 
+         completeTime: new Date().getTime()
+      })
    };
    
    return (

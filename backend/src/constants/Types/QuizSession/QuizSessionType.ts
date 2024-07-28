@@ -2,7 +2,7 @@ import { QuizSessionEndEnums, QuizSessionEnums } from "../../Enums/Enums";
 
 export interface IAnswer { 
    questionId: string; 
-   answerdId: string; 
+   answerId: string; 
 }
 
 export interface IStart { 
@@ -11,17 +11,14 @@ export interface IStart {
 
 export interface IComplete { 
    quizId: string; 
-   answers: IAnswer[]; 
+   quizSessionId: string;
+   answers: IAnswer[];
    completeTime: number; 
 }
 
 export interface IEnd { 
    quizId: string; 
    status?: QuizSessionEndEnums
-}
-
-export interface IGetAlreadyStarted { 
-   quizId: string; 
 }
 
 export interface ICreateQuizSession {
@@ -37,5 +34,11 @@ export interface ICreateQuizSession {
 
 export interface ICreate {
    quizId: string;
+}
+
+export interface ISave { 
+   quizId: string; 
+   quizSessionId: string;
+   answers: IAnswer[];
 }
 

@@ -11,7 +11,8 @@ export const QuizResultContent = styled(PageContent)(() => ({
    display: 'flex',
    flexDirection: 'column',
    minHeight: 'calc(100vh - 80px  - 100px)',
-   height: 'auto'
+   height: 'auto',
+   position: 'relative'
 }));
 
 export const Answers = styled('div')(() => ({
