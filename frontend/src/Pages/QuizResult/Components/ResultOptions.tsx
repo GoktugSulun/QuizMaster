@@ -42,7 +42,7 @@ const ResultOptions = () => {
          control={form.control}
          name="selectedResultId"
          options={options}
-         label="Date"
+         label="Other results"
          shrink
       />
    )
