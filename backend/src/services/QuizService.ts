@@ -12,6 +12,7 @@ import SaveService from "./SaveService.ts";
 import QuestionService from "./QuestionService.ts";
 import { IQuestion } from "../constants/Types/Question/QuestionResponseType.ts";
 import { ResponseType } from "../constants/Types/Common/CommonType.ts";
+import QuizSessionService from "./QuizSessionService.ts";
 
 class QuizService {
   static async getAll(params: IGetAll): Promise<IResponse> {
@@ -79,8 +80,19 @@ class QuizService {
               return result.data;
             }
             case QuizTypeEnums.COMPLETED: {
-              // todo : do it later
-              console.log('get completed quizzes');
+              const sessionService = await QuizSessionService.getAllCompletedSessionId({ page, limit });
+              if (!sessionService.type) {
+                throw new Error(sessionService.message);
+              }
+              const results = await Promise.all(sessionService.data.map(async (quizId) =>  {
+                const res = await QuizService.getById({ id: quizId, isRemoved: false });
+                if (!res.type) {
+                  return null
+                }
+                return res.data;
+              }))
+              const filteredResult = results.filter((result) => result !== null);
+              return filteredResult;
             }
             case QuizTypeEnums.CREATED: {
               const result = await QuizService.getAll({ page, limit, isRemoved, creatorId: authorizedUserId });
@@ -94,6 +106,7 @@ class QuizService {
           }
         }
       )();  
+      console.log(data, " data");
 
       return {
         type: true,

@@ -1,8 +1,8 @@
 import { authorizedUserId } from "../index.ts";
 import Helpers from "../utils/Helpers.ts";
-import { type ICreateQuizSession, type IComplete, type IEnd, type IStart, type ICreate, type ISave } from "../constants/Types/QuizSession/QuizSessionType.ts";
-import { ResponseType } from "../constants/Types/Common/CommonType.ts";
-import { ICompleteResponse, type IQuizSessionResponse, type IStartResponse } from "../constants/Types/QuizSession/QuizSessionResponseType.ts";
+import { type ICreateQuizSession, type IComplete, type IEnd, type IStart, type ICreate, type ISave, type IGetAllCompletedSession } from "../constants/Types/QuizSession/QuizSessionType.ts";
+import { type ResponseType } from "../constants/Types/Common/CommonType.ts";
+import { type ICompleteResponse, type IQuizSessionResponse, type IStartResponse } from "../constants/Types/QuizSession/QuizSessionResponseType.ts";
 import { QuizSessionEndEnums, QuizSessionEnums, QuizStatusEnums } from "../constants/Enums/Enums.ts";
 import QuizSession from "../models/QuizSession.ts";
 import Quiz from "../models/Quiz.ts";
@@ -12,6 +12,36 @@ import QuizResultService from "./QuizResultService.ts";
 import { type ICreate as ICreateResult } from "../constants/Types/QuizResult/QuizResultType.ts";
 
 class QuizSessionService {
+   static async getAllCompletedSessionId(params: IGetAllCompletedSession): Promise<ResponseType<string[]>> {
+      try {
+         const { page, limit } = params;
+         const skip = page === 1 ? 0 : (page - 1) * limit;
+
+         const allCompletedSessions = await QuizSession
+            .find({ 
+               status: { $in: [QuizSessionEnums.COMPLETED, QuizSessionEnums.TIMEOUT, QuizSessionEnums.EXCEED_ATTEMPT] } 
+            })
+            .sort({ createdAt: "desc" })
+            .skip(skip)
+            .limit(limit);
+
+         const data = allCompletedSessions.reduce<string[]>((acc, current) => {
+            if (acc.includes(current.quizId)) {
+               return acc;
+            }
+            return [...acc, current.quizId];
+         }, [])
+
+         return {
+            type: true,
+            message: "Completed quiz sessions has been fetched successfully",
+            data
+         }
+      } catch (error) {
+         return Helpers.responseError(error)
+      }
+   }
+
    static async create(params: ICreate): Promise<ResponseType<IQuizSessionResponse>> {
       try {
          const { quizId } = params;
