@@ -106,7 +106,6 @@ class QuizService {
           }
         }
       )();  
-      console.log(data, " data");
 
       return {
         type: true,
