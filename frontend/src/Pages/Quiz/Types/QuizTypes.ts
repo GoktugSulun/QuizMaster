@@ -80,4 +80,30 @@ export type CompleteQuizSessionType = {
    completeTime: number;
 }
 
+export type QuestionsWithResults = { 
+   id: string; 
+   name: string; 
+   selectedOptionId: string; 
+   options: { 
+      id: string; 
+      name: string; 
+      isCorrect: boolean 
+   }[]; 
+}
 
+export type QuizResultResponse = {
+   id: string;
+   createdAt: Date | null;
+   updatedAt: Date | null;
+   quizId: string;
+   userId: string;
+   totalQuestion: number;
+   totalCorrect: number;
+   totalWrong: number;
+   totalBlank: number;
+   grade: number;
+   spentDuration: number;
+   totalDuration: number;
+   completedDate: Date | null;
+   questionsWithResults: QuestionsWithResults[];
+}

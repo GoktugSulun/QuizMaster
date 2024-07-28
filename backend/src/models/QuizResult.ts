@@ -63,7 +63,7 @@ export const quizResultSchema = new mongoose.Schema<IQuizResult>({
       type: [{
          id: { type: String, required: true },
          name: { type: String, required: true },
-         selectedOptionId: { type: String, required: true },
+         selectedOptionId: { type: String },
          options: [{
             id: { type: String, required: true },
             name: { type: String, required: true },

@@ -30,7 +30,8 @@ const Quiz = () => {
    const { startQuizResponse, isOpenSessionInfoModal } = useAppSelector((state) => state.QuizRules);
    const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
    const answersRef = useRef({ answers, canContinue: quizSession.totalAttempt <= quizSession.maxAttempt });
-   
+   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
    const id = searchParams.get("id");
    const question = searchParams.get("question");
 
@@ -139,10 +140,10 @@ const Quiz = () => {
    return (
       <S.Quiz>
          <S.QuizContent>
-            <QuizHeader />
+            <QuizHeader intervalRef={intervalRef} />
             <Options />
             <Divider />
-            <QuizPagination />
+            <QuizPagination intervalRef={intervalRef} />
             <QuizSessionInfoModal isQuizPage />
             <InfoModal />
          </S.QuizContent>

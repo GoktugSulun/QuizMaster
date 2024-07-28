@@ -6,6 +6,7 @@ import { authorizedUserId } from "../index.ts";
 import QuizService from "./QuizService.ts";
 import { PointEnums } from "../constants/Enums/Enums.ts";
 import QuizResult from "../models/QuizResult.ts";
+import QuizSession from "../models/QuizSession.ts";
 
 class QuizResultService {
    
@@ -51,6 +52,14 @@ class QuizResultService {
             }
          }
          const quiz = quizResult.data;
+
+         const quizSessionResult = await QuizSession.findOne({ _id: quizSessionId }); 
+         if (!quizSessionResult) {
+           return {
+               type: false,
+               message: `QuizSession with id '${quizSessionId}' couldn't find for quizId with id '${quizId}'!`,
+           }
+         }
 
          const initialResultState: IInitialResultState = {
             totalCorrect: 0,
@@ -100,7 +109,9 @@ class QuizResultService {
             }
             return resultState;
          }, initialResultState);
-
+         
+         const startTime = new Date(quizSessionResult.toJSON().createdAt).getTime();
+         const spentDuration = Math.ceil((completeTime - startTime) / 1000);
          const newData: ICreateResult = {
             quizId,
             userId: authorizedUserId,
@@ -109,7 +120,7 @@ class QuizResultService {
             totalWrong: result.totalWrong,
             totalBlank: result.totalBlank,
             grade: result.grade,
-            spentDuration: quiz.totalTime - completeTime,
+            spentDuration,
             totalDuration: quiz.totalTime,
             completedDate: new Date(),
             questionsWithResults: result.questionsWithResults

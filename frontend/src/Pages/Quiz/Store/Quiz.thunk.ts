@@ -2,7 +2,7 @@ import { request } from "@/Core/Request";
 import { QuizActions } from "./Quiz.slice";
 import { ApiURL } from "@/Constants/ApiURL";
 import { type QuizWithQuestions } from "@/Pages/Creator/Types/CreatorTypes";
-import { type CompleteQuizSessionType, type SaveQuizSessionType } from "../Types/QuizTypes";
+import { QuizResultResponse, type CompleteQuizSessionType, type SaveQuizSessionType } from "../Types/QuizTypes";
 
 export const QuizThunks = {
    getQuizByIdWithQuestions: (id: string) => request({
@@ -30,8 +30,8 @@ export const QuizThunks = {
       key: 'completeQuizSession',
       payload,
       success: ({ data, thunkAPI }) => {
-         console.log(data, " data");
-         console.log("success saving");
+         const quizResultResponse = data as QuizResultResponse;
+         thunkAPI.dispatch(QuizActions.setQuizResultResponse(quizResultResponse))
       },
    }),
 }

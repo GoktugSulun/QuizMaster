@@ -10,7 +10,7 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 const InfoModal = () => {
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const { isOpenInfoModal, quiz } = useAppSelector((state) => state.Quiz);
+   const { isOpenInfoModal, quiz, quizResultResponse } = useAppSelector((state) => state.Quiz);
    const { setIdle } = useThunk("completeQuizSession");
 
    const handleClose = () => {
@@ -22,7 +22,7 @@ const InfoModal = () => {
    const navigateToResultPage = () => {
       setIdle();
       dispatch(QuizActions.setIsOpenInfoModal("CLOSE"));
-      navigate({ pathname: RouteEnums.QUIZ_RESULTS, search: `?id=${quiz.id}` }, { replace: true });
+      navigate({ pathname: RouteEnums.QUIZ_RESULTS, search: `?quizId=${quiz.id}&resultId=${quizResultResponse.id}` }, { replace: true });
    }
 
    return (

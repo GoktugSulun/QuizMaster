@@ -4,21 +4,28 @@ import PieChart from './Components/PieChart';
 import { Box, Stack, Typography } from '@mui/material';
 import ResultOverview from './Components/ResultOverview';
 import Answers from './Components/Answers';
+import { useEffect } from 'react';
 
 /*
-   ? Required searchParams => id 
-   * This component must be displayed when the url is like that => /results/quiz?id=1
-   ! If "id" query is missing, then navigate user to dashboard.
+   ? Required searchParams => quizId and resultId
+   * This component must be displayed when the url is like that => /results/quiz?quizId=1&resultId=1
+   ! If "quizId" or "resultId" query is missing, then navigate user to dashboard.
+   TODO : Ya da navigate ettirmek yerine result bulunamadı gibi bir popup gösterilebilir
 */
 
 const QuizResult = () => {
    const [searchParams] = useSearchParams();
-   const quizId = searchParams.get("id") as string;
+   const quizId = searchParams.get("quizId") as string;
+   const resultId = searchParams.get("resultId") as string;
 
-   // Todo : /results/quiz?id=null ya da /results/quiz?id=aaa gibi durumlar için de kontrol yap, belki istek sonrası error ise bulunamadı gibi bir component render edilebilir.
-   if (!quizId) { 
+   // Todo : /results/quiz?quizId=null ya da /results/quiz?quizId=aaa gibi durumlar için de kontrol yap, belki istek sonrası error ise bulunamadı gibi bir component render edilebilir.
+   if (!quizId || !resultId) { 
       return <Navigate to="/" replace />
    }
+
+   useEffect(() => {
+      console.log("fetch data with quizId: ", quizId, " and resultId: ", resultId);
+   }, [quizId, resultId])
 
    return (
       <S.QuizResult>

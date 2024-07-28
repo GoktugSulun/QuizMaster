@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import { useAppSelector } from '@/Core/Hooks';
-import { useEffect, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useState } from 'react';
 import QuestionHeader from '@/Components/Question/QuestionHeader';
 import { snackbar } from '@/Core/Utils';
 import { QuizThunks } from '../Store/Quiz.thunk';
@@ -14,9 +14,14 @@ const formattedTime = (time: number | null): string => {
    return `${formattedMinute}:${formatteSecond}`;
 };
 
-const QuizHeader = () => {
+type QuizHeaderProps = {
+   intervalRef: MutableRefObject<ReturnType<typeof setInterval> | null>;
+}
+
+const QuizHeader = ({ intervalRef }: QuizHeaderProps) => {
+   console.log(intervalRef, " intervalRefintervalRefintervalRef");
    const [remainingTime, setRemainingTime] = useState<number | null>(null); // second
-   const intervalRef = useRef<NodeJS.Timeout | null>(null);  // Todo : check interval type
+   
    const [searchParams] = useSearchParams();
    const { quiz, quizSession, answers } = useAppSelector((state) => state.Quiz);
    const questions = quiz.questions;
@@ -24,7 +29,7 @@ const QuizHeader = () => {
    const questionNumber = searchParams.get("question") as string;
    const question = questions[Number(questionNumber) - 1];
 
-   if (remainingTime !== null && remainingTime === 0 && intervalRef.current) {
+   if (intervalRef.current && remainingTime !== null && remainingTime === 0) {
       clearInterval(intervalRef.current);
    }
 
@@ -39,7 +44,7 @@ const QuizHeader = () => {
          if (intervalRef.current) {
             clearInterval(intervalRef.current);
          }
-         QuizThunks.completeQuizSession({ quizId: quiz.id, quizSessionId: quizSession.id, answers, completeTime: remainingTime })
+         QuizThunks.completeQuizSession({ quizId: quiz.id, quizSessionId: quizSession.id, answers, completeTime: new Date().getTime() })
       }
    }, [remainingTime]);
 

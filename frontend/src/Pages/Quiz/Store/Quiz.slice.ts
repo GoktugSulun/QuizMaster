@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { type QuizSessionResponse, type Answer } from '../Types/QuizTypes';
+import { type QuizSessionResponse, type Answer, type QuizResultResponse } from '../Types/QuizTypes';
 import { VisibilityEnums, type QuizWithQuestions } from '@/Pages/Creator/Types/CreatorTypes';
 
 const NAME = 'Quiz';
@@ -9,6 +9,7 @@ type InitialStateTypes = {
    quizSession: QuizSessionResponse;
    answers: Answer[];
    isOpenInfoModal: boolean;
+   quizResultResponse: QuizResultResponse
 }
 
 const quizInitialState = {
@@ -40,11 +41,29 @@ const quizSessionInitialState = {
    answers: []
 }
 
+const quizResultInitialState = {
+   id: "",
+   createdAt: null,
+   updatedAt: null,
+   quizId: "",
+   userId: "",
+   totalQuestion: 0,
+   totalCorrect: 0,
+   totalWrong: 0,
+   totalBlank: 0,
+   grade: 0,
+   spentDuration: 0,
+   totalDuration: 0,
+   completedDate: null,
+   questionsWithResults: []
+}
+
 const initialState: InitialStateTypes = {
    quiz: quizInitialState,
    quizSession: quizSessionInitialState,
    answers: [], // data for backend
-   isOpenInfoModal: false
+   isOpenInfoModal: false,
+   quizResultResponse: quizResultInitialState
 };
 
 const QuizSlice = createSlice({
@@ -84,7 +103,10 @@ const QuizSlice = createSlice({
            "CLOSE": false
          }
          state.isOpenInfoModal = valueMap[action.payload];
-       },
+      },
+      setQuizResultResponse: (state, action: PayloadAction<QuizResultResponse>) => {
+         state.quizResultResponse = action.payload;
+      } 
    },
 });
 
