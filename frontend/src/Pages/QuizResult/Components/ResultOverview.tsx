@@ -15,7 +15,7 @@ const Results = () => {
       if (!answersEl) {
          throw Error("Answers component must has id with 'answers'!");
       }
-      answersEl.scrollIntoView();
+      answersEl.scrollIntoView({ behavior: "smooth" });
    };
 
    return (

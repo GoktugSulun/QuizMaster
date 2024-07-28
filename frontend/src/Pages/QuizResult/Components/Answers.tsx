@@ -6,7 +6,7 @@ const Answers = () => {
    const { quizResult } = useAppSelector((state) => state.QuizResult)
 
    return (
-      <S.Answers id="answers">
+      <S.Answers sx={{ scrollMarginTop: "100px" }} id="answers">
          { quizResult.questionsWithResults.map((question, index) => (
             <Question 
                key={question.id} 

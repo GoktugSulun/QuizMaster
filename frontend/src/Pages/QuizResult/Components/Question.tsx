@@ -4,6 +4,7 @@ import QuestionHeader from '@/Components/Question/QuestionHeader';
 import MultipleChoice from '@/Components/Question/MultipleChoice';
 import { Box } from '@mui/material';
 
+// TODO : Diğer optionları da listele
 const Question = ({ question, index }: { question: QuestionType, index: number }) => {   
 
    return (
