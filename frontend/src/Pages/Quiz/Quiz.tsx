@@ -37,7 +37,7 @@ const Quiz = () => {
 
    const { isSuccess, setIdle } = useThunk("getQuestions");
    const { isSuccess: isSuccessStartQuiz, setIdle: setIdleStartQuiz } = useThunk("startQuiz");
-   const { isSuccess: isSuccessCompleteQuizSession } = useThunk("completeQuizSession");
+   const { isSuccess: isSuccessCompleteQuizSession, isLoading: isLoadingCompleteQuizSession  } = useThunk("completeQuizSession");
 
    if (!id || !question) {
       return <Navigate to="/" replace />
@@ -140,6 +140,7 @@ const Quiz = () => {
    return (
       <S.Quiz>
          <S.QuizContent>
+            { isLoadingCompleteQuizSession && <Loading fullWidth size={80} blur /> }
             <QuizHeader intervalRef={intervalRef} />
             <Options />
             <Divider />

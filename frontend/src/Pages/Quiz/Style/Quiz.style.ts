@@ -4,9 +4,10 @@ import { shouldForwardProp } from "@/Core/Utils";
 
 export const Quiz = styled(PageWrapper)({});
 
-export const QuizContent = styled(PageContent)(({ theme }) => ({
+export const QuizContent = styled(PageContent)(() => ({
    display: 'flex',
-   flexDirection: 'column'
+   flexDirection: 'column',
+   position: 'relative'
 })); 
 
 export const PaginationDirectionButton = styled(Button)(({ theme }) => ({

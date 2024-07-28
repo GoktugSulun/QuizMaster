@@ -65,6 +65,7 @@ const LoadingWrapper = styled('div')<LoadingWrapperProps>(({ theme, ...props }) 
       left: 0,
       width: '100%',
       height: '100%',
+      zIndex: 10,
       borderRadius: 'inherit',
       background: 'rgba(255, 255, 255, 0.2)',
       boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
