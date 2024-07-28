@@ -19,7 +19,6 @@ type QuizHeaderProps = {
 }
 
 const QuizHeader = ({ intervalRef }: QuizHeaderProps) => {
-   console.log(intervalRef, " intervalRefintervalRefintervalRef");
    const [remainingTime, setRemainingTime] = useState<number | null>(null); // second
    
    const [searchParams] = useSearchParams();

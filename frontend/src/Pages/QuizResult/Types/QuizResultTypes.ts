@@ -43,3 +43,8 @@ export type QuizResultType = {
    questionsWithResults: QuestionsWithResultsType[];
    quiz: QuizType;
 }
+
+export type SessionType = {
+   quizSessionId: string;
+   quizSessionDate: Date | null;
+}

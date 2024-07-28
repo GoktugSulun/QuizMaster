@@ -34,8 +34,9 @@ const QuizResult = () => {
    ]
 
    useEffect(() => {
-      if (resultId) {
+      if (resultId && quizId) {
          QuizResultThunks.getQuizResult(resultId);
+         QuizResultThunks.getAllSessions(quizId);
       }
    }, [quizId, resultId])
 

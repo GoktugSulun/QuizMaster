@@ -1,6 +1,6 @@
 import { ApiURL } from "@/Constants/ApiURL";
 import { request } from "@/Core/Request";
-import { QuizResultType } from "../Types/QuizResultTypes";
+import { type QuizResultType, type SessionType } from "../Types/QuizResultTypes";
 import { QuizResultActions } from "./QuizResult.slice";
 
 const QuizResultThunks = {
@@ -9,10 +9,19 @@ const QuizResultThunks = {
       url: `${ApiURL.QUIZ_RESULTS}/${quizResultId}`,
       key: 'getQuizResult',
       success: ({ data, thunkAPI }) => {
-         const payload = data as QuizResultType[];
+         const payload = data as QuizResultType;
          thunkAPI.dispatch(QuizResultActions.setQuizResult(payload));
       }
    }),
+   getAllSessions: (quizId: string) => request({
+      method: 'GET',
+      url: `${ApiURL.ALL_QUIZ_RESULTS}/${quizId}`,
+      key: 'getAllSessions',
+      success: ({ data, thunkAPI }) => {
+         const payload = data as SessionType[];
+         thunkAPI.dispatch(QuizResultActions.setSessions(payload));
+      }
+   })
 };
 
 export default QuizResultThunks;

@@ -2,7 +2,8 @@ import { type IQuizResponse } from "../Quiz/QuizResponseTypes";
 import { type IQuestionsWithResults } from "./QuizResultType";
 
 export interface IQuizResultId {
-   quizId: string;
+   quizSessionId: string;
+   quizSessionDate: Date;
 }
 
 export interface IGetResultById {

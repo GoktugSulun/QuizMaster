@@ -13,12 +13,24 @@ class QuizResultService {
    
    static async getAll(params: IGetAll): Promise<ResponseType<IQuizResultId[]>> {
       try {
-         console.log("quiz result service getAll");
+         const { quizId } = params;
+         const quizSessions = await QuizSession.find({ quizId })
+         if (!quizSessions || quizSessions.length === 0) {
+            return {
+               type: false,
+               message: `No sessions found for quiz with id: ${quizId}`
+            }
+         }
+
+         const data = quizSessions.map((session) => ({
+            quizSessionId: session.id,
+            quizSessionDate: session.createdAt
+         })) as IQuizResultId[]
          
          return { 
             type: true, 
-            message: 'quiz result service getAll', 
-            data: []
+            message: `All sessions has been fetched for quiz with id: ${quizId}`, 
+            data
          };
 
       } catch (error) {
