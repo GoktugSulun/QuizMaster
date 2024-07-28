@@ -1,6 +1,6 @@
 import { ApiURL } from "@/Constants/ApiURL";
 import { request } from "@/Core/Request";
-import { type QuizResultType, type SessionType } from "../Types/QuizResultTypes";
+import { type QuizResultType, type ResultType } from "../Types/QuizResultTypes";
 import { QuizResultActions } from "./QuizResult.slice";
 
 const QuizResultThunks = {
@@ -18,8 +18,8 @@ const QuizResultThunks = {
       url: `${ApiURL.ALL_QUIZ_RESULTS}/${quizId}`,
       key: 'getAllSessions',
       success: ({ data, thunkAPI }) => {
-         const payload = data as SessionType[];
-         thunkAPI.dispatch(QuizResultActions.setSessions(payload));
+         const payload = data as ResultType[];
+         thunkAPI.dispatch(QuizResultActions.setAllResults(payload));
       }
    })
 };

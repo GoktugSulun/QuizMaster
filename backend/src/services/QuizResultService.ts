@@ -1,7 +1,7 @@
 import Helpers from "../utils/Helpers.ts";
 import { type ResponseType } from "../constants/Types/Common/CommonType.ts";
 import { type IGetById, type IGetAll, type ICreate } from "../constants/Types/QuizResult/QuizResultType.ts";
-import { type IInitialResultState, type ICreateResult, type IGetResultById, type IQuizResultId } from "../constants/Types/QuizResult/QuizResultResponseType.ts";
+import { type IInitialResultState, type ICreateResult, type IGetResultById, type IAllQuizResultId } from "../constants/Types/QuizResult/QuizResultResponseType.ts";
 import { authorizedUserId } from "../index.ts";
 import QuizService from "./QuizService.ts";
 import { PointEnums } from "../constants/Enums/Enums.ts";
@@ -11,21 +11,21 @@ import Quiz from "../models/Quiz.ts";
 
 class QuizResultService {
    
-   static async getAll(params: IGetAll): Promise<ResponseType<IQuizResultId[]>> {
+   static async getAll(params: IGetAll): Promise<ResponseType<IAllQuizResultId[]>> {
       try {
          const { quizId } = params;
-         const quizSessions = await QuizSession.find({ quizId })
-         if (!quizSessions || quizSessions.length === 0) {
+         const quizResults = await QuizResult.find({ quizId })
+         if (!quizResults || quizResults.length === 0) {
             return {
                type: false,
-               message: `No sessions found for quiz with id: ${quizId}`
+               message: `No quiz results found for quiz with id: ${quizId}`
             }
          }
 
-         const data = quizSessions.map((session) => ({
-            quizSessionId: session.id,
-            quizSessionDate: session.createdAt
-         })) as IQuizResultId[]
+         const data = quizResults.map((result) => ({
+            resultId: result.id,
+            sessionDate: result.completedDate
+         })) as IAllQuizResultId[]
          
          return { 
             type: true, 

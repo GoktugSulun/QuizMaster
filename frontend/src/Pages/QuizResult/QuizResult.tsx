@@ -6,7 +6,9 @@ import ResultOverview from './Components/ResultOverview';
 import Answers from './Components/Answers';
 import { useEffect } from 'react';
 import QuizResultThunks from './Store/QuizResult.thunk';
-import { useAppSelector } from '@/Core/Hooks';
+import { useAppSelector, useThunk } from '@/Core/Hooks';
+import ResultOptions from './Components/ResultOptions';
+import { Loading } from '@/Core/Components';
 
 /*
    ? Required searchParams => quizId and resultId
@@ -26,7 +28,8 @@ const QuizResult = () => {
    }
 
    const theme = useTheme();
-   const { quizResult } = useAppSelector((state) => state.QuizResult);
+   const { quizResult, allResults } = useAppSelector((state) => state.QuizResult);
+   const { isLoading } = useThunk("getQuizResult");
    const data = [
       { id: "1", value: quizResult.totalCorrect, label: 'Correct', color: alpha(theme.palette.success.light, 0.8) },
       { id: "2", value: quizResult.totalWrong, label: 'Wrong', color: alpha(theme.palette.error.light, 0.8) },
@@ -34,34 +37,41 @@ const QuizResult = () => {
    ]
 
    useEffect(() => {
-      if (resultId && quizId) {
-         QuizResultThunks.getQuizResult(resultId);
+      if (quizId) {
          QuizResultThunks.getAllSessions(quizId);
       }
-   }, [quizId, resultId])
+   }, [quizId])
 
    return (
       <S.QuizResult>
          <S.QuizResultContent>
-            <Typography 
-               variant="h4" 
-               textAlign="center"
-               margin="20px 10px"
-               padding="20px"
-               borderRadius="10px"
-               color="primary.main"
-               fontWeight="bold"
+            { isLoading && <Loading blur size={80} /> }
+            <Stack
+               flexDirection={"row"}
+               alignItems={"center"}
+               justifyContent={(allResults.length === 0 || allResults.length === 1) ? "center" : "space-between"}
                boxShadow="rgba(0, 0, 0, 0.16) 0px 1px 4px"
-            > 
-               { quizResult.quiz.name }
-            </Typography>
+               margin="20px 10px"
+               borderRadius="10px"
+               padding="20px"
+            >
+               <Typography 
+                  variant="h4" 
+                  textAlign="center"
+                  color="primary.main"
+                  fontWeight="bold"
+               > 
+                  { quizResult.quiz.name }
+               </Typography>
+               { allResults.length > 1 && <ResultOptions /> }
+            </Stack>
             <Stack flex={1} rowGap={3} padding="20px 0" flexDirection={{ xs: "column", lg: "row" }}>
                <Box minHeight={{ xs: '400px', lg: 'auto' }} flex={1}> <PieChart data={data} /> </Box>
                <Box width="1px" height="100%" bgcolor="secondary.light" />
                <ResultOverview />
             </Stack>
          </S.QuizResultContent>
-         <Answers />
+         { !isLoading && <Answers /> }
       </S.QuizResult>
    )
 }

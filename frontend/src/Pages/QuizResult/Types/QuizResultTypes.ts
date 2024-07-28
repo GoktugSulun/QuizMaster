@@ -44,7 +44,7 @@ export type QuizResultType = {
    quiz: QuizType;
 }
 
-export type SessionType = {
-   quizSessionId: string;
-   quizSessionDate: Date | null;
+export type ResultType = {
+   resultId: string;
+   sessionDate: Date | null;
 }

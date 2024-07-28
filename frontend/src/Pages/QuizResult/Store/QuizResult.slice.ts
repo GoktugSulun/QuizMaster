@@ -1,12 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { type QuizResultType, type SessionType } from "../Types/QuizResultTypes";
+import { type QuizResultType, type ResultType } from "../Types/QuizResultTypes";
 import { VisibilityEnums } from '@/Constants/Enums';
 
 const NAME = 'QuizResult';
 
 type InitialStateTypes = {
    quizResult: QuizResultType,
-   sessions: SessionType[]
+   allResults: ResultType[]
 }
 
 const initialState: InitialStateTypes = {
@@ -39,7 +39,7 @@ const initialState: InitialStateTypes = {
          isRemoved: false,
       },
    },
-   sessions: []
+   allResults: []
 };
 
 const QuizResultSlice = createSlice({  
@@ -49,8 +49,8 @@ const QuizResultSlice = createSlice({
       setQuizResult: (state, action: PayloadAction<QuizResultType>) => {
          state.quizResult = action.payload;
       },
-      setSessions: (state, action: PayloadAction<SessionType[]>) => {
-         state.sessions = action.payload;
+      setAllResults: (state, action: PayloadAction<ResultType[]>) => {
+         state.allResults = action.payload;
       }
    },
 });
