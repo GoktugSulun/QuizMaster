@@ -14,7 +14,7 @@ export interface IGetAll {
 }
 
 export interface IGetById {
-   quizId: string;
+   quizResultId: string;
 }
 
 export interface IAnswer { 

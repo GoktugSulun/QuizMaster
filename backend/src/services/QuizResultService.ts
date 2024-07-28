@@ -7,6 +7,7 @@ import QuizService from "./QuizService.ts";
 import { PointEnums } from "../constants/Enums/Enums.ts";
 import QuizResult from "../models/QuizResult.ts";
 import QuizSession from "../models/QuizSession.ts";
+import Quiz from "../models/Quiz.ts";
 
 class QuizResultService {
    
@@ -27,12 +28,32 @@ class QuizResultService {
 
    static async getById(params: IGetById): Promise<ResponseType<IGetResultById>> {
       try {
-         console.log("quiz result service getById");
+         const { quizResultId } = params;
+         const quizResult = await QuizResult.findById(quizResultId)
+         if (!quizResult) {
+            return {
+               type: false,
+               message: `Quiz result couldn't find with id: ${quizResultId}`
+            }
+         }
+
+         const quiz = await Quiz.findById(quizResult.quizId)
+         if (!quiz) {
+            return {
+               type: false,
+               message: `Quiz couldn't find with id: ${quiz}`
+            }
+         }
+         
+         const data = {
+            ...quizResult.toJSON(),
+            quiz: quiz.toJSON()
+         } as IGetResultById
          
          return { 
             type: true, 
-            message: 'quiz result service getById', 
-            data: {} as IGetResultById
+            message: 'Quiz result has been fetched successfully', 
+            data
          };
 
       } catch (error) {

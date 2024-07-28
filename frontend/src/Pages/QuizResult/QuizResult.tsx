@@ -5,6 +5,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import ResultOverview from './Components/ResultOverview';
 import Answers from './Components/Answers';
 import { useEffect } from 'react';
+import QuizResultThunks from './Store/QuizResult.thunk';
 
 /*
    ? Required searchParams => quizId and resultId
@@ -24,7 +25,9 @@ const QuizResult = () => {
    }
 
    useEffect(() => {
-      console.log("fetch data with quizId: ", quizId, " and resultId: ", resultId);
+      if (resultId) {
+         QuizResultThunks.getQuizResult(resultId);
+      }
    }, [quizId, resultId])
 
    return (
@@ -45,7 +48,7 @@ const QuizResult = () => {
             <Stack flex={1} rowGap={3} padding="20px 0" flexDirection={{ xs: "column", lg: "row" }}>
                <Box minHeight={{ xs: '400px', lg: 'auto' }} flex={1}> <PieChart /> </Box>
                <Box width="1px" height="100%" bgcolor="secondary.light" />
-               <ResultOverview  />
+               <ResultOverview />
             </Stack>
          </S.QuizResultContent>
          <Answers />

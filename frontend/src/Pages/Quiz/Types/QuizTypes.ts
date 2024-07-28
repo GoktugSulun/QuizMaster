@@ -9,7 +9,7 @@ export type Option = {
 export type Question = {
    id: string;
    name: string;
-   time: number | null;
+   time?: number | null;
    image?: string;
    options: Option[];
    selectedOptionId?: string;

@@ -20,7 +20,7 @@ export interface IGetResultById {
    totalDuration: number;
    completedDate: Date;
    questionsWithResults: IQuestionsWithResults[];
-   quiz: IQuizResponse
+   quiz: IQuizResponse;
 }
 
 export interface ICreateResult {

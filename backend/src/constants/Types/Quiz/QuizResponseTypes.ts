@@ -2,16 +2,16 @@ import { CorrectOptionEnums, PointEnums, QuestionEnums, VisibilityEnums } from "
 
 export interface IQuizResponse {
    id: string;
+   createdAt: Date;
+   updatedAt: Date;
    name: string;
    description: string;
    visibility: VisibilityEnums;
    image: string | null;
    totalTime: number;
    creatorId: string;
-   isFavorite: boolean;
-   isSaved: boolean;
-   createdAt: Date;
-   updatedAt: Date;
+   maxAttempt: number;
+   isRemoved: boolean;
 }
 
 export interface IQuizWithQuestions extends IQuizResponse {

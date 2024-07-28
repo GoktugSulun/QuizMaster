@@ -22,7 +22,13 @@ const InfoModal = () => {
    const navigateToResultPage = () => {
       setIdle();
       dispatch(QuizActions.setIsOpenInfoModal("CLOSE"));
-      navigate({ pathname: RouteEnums.QUIZ_RESULTS, search: `?quizId=${quiz.id}&resultId=${quizResultResponse.id}` }, { replace: true });
+      navigate(
+         { 
+            pathname: RouteEnums.QUIZ_RESULTS, 
+            search: `?quizId=${quiz.id}&resultId=${quizResultResponse.id}` 
+         }, 
+         { replace: true }
+      );
    }
 
    return (
