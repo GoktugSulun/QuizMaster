@@ -1,7 +1,10 @@
+import { PointEnums } from "../../Enums/Enums";
+
 export interface IQuestionsWithResults { 
    id: string; 
    name: string; 
    selectedOptionId: string; 
+   point: PointEnums,
    options: { 
       id: string; 
       name: string; 

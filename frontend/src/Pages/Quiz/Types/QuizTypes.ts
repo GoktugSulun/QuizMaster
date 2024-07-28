@@ -1,4 +1,4 @@
-import { QuizSessionEnums, VisibilityEnums } from "@/Constants/Enums";
+import { PointEnums, QuizSessionEnums, VisibilityEnums } from "@/Constants/Enums";
 
 export type Option = {
    id: string;
@@ -11,6 +11,7 @@ export type Question = {
    name: string;
    time?: number | null;
    image?: string;
+   point: PointEnums;
    options: Option[];
    selectedOptionId?: string;
 }

@@ -1,27 +1,29 @@
 import { Stack, Typography } from '@mui/material';
 import * as S from './Style/Question.style';
-import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
-import CorrectIcon from '@mui/icons-material/CheckCircle';
-import WrongIcon from '@mui/icons-material/Cancel';
+import Time from './Components/Time';
+import Icon from './Components/Icon';
+import { PointEnums } from '@/Constants/Enums';
 
 type QuestionHeaderWithTimeProps = {
   time?: string;
-  questionNumber: string | number,
-  name: string,
+  questionNumber: string | number;
+  name: string;
 }
 
 type QuestionHeaderWithIconProps = {
   time?: null;
   isCorrect: boolean;
-  questionNumber: string | number,
-  name: string,
+  questionNumber: string | number;
+  name: string;
+  isBlank: boolean;
+  point: PointEnums;
 }
 
 type QuestionHeaderProps = QuestionHeaderWithTimeProps | QuestionHeaderWithIconProps;
 
 const QuestionHeader = (props: QuestionHeaderProps) => {
   const { questionNumber, name, time=null } = props;
-  
+
   return (
     <S.QuestionHeader 
       flexDirection="row" 
@@ -50,30 +52,19 @@ const QuestionHeader = (props: QuestionHeaderProps) => {
           {name} 
         </Typography> 
       </Stack>
-      {
-        time 
-          ? (
-            <S.Time 
-              flexDirection="row" 
-              alignItems="center" 
-              gap={1}
-            >
-              <AccessAlarmIcon sx={{ width: 30, height: 30 }} color="primary" />
-              <Typography 
-                fontWeight="bold" 
-                color="primary.main" 
-                fontSize={25}
-              > 
-                {time} 
-              </Typography>
-            </S.Time>
-          )
-          : (
-            <Stack>
-              {('isCorrect' in props && props.isCorrect) ? <CorrectIcon color="success" /> : <WrongIcon color="error" />}
-            </Stack>
-          )
-      }
+      <Stack>
+        { 
+          time 
+            ? <Time time={time} /> 
+            : (
+                <Icon 
+                  isBlank={'isBlank' in props ? props.isBlank : false} 
+                  isCorrect={'isCorrect' in props ? props.isCorrect : false} 
+                  point={'point' in props ? props.point : PointEnums.STANDART} 
+                />
+            )
+        }
+      </Stack>
     </S.QuestionHeader>
   )
 }

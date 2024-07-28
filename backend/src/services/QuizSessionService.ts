@@ -229,7 +229,6 @@ class QuizSessionService {
                message: result.message
             }
          }
-
          return {
             type: true,
             message: 'Quiz session has been completed successfully',

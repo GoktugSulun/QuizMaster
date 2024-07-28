@@ -89,17 +89,18 @@ class QuizResultService {
             grade: 0,
             questionsWithResults: []
          }
-         const result = quiz.questions.reduce((resultState, currentQuestion, _, arr) => {
-            const numberOfQuestion = arr.reduce((acc, current) => {
-               if (current.point === PointEnums.STANDART) {
-                  return acc + 1;
-               } 
-               if (currentQuestion.point === PointEnums.DOUBLE_UP){
-                  return acc + 2;
-               }
-               throw new Error("Unknown PointEnums")
-            }, 0);
             
+         const numberOfQuestion = quiz.questions.reduce((acc, current) => {
+            if (current.point === PointEnums.STANDART) {
+               return acc + 1;
+            } 
+            if (current.point === PointEnums.DOUBLE_UP){
+               return acc + 2;
+            }
+            throw new Error("Unknown PointEnums")
+         }, 0);
+
+         const result = quiz.questions.reduce((resultState, currentQuestion) => {
             const pointEachQuestion = 100 / numberOfQuestion;
             const targetQuestion = answers.find((answer) => answer.questionId === currentQuestion.id);
             resultState.questionsWithResults = [
@@ -107,11 +108,13 @@ class QuizResultService {
                {
                   id: currentQuestion.id,
                   name: currentQuestion.name,
+                  point: currentQuestion.point,
                   selectedOptionId: targetQuestion?.answerId || "",
                   options: currentQuestion.options.map((option) => ({ id: option.id, name: option.name, isCorrect: option.isCorrect }))
                }
             ]
-            if (targetQuestion) {
+        
+            if (targetQuestion?.answerId) {
                const correctAnswer = currentQuestion.options.find((option) => option.isCorrect);
                if (targetQuestion.answerId === correctAnswer?.id) {
                   resultState.totalCorrect++;
