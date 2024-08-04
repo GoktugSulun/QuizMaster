@@ -17,7 +17,7 @@ const ResultOptions = () => {
 
    const form = useForm<ResultOptionFormType>({ 
       defaultValues: {
-         selectedResultId: resultId
+         selectedResultId: resultId || ""
       } 
    });
 
@@ -36,6 +36,12 @@ const ResultOptions = () => {
          QuizResultThunks.getQuizResult(form.watch("selectedResultId"));
       }
    }, [form.watch("selectedResultId")]);
+   
+   useEffect(() => {
+      if (resultId) {
+         form.reset({ selectedResultId: resultId })
+      }
+   }, [resultId]);
 
    return (
       <SelectInput

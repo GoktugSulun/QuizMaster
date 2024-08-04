@@ -7,6 +7,7 @@ export type TooltipTypes = {
    edit: boolean;
    favorite: boolean;
    save: boolean;
+   result: boolean;
 }
 
 export type getQuizzesTypes = { 
