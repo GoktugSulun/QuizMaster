@@ -42,3 +42,9 @@ export interface ISave {
    answers: IAnswer[];
 }
 
+export interface IGetAllCompletedSession { 
+   page: number;
+   limit: number;
+}
+
+

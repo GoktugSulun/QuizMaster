@@ -4,7 +4,7 @@ import PieChart from './Components/PieChart';
 import { alpha, Box, Stack, Typography, useTheme } from '@mui/material';
 import ResultOverview from './Components/ResultOverview';
 import Answers from './Components/Answers';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import QuizResultThunks from './Store/QuizResult.thunk';
 import { useAppSelector, useThunk } from '@/Core/Hooks';
 import ResultOptions from './Components/ResultOptions';
@@ -18,29 +18,44 @@ import { Loading } from '@/Core/Components';
 */
 
 const QuizResult = () => {
-   const [searchParams] = useSearchParams();
+   const theme = useTheme();
+   const [searchParams, setSearchParams] = useSearchParams();
+   const { quizResult, allResults } = useAppSelector((state) => state.QuizResult);
+
+   const { isLoading } = useThunk("getQuizResult");
+   const { isSuccess: isSuccessGetAllSessions } = useThunk("getAllSessions");
+   const data = useMemo(() => (
+      [
+         { id: "1", value: quizResult.totalCorrect, label: 'Correct', color: alpha(theme.palette.success.light, 0.8) },
+         { id: "2", value: quizResult.totalWrong, label: 'Wrong', color: alpha(theme.palette.error.light, 0.8) },
+         { id: "3", value: quizResult.totalBlank, label: 'Blank', color: theme.palette.grey[300] },
+      ]
+   ), [quizResult, theme.palette])
+   
    const quizId = searchParams.get("quizId") as string;
    const resultId = searchParams.get("resultId") as string;
-
-   // Todo : /results/quiz?quizId=null ya da /results/quiz?quizId=aaa gibi durumlar için de kontrol yap, belki istek sonrası error ise bulunamadı gibi bir component render edilebilir.
-   if (!quizId || !resultId) { 
-      return <Navigate to="/" replace />
-   }
-
-   const theme = useTheme();
-   const { quizResult, allResults } = useAppSelector((state) => state.QuizResult);
-   const { isLoading } = useThunk("getQuizResult");
-   const data = [
-      { id: "1", value: quizResult.totalCorrect, label: 'Correct', color: alpha(theme.palette.success.light, 0.8) },
-      { id: "2", value: quizResult.totalWrong, label: 'Wrong', color: alpha(theme.palette.error.light, 0.8) },
-      { id: "3", value: quizResult.totalBlank, label: 'Blank', color: theme.palette.grey[300] },
-   ]
 
    useEffect(() => {
       if (quizId) {
          QuizResultThunks.getAllSessions(quizId);
       }
    }, [quizId])
+
+   useEffect(() => {
+      if (!resultId && isSuccessGetAllSessions) {
+         if (allResults.length > 0) {
+            searchParams.set("resultId", allResults[0].resultId);
+            setSearchParams(searchParams);
+         } else {
+            console.log("navigate user to another page");
+         }
+      }
+   }, [resultId, allResults.length, isSuccessGetAllSessions])
+
+   // Todo : /results/quiz?quizId=null ya da /results/quiz?quizId=aaa gibi durumlar için de kontrol yap, belki istek sonrası error ise bulunamadı gibi bir component render edilebilir.
+   if (!quizId) { 
+      return <Navigate to="/" replace />
+   }
 
    return (
       <S.QuizResult>
