@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { HttpResponseEnums } from '../Constants/Enums';
-import { type InitialStateTypes, type UserType } from './AppConfigTypes';
+import { type RequestResultType, type InitialStateTypes, type UserType } from './AppConfigTypes';
 
 const NAME = 'AppConfig';
 
@@ -21,7 +21,8 @@ const initialState: InitialStateTypes = {
   isOpenSidebar: false,
   loadings: {},
   requestStatuses: {},
-  errors: {}
+  errors: {},
+  payloads: {}
 };
 
 const AppConfigSlice = createSlice({
@@ -50,11 +51,12 @@ const AppConfigSlice = createSlice({
     closeSnackbar: (state, action) => {
       state.notifications = state.notifications.filter((notification) => notification.options.key !== action.payload);
     },
-    setRequestResult: (state, action) => {
-      const { actionName, loadingValue, requestStatusValue, errorValue } = action.payload;
+    setRequestResult: (state, action: PayloadAction<RequestResultType>) => {
+      const { actionName, loadingValue, requestStatusValue, errorValue, payloadValue } = action.payload;
       state.loadings[actionName] = loadingValue;
       state.requestStatuses[actionName] = requestStatusValue;
       state.errors[actionName] = errorValue;
+      state.payloads[actionName] = payloadValue;
     },
     setIdle: (state, action) => {
       const { actionName } = action.payload;

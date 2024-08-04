@@ -22,13 +22,14 @@ const getStatus = (actionStatus: ActionStatus): HttpResponseEnums => {
   }
 };
 
-const customMiddleWare: Middleware = (store) => (next) => (action: Action) => {
-  
+const thunkMiddleware: Middleware = (store) => (next) => (action: Action) => {
 
   if (!action.type.includes('request')) {
     next(action);
     return;
   }
+  
+  console.log(action, " ACTİON");
   
   const [, actionName, actionStatus] = action.type.split('/');
 
@@ -36,13 +37,11 @@ const customMiddleWare: Middleware = (store) => (next) => (action: Action) => {
     actionName, 
     loadingValue: actionStatus === ThunkEnums.PENDING, 
     requestStatusValue: getStatus(actionStatus as ActionStatus),
-    errorValue: actionStatus === ThunkEnums.REJECTED ? action.payload : null
+    errorValue: actionStatus === ThunkEnums.REJECTED ? action.payload : null,
+    payloadValue: action.payload || null
   }));
 
-  // if (actionStatus === ThunkEnums.REJECTED) {
-  //   snackbar(action.payload?.message || "Something went wrong with the server", { variant: 'error' })
-  // }
   next(action);
 };
 
-export default customMiddleWare;
+export default thunkMiddleware;

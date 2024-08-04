@@ -21,6 +21,10 @@ export type ErrorTypes = {
    [actionName: string]: string | null;
 }
 
+export type PayloadTypes = {
+   [actionName: string]: any
+};
+
 export type UserType = {
    name: string;
    surname: string;
@@ -32,11 +36,20 @@ export type UserType = {
    isRemoved: false;
 }
 
+export type RequestResultType = {
+   actionName: string;
+   loadingValue: boolean;
+   requestStatusValue: HttpResponseEnums;
+   errorValue: any | null;
+   payloadValue: any | null;
+}
+
 export type InitialStateTypes = {
    authorizedUser: UserType;
    notifications: NotificationTypes[];
    isOpenSidebar: boolean;
    loadings: LoadingTypes;
    requestStatuses: RequestStatusTypes;
-   errors: ErrorTypes
+   errors: ErrorTypes;
+   payloads: PayloadTypes;
 }

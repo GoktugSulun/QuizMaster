@@ -6,13 +6,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import rootReducers from './Core/RootReducers.js';
 import { Provider } from 'react-redux';
 import { SnackbarProvider } from 'notistack';
-import customMiddleWare from './Core/Middleware/CustomMiddleware.js';
+import thunkMiddleware from './Core/Middleware/ThunkMiddleware.js';
 import { ThemeProvider } from '@mui/material';
 import theme from './theme';
 
 export const store = configureStore({
   reducer: rootReducers,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(customMiddleWare)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunkMiddleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>
