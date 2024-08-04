@@ -9,17 +9,27 @@ const useThunk = (actionName: string) => {
     throw new Error('Missing params in useThunk: actionName is undefined!');
   }
 
-  const { loadings, requestStatuses, errors } = useAppSelector((state) => state.AppConfig);
+  const { loadings, requestStatuses, errors, payloads } = useAppSelector((state) => state.AppConfig);
   const isLoading = loadings?.[actionName] || false;
   const requestStatus = requestStatuses?.[actionName] || HttpResponseEnums.IDLE;
   const error = errors?.[actionName] || null;
+  const payload = payloads?.[actionName] || [];
   const isError = error !== null;
   const isSuccess = requestStatuses?.[actionName] === HttpResponseEnums.SUCCESS;
   const isIdle = requestStatuses?.[actionName] === HttpResponseEnums.IDLE;
 
   const setIdle = () => { dispatch(AppConfigActions.setIdle({ actionName })); };
 
-  return { isLoading, requestStatus, error, isError, isSuccess, isIdle, setIdle };
+  return { 
+    isLoading, 
+    requestStatus, 
+    error, 
+    payload,
+    isError, 
+    isSuccess, 
+    isIdle, 
+    setIdle 
+  };
 };
 
 export default useThunk;

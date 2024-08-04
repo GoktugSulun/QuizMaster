@@ -21,8 +21,14 @@ export type ErrorTypes = {
    [actionName: string]: string | null;
 }
 
+type PayloadType = { 
+   requestId: string; 
+   data: any; 
+   value: any; 
+}
+
 export type PayloadTypes = {
-   [actionName: string]: any
+   [actionName: string]: PayloadType[]
 };
 
 export type UserType = {
@@ -41,7 +47,7 @@ export type RequestResultType = {
    loadingValue: boolean;
    requestStatusValue: HttpResponseEnums;
    errorValue: any | null;
-   payloadValue: { data: any, value: any };
+   payloadValue: PayloadType;
 }
 
 export type InitialStateTypes = {

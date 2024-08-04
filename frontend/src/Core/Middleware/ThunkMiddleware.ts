@@ -2,9 +2,16 @@ import { type Middleware } from '@reduxjs/toolkit';
 import { HttpResponseEnums, ThunkEnums } from '../Constants/Enums';
 import { AppConfigActions } from '../Store/AppConfig.slice';
 
+type ArgsType = { data: any, value: any }
+
 type Action = {
   type: string;
   payload: { data: any; value: any } | { error: any } | undefined;
+  meta: {
+    arg: ArgsType;
+    requestId: string;
+    requestStatus: string;
+  }
 }
 
 type ActionStatus = "pending" | "fulfilled" | "rejected";
@@ -29,17 +36,21 @@ const thunkMiddleware: Middleware = (store) => (next) => (action: Action) => {
     return;
   }
   
-  console.log(action, " ACTİON");
-  
   const [, actionName, actionStatus] = action.type.split('/');
-  const payload: { data: any; value: any } | { error: any } | {} = action.payload || {}
+
+  console.log(action.meta, " ACTION.META");
+  
 
   store.dispatch(AppConfigActions.setRequestResult({ 
     actionName, 
     loadingValue: actionStatus === ThunkEnums.PENDING, 
     requestStatusValue: getStatus(actionStatus as ActionStatus),
-    errorValue: (actionStatus === ThunkEnums.REJECTED && ('error' in payload)) ? payload.error : null,
-    payloadValue: 'data' in payload ? payload : { data: undefined, value: undefined }
+    errorValue: actionStatus === ThunkEnums.REJECTED ? action.payload : null,
+    payloadValue: {
+      requestId: action.meta.requestId || "", 
+      data: action.meta.arg.data || null, 
+      value: action.meta.arg.value || null 
+    }
   }));
 
   next(action);

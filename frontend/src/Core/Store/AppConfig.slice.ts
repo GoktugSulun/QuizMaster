@@ -56,7 +56,22 @@ const AppConfigSlice = createSlice({
       state.loadings[actionName] = loadingValue;
       state.requestStatuses[actionName] = requestStatusValue;
       state.errors[actionName] = errorValue;
-      state.payloads[actionName] = payloadValue;
+      if (payloadValue.requestId) {
+        if (state.payloads[actionName]) {
+          const index = state.payloads[actionName].findIndex((item) => item.requestId === payloadValue.requestId);
+          if (index === -1) {
+            console.log("pushla");
+            state.payloads[actionName].push(payloadValue);
+          } else {
+            console.log("remove");
+            state.payloads[actionName].splice(index, 1);
+          }
+        } else {
+          console.log("first push");
+          state.payloads[actionName] = [payloadValue];
+        }
+      }
+      
     },
     setIdle: (state, action) => {
       const { actionName } = action.payload;

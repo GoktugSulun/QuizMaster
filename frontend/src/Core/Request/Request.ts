@@ -33,6 +33,8 @@ type RequestProps = {
   signal?: AbortSignal;
 }
 
+type ArgsType = { data: any, value: any }
+
 const baseURL = import.meta.env.VITE_API_URL;
 
 const payloadWithFiles = (payload: any, files: File | File[]) => {
@@ -51,7 +53,7 @@ const payloadWithFiles = (payload: any, files: File | File[]) => {
 export const request = async ({ method='GET', url, value, payload, files, key, success, failure, signal }: RequestProps) => {
   const thunk = createAsyncThunk(
     `request/${key}`, 
-    async (_, thunkAPI) => {
+    async (_: ArgsType, thunkAPI) => {
       try { 
         const token = localStorage.getItem("token");
         const headers = { 
@@ -60,8 +62,7 @@ export const request = async ({ method='GET', url, value, payload, files, key, s
         const data = files ? payloadWithFiles(payload, files) : payload;
         const response = await axios({ method, headers, baseURL, url, data, signal });
         if (response.data.type) {
-          success?.({ data: response.data.data, thunkAPI });
-          return thunkAPI.fulfillWithValue({ data, value });
+          return success?.({ data: response.data.data, thunkAPI });
         }
         snackbar(response.data?.message || "Something went wrong with the server", { variant: "error" });
         failure?.(response.data);
@@ -70,10 +71,10 @@ export const request = async ({ method='GET', url, value, payload, files, key, s
         if (error instanceof Error) {
           handleError(error);
           failure?.(error);
-          return thunkAPI.rejectWithValue({ error: error.message });
+          return thunkAPI.rejectWithValue(error.message);
         }
       }
     }
   );
-  return store.dispatch(thunk());
+  return store.dispatch(thunk({ data: payload, value }));
 };
