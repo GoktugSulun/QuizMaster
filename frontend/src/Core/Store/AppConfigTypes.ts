@@ -41,7 +41,7 @@ export type RequestResultType = {
    loadingValue: boolean;
    requestStatusValue: HttpResponseEnums;
    errorValue: any | null;
-   payloadValue: any | null;
+   payloadValue: { data: any, value: any };
 }
 
 export type InitialStateTypes = {

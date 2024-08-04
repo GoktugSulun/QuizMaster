@@ -4,7 +4,7 @@ import { AppConfigActions } from '../Store/AppConfig.slice';
 
 type Action = {
   type: string;
-  payload?: any;
+  payload: { data: any; value: any } | { error: any } | undefined;
 }
 
 type ActionStatus = "pending" | "fulfilled" | "rejected";
@@ -32,13 +32,14 @@ const thunkMiddleware: Middleware = (store) => (next) => (action: Action) => {
   console.log(action, " ACTİON");
   
   const [, actionName, actionStatus] = action.type.split('/');
+  const payload: { data: any; value: any } | { error: any } | {} = action.payload || {}
 
   store.dispatch(AppConfigActions.setRequestResult({ 
     actionName, 
     loadingValue: actionStatus === ThunkEnums.PENDING, 
     requestStatusValue: getStatus(actionStatus as ActionStatus),
-    errorValue: actionStatus === ThunkEnums.REJECTED ? action.payload : null,
-    payloadValue: action.payload || null
+    errorValue: (actionStatus === ThunkEnums.REJECTED && ('error' in payload)) ? payload.error : null,
+    payloadValue: 'data' in payload ? payload : { data: undefined, value: undefined }
   }));
 
   next(action);

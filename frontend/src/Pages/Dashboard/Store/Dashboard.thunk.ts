@@ -30,6 +30,7 @@ const DashboardThunks = {
   unmarkQuizAsFavorite: (payload: unmarkQuizAsFavoriteTypes) => request({
     method: 'PUT',
     url: `${ApiURL.UNMARK_QUIZ_AS_FAVORITE}/${payload.quizId}`,
+    value: { quizId: payload.quizId },
     key: 'unmarkQuizAsFavorite',
     success: ({ thunkAPI }) => {
       thunkAPI.dispatch(DashboardActions.updateFavoriteField({ quizId: payload.quizId, value: false, updateStore: payload.updateStore }));
@@ -49,6 +50,7 @@ const DashboardThunks = {
   unmarkQuizAsSaved: (payload: unmarkQuizAsSavedTypes) => request({
     method: 'PUT',
     url: `${ApiURL.UNMARK_QUIZ_AS_SAVED}/${payload.quizId}`,
+    value: { quizId: payload.quizId },
     key: 'unmarkQuizAsSaved',
     success: ({ thunkAPI }) => {
       thunkAPI.dispatch(DashboardActions.updateSaveField({ quizId: payload.quizId, value: false, updateStore: payload.updateStore }));
@@ -58,6 +60,7 @@ const DashboardThunks = {
   deleteQuiz: (quizId: deleteQuizTypes) => request({
     method: 'DELETE',
     url: `${ApiURL.QUIZ}/${quizId}`,
+    value: { quizId },
     key: 'deleteQuiz',
     success: ({ thunkAPI }) => {
       thunkAPI.dispatch(DashboardActions.deleteQuiz(quizId));
