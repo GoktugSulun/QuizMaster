@@ -44,7 +44,7 @@ const QuizResult = () => {
    useEffect(() => {
       if (!resultId && isSuccessGetAllSessions) {
          if (allResults.length > 0) {
-            searchParams.set("resultId", allResults[0].resultId);
+            searchParams.set("resultId", allResults[allResults.length - 1].resultId);
             setSearchParams(searchParams);
          } else {
             console.log("navigate user to another page");

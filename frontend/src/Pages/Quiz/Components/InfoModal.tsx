@@ -1,6 +1,5 @@
 import { BaseModal } from "@/Core/Components"
-import { useAppSelector, useThunk } from "@/Core/Hooks"
-import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector, useThunk } from "@/Core/Hooks"
 import { QuizActions } from "../Store/Quiz.slice";
 import { useNavigate } from "react-router-dom";
 import { RouteEnums } from "@/Constants/Enums";
@@ -8,7 +7,7 @@ import { Stack, Typography } from "@mui/material";
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 
 const InfoModal = () => {
-   const dispatch = useDispatch();
+   const dispatch = useAppDispatch();
    const navigate = useNavigate();
    const { isOpenInfoModal, quiz, quizResultResponse } = useAppSelector((state) => state.Quiz);
    const { setIdle } = useThunk("completeQuizSession");

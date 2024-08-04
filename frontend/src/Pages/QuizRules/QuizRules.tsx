@@ -5,11 +5,10 @@ import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import QuizRuleHeader from './Components/QuizRuleHeader';
 import QuizRuleInfos from './Components/QuizRuleInfos';
 import QuizRuleQuestionTypes from './Components/QuizRuleQuestionTypes';
-import { useAppSelector, useThunk } from '@/Core/Hooks';
+import { useAppDispatch, useAppSelector, useThunk } from '@/Core/Hooks';
 import { Loading } from '@/Core/Components';
 import { QuizRulesThunks } from './Store/QuizRules.thunk';
 import { QuizRulesActions } from './Store/QuizRules.slice';
-import { useDispatch } from 'react-redux';
 import { QuizStatusEnums } from '@/Constants/Enums';
 import { QuizActions } from '../Quiz/Store/Quiz.slice';
 import QuizSessionInfoModal from './Components/QuizSessionInfoModal/QuizSessionInfoModal';
@@ -30,7 +29,7 @@ const QuizRules = () => {
       return <Navigate to="/" replace />
    }
 
-   const dispatch = useDispatch();
+   const dispatch = useAppDispatch();
    const navigate = useNavigate();
    const quizRules = useAppSelector((state) => state.QuizRules.quizRules);
    const startQuizResponse = useAppSelector((state) => state.QuizRules.startQuizResponse);

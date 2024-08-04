@@ -35,7 +35,8 @@ const CreatorButtons = () => {
       const questions = form.getValues("questions");
       if (!validateQuestions(questions)) {
          // todo : Güzel bir error mesajı göster, belki eksik slide'lar tespit edilip bir icon çıkartılabilir üzerlerinde
-         return alert("Error");
+         dispatch(CreatorActions.setIsOpenErrorModal("OPEN"))
+         return;
       }
 
       // Edit

@@ -7,8 +7,9 @@ type InitialStateTypes = {
   isOpenQuizSettingsModal: boolean;
   isOpenInfoModal: boolean;
   isEditing: boolean;
-  quiz: QuizWithIdType,
-  questions: QuestionWithIdType[]
+  quiz: QuizWithIdType;
+  questions: QuestionWithIdType[];
+  isOpenWarningModal: boolean;
 }
 
 const initialState: InitialStateTypes = {
@@ -28,7 +29,8 @@ const initialState: InitialStateTypes = {
     userId: "",
     isRemoved: false,
   },
-  questions: []
+  questions: [],
+  isOpenWarningModal: false
 };
 
 const CreatorSlice = createSlice({
@@ -60,6 +62,14 @@ const CreatorSlice = createSlice({
     },
     setIsEditing: (state, action: PayloadAction<boolean>) => {
       state.isEditing = action.payload;
+    },
+    setIsOpenWarningModal: (state, action: PayloadAction<"OPEN" | "CLOSE" | "TOGGLE">) => {
+      const valueMap = {
+        "TOGGLE": !state.isOpenWarningModal,
+        "OPEN": true,
+        "CLOSE": false
+      }
+      state.isOpenWarningModal = valueMap[action.payload];
     },
   },  
 });

@@ -22,11 +22,14 @@ type BaseModalProps = {
    children: React.ReactNode;
    open: boolean;
    handleClose: () => void;
+   disableCloseButton?: boolean;
    title: string;
    firstButtonName?: string;
    firstButtonOnClick?: () => void;
+   disableFirstButton?: boolean;
    secondButtonName: string;
    secondButtonOnClick: () => void;
+   disableSecondButton?: boolean;
 }
 
 const BaseModal = (props: BaseModalProps) => {
@@ -34,11 +37,14 @@ const BaseModal = (props: BaseModalProps) => {
       children, 
       open, 
       handleClose, 
+      disableCloseButton = false,
       title, 
       firstButtonName = "Cancel", 
-      firstButtonOnClick, 
+      firstButtonOnClick,
+      disableFirstButton = false,
       secondButtonName, 
-      secondButtonOnClick  
+      secondButtonOnClick,
+      disableSecondButton = false
    } = props;
    const theme = useTheme();
 
@@ -68,6 +74,7 @@ const BaseModal = (props: BaseModalProps) => {
                         '&:hover .MuiSvgIcon-root': { color: "common.white" } 
                      }} 
                      onClick={handleClose}
+                     disabled={disableCloseButton}
                   >
                      <CloseIcon sx={{ color: "primary.main" }} />
                   </IconButton>
@@ -93,10 +100,11 @@ const BaseModal = (props: BaseModalProps) => {
                         }
                      }}
                      onClick={firstButtonOnClick ?? handleClose}
+                     disabled={disableFirstButton}
                   >
                      {firstButtonName}
                   </Button>
-                  <Button onClick={secondButtonOnClick}>
+                  <Button onClick={secondButtonOnClick} disabled={disableSecondButton}>
                      {secondButtonName}
                   </Button>
                </Stack>

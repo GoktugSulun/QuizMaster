@@ -1,8 +1,7 @@
 import Modal from '@mui/material/Modal';
 import { StyledQuizSessionInfoModal } from '../../Style/QuizRules.style';
 import QuizSessionInfoModalHeader from './QuizSessionInfoModalHeader';
-import { useAppSelector } from '@/Core/Hooks';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/Core/Hooks';
 import { QuizRulesActions } from '../../Store/QuizRules.slice';
 import { Divider } from '@mui/material';
 import QuizSessionInfoModalBody from './QuizSessionInfoModalBody';
@@ -16,7 +15,7 @@ type QuizSessionInfoModalProps = {
 
 //* This modal is open when the status is TIMEOUT or EXCEED_ATTEMPT 
 const QuizSessionInfoModal = (props: QuizSessionInfoModalProps) => {
-   const dispatch = useDispatch();
+   const dispatch = useAppDispatch();
    const navigate = useNavigate();
    const isOpen = useAppSelector((state) => state.QuizRules.isOpenSessionInfoModal)
 
