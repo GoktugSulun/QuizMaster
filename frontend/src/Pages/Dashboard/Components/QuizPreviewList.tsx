@@ -33,7 +33,7 @@ const QuizPreviewList = ({ getQuizzesHandler } : QuizPreviewListProps) => {
         quizzes.map((quiz, index, arr) => (
           <QuizPreview 
             key={quiz.id} 
-            data={quiz}
+            quiz={quiz}
             ref={(arr.length - 1 === index && canBeMoreQuiz) ? ref : null}
           />
         ))

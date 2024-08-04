@@ -6,6 +6,7 @@ import { useAppSelector, useThunk } from '@/Core/Hooks';
 import { Loading } from '@/Core/Components';
 import { useLocation } from 'react-router-dom';
 import { QuizTypeEnums } from '@/Constants/Enums';
+import ConfirmModal from './Components/ConfirmModal';
 
 const Dashboard = () => {
   const location = useLocation();
@@ -45,6 +46,7 @@ const Dashboard = () => {
               { isLoading && <Loading fullWidth={page === 1} margin={page === 1 ? "0" : "50px 0"} size={70} /> }
           </>
       }
+      <ConfirmModal />
     </S.Dashboard>
   )
 }

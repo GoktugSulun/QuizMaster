@@ -5,27 +5,30 @@ import EditIcon from '@mui/icons-material/Edit';
 import * as S from '../Style/Dashboard.style';
 import { type TooltipTypes } from "../Types/DashboardTypes";
 import DeleteIcon from '@mui/icons-material/Delete';
-import DashboardThunks from "../Store/Dashboard.thunk";
-import { useThunk } from "@/Core/Hooks";
+import { useAppDispatch, useThunk } from "@/Core/Hooks";
 import { Loading } from "@/Core/Components";
+import { DashboardActions } from "../Store/Dashboard.slice";
+import { IQuizResponse } from "@/Constants/ResponseTypes";
 
 type AdminButtonsProps = {
    tooltipState: [TooltipTypes, React.Dispatch<React.SetStateAction<TooltipTypes>>];
-   id: string;
+   quiz: IQuizResponse;
 }
 
 const AdminButtons = (props: AdminButtonsProps) => {
+   const dispatch = useAppDispatch();
    const navigate = useNavigate();
    const [tooltip, setTooltip] = props.tooltipState;
 
    const { isLoading: isLoadingDelete } = useThunk("deleteQuiz");
 
    const editHandler = () => {
-      navigate(`/creator/${props.id}`);
+      navigate(`/creator/${props.quiz.id}`);
    }
 
    const deleteHandler = () => {
-      DashboardThunks.deleteQuiz(props.id);
+      dispatch(DashboardActions.setTargetQuiz(props.quiz));
+      dispatch(DashboardActions.setIsOpenConfirmModal("OPEN"));
    }
 
    return (
