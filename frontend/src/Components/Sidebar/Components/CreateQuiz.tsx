@@ -2,15 +2,24 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import * as S from '../Style/Sidebar.style';
 import AddIcon from '@mui/icons-material/Add';
 import { CustomTooltip } from "@/Components/Tooltip";
-import { useAppSelector } from "@/Core/Hooks";
+import { useAppDispatch, useAppSelector } from "@/Core/Hooks";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AppConfigActions } from "@/Core/Store/AppConfig.slice";
 
-const CreateQuiz = () => {
+type CreateQuizProps = {
+  drawer?: boolean;
+}
+
+const CreateQuiz = ({ drawer }: CreateQuizProps) => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
 
   const navigateToCreator = () => {
+    if (drawer) {
+      dispatch(AppConfigActions.setIsOpenDrawer("CLOSE"))
+    }
     if (location.pathname !== '/creator') {
       const token = localStorage.getItem("token");
       if (!token) {

@@ -10,11 +10,17 @@ import * as S from '../Style/Sidebar.style';
 import { ListItemText } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CustomTooltip } from '@/Components/Tooltip';
-import { useAppSelector } from '@/Core/Hooks';
+import { useAppDispatch, useAppSelector } from '@/Core/Hooks';
 import { RouteEnums } from '@/Constants/Enums';
 import useAuth from '@/Hooks/useAuth';
+import { AppConfigActions } from '@/Core/Store/AppConfig.slice';
 
-const Menu = () => {
+type MenuProps = {
+   drawer?: boolean;
+}
+
+const Menu = ({ drawer }: MenuProps) => {
+   const dispatch = useAppDispatch();
    const location = useLocation();
    const navigate = useNavigate();
    const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
@@ -22,6 +28,9 @@ const Menu = () => {
    const { isAuthorized } = useAuth();
 
    const navigateHandler = (targetPath: string) => {
+      if (drawer) {
+         dispatch(AppConfigActions.setIsOpenDrawer("CLOSE"))
+      }
       if (location.pathname !== targetPath) {
          if (isAuthorized) {
             navigate(targetPath);

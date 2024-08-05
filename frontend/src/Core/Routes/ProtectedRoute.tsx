@@ -4,6 +4,7 @@ import { Loading } from '../Components';
 import { Header } from '@/Components/Header';
 import { Sidebar } from '@/Components/Sidebar';
 import { ContentWrapper, MainWrapper } from '../Layout';
+import { type Theme, useMediaQuery } from '@mui/material';
 
 type ProtectedRouteProps = {
   isPrivate?: boolean;
@@ -14,6 +15,7 @@ const ProtectedRoute = (props: ProtectedRouteProps) => {
    const { is404 = false, isPrivate = false } = props;
    const location = useLocation();
    const token = localStorage.getItem('token');
+   const isUpLg = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"));
 
    if (isPrivate && !token) {
       return (
@@ -33,7 +35,7 @@ const ProtectedRoute = (props: ProtectedRouteProps) => {
 
    return (
       <MainWrapper>
-         <Sidebar /> 
+         { isUpLg && <Sidebar /> }
          <ContentWrapper>
             { !isCreatorPage && <Header is404={is404} /> } 
             <Suspense fallback={<Loading fullWidth size={80} />}>

@@ -2,10 +2,11 @@ import { MenuItem, Stack, alpha, styled } from '@mui/material';
 import { shouldForwardProp } from '@/Core/Utils';
  
 type SidebarProps = {
-   isOpen: boolean
+   isOpen: boolean;
+   drawer?: boolean;
 }
 
-export const Sidebar = styled('div')<SidebarProps>(({ theme, isOpen }) => ({
+export const Sidebar = styled('div')<SidebarProps>(({ theme, isOpen, drawer }) => ({
    display: 'flex',
    flexDirection: 'column',
    width: isOpen ? '250px' : '80px',
@@ -15,9 +16,9 @@ export const Sidebar = styled('div')<SidebarProps>(({ theme, isOpen }) => ({
    background: theme.palette.common.white,
    boxShadow: `${theme.palette.secondary.light} 0px 1px 4px`,
    borderTop: '1px solid rgba(0, 0, 0, 0.16)',
-   transition: 'min-width 350ms, width 350ms',
-   position: 'sticky',
-   top: 10,
+   transition: drawer ? 'normal' : 'min-width 350ms, width 350ms',
+   position: drawer ? 'initial' : 'sticky',
+   top: drawer ? 0 : 10,
    '& .MuiIconButton-root.toggle': {
       position: 'absolute',
       top: isOpen ? 100 : 140,

@@ -54,6 +54,7 @@ export type InitialStateTypes = {
    authorizedUser: UserType;
    notifications: NotificationTypes[];
    isOpenSidebar: boolean;
+   isOpenDrawer: boolean;
    loadings: LoadingTypes;
    requestStatuses: RequestStatusTypes;
    errors: ErrorTypes;

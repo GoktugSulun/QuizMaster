@@ -19,10 +19,11 @@ const initialState: InitialStateTypes = {
   authorizedUser: defaultAuthorizedUser,
   notifications: [],
   isOpenSidebar: false,
+  isOpenDrawer: false,
   loadings: {},
   requestStatuses: {},
   errors: {},
-  payloads: {}
+  payloads: {},
 };
 
 const AppConfigSlice = createSlice({
@@ -47,6 +48,14 @@ const AppConfigSlice = createSlice({
         "CLOSE": false
       }
       state.isOpenSidebar = valueMap[action.payload];
+    },
+    setIsOpenDrawer: (state, action: PayloadAction<"CLOSE" | "OPEN" | "TOGGLE">) => {
+      const valueMap = {
+        "TOGGLE": !state.isOpenDrawer,
+        "OPEN": true,
+        "CLOSE": false
+      }
+      state.isOpenDrawer = valueMap[action.payload];
     },
     closeSnackbar: (state, action) => {
       state.notifications = state.notifications.filter((notification) => notification.options.key !== action.payload);

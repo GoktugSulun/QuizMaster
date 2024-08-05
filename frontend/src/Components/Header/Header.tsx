@@ -1,12 +1,15 @@
-import { Box, Stack, alpha, useTheme } from '@mui/material';
+import { Box, Stack, Theme, alpha, useMediaQuery, useTheme } from '@mui/material';
 import * as S from './Style/Header.style';
 import ProfileMenu from './Components/Menu';
 import { useLocation, useParams } from 'react-router-dom';
 import CreatorInput from './Components/CreatorInput';
 import CreatorButtons from './Components/CreatorButtons';
-import { useAppSelector } from '@/Core/Hooks';
+import { useAppDispatch, useAppSelector } from '@/Core/Hooks';
 import useAuth from '@/Hooks/useAuth';
 import AuthButtons from './Components/AuthButtons';
+import Drawer from './Components/Drawer';
+import { useEffect } from 'react';
+import { AppConfigActions } from '@/Core/Store/AppConfig.slice';
 
 const extract = (pathname: string): string => {
   if (pathname.includes('/')) {
@@ -25,8 +28,12 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
   const { pathname } = useLocation();
   const params = useParams();
   const theme = useTheme();
+  const dispatch = useAppDispatch();
   const isCreatorPage = pathname.includes('/creator');
   const doesQuizIdExist = !!useAppSelector((state) => state.Creator.quiz.id);
+  const isBelowLg = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
+  const isUpLg = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"));
+  const isUpSm = useMediaQuery((theme: Theme) => theme.breakpoints.up("sm"));
 
   const { isAuthorized } = useAuth();
 
@@ -64,13 +71,20 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
     }
   })();
 
+  useEffect(() => {
+    if (isUpLg) {
+      dispatch(AppConfigActions.setIsOpenDrawer('CLOSE'));
+    }
+  }, [isUpLg])
+
   return (
     <S.HeaderWrapper>
       <Box sx={{ backdropFilter: "blur(2px)", height: "10px" }} />
       <S.Header>
         <Stack flexDirection="row" height="100%">
           <Stack flexDirection="row" alignItems="center">
-            <S.PageTitle fontWeight="bold" variant="h4"> {pageTitle} </S.PageTitle>
+            { isBelowLg && <Drawer /> }
+            { isUpSm && <S.PageTitle fontWeight="bold" variant="h4"> {pageTitle} </S.PageTitle> }
             { isCreatorPage && doesQuizIdExist && params.quizId && <CreatorInput /> }
           </Stack>
           <Stack 
