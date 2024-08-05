@@ -19,9 +19,7 @@ export const CretorHeader = styled(Stack)(({ theme }) => ({
    borderRadius: 5,
 }));
 
-export const Slides = styled(Stack)(({ theme }) => ({
-   borderLeft: `1px solid ${theme.palette.secondary.light}`,
-   borderRadius: "5px 0 0 5px",
+export const Slides = styled(Stack)(() => ({
 }));
 
 export const Slide = styled(Stack, { shouldForwardProp })<{ $isActive: boolean; }>(({ theme, $isActive }) => ({
@@ -36,10 +34,8 @@ export const Slide = styled(Stack, { shouldForwardProp })<{ $isActive: boolean; 
    }
 }));
 
-export const Question = styled(Stack)(({ theme }) => ({
+export const Question = styled(Stack)(() => ({
    flex: 1,
-   borderLeft: `1px solid ${theme.palette.secondary.light}`,
-   borderRight: `1px solid ${theme.palette.secondary.light}`,
 }));
 
 export const QuestionSettings = styled(Stack)(({ theme }) => ({

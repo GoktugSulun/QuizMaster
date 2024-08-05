@@ -91,7 +91,7 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
             > 
               {pageTitle} 
             </S.PageTitle> 
-            { isCreatorPage && doesQuizIdExist && params.quizId && <CreatorInput /> }
+            { isCreatorPage && isUpLg && doesQuizIdExist && params.quizId && <CreatorInput /> }
           </Stack>
           <Stack 
             flex={1}
@@ -102,7 +102,7 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
             height="100%"
             paddingRight={5}
           >
-            { isCreatorPage && doesQuizIdExist && params.quizId && <CreatorButtons /> }
+            { isCreatorPage && isUpLg && doesQuizIdExist && params.quizId && <CreatorButtons /> }
             { isAuthorized ? <ProfileMenu /> : <AuthButtons />}
           </Stack>
         </Stack>

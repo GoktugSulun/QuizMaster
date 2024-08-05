@@ -34,7 +34,7 @@ const Options = () => {
       flex={1} 
       alignItems="center" 
       justifyContent="center"
-      padding="0 50px"
+      padding="25px 50px"
     >
       { optionsComponent }
     </Stack>

@@ -70,7 +70,7 @@ const QuestionSettings = () => {
             overflow="hidden" 
             padding="20px"
             {...(isOpen 
-               ? { borderRight: `1px solid ${theme.palette.secondary.light}`, opacity: 1, visibility: "visible" }
+               ? { borderLeft: `1px solid ${theme.palette.secondary.light}`, opacity: 1, visibility: "visible" }
                : { opacity: 0, visibility: "hidden" }
             )}
          >

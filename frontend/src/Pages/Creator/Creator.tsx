@@ -1,4 +1,4 @@
-import { Stack, useTheme } from '@mui/material';
+import { Stack, type Theme, useMediaQuery, useTheme } from '@mui/material';
 import { Question } from './Components/Question';
 import { QuestionSettings } from './Components/QuestionSettings';
 import { Slides } from './Components/Slides';
@@ -16,6 +16,7 @@ import { Loading } from '@/Core/Components';
 import { InfoModal } from './Components/InfoModal';
 import { FullSizeLoadingWrapper } from '@/Core/Layout';
 import { WarningModal } from './Components/WarningModal';
+import ResponsiveSettings from './Components/ResponsiveSettings/ResponsiveSettings';
 
 type DefaultValuesType = {
   name: string;
@@ -61,6 +62,7 @@ const Creator = () => {
   const form = useForm({ defaultValues });
   const quizId = useAppSelector((state) => state.Creator.quiz.id);
   const questions = useAppSelector((state) => state.Creator.questions);
+  const isBelowLg = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
 
   const { isLoading, isSuccess } = useThunk("getQuizByIdWithQuestions");
   const { isSuccess: isSuccessCreateQuiz } = useThunk("createQuiz");
@@ -131,20 +133,22 @@ const Creator = () => {
   return (
     <FormProvider {...form}>
       <Header />
+      { isBelowLg && <ResponsiveSettings /> }
       <S.Creator>
         <Stack 
-          flexDirection="row" 
+          flexDirection={isBelowLg ? "column-reverse" : "row"} 
           height="100%"
-          borderTop={isLoading ? "none" : `1px solid ${theme.palette.secondary.light}`}
-          borderBottom={isLoading ? "none" : `1px solid ${theme.palette.secondary.light}`}
+          border={`1px solid ${theme.palette.secondary.light}`}
           borderRadius="5px"
           bgcolor={theme.palette.common.white}
           position="relative"
         >
           { isLoading && <Loading fullWidth blur={2} size={60} /> }
           <Slides />
-          <Question />
-          <QuestionSettings />
+          <Stack flexDirection={"row"} >
+            <Question />
+            <QuestionSettings />
+          </Stack>
         </Stack>
       </S.Creator>
       <QuizSettings />
