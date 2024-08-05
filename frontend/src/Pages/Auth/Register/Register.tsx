@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { TextInput } from '@/Core/Inputs';
 import { Button, IconButton, Stack, useTheme } from '@mui/material';
 import { snackbar } from '@/Core/Utils';
-import { useEffect, useState } from 'react';
+import { KeyboardEvent, useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { CustomTooltip } from '@/Components/Tooltip';
@@ -50,7 +50,11 @@ const schema = yup.object({
       .test("Are the passwords match", "Passwords don't match", (value, context) => {
          return value === context.parent.rpassword;
       })
-}) as yup.ObjectSchema<DefaultValuesType>;;
+}) as yup.ObjectSchema<DefaultValuesType>;
+
+enum KeyboardEventCode {
+   ENTER = 'Enter'
+}
 
 const Register = () => {
    const theme = useTheme();
@@ -74,6 +78,12 @@ const Register = () => {
 
    const triggerPassword = async () => {
       await form.trigger("password");
+   }
+
+   const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+      if ((e.key as unknown as KeyboardEventCode) === KeyboardEventCode.ENTER) {
+         registerHandler();
+      }
    }
 
    const rpassword = useWatch({ control: form.control, name: "rpassword" });
@@ -108,6 +118,7 @@ const Register = () => {
                control={form.control}
                name="name"
                disabled={isLoading}
+               onKeyDown={onKeyDownHandler}
             />
             <TextInput
                placeholder="Your surname"
@@ -116,6 +127,7 @@ const Register = () => {
                control={form.control}
                name="surname"
                disabled={isLoading}
+               onKeyDown={onKeyDownHandler}
             />
             <TextInput
                placeholder="Your email"
@@ -124,6 +136,7 @@ const Register = () => {
                control={form.control}
                name="email"
                disabled={isLoading}
+               onKeyDown={onKeyDownHandler}
             />
             <TextInput
                placeholder="Your password"
@@ -133,6 +146,7 @@ const Register = () => {
                name="password"
                type={showPassword ? "text" : "password"}
                disabled={isLoading}
+               onKeyDown={onKeyDownHandler}
                endAdornment={
                   <CustomTooltip arrow title={showPassword ? "Hide" : "Show"} placement="top">
                      <IconButton disabled={isLoading} onClick={() => setShowPassword((prev) => !prev)}> 
@@ -149,6 +163,7 @@ const Register = () => {
                name="rpassword"
                type={showRpassword ? "text" : "password"}
                disabled={isLoading}
+               onKeyDown={onKeyDownHandler}
                endAdornment={
                   <CustomTooltip arrow title={showRpassword ? "Hide" : "Show"} placement="top">
                      <IconButton disabled={isLoading} onClick={() => setShowRpassword((prev) => !prev)}> 
