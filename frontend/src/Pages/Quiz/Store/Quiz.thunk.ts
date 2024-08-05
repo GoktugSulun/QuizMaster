@@ -18,11 +18,7 @@ export const QuizThunks = {
       method: 'PUT',
       url: `${ApiURL.QUIZ_SESSION}/save`,
       key: 'saveQuizSession',
-      payload,
-      success: () => {
-         // TODO : bu parametereyi sil
-         console.log("success saving");
-      },
+      payload
    }),
    completeQuizSession: (payload: CompleteQuizSessionType) => request({
       method: 'PUT',

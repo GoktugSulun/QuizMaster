@@ -53,14 +53,8 @@ class QuestionService {
       // todo : update isRemoved: true for this questions data
       // todo : insert new questions
       
-      console.log(1);
-      
       const removeResult = await Question.updateMany({ quizId, isRemoved: false }, { isRemoved: true });
-      
-      console.log(2, ' update yaptı eskileri sildi');
       const data = await Question.insertMany(questions);
-      console.log(3, ' yenilerini ekledi');
-      console.log(4, data);
         
       return { 
         type: true, 

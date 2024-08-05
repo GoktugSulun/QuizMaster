@@ -18,9 +18,6 @@ const QuestionSettings = () => {
    
    const questions = useFieldArray({ name: "questions", control: form.control });
    const watchedQuestions = form.watch("questions") as QuestionType[];
-
-   console.log(questions, " questions");
-   console.log(watchedQuestions, " watchedQuestions");
    
    const activeIndex = form.watch("activeIndex") as number;
    const questionType = form.watch(`questions.${activeIndex}.type`);
@@ -44,7 +41,6 @@ const QuestionSettings = () => {
    };
 
    const removeQuestionHandler = () => {
-      console.log(watchedQuestions, " watchedQuestionswatchedQuestionswatchedQuestionswatchedQuestions");
       if (watchedQuestions.length === 1) {
          return alert("Cannot delete!");
       }
