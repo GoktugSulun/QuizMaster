@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from '../../Types/CreatorTypes';
 import { useAppSelector } from '@/Core/Hooks';
 import { snackbar } from '@/Core/Utils';
+import { CustomTooltip } from '@/Components/Tooltip';
 
 const Slides = () => {
    const form = useFormContext();
@@ -87,19 +88,21 @@ const Slides = () => {
             marginLeft={isBelowLg ? "10px" : "0px"}
             height={isBelowLg ? "auto" : "50px"}
          >
-            <Button 
-               sx={{ 
-                  height: isBelowLg ? "100%" : "auto", 
-                  width: isBelowLg ? "50px" : "auto",
-                  '& .MuiButton-startIcon': {
-                     margin: isBelowLg ? 0 : "0 7px 0 -4px"
-                  }
-                }} 
-               onClick={addQuestionHandler} 
-               startIcon={<AddIcon />}
-            >
-               {isBelowLg ? "" : "Add Question"} 
-            </Button>
+            <CustomTooltip arrow title="Add Question">
+               <Button 
+                  sx={{ 
+                     height: isBelowLg ? "100%" : "auto", 
+                     width: isBelowLg ? "50px" : "auto",
+                     '& .MuiButton-startIcon': {
+                        margin: isBelowLg ? 0 : "0 7px 0 -4px"
+                     }
+                  }} 
+                  onClick={addQuestionHandler} 
+                  startIcon={<AddIcon />}
+               >
+                  {isBelowLg ? "" : "Add Question"} 
+               </Button>
+            </CustomTooltip>
          </Stack>
       </S.Slides>
    )

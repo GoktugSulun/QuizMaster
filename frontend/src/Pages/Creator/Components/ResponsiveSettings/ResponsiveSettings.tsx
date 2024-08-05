@@ -3,6 +3,7 @@ import CreatorInput from "@/Components/Header/Components/CreatorInput"
 import { Stack } from "@mui/material"
 
 const ResponsiveSettings = () => {
+   
    return (
       <Stack 
          flexDirection={"row"} 

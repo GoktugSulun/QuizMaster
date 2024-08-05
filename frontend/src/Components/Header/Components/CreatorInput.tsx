@@ -1,16 +1,22 @@
 import { useAppDispatch, useAppSelector } from "@/Core/Hooks";
 import { CreatorActions } from "@/Pages/Creator/Store/Creator.slice";
-import { Button, Stack, Typography, useTheme } from "@mui/material";
-
+import { Button, Stack, type Theme, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 const CreatorInput = () => {
    const theme = useTheme();
    const dispatch = useAppDispatch();
    const name = useAppSelector((state) => state.Creator.quiz.name);
+   const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
    const openQuizSettingsModal = () => {
       dispatch(CreatorActions.setIsOpenQuizSettingsModal("OPEN"));
    };
+
+   if (isBelowSm) {
+      return (
+         <Button onClick={openQuizSettingsModal}> Settings </Button>
+      )
+   }
 
    return (
       <Stack
