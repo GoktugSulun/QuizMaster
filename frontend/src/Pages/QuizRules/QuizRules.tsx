@@ -14,6 +14,7 @@ import { QuizActions } from '../Quiz/Store/Quiz.slice';
 import QuizSessionInfoModal from './Components/QuizSessionInfoModal/QuizSessionInfoModal';
 import { type QuizWithQuestions } from '../Creator/Types/CreatorTypes';
 import { type QuizSessionResponse } from '../Quiz/Types/QuizTypes';
+import { snackbar } from '@/Core/Utils';
 
 /* 
    ? Required searchParam => id
@@ -41,7 +42,11 @@ const QuizRules = () => {
    } = useThunk('getQuizRulesById');
 
    const startQuizHandler = () => {
-      QuizRulesThunks.startQuiz({ quizId: id })
+      if (quizRules.numberOfQuestions > 0) {
+         QuizRulesThunks.startQuiz({ quizId: id })
+      } else {
+         snackbar("This quiz has no questions!", { variant: "error" })
+      }
    };
 
    const navigateToQuiz = (quiz: QuizWithQuestions, quizSession?: QuizSessionResponse) => {

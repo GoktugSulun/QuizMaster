@@ -16,7 +16,7 @@ export interface IGetAll {
 }
 
 export interface IGetFavoriteQuizzes {
-   isRemoved: boolean;
+   isRemoved?: boolean;
    page: number;
    limit: number;
 }

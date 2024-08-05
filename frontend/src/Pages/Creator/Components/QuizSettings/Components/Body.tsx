@@ -198,7 +198,7 @@ const Body = () => {
                { visibility === VisibilityEnums.PUBLIC && <PublicIcon sx={{ color: "primary.main" }} /> }
                <Typography fontSize={14} paragraph>
                   { visibility === VisibilityEnums.PRIVATE && 'No one will see this quiz until you change the visibility.' }
-                  { visibility === VisibilityEnums.PUBLIC && 'Everyone can access this quiz.' }
+                  { visibility === VisibilityEnums.PUBLIC && 'Everyone can access this quiz, if the quiz has at least one question.' }
                </Typography>
             </Stack>
          </Stack>
