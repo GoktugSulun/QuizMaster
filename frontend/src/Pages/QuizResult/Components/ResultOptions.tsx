@@ -43,6 +43,10 @@ const ResultOptions = () => {
       }
    }, [resultId]);
 
+   if (allResults.length === 0 || allResults.length === 1) {
+      return null;
+   }
+
    return (
       <SelectInput
          control={form.control}

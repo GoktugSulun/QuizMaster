@@ -25,12 +25,15 @@ type RequestProps = {
   method?: 'GET' | 'POST' | 'DELETE' |'PUT' | 'PATCH';
   url: string;
   payload?: any;
+  value?: { [key: string]: any };
   files?: null | File | File[];
   key: string;
   success?: ({ data, thunkAPI }: SuccessFunctionType) => void;
   failure?: (error: Error | AxiosResponse) => void;
   signal?: AbortSignal;
 }
+
+type ArgsType = { data: any, value: any }
 
 const baseURL = import.meta.env.VITE_API_URL;
 
@@ -47,10 +50,10 @@ const payloadWithFiles = (payload: any, files: File | File[]) => {
   return formData;
 };
 
-export const request = async ({ method='GET', url, payload, files, key, success, failure, signal }: RequestProps) => {
+export const request = async ({ method='GET', url, value, payload, files, key, success, failure, signal }: RequestProps) => {
   const thunk = createAsyncThunk(
     `request/${key}`, 
-    async (_, thunkAPI) => {
+    async (_: ArgsType, thunkAPI) => {
       try { 
         const token = localStorage.getItem("token");
         const headers = { 
@@ -73,5 +76,5 @@ export const request = async ({ method='GET', url, payload, files, key, success,
       }
     }
   );
-  return store.dispatch(thunk());
+  return store.dispatch(thunk({ data: payload, value }));
 };

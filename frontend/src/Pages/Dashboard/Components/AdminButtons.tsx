@@ -5,27 +5,27 @@ import EditIcon from '@mui/icons-material/Edit';
 import * as S from '../Style/Dashboard.style';
 import { type TooltipTypes } from "../Types/DashboardTypes";
 import DeleteIcon from '@mui/icons-material/Delete';
-import DashboardThunks from "../Store/Dashboard.thunk";
-import { useThunk } from "@/Core/Hooks";
-import { Loading } from "@/Core/Components";
+import { useAppDispatch } from "@/Core/Hooks";
+import { DashboardActions } from "../Store/Dashboard.slice";
+import { IQuizResponse } from "@/Constants/ResponseTypes";
 
 type AdminButtonsProps = {
    tooltipState: [TooltipTypes, React.Dispatch<React.SetStateAction<TooltipTypes>>];
-   id: string;
+   quiz: IQuizResponse;
 }
 
 const AdminButtons = (props: AdminButtonsProps) => {
+   const dispatch = useAppDispatch();
    const navigate = useNavigate();
    const [tooltip, setTooltip] = props.tooltipState;
 
-   const { isLoading: isLoadingDelete } = useThunk("deleteQuiz");
-
    const editHandler = () => {
-      navigate(`/creator/${props.id}`);
+      navigate(`/creator/${props.quiz.id}`);
    }
 
    const deleteHandler = () => {
-      DashboardThunks.deleteQuiz(props.id);
+      dispatch(DashboardActions.setTargetQuiz(props.quiz));
+      dispatch(DashboardActions.setIsOpenConfirmModal("OPEN"));
    }
 
    return (
@@ -44,10 +44,9 @@ const AdminButtons = (props: AdminButtonsProps) => {
          >
             <S.DeleteButton 
                onClick={deleteHandler}
-               disabled={isLoadingDelete}
                sx={{ filter: "drop-shadow(4px 2px 6px #999)" }}
             >
-               { isLoadingDelete ? <Loading size={24} /> : <DeleteIcon /> }
+               { <DeleteIcon /> }
             </S.DeleteButton>
          </CustomTooltip>
          <CustomTooltip 

@@ -2,9 +2,16 @@ import { type Middleware } from '@reduxjs/toolkit';
 import { HttpResponseEnums, ThunkEnums } from '../Constants/Enums';
 import { AppConfigActions } from '../Store/AppConfig.slice';
 
+type ArgsType = { data: any, value: any }
+
 type Action = {
   type: string;
-  payload?: any;
+  payload: { data: any; value: any } | { error: any } | undefined;
+  meta: {
+    arg: ArgsType;
+    requestId: string;
+    requestStatus: string;
+  }
 }
 
 type ActionStatus = "pending" | "fulfilled" | "rejected";
@@ -22,8 +29,7 @@ const getStatus = (actionStatus: ActionStatus): HttpResponseEnums => {
   }
 };
 
-const customMiddleWare: Middleware = (store) => (next) => (action: Action) => {
-  
+const thunkMiddleware: Middleware = (store) => (next) => (action: Action) => {
 
   if (!action.type.includes('request')) {
     next(action);
@@ -36,13 +42,15 @@ const customMiddleWare: Middleware = (store) => (next) => (action: Action) => {
     actionName, 
     loadingValue: actionStatus === ThunkEnums.PENDING, 
     requestStatusValue: getStatus(actionStatus as ActionStatus),
-    errorValue: actionStatus === ThunkEnums.REJECTED ? action.payload : null
+    errorValue: actionStatus === ThunkEnums.REJECTED ? action.payload : null,
+    payloadValue: {
+      requestId: action.meta.requestId || "", 
+      data: action.meta.arg.data || null, 
+      value: action.meta.arg.value || null 
+    }
   }));
 
-  // if (actionStatus === ThunkEnums.REJECTED) {
-  //   snackbar(action.payload?.message || "Something went wrong with the server", { variant: 'error' })
-  // }
   next(action);
 };
 
-export default customMiddleWare;
+export default thunkMiddleware;

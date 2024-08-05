@@ -4,6 +4,7 @@ import CompletedIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import { useAppSelector, useThunk } from "@/Core/Hooks";
 import { HttpResponseEnums } from "@/Core/Constants/Enums";
+import { useMemo } from "react";
 
 const iconProps = {
    fontSize: "150px",
@@ -25,37 +26,34 @@ const Body = () => {
    const requestStatus = isEditing ? requestStatusEdit : requestStatusCreate;
    const error = isEditing ? errorEdit : errorCreate;
 
-   const valueMap = {
-      [HttpResponseEnums.IDLE]: {
-         icon: <Loading size={130} />,
-         text: `Questions are saving for ${name} quiz with id "${id}", please wait.`,
-         textColor: theme.palette.primary.main,
-      },
-      [HttpResponseEnums.LOADING]: {
-         icon: <Loading size={130} />,
-         text: `Questions are saving for ${name} quiz with id "${id}", please wait.`,
-         textColor: theme.palette.primary.main
-      },
-      [HttpResponseEnums.SUCCESS]: {
-         icon: <CompletedIcon sx={{ ...iconProps, color: theme.palette.success.light }} />,
-         text: `The questions have been saved for the "${name}" quiz under the ID "${id}". You can either continue editing your quiz now or access it later from the 'Created' page.`,
-         textColor: theme.palette.success.main
-      },
-      [HttpResponseEnums.FAILURE]: {
-         icon: <ErrorIcon sx={{ ...iconProps, color: theme.palette.error.light }} />,
-         text: `An error occurs, please close this window and try again!`,
-         textColor: theme.palette.error.main,
-         error: error ? `Error detail: ${error}` : null
+   const valueMap = useMemo(() => (
+      {
+         [HttpResponseEnums.IDLE]: {
+            icon: <Loading size={80} />,
+            text: `Questions are saving for ${name} quiz with id "${id}", please wait.`,
+         },
+         [HttpResponseEnums.LOADING]: {
+            icon: <Loading size={80} />,
+            text: `Questions are saving for ${name} quiz with id "${id}", please wait.`,
+         },
+         [HttpResponseEnums.SUCCESS]: {
+            icon: <CompletedIcon sx={{ ...iconProps, color: theme.palette.primary.main }} />,
+            text: `The questions have been saved for the "${name}" quiz under the ID "${id}". You can either continue editing your quiz now or access it later from the 'Created' page.`,
+         },
+         [HttpResponseEnums.FAILURE]: {
+            icon: <ErrorIcon sx={{ ...iconProps, color: theme.palette.primary.main }} />,
+            text: `An error occurs, please close this window and try again!`,
+            error: error ? `Error detail: ${error}` : null
+         }
       }
-   }
+   ), [HttpResponseEnums, name, id, theme.palette.primary.main])
 
    return (
-      <Stack padding="50px 0" gap="30px">
+      <Stack padding="25px 0" gap="30px">
          <Stack alignItems="center"> { valueMap[requestStatus].icon } </Stack>
          <Typography 
-            paragraph 
             textAlign="center"
-            color={valueMap[requestStatus].textColor}
+            color={"#5e5e5e"}
          >
             { valueMap[requestStatus].text }
             <br />

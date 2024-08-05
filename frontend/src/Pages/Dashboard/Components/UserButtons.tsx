@@ -25,13 +25,17 @@ const UserButtons = (props: UserButtonsProps) => {
    const [tooltip, setTooltip] = tooltipState;
    const navigate = useNavigate();
    const location = useLocation();
-
-   const { isLoading: isLoadingMarkFavorite } = useThunk("markQuizAsFavorite");
-   const { isLoading: isLoadingUnmarkFavorite } = useThunk("unmarkQuizAsFavorite");
-   const { isLoading: isLoadingMarkSaved } = useThunk("markQuizAsSaved");
-   const { isLoading: isLoadingUnmarkSaved } = useThunk("unmarkQuizAsSaved");
-
    const { isAuthorized } = useAuth();
+
+   const { payload: markQuizAsFavoritePayload } = useThunk("markQuizAsFavorite");
+   const { payload: unmarkQuizAsFavoritePayload } = useThunk("unmarkQuizAsFavorite");
+   const { payload: markQuizAsSavedPayload } = useThunk("markQuizAsSaved");
+   const { payload: unmarkQuizAsSavedPayload } = useThunk("unmarkQuizAsSaved");
+
+   const isLoadingLikeIcon = (markQuizAsFavoritePayload?.some((item) => item?.data?.quizId === id)) 
+      || (unmarkQuizAsFavoritePayload?.some((item) => item?.value?.quizId === id))
+   const isLoadingSavedIcon = (markQuizAsSavedPayload?.some((item) => item?.data?.quizId === id)) 
+      || (unmarkQuizAsSavedPayload?.some((item) => item?.value?.quizId === id))
 
    const onClickFavoriteButton = () => {
       if (!isAuthorized){
@@ -76,12 +80,12 @@ const UserButtons = (props: UserButtonsProps) => {
             title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
          >
             <S.LikeButton 
-               disabled={(isLoadingMarkFavorite || isLoadingUnmarkFavorite)} 
+               disabled={isLoadingLikeIcon} 
                onClick={onClickFavoriteButton}
                sx={{ filter: "drop-shadow(4px 2px 6px #999)" }}
             >
                { 
-                  (isLoadingMarkFavorite || isLoadingUnmarkFavorite)
+                  isLoadingLikeIcon
                      ? <Loading size={24} /> 
                      : isFavorite ? <FilledLikeIcon /> : <LikeIcon /> 
                }
@@ -96,12 +100,12 @@ const UserButtons = (props: UserButtonsProps) => {
             title={isSaved ? 'Remove from saved' : 'Add to saved'}
          >
             <S.SaveButton 
-               disabled={(isLoadingMarkSaved || isLoadingUnmarkSaved)} 
+               disabled={isLoadingSavedIcon} 
                onClick={onClickSaveButton}
                sx={{ filter: "drop-shadow(4px 2px 6px #999)" }}
             >
                { 
-                  (isLoadingMarkSaved || isLoadingUnmarkSaved)
+                  isLoadingSavedIcon
                      ? <Loading size={24} /> 
                      : isSaved ? <FilledSaveIcon /> : <SaveIcon /> 
                }

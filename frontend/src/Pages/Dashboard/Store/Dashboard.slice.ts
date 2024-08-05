@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IQuizResponse } from '@/Constants/ResponseTypes';
+import { VisibilityEnums } from '@/Pages/Creator/Types/CreatorTypes';
 
 const NAME = 'Dashboard';
 
@@ -8,13 +9,29 @@ type InitialStateTypes = {
   limit: number;
   canBeMoreQuiz: boolean;
   quizzes: IQuizResponse[];
+  isOpenConfirmModal: boolean;
+  targetQuiz: IQuizResponse;
 }
 
 const initialState: InitialStateTypes = {
   quizzes: [],
   page: 1,
   limit: 10,
-  canBeMoreQuiz: true
+  canBeMoreQuiz: true,
+  isOpenConfirmModal: false,
+  targetQuiz: {
+    id: "",
+    name: "",
+    description: "",
+    visibility: VisibilityEnums.PUBLIC,
+    image: "",
+    totalTime: 0,
+    creatorId: "",
+    isFavorite: false,
+    isSaved: false,
+    createdAt: "",
+    updatedAt: "",
+  }
 };
 
 const DashboardSlice = createSlice({  
@@ -57,6 +74,17 @@ const DashboardSlice = createSlice({
     setPage: (state, action: PayloadAction<{ newPage: number; }>) => {
       state.page = action.payload.newPage;
     },
+    setIsOpenConfirmModal: (state, action: PayloadAction<"OPEN" | "CLOSE" | "TOGGLE">) => {
+      const valueMap = {
+        "TOGGLE": !state.isOpenConfirmModal,
+        "OPEN": true,
+        "CLOSE": false
+      }
+      state.isOpenConfirmModal = valueMap[action.payload];
+    },
+    setTargetQuiz: (state, action: PayloadAction<IQuizResponse>) => {
+      state.targetQuiz = action.payload;
+    }
   },
 });
 

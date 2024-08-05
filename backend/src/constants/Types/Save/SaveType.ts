@@ -14,7 +14,7 @@ export interface IUnmarkAsSaved {
 }
 
 export interface IGetSavedQuizzes {
-   isRemoved: boolean;
+   isRemoved?: boolean;
    page: number;
    limit: number;
 }

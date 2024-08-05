@@ -17,7 +17,7 @@ import QuizSessionService from "./QuizSessionService.ts";
 class QuizService {
   static async getAll(params: IGetAll): Promise<IResponse> {
     try {
-      const { page, limit, isRemoved, creatorId, visibility } = params;
+      const { page, limit, isRemoved, creatorId, visibility, haveQuestions=false } = params;
       const skip = page === 1 ? 0 : (page - 1) * limit;
 
       const quizData = await Quiz
@@ -30,7 +30,20 @@ class QuizService {
         .skip(skip)
         .limit(limit);
       
-      const data = await Promise.all(quizData.map(async (quiz) => {
+      let filteredQuizData = quizData;
+      if (haveQuestions) {
+        const quizDataWithQuestions = await Promise.all(quizData.map(async (quiz) => {
+          const questionServiceResult = await QuestionService.get({ quizId: quiz.id, isRemoved: false });
+          if (!questionServiceResult.type) {
+            throw Error(questionServiceResult.message)
+          }
+          return questionServiceResult.data?.length > 0 ? quiz : null;
+        }))
+  
+        filteredQuizData = quizDataWithQuestions.filter((quiz) => quiz !== null);
+      }
+      
+      const data = await Promise.all(filteredQuizData.map(async (quiz) => {
         const favoriteData = await Favorite.findOne({ quizId: quiz.id, userId: authorizedUserId, isRemoved: false });
         const saveData = await Save.findOne({ quizId: quiz.id, userId: authorizedUserId, isRemoved: false });
 
@@ -59,21 +72,21 @@ class QuizService {
         async () => {
           switch (type) {
             case QuizTypeEnums.ALL: {
-              const result = await QuizService.getAll({ page, limit, isRemoved, visibility: VisibilityEnums.PUBLIC });
+              const result = await QuizService.getAll({ page, limit, isRemoved, visibility: VisibilityEnums.PUBLIC, haveQuestions: true });
               if (!result.type) {
                 throw new Error(result.message);
               }
               return result.data;
             }
             case QuizTypeEnums.FAVORITES: {
-              const result = await FavoriteService.getFavoriteQuizzes({ page, limit, isRemoved });
+              const result = await FavoriteService.getFavoriteQuizzes({ page, limit });
               if (!result.type) {
                 throw new Error(result.message);
               }
               return result.data;
             }
             case QuizTypeEnums.SAVED: {
-              const result = await SaveService.getSavedQuizzes({ page, limit, isRemoved });
+              const result = await SaveService.getSavedQuizzes({ page, limit });
               if (!result.type) {
                 throw new Error(result.message);
               }

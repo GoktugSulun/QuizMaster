@@ -47,7 +47,7 @@ class QuestionService {
 
   static async edit(params: IEdit): Promise<IResponse> {
     try {
-      const { quizId, questions  } = params;
+      const { quizId, questions } = params;
 
       // todo : find all questions belongs to quizId
       // todo : update isRemoved: true for this questions data

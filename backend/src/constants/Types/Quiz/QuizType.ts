@@ -19,6 +19,7 @@ export interface IGetAll {
    limit: number;
    creatorId?: string;
    visibility?: VisibilityEnums;
+   haveQuestions?: boolean;
 }
 
 export interface ICreate {

@@ -15,6 +15,7 @@ import CreatorThunks from './Store/Creator.thunk';
 import { Loading } from '@/Core/Components';
 import { InfoModal } from './Components/InfoModal';
 import { FullSizeLoadingWrapper } from '@/Core/Layout';
+import { WarningModal } from './Components/WarningModal';
 
 type DefaultValuesType = {
   name: string;
@@ -148,6 +149,7 @@ const Creator = () => {
       </S.Creator>
       <QuizSettings />
       <InfoModal />
+      <WarningModal />
     </FormProvider>
   )
 }

@@ -7,20 +7,15 @@ import { Ref, forwardRef } from 'react';
 import QuizPreviewHeader from './QuizPreviewHeader';
 
 type QuizPreviewType = {
-   data: IQuizResponse,
+   quiz: IQuizResponse,
 }
 
 const QuizPreview = forwardRef((props: QuizPreviewType, ref: Ref<HTMLDivElement> | null) => {
-   const { id, name, description, totalTime, image, isFavorite, isSaved } = props.data;
+   const { id, name, description, totalTime } = props.quiz;
 
    return (
       <S.QuizPreview {...(ref) ? { ref } : {}}>
-         <QuizPreviewHeader
-            image={image}
-            isFavorite={isFavorite}
-            isSaved={isSaved}
-            id={id}
-         />
+         <QuizPreviewHeader quiz={props.quiz} />
          <Stack 
             paddingTop="10px"
             flex={1} 

@@ -5,6 +5,7 @@ import { Box, Button, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from '../../Types/CreatorTypes';
 import { useAppSelector } from '@/Core/Hooks';
+import { snackbar } from '@/Core/Utils';
 
 const Slides = () => {
    const form = useFormContext();
@@ -42,11 +43,11 @@ const Slides = () => {
 
    const removeQuestionHandler = (event: React.MouseEvent<HTMLButtonElement>, index: number) => {
       event.stopPropagation();
-      if (questions.fields.length === 1) {
-         return alert("Cannot delete!");
+      if (controlledQuestions.length === 1) {
+         return snackbar("The quiz must have at least one question!", { variant: "error" });
       }
       const activeIndex = form.getValues("activeIndex") as number;
-      if ((activeIndex === index && questions.fields.length - 1 === index) || activeIndex > index) {
+      if ((activeIndex === index && controlledQuestions.length - 1 === index) || activeIndex > index) {
          form.setValue("activeIndex", activeIndex - 1);
       }
       questions.remove(index);
