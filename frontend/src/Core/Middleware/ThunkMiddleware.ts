@@ -38,9 +38,6 @@ const thunkMiddleware: Middleware = (store) => (next) => (action: Action) => {
   
   const [, actionName, actionStatus] = action.type.split('/');
 
-  console.log(action.meta, " ACTION.META");
-  
-
   store.dispatch(AppConfigActions.setRequestResult({ 
     actionName, 
     loadingValue: actionStatus === ThunkEnums.PENDING, 

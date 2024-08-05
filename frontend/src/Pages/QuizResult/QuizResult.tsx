@@ -1,4 +1,4 @@
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import * as S from './Style/QuizResult.style';
 import PieChart from './Components/PieChart';
 import { alpha, Box, Stack, Typography, useTheme } from '@mui/material';
@@ -9,6 +9,7 @@ import QuizResultThunks from './Store/QuizResult.thunk';
 import { useAppSelector, useThunk } from '@/Core/Hooks';
 import ResultOptions from './Components/ResultOptions';
 import { Loading } from '@/Core/Components';
+import { RouteEnums } from '@/Constants/Enums';
 
 /*
    ? Required searchParams => quizId and resultId
@@ -19,6 +20,7 @@ import { Loading } from '@/Core/Components';
 
 const QuizResult = () => {
    const theme = useTheme();
+   const navigate = useNavigate();
    const [searchParams, setSearchParams] = useSearchParams();
    const { quizResult, allResults } = useAppSelector((state) => state.QuizResult);
 
@@ -47,7 +49,7 @@ const QuizResult = () => {
             searchParams.set("resultId", allResults[allResults.length - 1].resultId);
             setSearchParams(searchParams);
          } else {
-            console.log("navigate user to another page");
+            navigate(RouteEnums.FEED, { replace: true })
          }
       }
    }, [resultId, allResults.length, isSuccessGetAllSessions])
@@ -78,7 +80,7 @@ const QuizResult = () => {
                > 
                   { quizResult.quiz.name }
                </Typography>
-               { allResults.length > 1 && <ResultOptions /> }
+               <ResultOptions />
             </Stack>
             <Stack flex={1} rowGap={3} padding="20px 0" flexDirection={{ xs: "column", lg: "row" }}>
                <Box minHeight={{ xs: '400px', lg: 'auto' }} flex={1}> <PieChart data={data} /> </Box>

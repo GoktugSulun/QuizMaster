@@ -93,11 +93,12 @@ const QuizSettings = () => {
    useEffect(() => {
       if (isOpenQuizSettingsModal && quiz.id) {
          const { minute, second } = formatTime(quiz.totalTime);
+         
          form.reset({
             name: quiz.name,
             description: quiz.description,
             maxAttempt: quiz.maxAttempt,
-            visibility: VisibilityEnums.PRIVATE,
+            visibility: quiz.visibility,
             image: null,
             minute,
             second,

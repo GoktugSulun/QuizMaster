@@ -60,14 +60,11 @@ const AppConfigSlice = createSlice({
         if (state.payloads[actionName]) {
           const index = state.payloads[actionName].findIndex((item) => item.requestId === payloadValue.requestId);
           if (index === -1) {
-            console.log("pushla");
             state.payloads[actionName].push(payloadValue);
           } else {
-            console.log("remove");
             state.payloads[actionName].splice(index, 1);
           }
         } else {
-          console.log("first push");
           state.payloads[actionName] = [payloadValue];
         }
       }

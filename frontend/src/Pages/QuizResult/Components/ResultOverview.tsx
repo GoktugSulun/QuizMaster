@@ -22,7 +22,7 @@ const Results = () => {
       <Stack flex={1} gap={3} padding="0 30px">
          <ResultOverviewBox 
             title="YOUR GRADE"
-            text={quizResult.grade}
+            text={Math.floor(quizResult.grade)}
             items={[
                { id: 1, key: 'Spent Duration:', value: `${spentDurationInfo.minute.name}:${spentDurationInfo.second.name}` },
                { id: 2, key: 'Total Duration:', value: `${totalDurationInfo.minute.name}:${totalDurationInfo.second.name}` },
