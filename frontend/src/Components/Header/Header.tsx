@@ -84,7 +84,13 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
         <Stack flexDirection="row" height="100%">
           <Stack flexDirection="row" alignItems="center">
             { isBelowLg && <Drawer /> }
-            { isUpSm && <S.PageTitle fontWeight="bold" variant="h4"> {pageTitle} </S.PageTitle> }
+            <S.PageTitle 
+              fontWeight="bold" 
+              variant={isUpSm ? "h4" : "h5"}
+              sx={{ padding: isUpSm ? '0 40px' : '0 10px' }}
+            > 
+              {pageTitle} 
+            </S.PageTitle> 
             { isCreatorPage && doesQuizIdExist && params.quizId && <CreatorInput /> }
           </Stack>
           <Stack 
