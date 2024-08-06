@@ -36,9 +36,11 @@ const Footer = (props: FooterProps) => {
       const { minute, second, image, ...data } = form.getValues() as DefaultValuesType;
       const payload = {
          ...data,
-         image: typeof image === "string" ? null : image,
          totalTime: minute!.id * 60 + second!.id
       } as QuizType;
+
+      console.log(payload, " payload");
+      
 
       //* Edit an existing quiz
       if (isEditing) {
@@ -47,7 +49,7 @@ const Footer = (props: FooterProps) => {
       }
 
       //* Create a new quiz
-      CreatorThunks.createQuiz(payload);
+      CreatorThunks.createQuiz(payload, image);
    };
 
    useEffect(() => {

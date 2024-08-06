@@ -204,6 +204,7 @@ class QuizService {
   static async create(params: ICreate): Promise<IResponse> {
     try {
       const quizData = params;
+      console.log(quizData, " quizData");
       
       const quiz = new Quiz(quizData);
       const data = await quiz.save();

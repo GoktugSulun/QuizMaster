@@ -5,10 +5,11 @@ import { type QuizWithQuestions, type QuizType, type QuizWithIdType, type Questi
 import { snackbar } from "@/Core/Utils";
 
 const CreatorThunks = {
-   createQuiz: (payload: QuizType) => request({
+   createQuiz: (payload: Omit<QuizType, "image">, files: File | null) => request({
       method: 'POST',
       url: ApiURL.QUIZ,
       payload,
+      files,
       key: 'createQuiz',
       success: ({ data, thunkAPI }) => {
          const payload = data as QuizWithIdType;

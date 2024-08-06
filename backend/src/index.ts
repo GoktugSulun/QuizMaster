@@ -8,6 +8,7 @@ import QuestionRoute from './routes/QuestionRoute.ts';
 import AuthRoute from './routes/AuthRoute.ts';
 import QuizSessionRoute from './routes/QuizSessionRoute.ts';
 import QuizResultRoute from './routes/QuizResultRoute.ts';
+import path from 'path';
 
 // TODO : change it later
 export const authorizedUserId = "1";
@@ -43,6 +44,9 @@ app.get('/health', (req: Request, res: Response) => {
     message: 'Deployment is running :=)'
   });
 });
+
+const __dirname = path.resolve();
+app.use(express.static(__dirname + '/files'));
 
 app.use(`/v1/quizzes`, QuizRoute);
 app.use(`/v1/questions`, QuestionRoute);
