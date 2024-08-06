@@ -17,7 +17,6 @@ export const Header = styled('div')(({ theme }) => ({
 }));
 
 export const PageTitle = styled(Typography)(({ theme }) => ({
-   padding: '0 40px',
    display: 'grid',
    placeItems: 'center',
    color: theme.palette.primary.main,

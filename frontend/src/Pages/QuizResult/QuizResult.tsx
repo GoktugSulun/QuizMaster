@@ -71,6 +71,8 @@ const QuizResult = () => {
                margin="20px 10px"
                borderRadius="10px"
                padding="20px"
+               gap={1}
+               flexWrap={"wrap"}
             >
                <Typography 
                   variant="h4" 

@@ -8,8 +8,13 @@ import CreateQuiz from './Components/CreateQuiz';
 import { useAppDispatch, useAppSelector } from '@/Core/Hooks';
 import { AppConfigActions } from '@/Core/Store/AppConfig.slice';
 import { CustomTooltip } from '../Tooltip';
+import { useEffect } from 'react';
 
-const Sidebar = () => {
+type SidebarProps = { 
+   drawer?: boolean; 
+}
+
+const Sidebar = (props: SidebarProps) => {
    const dispatch = useAppDispatch();
    const isOpenSidebar = useAppSelector((state) => state.AppConfig.isOpenSidebar);
 
@@ -17,19 +22,30 @@ const Sidebar = () => {
       dispatch(AppConfigActions.setIsOpenSidebar("TOGGLE"));
    }
 
+   useEffect(() => {
+      if (props.drawer){
+         dispatch(AppConfigActions.setIsOpenSidebar("OPEN"))
+      }
+   }, [props.drawer])
+
    return (
-      <S.Sidebar isOpen={isOpenSidebar}>
+      <S.Sidebar isOpen={isOpenSidebar} drawer={props.drawer} >
          <Box>
-            <CustomTooltip arrow title={isOpenSidebar ? "Close Sidebar" : "Open Sidebar"}>
-               <IconButton className="toggle" onClick={toggleSidebar}>
-                  { isOpenSidebar ? <ArrowBackIcon /> : <ArrowForwardIcon /> }
-               </IconButton>
-            </CustomTooltip>
+            { 
+               !props.drawer 
+                  && (
+                     <CustomTooltip arrow title={isOpenSidebar ? "Close Sidebar" : "Open Sidebar"}>
+                        <IconButton className="toggle" onClick={toggleSidebar}>
+                           { isOpenSidebar ? <ArrowBackIcon /> : <ArrowForwardIcon /> }
+                        </IconButton>
+                     </CustomTooltip>
+                  ) 
+            }
             <Logo />
-         <Menu />
+         <Menu drawer />
          </Box>
          <Stack flex={1} justifyContent="flex-end">
-            <CreateQuiz />
+            <CreateQuiz drawer />
          </Stack>
       </S.Sidebar>
    )

@@ -3,24 +3,27 @@ import QuizIcon from '@mui/icons-material/Quiz';
 import RewardIcon from '@mui/icons-material/MilitaryTech';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from '../../Types/CreatorTypes';
-import { Button, Divider, IconButton, Stack, alpha, useTheme } from '@mui/material';
+import { Button, Divider, IconButton, Stack, type Theme, alpha, useMediaQuery, useTheme } from '@mui/material';
 import OptionsIcon from '@mui/icons-material/Apps';
 import { CustomTooltip } from '@/Components/Tooltip';
 import InputGroup from './Components/InputGroup';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIosNew';
-import { useState } from 'react';
+import { type Dispatch, type SetStateAction } from 'react';
+import { snackbar } from '@/Core/Utils';
 
-const QuestionSettings = () => {
+type QuestionSettings = {
+   openState: [boolean, Dispatch<SetStateAction<boolean>>]
+}
+
+const QuestionSettings = ({ openState }: QuestionSettings) => {
    const theme = useTheme();
    const form = useFormContext();
-   const [isOpen, setIsOpen] = useState(true);
+   const [isOpen, setIsOpen] = openState;
+   const isBelowMd = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
    
    const questions = useFieldArray({ name: "questions", control: form.control });
    const watchedQuestions = form.watch("questions") as QuestionType[];
-
-   console.log(questions, " questions");
-   console.log(watchedQuestions, " watchedQuestions");
    
    const activeIndex = form.watch("activeIndex") as number;
    const questionType = form.watch(`questions.${activeIndex}.type`);
@@ -44,9 +47,8 @@ const QuestionSettings = () => {
    };
 
    const removeQuestionHandler = () => {
-      console.log(watchedQuestions, " watchedQuestionswatchedQuestionswatchedQuestionswatchedQuestions");
       if (watchedQuestions.length === 1) {
-         return alert("Cannot delete!");
+         return snackbar("The quiz must have at least one question!", { variant: "error" });
       }
       if (watchedQuestions.length - 1 === activeIndex) {
          form.setValue("activeIndex", activeIndex - 1);
@@ -58,6 +60,7 @@ const QuestionSettings = () => {
       <S.QuestionSettings 
          width={isOpen ? 300 : 0}
          sx={{ transition: "width 500ms" }}
+         $isBelowMd={isBelowMd}
       >
          <CustomTooltip 
             title={isOpen ? "Close Question Settings" : "Open Question Settings"}
@@ -74,7 +77,7 @@ const QuestionSettings = () => {
             overflow="hidden" 
             padding="20px"
             {...(isOpen 
-               ? { borderRight: `1px solid ${theme.palette.secondary.light}`, opacity: 1, visibility: "visible" }
+               ? { borderLeft: `1px solid ${theme.palette.secondary.light}`, opacity: 1, visibility: "visible" }
                : { opacity: 0, visibility: "hidden" }
             )}
          >

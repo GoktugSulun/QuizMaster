@@ -19,9 +19,7 @@ export const CretorHeader = styled(Stack)(({ theme }) => ({
    borderRadius: 5,
 }));
 
-export const Slides = styled(Stack)(({ theme }) => ({
-   borderLeft: `1px solid ${theme.palette.secondary.light}`,
-   borderRadius: "5px 0 0 5px",
+export const Slides = styled(Stack)(() => ({
 }));
 
 export const Slide = styled(Stack, { shouldForwardProp })<{ $isActive: boolean; }>(({ theme, $isActive }) => ({
@@ -36,15 +34,25 @@ export const Slide = styled(Stack, { shouldForwardProp })<{ $isActive: boolean; 
    }
 }));
 
-export const Question = styled(Stack)(({ theme }) => ({
+export const Question = styled(Stack)(() => ({
    flex: 1,
-   borderLeft: `1px solid ${theme.palette.secondary.light}`,
-   borderRight: `1px solid ${theme.palette.secondary.light}`,
 }));
 
-export const QuestionSettings = styled(Stack)(({ theme }) => ({
+export const QuestionSettings = styled(Stack, { shouldForwardProp })<{ $isBelowMd: boolean; }>(({ theme, $isBelowMd }) => ({
    borderRadius: "0 5px 5px 0",
    position: "relative",
+   ...(
+      $isBelowMd 
+         ? {
+            position: "absolute",
+            top: 0,
+            right: 0,
+            height: "100%",
+            zIndex: 999,
+            background: theme.palette.common.white
+         }
+         : {}
+   ),
    '& .MuiIconButton-root.toggle': {
       position: 'absolute',
       top: 140,

@@ -1,16 +1,20 @@
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import * as S from '../../Style/Creator.style';
 import Slide from './Components/Slide';
-import { Box, Button, Stack } from '@mui/material';
+import { Button, Stack, type Theme, useMediaQuery, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from '../../Types/CreatorTypes';
 import { useAppSelector } from '@/Core/Hooks';
 import { snackbar } from '@/Core/Utils';
+import { CustomTooltip } from '@/Components/Tooltip';
 
 const Slides = () => {
    const form = useFormContext();
-   const questions = useFieldArray({ name: "questions", control: form.control });
+   const theme = useTheme();
    const quizId = useAppSelector((state) => state.Creator.quiz.id);
+   const isBelowMd = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
+
+   const questions = useFieldArray({ name: "questions", control: form.control });
 
    const watchedQuestions = form.watch("questions") as QuestionType[];
    const controlledQuestions = watchedQuestions.map((field, index) => {
@@ -54,13 +58,18 @@ const Slides = () => {
    };
 
    return (
-      <S.Slides>
-         <Box 
+      <S.Slides 
+         flexDirection={isBelowMd ? "row" : "column"}
+         sx={{ borderTop: isBelowMd ? `1px solid ${theme.palette.secondary.light}` : "none" }}
+      >
+         <Stack 
             //* 80px: header, 30px: 15+15 padding for parent, 20px: 10+10 padding for root,
-            maxHeight="calc(100vh - 80px - 30px - 20px - 55px)" 
+            maxHeight="calc(100vh - 80px - 30px - 20px - 55px)"
+            maxWidth="calc(100vw - 100px)"
             overflow="auto"
             sx={{ "::-webkit-scrollbar": { width: "5px" } }}
             boxShadow= "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"
+            flexDirection={isBelowMd ? "row" : "column"}
          >
             {controlledQuestions.map((field, index) => (
                <Slide 
@@ -71,14 +80,29 @@ const Slides = () => {
                   index={index} 
                />
             ))}
-         </Box>
+         </Stack>
          <Stack 
-            alignItems="center" 
+            alignItems={isBelowMd ? "stretch" : "center" }
             justifyContent="center"
-            marginTop="10px"
-            height="50px"
+            marginTop={isBelowMd ? "0px" : "10px"}
+            marginLeft={isBelowMd ? "10px" : "0px"}
+            height={isBelowMd ? "auto" : "50px"}
          >
-            <Button onClick={addQuestionHandler} startIcon={<AddIcon />}> Add Question </Button>
+            <CustomTooltip arrow title="Add Question">
+               <Button 
+                  sx={{ 
+                     height: isBelowMd ? "100%" : "auto", 
+                     width: isBelowMd ? "50px" : "auto",
+                     '& .MuiButton-startIcon': {
+                        margin: isBelowMd ? 0 : "0 7px 0 -4px"
+                     }
+                  }} 
+                  onClick={addQuestionHandler} 
+                  startIcon={<AddIcon />}
+               >
+                  {isBelowMd ? "" : "Add Question"} 
+               </Button>
+            </CustomTooltip>
          </Stack>
       </S.Slides>
    )

@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { TextInput } from '@/Core/Inputs';
 import { Button, IconButton, Stack, useTheme } from '@mui/material';
 import { snackbar } from '@/Core/Utils';
-import { useEffect, useState } from 'react';
+import { KeyboardEvent, useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { CustomTooltip } from '@/Components/Tooltip';
@@ -34,7 +34,11 @@ const schema = yup.object({
       .string()
       .required("Password is required field!")
       .min(6, "Password must be minimum 6 characters")
-}) as yup.ObjectSchema<DefaultValuesType>;;
+}) as yup.ObjectSchema<DefaultValuesType>;
+
+enum KeyboardEventCode {
+   ENTER = 'Enter'
+}
 
 const Login = () => {
    const theme = useTheme();
@@ -53,6 +57,12 @@ const Login = () => {
       }
       AuthThunks.login(form.getValues());
    };
+   
+   const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+      if ((e.key as unknown as KeyboardEventCode) === KeyboardEventCode.ENTER) {
+         loginHandler();
+      }
+   }
 
    useEffect(() => {
       if (isSuccess) {
@@ -88,6 +98,7 @@ const Login = () => {
                control={form.control}
                name="email"
                disabled={isLoading}
+               onKeyDown={onKeyDownHandler}
             />
             <TextInput
                placeholder="Your password"
@@ -97,6 +108,7 @@ const Login = () => {
                name="password"
                type={showPassword ? "text" : "password"}
                disabled={isLoading}
+               onKeyDown={onKeyDownHandler}
                endAdornment={
                   <CustomTooltip arrow title={showPassword ? "Hide" : "Show"} placement="top">
                      <IconButton disabled={isLoading} onClick={() => setShowPassword((prev) => !prev)}> 
