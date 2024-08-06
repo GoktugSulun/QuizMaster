@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, type Theme, Typography, useMediaQuery } from "@mui/material";
 
 type Item = {
    id: number;
@@ -13,9 +13,14 @@ type ResultBoxProps = {
 };
 
 const ResultBox = (props: ResultBoxProps) => {
+  const isBelowMd = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
 
    return (
-      <Stack flexDirection="row" columnGap={4}>
+      <Stack 
+         flexDirection={isBelowMd ? "column" : "row"} 
+         columnGap={4} 
+         rowGap={2}
+      >
          <Box 
             boxShadow="rgba(0, 0, 0, 0.16) 0px 1px 4px"
             padding="15px 50px"
