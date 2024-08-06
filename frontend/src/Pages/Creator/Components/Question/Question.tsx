@@ -5,10 +5,10 @@ import { type Theme, useMediaQuery, useTheme } from '@mui/material';
 
 const Question = () => {
   const theme = useTheme();
-  const isBelowLg = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
+  const isBelowMd = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
    
   return (
-    <S.Question sx={{ borderLeft: isBelowLg ? "none" : `1px solid ${theme.palette.secondary.light}` }}>
+    <S.Question sx={{ borderLeft: isBelowMd ? "none" : `1px solid ${theme.palette.secondary.light}` }}>
       <QuestionHeader />
       <Options />
     </S.Question>

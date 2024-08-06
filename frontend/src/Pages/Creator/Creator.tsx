@@ -6,7 +6,7 @@ import * as S from './Style/Creator.style';
 import { FormProvider, useForm } from 'react-hook-form';
 import { VisibilityEnums, CorrectOptionEnums, PointEnums, QuestionEnums, type QuestionType } from './Types/CreatorTypes';
 import { Header } from '@/Components/Header';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { QuizSettings } from './Components/QuizSettings';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector, useThunk } from '@/Core/Hooks';
@@ -59,10 +59,11 @@ const Creator = () => {
   const theme = useTheme();
   const params = useParams();
   const dispatch = useAppDispatch();
+  const [isOpenQuestionSettings, setIsOpenQuestionSettings] = useState(true);
   const form = useForm({ defaultValues });
   const quizId = useAppSelector((state) => state.Creator.quiz.id);
   const questions = useAppSelector((state) => state.Creator.questions);
-  const isBelowLg = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
+  const isBelowMd = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
 
   const { isLoading, isSuccess } = useThunk("getQuizByIdWithQuestions");
   const { isSuccess: isSuccessCreateQuiz } = useThunk("createQuiz");
@@ -77,6 +78,12 @@ const Creator = () => {
       }
     }
  }, [isSuccess]);
+
+ useEffect(() => {
+  if (isBelowMd) {
+    setIsOpenQuestionSettings(false);
+  }
+}, [isBelowMd]);
 
   useEffect(() => {
     if (isSuccessCreateQuiz) {
@@ -133,10 +140,10 @@ const Creator = () => {
   return (
     <FormProvider {...form}>
       <Header />
-      { isBelowLg && <ResponsiveSettings /> }
+      { isBelowMd && <ResponsiveSettings /> }
       <S.Creator>
         <Stack 
-          flexDirection={isBelowLg ? "column-reverse" : "row"} 
+          flexDirection={isBelowMd ? "column-reverse" : "row"} 
           height="100%"
           border={`1px solid ${theme.palette.secondary.light}`}
           borderRadius="5px"
@@ -145,9 +152,15 @@ const Creator = () => {
         >
           { isLoading && <Loading fullWidth blur={2} size={60} /> }
           <Slides />
-          <Stack flexDirection={"row"} >
+          <Stack 
+            flexDirection={"row"} 
+            position={"relative"} 
+            bgcolor={(isBelowMd && isOpenQuestionSettings) ? "rgba(0,0,0,0.1)" : ""}
+            sx={{ transition: "bg-color 350ms" }}
+            flex={1}
+          >
             <Question />
-            <QuestionSettings />
+            <QuestionSettings openState={[isOpenQuestionSettings, setIsOpenQuestionSettings]} />
           </Stack>
         </Stack>
       </S.Creator>

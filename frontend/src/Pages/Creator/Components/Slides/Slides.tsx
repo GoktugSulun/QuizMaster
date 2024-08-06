@@ -12,7 +12,7 @@ const Slides = () => {
    const form = useFormContext();
    const theme = useTheme();
    const quizId = useAppSelector((state) => state.Creator.quiz.id);
-   const isBelowLg = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
+   const isBelowMd = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
 
    const questions = useFieldArray({ name: "questions", control: form.control });
 
@@ -59,8 +59,8 @@ const Slides = () => {
 
    return (
       <S.Slides 
-         flexDirection={isBelowLg ? "row" : "column"}
-         sx={{ borderTop: isBelowLg ? `1px solid ${theme.palette.secondary.light}` : "none" }}
+         flexDirection={isBelowMd ? "row" : "column"}
+         sx={{ borderTop: isBelowMd ? `1px solid ${theme.palette.secondary.light}` : "none" }}
       >
          <Stack 
             //* 80px: header, 30px: 15+15 padding for parent, 20px: 10+10 padding for root,
@@ -69,7 +69,7 @@ const Slides = () => {
             overflow="auto"
             sx={{ "::-webkit-scrollbar": { width: "5px" } }}
             boxShadow= "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"
-            flexDirection={isBelowLg ? "row" : "column"}
+            flexDirection={isBelowMd ? "row" : "column"}
          >
             {controlledQuestions.map((field, index) => (
                <Slide 
@@ -82,25 +82,25 @@ const Slides = () => {
             ))}
          </Stack>
          <Stack 
-            alignItems={isBelowLg ? "stretch" : "center" }
+            alignItems={isBelowMd ? "stretch" : "center" }
             justifyContent="center"
-            marginTop={isBelowLg ? "0px" : "10px"}
-            marginLeft={isBelowLg ? "10px" : "0px"}
-            height={isBelowLg ? "auto" : "50px"}
+            marginTop={isBelowMd ? "0px" : "10px"}
+            marginLeft={isBelowMd ? "10px" : "0px"}
+            height={isBelowMd ? "auto" : "50px"}
          >
             <CustomTooltip arrow title="Add Question">
                <Button 
                   sx={{ 
-                     height: isBelowLg ? "100%" : "auto", 
-                     width: isBelowLg ? "50px" : "auto",
+                     height: isBelowMd ? "100%" : "auto", 
+                     width: isBelowMd ? "50px" : "auto",
                      '& .MuiButton-startIcon': {
-                        margin: isBelowLg ? 0 : "0 7px 0 -4px"
+                        margin: isBelowMd ? 0 : "0 7px 0 -4px"
                      }
                   }} 
                   onClick={addQuestionHandler} 
                   startIcon={<AddIcon />}
                >
-                  {isBelowLg ? "" : "Add Question"} 
+                  {isBelowMd ? "" : "Add Question"} 
                </Button>
             </CustomTooltip>
          </Stack>

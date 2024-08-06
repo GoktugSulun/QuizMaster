@@ -38,9 +38,21 @@ export const Question = styled(Stack)(() => ({
    flex: 1,
 }));
 
-export const QuestionSettings = styled(Stack)(({ theme }) => ({
+export const QuestionSettings = styled(Stack, { shouldForwardProp })<{ $isBelowMd: boolean; }>(({ theme, $isBelowMd }) => ({
    borderRadius: "0 5px 5px 0",
    position: "relative",
+   ...(
+      $isBelowMd 
+         ? {
+            position: "absolute",
+            top: 0,
+            right: 0,
+            height: "100%",
+            zIndex: 999,
+            background: theme.palette.common.white
+         }
+         : {}
+   ),
    '& .MuiIconButton-root.toggle': {
       position: 'absolute',
       top: 140,
