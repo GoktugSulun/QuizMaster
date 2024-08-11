@@ -24,7 +24,7 @@ export type DefaultValuesType = {
    description: string;
    maxAttempt: number;
    visibility: VisibilityEnums;
-   image: File | null;
+   image: File | string | null;
    minute: TimeType | null;
    second: TimeType | null;
 }
@@ -99,7 +99,7 @@ const QuizSettings = () => {
             description: quiz.description,
             maxAttempt: quiz.maxAttempt,
             visibility: quiz.visibility,
-            image: null,
+            image: quiz.image,
             minute,
             second,
          });

@@ -1,6 +1,6 @@
 import Helpers from "../utils/Helpers.ts";
 import Quiz from "../models/Quiz.ts";
-import { authorizedUserId } from "../index.ts";
+import { authorizedUserId, defaultImage } from "../index.ts";
 import Favorite from "../models/Favorite.ts";
 import Save from "../models/Save.ts";
 import { type IEdit, type ICreate, type IGet, type IGetById, type IGetAll, IDelete, IGetRulesById } from "../constants/Types/Quiz/QuizType.ts";
@@ -203,10 +203,13 @@ class QuizService {
 
   static async create(params: ICreate): Promise<IResponse> {
     try {
-      const quizData = params;
-      console.log(quizData, " quizData");
+      const { uuid, multer_image, ...quizData } = params;
+      const newQuizData = { ...quizData };
+
+      const image = Helpers.createImagePath(multer_image);
+      newQuizData.image = image;
       
-      const quiz = new Quiz(quizData);
+      const quiz = new Quiz(newQuizData);
       const data = await quiz.save();
       
       return { 
@@ -222,7 +225,29 @@ class QuizService {
 
   static async edit(params: IEdit): Promise<IResponse> {
     try {
-      const { body: quizData, id } = params;
+      const { body, id } = params;
+      const { uuid, multer_image, isRemovedImage, ...currentQuizData } = body;
+      const quizData = { ...currentQuizData }
+
+      const quiz = await Quiz.findById(id)
+      if (!quiz) {
+        return {
+          type: false,
+          message: `Quiz with id '${id}' couldn't found!`
+        }
+      }
+
+      if (isRemovedImage) {
+        const image = Helpers.getDefaultImagePath();
+        quizData.image = image;
+      } else {
+        if (currentQuizData.image) {
+          const image = Helpers.createImagePath(multer_image);
+          quizData.image = image;
+        } else {
+          quizData.image = quiz.image
+        }
+      }
       
       const data = await Quiz.findByIdAndUpdate(
         { _id: id }, 

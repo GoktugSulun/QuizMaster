@@ -3,7 +3,7 @@ import { type QuizWithQuestions, type QuizWithIdType } from "@/Pages/Creator/Typ
 import { type QuizSessionResponse } from "@/Pages/Quiz/Types/QuizTypes";
 
 export type QuizRules = Omit<QuizWithIdType, "image"> & {
-   image: null | string;
+   image: string;
    numberOfQuestions: number;
    questionTime: number | null;
    repeat: number | null;
@@ -17,7 +17,7 @@ export interface IQuizResponse {
    name: string;
    description: string;
    visibility: VisibilityEnums;
-   image: string | null;
+   image: string;
    totalTime: number;
    creatorId: string;
    isFavorite: boolean;

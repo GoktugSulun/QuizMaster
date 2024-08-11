@@ -1,5 +1,5 @@
 import { snackbar } from "@/Core/Utils";
-import { type QuizType } from "@/Pages/Creator/Types/CreatorTypes";
+import { EditQuizType, type QuizType } from "@/Pages/Creator/Types/CreatorTypes";
 import CreatorThunks from "@/Pages/Creator/Store/Creator.thunk";
 import { Button, Stack } from "@mui/material";
 import { useFormContext } from "react-hook-form";
@@ -19,6 +19,7 @@ const Footer = (props: FooterProps) => {
    const dispatch = useAppDispatch();
    const form = useFormContext();
    const quizId = useAppSelector((state) => state.Creator.quiz.id);
+   const quizImage = useAppSelector((state) => state.Creator.quiz.image);
    const isEditing = !!quizId;
 
    const { isLoading, isSuccess, setIdle } = useThunk('createQuiz');
@@ -39,17 +40,34 @@ const Footer = (props: FooterProps) => {
          totalTime: minute!.id * 60 + second!.id
       } as QuizType;
 
-      console.log(payload, " payload");
+      const newFile = typeof image == 'object' && image !== null ? image as File : null;
+      const imageData = newFile ? newFile.name : image as string;
       
-
       //* Edit an existing quiz
       if (isEditing) {
-         CreatorThunks.editQuiz({ ...payload, id: quizId });
+         const editPayload = {
+            ...payload, 
+            image: imageData, 
+            id: quizId
+         } as EditQuizType
+
+         const [, uuid] = quizImage?.split("_") || [];
+         if (uuid) {
+            if (newFile) {
+               editPayload.isRemovedImage = false; //* Change existing file
+            } else {
+               editPayload.isRemovedImage = true; //* Remove existing file
+            }
+         } else {
+            editPayload.isRemovedImage = false; //* Add a new file or continue with default file
+         }
+         
+         CreatorThunks.editQuiz(editPayload, newFile);
          return;
       }
 
       //* Create a new quiz
-      CreatorThunks.createQuiz(payload, image);
+      CreatorThunks.createQuiz({ ...payload, image: imageData }, newFile);
    };
 
    useEffect(() => {

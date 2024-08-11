@@ -70,7 +70,12 @@ class QuizController {
       // Todo : Validate req.body
       let params;
       if (req.body?.data) {
-        params = { ...(JSON.parse(req.body.data)), creatorId: authorizedUserId } as ICreate;
+        params = { 
+          ...(JSON.parse(req.body.data)), 
+          creatorId: authorizedUserId, 
+          uuid: req.uuid,
+          multer_image: req.multer_image
+        } as ICreate;
       } else {
         params = { ...req.body, creatorId: authorizedUserId } as ICreate;
       }
@@ -90,7 +95,14 @@ class QuizController {
       // Todo : Validate req.body
       let params;
       if (req.body?.data) {
-        params = { body: JSON.parse(req.body.data), id: req.params.id } as IEdit;
+        params = { 
+          body: { 
+            ...JSON.parse(req.body.data), 
+            uuid: req.uuid, 
+            multer_image: req.multer_image 
+          }, 
+          id: req.params.id
+        } as IEdit;
       } else {
         params = { body: req.body, id: req.params.id } as IEdit;
       }

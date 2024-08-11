@@ -3,7 +3,7 @@ import QuizController from '../controllers/QuizController.ts';
 import FavoriteController from '../controllers/FavoriteController.ts';
 import SaveController from '../controllers/SaveController.ts';
 import AuthMiddleware from '../middlewares/AuthMiddleware.ts';
-import { Upload } from '../helpers/index.ts';
+import { GenerateUuidMiddleware, MulterMiddleware } from '../middlewares/index.ts';
 
 const app = express();
 
@@ -14,10 +14,10 @@ app.get('/:id/withQuestions', QuizController.getByIdWithQuestions);
 app.get('/:id/rules', QuizController.getRulesById);
 
 // Create
-app.post('/', AuthMiddleware, Upload.single('files'), QuizController.create);
+app.post('/', AuthMiddleware, GenerateUuidMiddleware, MulterMiddleware.single('files'), QuizController.create);
 
 // Edit
-app.put('/:id', AuthMiddleware, Upload.single('files'), QuizController.edit);
+app.put('/:id', AuthMiddleware, GenerateUuidMiddleware, MulterMiddleware.single('files'), QuizController.edit);
 
 // Favorite
 app.post('/markAsFavorite', AuthMiddleware, FavoriteController.markAsFavorite);

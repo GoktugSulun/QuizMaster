@@ -1,7 +1,6 @@
 import { Request } from 'express'
 import multer, { StorageEngine } from 'multer';
 import path from 'path';
-import { authorizedUserId } from '../index.ts';
 
 const __dirname = path.resolve();
 
@@ -13,12 +12,17 @@ const storage: StorageEngine = multer.diskStorage({
     callback(null, path.join(__dirname + '/src/files'));
   },
   filename: async (req: Request, file: Express.Multer.File, callback: FileNameCallback) => {
-    const userId = req.user.id || authorizedUserId; // Todo: authorizedId dynamic olmalı
+    if (file === null) {
+      return;
+    }
+    const uuid = req.uuid;
     const timestamp = new Date().getTime();
-    callback(null, `${timestamp}_${userId}_${file.originalname}`);
+    const fileName = `${timestamp}_${uuid}_${file.originalname}`;
+    req.multer_image = fileName
+    callback(null, fileName);
   }
 });
 
-const files = multer({ storage });
+const MulterMiddleware = multer({ storage });
 
-export default files;
+export default MulterMiddleware;

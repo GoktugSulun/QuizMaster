@@ -20,7 +20,7 @@ const initialState: InitialStateTypes = {
       name: "",
       description: "",
       visibility: VisibilityEnums.PRIVATE,
-      image: null,
+      image: "",
       totalTime: 0,
       maxAttempt: 1,
       numberOfQuestions: 0,

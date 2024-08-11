@@ -12,6 +12,7 @@ import path from 'path';
 
 // TODO : change it later
 export const authorizedUserId = "1";
+export const defaultImage = "default.png"
 
 //For env File 
 dotenv.config();
@@ -46,7 +47,7 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 const __dirname = path.resolve();
-app.use(express.static(__dirname + '/files'));
+app.use(express.static(__dirname + '/src/files'));
 
 app.use(`/v1/quizzes`, QuizRoute);
 app.use(`/v1/questions`, QuestionRoute);

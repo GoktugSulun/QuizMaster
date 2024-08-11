@@ -64,6 +64,7 @@ const Creator = () => {
   const quizId = useAppSelector((state) => state.Creator.quiz.id);
   const questions = useAppSelector((state) => state.Creator.questions);
   const isBelowMd = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
+  const isBelowLg = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
 
   const { isLoading, isSuccess } = useThunk("getQuizByIdWithQuestions");
   const { isSuccess: isSuccessCreateQuiz } = useThunk("createQuiz");
@@ -140,7 +141,7 @@ const Creator = () => {
   return (
     <FormProvider {...form}>
       <Header />
-      { isBelowMd && <ResponsiveSettings /> }
+      { isBelowLg && <ResponsiveSettings /> }
       <S.Creator>
         <Stack 
           flexDirection={isBelowMd ? "column-reverse" : "row"} 

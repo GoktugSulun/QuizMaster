@@ -24,7 +24,7 @@ export type QuizType = {
    description: string;
    maxAttempt: number;
    visibility: VisibilityEnums;
-   image: File | null;
+   image: string;
    totalTime: number;
 }
 
@@ -71,3 +71,5 @@ export type QuestionWithIdType = Omit<QuestionType, "options">
 export type QuizWithQuestions = QuizWithIdType & {
    questions: QuestionWithIdType[]
 }
+
+export type EditQuizType = QuizType & { id: string; isRemovedImage?: boolean };

@@ -26,10 +26,13 @@ export interface ICreate {
    name: string;
    description: string;
    visibility: VisibilityEnums;
-   image: File | null;
+   image: string;
    totalAttempt: number;
    totalTime: number;
-   creatorId: string;
+   creatorId: string; 
+   uuid?: string;
+   multer_image?: string;
+   isRemovedImage?: boolean;
 }
 
 export interface IEdit {
