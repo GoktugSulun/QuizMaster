@@ -31,7 +31,7 @@ class FavoriteService {
 
    static async getFavoriteQuizzes(params: IGetFavoriteQuizzes): Promise<ResponseType<IQuizResponse[]>> {
       try {
-         const { page, limit, isRemoved } = params;
+         const { page, limit, isRemoved=false } = params;
          const skip = page === 1 ? 0 : (page - 1) * limit;
 
          const favoriteQuizDatas = await Favorite
@@ -39,7 +39,7 @@ class FavoriteService {
             .sort({ createdAt: "desc" })
             .skip(skip)
             .limit(limit);
-         
+
          const data = await Promise.all(favoriteQuizDatas.map(async (item) => {
             const quizData = await QuizService.getById({ id: item.quizId, isRemoved: false});
             if (!quizData.type) {

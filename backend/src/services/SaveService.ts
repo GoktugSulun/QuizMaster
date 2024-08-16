@@ -11,7 +11,7 @@ import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
 class SaveService {
    static async getAll(params: IGetAll): Promise<IResponse> {
       try {
-         const { page, limit, isRemoved } = params;
+         const { page, limit, isRemoved=false } = params;
          const skip = page === 1 ? 0 : (page - 1) * limit;
 
          const savedQuizDatas = await Save
@@ -31,7 +31,7 @@ class SaveService {
 
    static async getSavedQuizzes(params: IGetSavedQuizzes): Promise<ResponseType<IQuizResponse[]>> {
       try {
-         const { page, limit, isRemoved } = params;
+         const { page, limit, isRemoved=false } = params;
          const skip = page === 1 ? 0 : (page - 1) * limit;
 
          const savedQuizDatas = await Save

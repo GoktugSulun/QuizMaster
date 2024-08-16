@@ -90,7 +90,7 @@ class QuizSessionService {
       try {
          const { quizId } = params;
 
-         const quiz = await Quiz.findOne({ _id: quizId, isRemoved: false }); 
+         const quiz = await Quiz.findOne({ _id: quizId, isRemoved: false });
          if (!quiz) {
            return {
                type: false,

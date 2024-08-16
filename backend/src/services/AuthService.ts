@@ -16,10 +16,7 @@ class AuthService {
             }
          });
 
-         console.log(query, " query");
          const data = await User.findOne(query);
-         console.log(data, " data");
-         
          if (!data) {
             return {
                type: false,

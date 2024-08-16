@@ -164,8 +164,8 @@ class QuizService {
   static async getByIdWithQuestions(params: IGetById): Promise<ResponseType<IQuizWithQuestions>> {
     try {
       const { id, isRemoved } = params;
-
-      const quizData = await Quiz.findOne({ _id: id, creatorId: AuthenticatedUser.getUserId(), isRemoved });
+      
+      const quizData = await Quiz.findOne({ _id: id, isRemoved });
       if (!quizData) {
         return {
           type: false,
