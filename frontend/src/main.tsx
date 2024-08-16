@@ -27,8 +27,8 @@ ReactDOM.createRoot(root).render(
         maxSnack={3}
         autoHideDuration={3000}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center'
+          vertical: 'bottom',
+          horizontal: 'right'
         }}
       >
         <ThemeProvider theme={theme}>

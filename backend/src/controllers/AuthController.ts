@@ -9,7 +9,7 @@ import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
 class UserController {
    static async get(req: Request, res: Response) {
       try {
-         const param = { id: AuthenticatedUser.getUserId() } as IGet;
+         const param = { _id: AuthenticatedUser.getUserId() } as IGet;
          const result = await AuthService.get(param);
          Helpers.responseJSON(res, result);
       } catch (error) {

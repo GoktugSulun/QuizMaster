@@ -42,7 +42,7 @@ class QuizService {
   
         filteredQuizData = quizDataWithQuestions.filter((quiz) => quiz !== null);
       }
-      
+
       const data = await Promise.all(filteredQuizData.map(async (quiz) => {
         const favoriteData = await Favorite.findOne({ quizId: quiz.id, userId: AuthenticatedUser.getUserId(), isRemoved: false });
         const saveData = await Save.findOne({ quizId: quiz.id, userId: AuthenticatedUser.getUserId(), isRemoved: false });

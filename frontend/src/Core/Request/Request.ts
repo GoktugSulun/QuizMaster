@@ -55,7 +55,7 @@ export const request = async ({ method='GET', url, value, payload, files, key, s
     `request/${key}`, 
     async (_: ArgsType, thunkAPI) => {
       try { 
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token") || "";
         const headers = { 
           'Authorization': `Bearer ${token}`,
         };

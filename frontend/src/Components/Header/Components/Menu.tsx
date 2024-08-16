@@ -13,16 +13,12 @@ import { Box, useTheme } from '@mui/material';
 import * as S from '../Style/Header.style'
 import { useNavigate } from 'react-router-dom';
 import { RouteEnums } from '@/Constants/Enums';
-import { useAppDispatch } from '@/Core/Hooks';
-import { AppConfigActions } from '@/Core/Store/AppConfig.slice';
-import { snackbar } from '@/Core/Utils';
 
 const ProfileMenu = () => {
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
    const open = Boolean(anchorEl);
    const theme = useTheme();
    const navigate = useNavigate();
-   const dispatch = useAppDispatch();
 
    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
@@ -36,8 +32,7 @@ const ProfileMenu = () => {
       handleClose();
       localStorage.clear();
       navigate(RouteEnums.FEED);
-      dispatch(AppConfigActions.resetAuthorizedUser());
-      snackbar("You have been logged out successfully");
+      window.location.reload();
    };
 
    return (

@@ -5,9 +5,9 @@ import AuthMiddleware from '../middlewares/AuthMiddleware.ts';
 const app = express();
 
 // Create
-app.post('/', AuthMiddleware, QuestionController.create);
+app.post('/', AuthMiddleware(), QuestionController.create);
 
 // Edit
-app.put('/:quizId', AuthMiddleware, QuestionController.edit);
+app.put('/:quizId', AuthMiddleware(), QuestionController.edit);
 
 export default app;  
