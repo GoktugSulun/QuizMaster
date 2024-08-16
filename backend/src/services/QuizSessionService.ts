@@ -1,4 +1,3 @@
-import { authorizedUserId } from "../index.ts";
 import Helpers from "../utils/Helpers.ts";
 import { type ICreateQuizSession, type IComplete, type IEnd, type IStart, type ICreate, type ISave, type IGetAllCompletedSession } from "../constants/Types/QuizSession/QuizSessionType.ts";
 import { type ResponseType } from "../constants/Types/Common/CommonType.ts";
@@ -10,6 +9,7 @@ import QuizService from "./QuizService.ts";
 import { IQuizWithQuestions } from "../constants/Types/Quiz/QuizResponseTypes.ts";
 import QuizResultService from "./QuizResultService.ts";
 import { type ICreate as ICreateResult } from "../constants/Types/QuizResult/QuizResultType.ts";
+import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
 
 class QuizSessionService {
    static async getAllCompletedSessionId(params: IGetAllCompletedSession): Promise<ResponseType<string[]>> {
@@ -54,7 +54,7 @@ class QuizSessionService {
            }
          }
 
-         const activeQuizSession = await QuizSession.findOne({ quizId, userId: authorizedUserId, status: QuizSessionEnums.STARTED }); 
+         const activeQuizSession = await QuizSession.findOne({ quizId, userId: AuthenticatedUser.getUserId(), status: QuizSessionEnums.STARTED }); 
          if (activeQuizSession) {
            return {
                type: false,
@@ -64,7 +64,7 @@ class QuizSessionService {
 
          const newQuizSessionData: ICreateQuizSession = {
             quizId,
-            userId: authorizedUserId,
+            userId: AuthenticatedUser.getUserId(),
             answers: [],
             startTime: new Date().getTime(),
             status: QuizSessionEnums.STARTED,
@@ -90,7 +90,7 @@ class QuizSessionService {
       try {
          const { quizId } = params;
 
-         const quiz = await Quiz.findOne({ _id: quizId, isRemoved: false }); 
+         const quiz = await Quiz.findOne({ _id: quizId, isRemoved: false });
          if (!quiz) {
            return {
                type: false,
@@ -110,7 +110,7 @@ class QuizSessionService {
          // Todo: IQuizSessionQuizResponse tipini kullan ve optionlar içinde isCorrect dönme
          const quizWithQuestions = quizServiceResult.data as IQuizWithQuestions;
 
-         const quizSessions = await QuizSession.find({ quizId, userId: authorizedUserId });
+         const quizSessions = await QuizSession.find({ quizId, userId: AuthenticatedUser.getUserId() });
          if (!quizSessions) {
             const result = await QuizSessionService.create({ quizId });
             if (!result.type) {
@@ -209,7 +209,7 @@ class QuizSessionService {
          }
 
          const data = await QuizSession.findOneAndUpdate(
-            { quizId, userId: authorizedUserId, status: QuizSessionEnums.STARTED }, 
+            { quizId, userId: AuthenticatedUser.getUserId(), status: QuizSessionEnums.STARTED }, 
             { $set: { totalAttempt: incompletedQuizSession.totalAttempt + 1 } },
             { new: true }
          );
@@ -247,7 +247,7 @@ class QuizSessionService {
          }
 
          await QuizSession.findOneAndUpdate(
-            { quizId, userId: authorizedUserId, status: QuizSessionEnums.STARTED }, 
+            { quizId, userId: AuthenticatedUser.getUserId(), status: QuizSessionEnums.STARTED }, 
             { $set: { status: QuizSessionEnums.COMPLETED } },
          );
 
@@ -283,7 +283,7 @@ class QuizSessionService {
 
          const newStatus = params?.status || QuizSessionEndEnums.COMPLETED;
          const data = await QuizSession.findOneAndUpdate(
-            { quizId, userId: authorizedUserId, status: QuizSessionEnums.STARTED }, 
+            { quizId, userId: AuthenticatedUser.getUserId(), status: QuizSessionEnums.STARTED }, 
             { $set: { status: newStatus } },
             { new: true }
          );
@@ -318,7 +318,7 @@ class QuizSessionService {
          }
 
          await QuizSession.findOneAndUpdate(
-            { quizId, userId: authorizedUserId, status: QuizSessionEnums.STARTED }, 
+            { quizId, userId: AuthenticatedUser.getUserId(), status: QuizSessionEnums.STARTED }, 
             { $set: { answers } },
          );
          

@@ -24,5 +24,5 @@ export interface IUser {
 export interface IGet {
    email?: string;
    password?: string;
-   id?: string;
+   _id?: string;
 }

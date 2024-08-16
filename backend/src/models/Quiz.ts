@@ -9,7 +9,7 @@ interface IQuizSchema {
    description: string;
    totalTime: number;
    visibility: VisibilityEnums;
-   image: string | null;
+   image: string;
    creatorId: string;
    isRemoved: boolean;
    maxAttempt: number;
@@ -40,8 +40,8 @@ export const quizSchema = new mongoose.Schema<IQuizSchema>({
       required: true
    },
    image: {
-      type: String || null,
-      default: null
+      type: String,
+      required: true
    },
    creatorId: {
       type: String,

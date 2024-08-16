@@ -7,7 +7,7 @@ export interface IQuizResponse {
    name: string;
    description: string;
    visibility: VisibilityEnums;
-   image: string | null;
+   image: string;
    totalTime: number;
    creatorId: string;
    maxAttempt: number;

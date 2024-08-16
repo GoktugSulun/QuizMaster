@@ -1,5 +1,4 @@
 import * as S from '../Style/Dashboard.style';
-import defaultImage from '@/Pngs/DefaultQuizImg.png';
 import AdminButtons from './AdminButtons';
 import UserButtons from './UserButtons';
 import { Stack } from '@mui/material';
@@ -23,7 +22,7 @@ const QuizPreviewHeader = (props: QuizPreviewHeaderProps) => {
 
    return (
       <>
-         <S.Image src={image || defaultImage} alt="quiz" />
+         <S.Image src={image} alt="quiz" />
          <Stack
             flexDirection="row" 
             alignItems="center" 

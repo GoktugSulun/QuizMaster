@@ -1,10 +1,10 @@
 import { type Request, type Response } from "express";
 import QuizService from '../services/QuizService.ts';
 import Helpers from '../utils/Helpers.ts';
-import { authorizedUserId } from "../index.ts";
 import { IDelete, type ICreate, type IEdit } from "../constants/Types/Quiz/QuizType.ts";
 import { type IError } from "../constants/Types/Error/ErrorType.ts";
 import { QuizTypeEnums } from "../constants/Enums/Enums.ts";
+import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
 
 class QuizController {
   static async get(req: Request, res: Response) {
@@ -68,7 +68,17 @@ class QuizController {
   static async create(req: Request, res: Response) {
     try {
       // Todo : Validate req.body
-      const params = { ...req.body, creatorId: authorizedUserId } as ICreate;
+      let params;
+      if (req.body?.data) {
+        params = { 
+          ...(JSON.parse(req.body.data)), 
+          creatorId: AuthenticatedUser.getUserId(), 
+          uuid: req.uuid,
+          multer_image: req.multer_image
+        } as ICreate;
+      } else {
+        params = { ...req.body, creatorId: AuthenticatedUser.getUserId() } as ICreate;
+      }
       const result = await QuizService.create(params);
       Helpers.responseJSON(res, result);
     } catch (error) {
@@ -83,7 +93,19 @@ class QuizController {
     }
     try {
       // Todo : Validate req.body
-      const params = { body: req.body, id: req.params.id } as IEdit;
+      let params;
+      if (req.body?.data) {
+        params = { 
+          body: { 
+            ...JSON.parse(req.body.data), 
+            uuid: req.uuid, 
+            multer_image: req.multer_image 
+          }, 
+          id: req.params.id
+        } as IEdit;
+      } else {
+        params = { body: req.body, id: req.params.id } as IEdit;
+      }
       const result = await QuizService.edit(params);
       Helpers.responseJSON(res, result);
     } catch (error) {

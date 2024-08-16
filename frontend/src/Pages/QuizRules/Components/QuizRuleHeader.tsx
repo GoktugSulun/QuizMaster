@@ -1,14 +1,16 @@
 import { Stack, Typography } from "@mui/material";
 import * as S from '../Style/QuizRules.style';
-import defaultQuizImage from "@/Pngs/DefaultQuizImg.png";
+import defaultQuizImage from "@/Pngs/default.png";
 
 type QuizRuleHeaderProps = {
-   img: null | string;
+   img: string;
    name: string;
    description: string;
 };
 
 const QuizRuleHeader = ({ img, name, description }: QuizRuleHeaderProps) => {
+   console.log(img, " img");
+
    return (
       <Stack flexDirection="row" alignItems="center" gap={3}>
          <Stack flex={1}>

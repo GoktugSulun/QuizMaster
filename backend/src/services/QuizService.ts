@@ -1,6 +1,5 @@
 import Helpers from "../utils/Helpers.ts";
 import Quiz from "../models/Quiz.ts";
-import { authorizedUserId } from "../index.ts";
 import Favorite from "../models/Favorite.ts";
 import Save from "../models/Save.ts";
 import { type IEdit, type ICreate, type IGet, type IGetById, type IGetAll, IDelete, IGetRulesById } from "../constants/Types/Quiz/QuizType.ts";
@@ -13,6 +12,7 @@ import QuestionService from "./QuestionService.ts";
 import { IQuestion } from "../constants/Types/Question/QuestionResponseType.ts";
 import { ResponseType } from "../constants/Types/Common/CommonType.ts";
 import QuizSessionService from "./QuizSessionService.ts";
+import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
 
 class QuizService {
   static async getAll(params: IGetAll): Promise<IResponse> {
@@ -42,10 +42,10 @@ class QuizService {
   
         filteredQuizData = quizDataWithQuestions.filter((quiz) => quiz !== null);
       }
-      
+
       const data = await Promise.all(filteredQuizData.map(async (quiz) => {
-        const favoriteData = await Favorite.findOne({ quizId: quiz.id, userId: authorizedUserId, isRemoved: false });
-        const saveData = await Save.findOne({ quizId: quiz.id, userId: authorizedUserId, isRemoved: false });
+        const favoriteData = await Favorite.findOne({ quizId: quiz.id, userId: AuthenticatedUser.getUserId(), isRemoved: false });
+        const saveData = await Save.findOne({ quizId: quiz.id, userId: AuthenticatedUser.getUserId(), isRemoved: false });
 
         return {
           ...quiz.toJSON(),
@@ -108,7 +108,7 @@ class QuizService {
               return filteredResult;
             }
             case QuizTypeEnums.CREATED: {
-              const result = await QuizService.getAll({ page, limit, isRemoved, creatorId: authorizedUserId });
+              const result = await QuizService.getAll({ page, limit, isRemoved, creatorId: AuthenticatedUser.getUserId() });
               if (!result.type) {
                 throw new Error(result.message);
               }
@@ -135,8 +135,8 @@ class QuizService {
       const { id, isRemoved, creatorId } = params;
 
       const quizData = await Quiz.findOne({ _id: id, isRemoved, ...(creatorId ? { creatorId } : {}) });
-      const favoriteData = await Favorite.findOne({ quizId: id, userId: authorizedUserId, isRemoved: false });
-      const saveData = await Save.findOne({ quizId: id, userId: authorizedUserId, isRemoved: false });
+      const favoriteData = await Favorite.findOne({ quizId: id, userId: AuthenticatedUser.getUserId(), isRemoved: false });
+      const saveData = await Save.findOne({ quizId: id, userId: AuthenticatedUser.getUserId(), isRemoved: false });
 
       if (!quizData) {
         return {
@@ -164,8 +164,8 @@ class QuizService {
   static async getByIdWithQuestions(params: IGetById): Promise<ResponseType<IQuizWithQuestions>> {
     try {
       const { id, isRemoved } = params;
-
-      const quizData = await Quiz.findOne({ _id: id, creatorId: authorizedUserId, isRemoved });
+      
+      const quizData = await Quiz.findOne({ _id: id, isRemoved });
       if (!quizData) {
         return {
           type: false,
@@ -181,8 +181,8 @@ class QuizService {
         }
       }
 
-      const favoriteData = await Favorite.findOne({ quizId: id, userId: authorizedUserId, isRemoved: false });
-      const saveData = await Save.findOne({ quizId: id, userId: authorizedUserId, isRemoved: false });
+      const favoriteData = await Favorite.findOne({ quizId: id, userId: AuthenticatedUser.getUserId(), isRemoved: false });
+      const saveData = await Save.findOne({ quizId: id, userId: AuthenticatedUser.getUserId(), isRemoved: false });
       
       const data = {
         ...quizData.toJSON(),
@@ -203,9 +203,13 @@ class QuizService {
 
   static async create(params: ICreate): Promise<IResponse> {
     try {
-      const quizData = params;
+      const { uuid, multer_image, ...quizData } = params;
+      const newQuizData = { ...quizData };
+
+      const image = Helpers.createImagePath(multer_image);
+      newQuizData.image = image;
       
-      const quiz = new Quiz(quizData);
+      const quiz = new Quiz(newQuizData);
       const data = await quiz.save();
       
       return { 
@@ -221,11 +225,33 @@ class QuizService {
 
   static async edit(params: IEdit): Promise<IResponse> {
     try {
-      const { body: quizData, id } = params;
+      const { body, id } = params;
+      const { uuid, multer_image, isRemovedImage, ...currentQuizData } = body;
+      const quizData = { ...currentQuizData }
+
+      const quiz = await Quiz.findById(id)
+      if (!quiz) {
+        return {
+          type: false,
+          message: `Quiz with id '${id}' couldn't found!`
+        }
+      }
+
+      if (isRemovedImage) {
+        const image = Helpers.getDefaultImagePath();
+        quizData.image = image;
+      } else {
+        if (currentQuizData.image) {
+          const image = Helpers.createImagePath(multer_image);
+          quizData.image = image;
+        } else {
+          quizData.image = quiz.image
+        }
+      }
       
       const data = await Quiz.findByIdAndUpdate(
         { _id: id }, 
-        { $set: { ...quizData, creatorId: authorizedUserId } },
+        { $set: { ...quizData, creatorId: AuthenticatedUser.getUserId() } },
         { returnOriginal: false }
       );
       

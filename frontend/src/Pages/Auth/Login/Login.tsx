@@ -79,6 +79,7 @@ const Login = () => {
             return;
          }
          navigate(RouteEnums.FEED);
+         window.location.reload();
       }
    }, [isSuccess]);
    

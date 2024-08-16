@@ -1,6 +1,7 @@
 import { Response } from "express";
 import mongoose from "mongoose";
 import { type ResponseErrorType } from "../constants/Types/Common/CommonType";
+import { defaultImage } from "../index.ts";
 
 class Helpers {
    static responseMessage(res: Response, type: boolean, message: string, data?: any): void {
@@ -28,6 +29,19 @@ class Helpers {
          type: false,
          message: (error instanceof Error) ? error.message : (message || 'Unknown Error!')
       }
+   }
+
+   static createImagePath(image?: string) {
+      const basePath = `http://localhost:${process.env.PORT}/`;
+      if (image) {
+         return basePath.concat(image)
+      }
+      return basePath.concat(defaultImage);
+   }
+   
+   static getDefaultImagePath() {
+      const basePath = `http://localhost:${process.env.PORT}/`;
+      return basePath.concat(defaultImage);
    }
 }
 

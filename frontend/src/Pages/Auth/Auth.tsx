@@ -37,7 +37,7 @@ const Auth = () => {
                   marginBottom="15px"
                   color="primary.main"
                >
-                  Please <Typography component="span" color="primary.main" fontWeight="bold"> Login </Typography> to Continue
+                  Please <Typography component="span" color="primary.main" fontWeight="bold"> { isLoginActive ? "Login" : "Register" } </Typography> to Continue
                </Typography>
                <AuthHeader />
                { isLoginActive && <Login /> }

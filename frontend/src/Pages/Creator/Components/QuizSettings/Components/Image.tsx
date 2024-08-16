@@ -4,7 +4,6 @@ import CropIcon from '@mui/icons-material/Crop';
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import * as S from '../../../Style/Creator.style';
 import { useEffect } from "react";
-import DefaultQuizImage from '@/Pngs/DefaultQuizImage.png';
 import ImageIcon from '@mui/icons-material/Image';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CustomTooltip } from "@/Components/Tooltip";
@@ -13,8 +12,9 @@ const Image = () => {
    const form = useFormContext();
 
    const image = useWatch({ control: form.control, name: "image" });
-   const blobURL = image ? URL.createObjectURL(image) : ""; // TODO : fix it
-
+   const blobURL = (typeof image == "object" && image !== null) ? URL.createObjectURL(image) : "";
+   const imageURL = blobURL || image || "http://localhost:8000/default.png";
+   
    const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const image = event.target.files?.[0];
       if (image) {
@@ -24,6 +24,13 @@ const Image = () => {
 
    const deleteImage = () => {
       form.setValue("image", null);
+   }
+
+   const isDefaultImage = () => {
+      if (blobURL) {
+         return false;
+      }
+      return imageURL.includes("default.png");
    }
 
    useEffect(() => { 
@@ -51,7 +58,7 @@ const Image = () => {
                width="100%" 
                height="100%" 
                style={{ borderRadius: 'inherit', objectFit: "contain", objectPosition: "center" }}
-               src={blobURL || DefaultQuizImage} 
+               src={imageURL} 
             />
             <Stack 
                position="absolute"
@@ -59,14 +66,14 @@ const Image = () => {
                left="0"
                width="100%"
                flexDirection="row"
-               justifyContent={blobURL ? "space-between" : "center"}
+               justifyContent={!isDefaultImage() ? "space-between" : "center"}
                alignItems="centeer"
                zIndex={20}
                padding="0 10px 0 5px"
                sx={{ filter: "drop-shadow(2px 2px 6px #222)" }}
             >  
                {
-                  blobURL && (
+                  !isDefaultImage() && (
                      <Stack 
                         flexDirection="row" 
                         alignItems="center"

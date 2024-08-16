@@ -1,26 +1,27 @@
 import { ApiURL } from "@/Constants/ApiURL";
 import { request } from "@/Core/Request";
 import { CreatorActions } from "./Creator.slice";
-import { type QuizWithQuestions, type QuizType, type QuizWithIdType, type QuestionType, type QuestionWithIdType } from "../Types/CreatorTypes";
+import { type QuizWithQuestions, type QuizType, type QuizWithIdType, type QuestionType, type QuestionWithIdType, type EditQuizType } from "../Types/CreatorTypes";
 import { snackbar } from "@/Core/Utils";
 
 const CreatorThunks = {
-   createQuiz: (payload: QuizType) => request({
+   createQuiz: (payload: QuizType, files: File | null) => request({
       method: 'POST',
       url: ApiURL.QUIZ,
       payload,
+      files,
       key: 'createQuiz',
       success: ({ data, thunkAPI }) => {
          const payload = data as QuizWithIdType;
          thunkAPI.dispatch(CreatorActions.setQuiz(payload));
       },
    }),
-   editQuiz: ({ id, image: file, ...payload }: QuizType & { id: string; }) => request({
+   editQuiz: ({ id, ...payload }: EditQuizType, files: File | null) => request({
       method: 'PUT',
       url: `${ApiURL.QUIZ}/${id}`,
       key: 'editQuiz',
       payload,
-      files: file,
+      files,
       success: ({ data, thunkAPI }) => {
          const payload = data as QuizWithIdType;
          thunkAPI.dispatch(CreatorActions.setQuiz(payload));
