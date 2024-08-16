@@ -2,12 +2,12 @@ import Helpers from "../utils/Helpers.ts";
 import { type ResponseType } from "../constants/Types/Common/CommonType.ts";
 import { type IGetById, type IGetAll, type ICreate } from "../constants/Types/QuizResult/QuizResultType.ts";
 import { type IInitialResultState, type ICreateResult, type IGetResultById, type IAllQuizResultId } from "../constants/Types/QuizResult/QuizResultResponseType.ts";
-import { authorizedUserId } from "../index.ts";
 import QuizService from "./QuizService.ts";
 import { PointEnums } from "../constants/Enums/Enums.ts";
 import QuizResult from "../models/QuizResult.ts";
 import QuizSession from "../models/QuizSession.ts";
 import Quiz from "../models/Quiz.ts";
+import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
 
 class QuizResultService {
    
@@ -77,7 +77,7 @@ class QuizResultService {
       try {
          const { quizId, quizSessionId, answers, completeTime } = params;
 
-         const quizResult = await QuizService.getByIdWithQuestions({ id: quizId, isRemoved: false, creatorId: authorizedUserId });
+         const quizResult = await QuizService.getByIdWithQuestions({ id: quizId, isRemoved: false, creatorId: AuthenticatedUser.getUserId() });
          if (!quizResult.type) {
             return {
                type: false,
@@ -150,7 +150,7 @@ class QuizResultService {
          const spentDuration = Math.ceil((completeTime - startTime) / 1000);
          const newData: ICreateResult = {
             quizId,
-            userId: authorizedUserId,
+            userId: AuthenticatedUser.getUserId(),
             totalQuestion: quiz.questions.length,
             totalCorrect: result.totalCorrect,
             totalWrong: result.totalWrong,

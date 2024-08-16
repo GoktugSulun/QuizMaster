@@ -1,10 +1,10 @@
 import { type Request, type Response } from "express";
 import QuizService from '../services/QuizService.ts';
 import Helpers from '../utils/Helpers.ts';
-import { authorizedUserId } from "../index.ts";
 import { IDelete, type ICreate, type IEdit } from "../constants/Types/Quiz/QuizType.ts";
 import { type IError } from "../constants/Types/Error/ErrorType.ts";
 import { QuizTypeEnums } from "../constants/Enums/Enums.ts";
+import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
 
 class QuizController {
   static async get(req: Request, res: Response) {
@@ -72,12 +72,12 @@ class QuizController {
       if (req.body?.data) {
         params = { 
           ...(JSON.parse(req.body.data)), 
-          creatorId: authorizedUserId, 
+          creatorId: AuthenticatedUser.getUserId(), 
           uuid: req.uuid,
           multer_image: req.multer_image
         } as ICreate;
       } else {
-        params = { ...req.body, creatorId: authorizedUserId } as ICreate;
+        params = { ...req.body, creatorId: AuthenticatedUser.getUserId() } as ICreate;
       }
       const result = await QuizService.create(params);
       Helpers.responseJSON(res, result);

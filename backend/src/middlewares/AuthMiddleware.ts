@@ -1,10 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import AuthenticatedUser from '../utils/AuthenticatedUser';
 
 declare global {
    namespace Express {
       interface Request {
-         user?: any;
+         user?: {
+            id: string;
+            email: string;
+            password: string;
+         };
       }
    }
 }
@@ -14,6 +19,7 @@ const AuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
    const token: string | undefined = authHeader?.split?.(' ')?.[1];
    
    if (!token) {
+      AuthenticatedUser.clear();
       return res.status(401).json({ type: false, message: 'Authentication failed' });
    }
    
@@ -22,6 +28,7 @@ const AuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
          return res.status(401).json({ type: false, message: 'Invalid token' });
       }
       
+      AuthenticatedUser.setUserId(decoded?.id || "");
       req.user = decoded;
       next();
    });

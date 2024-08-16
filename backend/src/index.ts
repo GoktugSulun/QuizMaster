@@ -10,8 +10,6 @@ import QuizSessionRoute from './routes/QuizSessionRoute.ts';
 import QuizResultRoute from './routes/QuizResultRoute.ts';
 import path from 'path';
 
-// TODO : change it later
-export const authorizedUserId = "1";
 export const defaultImage = "default.png"
 
 //For env File 

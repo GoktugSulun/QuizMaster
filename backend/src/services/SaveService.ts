@@ -1,4 +1,3 @@
-import { authorizedUserId } from "../index.ts";
 import Quiz from "../models/Quiz.ts";
 import Helpers from "../utils/Helpers.ts";
 import Save from "../models/Save.ts";
@@ -7,6 +6,7 @@ import { type IMarkAsSaved, type IGetAll, type IUnmarkAsSaved, type IGetSavedQui
 import { type IResponse } from "../types/Types.ts";
 import { type ResponseType } from "../constants/Types/Common/CommonType.ts";
 import QuizService from "./QuizService.ts";
+import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
 
 class SaveService {
    static async getAll(params: IGetAll): Promise<IResponse> {
@@ -15,7 +15,7 @@ class SaveService {
          const skip = page === 1 ? 0 : (page - 1) * limit;
 
          const savedQuizDatas = await Save
-            .find({ isRemoved, userId: authorizedUserId })
+            .find({ isRemoved, userId: AuthenticatedUser.getUserId() })
             .skip(skip)
             .limit(limit);
 
@@ -35,7 +35,7 @@ class SaveService {
          const skip = page === 1 ? 0 : (page - 1) * limit;
 
          const savedQuizDatas = await Save
-            .find({ isRemoved, userId: authorizedUserId })
+            .find({ isRemoved, userId: AuthenticatedUser.getUserId() })
             .sort({ createdAt: "desc" })
             .skip(skip)
             .limit(limit);
@@ -71,7 +71,7 @@ class SaveService {
             }
          }
 
-         const isExisted = await Save.exists({ userId: authorizedUserId, quizId, isRemoved: false });
+         const isExisted = await Save.exists({ userId: AuthenticatedUser.getUserId(), quizId, isRemoved: false });
          if (isExisted) {
             return { 
                type: false, 
@@ -79,7 +79,7 @@ class SaveService {
             };
          }
          
-         const newSavedData = new Save({ quizId, userId: authorizedUserId });
+         const newSavedData = new Save({ quizId, userId: AuthenticatedUser.getUserId() });
          await newSavedData.save();
          
          return { 
@@ -103,7 +103,7 @@ class SaveService {
             }
          }
 
-         const isExisted = await Save.exists({ userId: authorizedUserId, quizId, isRemoved: false });
+         const isExisted = await Save.exists({ userId: AuthenticatedUser.getUserId(), quizId, isRemoved: false });
          if (!isExisted) {
             return { 
                type: false, 
@@ -112,7 +112,7 @@ class SaveService {
          }
          
          await Save.findOneAndUpdate(
-            { quizId, userId: authorizedUserId, isRemoved: false }, 
+            { quizId, userId: AuthenticatedUser.getUserId(), isRemoved: false }, 
             { isRemoved: true },
          );
          

@@ -1,4 +1,3 @@
-import { authorizedUserId } from "../index.ts";
 import { type IMarkAsFavorite, type IGetAll, type IUnmarkAsFavorite, IFavoriteSchema, IGetFavoriteQuizzes } from "../constants/Types/Favorite/FavoriteType.ts";
 import Favorite from "../models/Favorite.ts";
 import Quiz from "../models/Quiz.ts";
@@ -7,6 +6,7 @@ import Helpers from "../utils/Helpers.ts";
 import { type ResponseType } from "../constants/Types/Common/CommonType.ts";
 import { type IQuizResponse } from "../constants/Types/Quiz/QuizResponseTypes.ts";
 import QuizService from "./QuizService.ts";
+import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
 
 class FavoriteService {
    static async getAll(params: IGetAll): Promise<ResponseType<IFavoriteSchema[]>> {
@@ -15,7 +15,7 @@ class FavoriteService {
          const skip = page === 1 ? 0 : (page - 1) * limit;
 
          const data = await Favorite
-            .find({ isRemoved, userId: authorizedUserId })
+            .find({ isRemoved, userId: AuthenticatedUser.getUserId() })
             .skip(skip)
             .limit(limit);
 
@@ -35,7 +35,7 @@ class FavoriteService {
          const skip = page === 1 ? 0 : (page - 1) * limit;
 
          const favoriteQuizDatas = await Favorite
-            .find({ isRemoved, userId: authorizedUserId })
+            .find({ isRemoved, userId: AuthenticatedUser.getUserId() })
             .sort({ createdAt: "desc" })
             .skip(skip)
             .limit(limit);
@@ -70,7 +70,7 @@ class FavoriteService {
             }
          }
 
-         const isExisted = await Favorite.exists({ userId: authorizedUserId, quizId, isRemoved: false });
+         const isExisted = await Favorite.exists({ userId: AuthenticatedUser.getUserId(), quizId, isRemoved: false });
          if (isExisted) {
             return { 
                type: false, 
@@ -78,7 +78,7 @@ class FavoriteService {
             };
          }
 
-         const newFavoriteData = new Favorite({ quizId, userId: authorizedUserId });
+         const newFavoriteData = new Favorite({ quizId, userId: AuthenticatedUser.getUserId() });
          await newFavoriteData.save();
          
          return { 
@@ -102,7 +102,7 @@ class FavoriteService {
             }
          }
 
-         const isExisted = await Favorite.exists({ userId: authorizedUserId, quizId, isRemoved: false });
+         const isExisted = await Favorite.exists({ userId: AuthenticatedUser.getUserId(), quizId, isRemoved: false });
          if (!isExisted) {
             return { 
                type: false, 
@@ -111,7 +111,7 @@ class FavoriteService {
          };
          
          await Favorite.findOneAndUpdate(
-            { quizId, userId: authorizedUserId, isRemoved: false }, 
+            { quizId, userId: AuthenticatedUser.getUserId(), isRemoved: false }, 
             { $set: { isRemoved: true } },
          );
          

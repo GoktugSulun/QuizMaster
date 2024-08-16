@@ -16,7 +16,10 @@ class AuthService {
             }
          });
 
+         console.log(query, " query");
          const data = await User.findOne(query);
+         console.log(data, " data");
+         
          if (!data) {
             return {
                type: false,
@@ -38,7 +41,6 @@ class AuthService {
    static async login(params: ILogin): Promise<ResponseType<ILoginResponse>> {
       try {
          const userData = params;
-         const token = jwt.sign(userData, process.env.TOKEN_SECRET || "token_secret", { expiresIn: '72h' });
 
          const userResult = await AuthService.get(userData);
          if (!userResult.type) {
@@ -47,6 +49,14 @@ class AuthService {
                message: userResult.message
             }
          }
+
+         const user = {
+            id: userResult.data.id,
+            email: userResult.data.email,
+            password: userResult.data.password
+         };
+         
+         const token = jwt.sign(user, process.env.TOKEN_SECRET || "token_secret", { expiresIn: '72h' });
 
          return { 
             type: true, 

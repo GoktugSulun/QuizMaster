@@ -28,7 +28,7 @@ ReactDOM.createRoot(root).render(
         autoHideDuration={3000}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'center'
         }}
       >
         <ThemeProvider theme={theme}>

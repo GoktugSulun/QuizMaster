@@ -4,11 +4,12 @@ import { type Request, type Response } from "express";
 import { type IError } from "../constants/Types/Error/ErrorType.ts";
 import { type IRegister, type ILogin, type IGet } from "../constants/Types/User/UserType.ts";
 import AuthService from "../services/AuthService.ts";
+import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
 
 class UserController {
    static async get(req: Request, res: Response) {
       try {
-         const param = { id: req.user?.id } as IGet;
+         const param = { id: AuthenticatedUser.getUserId() } as IGet;
          const result = await AuthService.get(param);
          Helpers.responseJSON(res, result);
       } catch (error) {
