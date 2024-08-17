@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import ImageIcon from '@mui/icons-material/Image';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CustomTooltip } from "@/Components/Tooltip";
-import { ImageCropperModal } from "../../CropImageModal";
+import { ImageCropperModal } from "../../ImageCropperModal";
 
 const Image = () => {
    const form = useFormContext();
