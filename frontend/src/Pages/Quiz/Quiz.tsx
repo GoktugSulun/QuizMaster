@@ -65,7 +65,7 @@ const Quiz = () => {
    useEffect(() => {
       if (isSuccessStartQuiz && startQuizResponse) {
          setIdleStartQuiz();
-         switch (startQuizResponse.status) {
+         switch (startQuizResponse.status) { 
             case QuizStatusEnums.START_NEW_QUIZ:
                setQuizInfo(startQuizResponse.quiz, startQuizResponse.quizSession);
                break;
@@ -108,18 +108,12 @@ const Quiz = () => {
       }
       
       const beforeUnloadHandler = (e: BeforeUnloadEvent) => {
-         // if (answersRef.current.canContinue) {
-         //    QuizThunks.saveQuizSession({ quizId: id, quizSessionId: quizSession.id, answers: answersRef.current.answers })
-         // }
          e.preventDefault();
          (e || window).returnValue = true; 
       }
 
       window.addEventListener("beforeunload", beforeUnloadHandler);
       return () => {
-         // if (answersRef.current.canContinue) {
-         //    QuizThunks.saveQuizSession({ quizId: id, quizSessionId: quizSession.id, answers: answersRef.current.answers })
-         // }
          dispatch(QuizActions.reset());
          window.removeEventListener("beforeunload", beforeUnloadHandler);
       }

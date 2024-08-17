@@ -57,6 +57,7 @@ const QuizHeader = ({ intervalRef }: QuizHeaderProps) => {
       if (isTimeout) {
          setRemainingTime(0);
       } else {
+         snackbar("Check your time and be sure you complete the quiz!", { variant: "warning" })
          setRemainingTime(Math.floor(quizSession.totalTime - diff));
          intervalRef.current = setInterval(() => {
             setRemainingTime((prevTime) => {

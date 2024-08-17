@@ -52,9 +52,6 @@ const Footer = (props: FooterProps) => {
          } as EditQuizType
 
          const [, uuid] = quizImage?.split("_") || [];
-         console.log(quizImage, " quizImage");
-         console.log(newFile, " newFile");
-         console.log(imageData, " imageData");
          if (uuid) {
             if (newFile) {
                editPayload.isRemovedImage = false; //* Change existing file
