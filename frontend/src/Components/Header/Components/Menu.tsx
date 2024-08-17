@@ -13,6 +13,7 @@ import { Box, useTheme } from '@mui/material';
 import * as S from '../Style/Header.style'
 import { useNavigate } from 'react-router-dom';
 import { RouteEnums } from '@/Constants/Enums';
+import { CustomTooltip } from '@/Components/Tooltip';
 
 const ProfileMenu = () => {
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -37,7 +38,7 @@ const ProfileMenu = () => {
 
    return (
       <Box marginTop="0 !important">
-         <Tooltip title="Account">
+         <CustomTooltip arrow title="Profile">
             <IconButton
                onClick={handleClick}
                size="small"
@@ -53,7 +54,7 @@ const ProfileMenu = () => {
                GS 
             </Avatar>
             </IconButton>
-         </Tooltip>
+         </CustomTooltip>
          <Menu
             anchorEl={anchorEl}
             id="account-menu"
