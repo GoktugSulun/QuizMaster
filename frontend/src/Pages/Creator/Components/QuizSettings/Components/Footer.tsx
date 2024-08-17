@@ -52,6 +52,9 @@ const Footer = (props: FooterProps) => {
          } as EditQuizType
 
          const [, uuid] = quizImage?.split("_") || [];
+         console.log(quizImage, " quizImage");
+         console.log(newFile, " newFile");
+         console.log(imageData, " imageData");
          if (uuid) {
             if (newFile) {
                editPayload.isRemovedImage = false; //* Change existing file
@@ -62,7 +65,7 @@ const Footer = (props: FooterProps) => {
             editPayload.isRemovedImage = false; //* Add a new file or continue with default file
          }
          
-         CreatorThunks.editQuiz(editPayload, newFile);
+         // CreatorThunks.editQuiz(editPayload, newFile);
          return;
       }
 

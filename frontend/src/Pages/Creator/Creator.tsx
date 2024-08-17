@@ -95,7 +95,9 @@ const Creator = () => {
   useEffect(() => {
     // Create a new quiz
     if (!params.quizId) {
-       dispatch(CreatorActions.setIsOpenQuizSettingsModal('OPEN'));
+      form.reset(defaultValues)
+      dispatch(CreatorActions.reset());
+      dispatch(CreatorActions.setIsOpenQuizSettingsModal('OPEN'));
     }
 
     // Edit an existing quiz whether it has questions or not.

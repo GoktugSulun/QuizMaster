@@ -91,18 +91,22 @@ const QuizSettings = () => {
    }
 
    useEffect(() => {
-      if (isOpenQuizSettingsModal && quiz.id) {
-         const { minute, second } = formatTime(quiz.totalTime);
+      if (isOpenQuizSettingsModal) {
+         if (quiz.id) {
+            const { minute, second } = formatTime(quiz.totalTime);
          
-         form.reset({
-            name: quiz.name,
-            description: quiz.description,
-            maxAttempt: quiz.maxAttempt,
-            visibility: quiz.visibility,
-            image: quiz.image,
-            minute,
-            second,
-         });
+            form.reset({
+               name: quiz.name,
+               description: quiz.description,
+               maxAttempt: quiz.maxAttempt,
+               visibility: quiz.visibility,
+               image: quiz.image,
+               minute,
+               second,
+            });
+         } else {
+            form.reset(defaultValues);
+         }
       }  
    }, [isOpenQuizSettingsModal]);
 
