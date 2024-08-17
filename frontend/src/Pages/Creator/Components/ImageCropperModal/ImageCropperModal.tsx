@@ -68,6 +68,17 @@ const ImageCropperModal = ({ image, openState }: ImageCropperModalProps) => {
       setCroppedAreaPixels(croppedAreaPixels);
    };
 
+   const getFileName = () => {
+      if (!image) {
+         return "";
+      }
+      if (typeof image == "object" && image !== null) {
+         return image.name;
+      }
+      const [_time, _uuid, fileName] = image.split("_");
+      return fileName;
+   }
+
    const getCroppedImage = async () => {
       if (!imageURL) {
          snackbar("Image couldn't found to crop!", { variant: "error" });
@@ -79,7 +90,8 @@ const ImageCropperModal = ({ image, openState }: ImageCropperModalProps) => {
       }
       try {
          const croppedImageBlob = await getCroppedImg(imageURL, croppedAreaPixels);
-         const file = new File([croppedImageBlob], 'cropped-image.jpeg', { type: 'image/jpeg' });
+         const fileName = getFileName();
+         const file = new File([croppedImageBlob], fileName, { type: 'image/jpeg' });
          form.setValue("image", file);
          handleClose();
       } catch (error) {

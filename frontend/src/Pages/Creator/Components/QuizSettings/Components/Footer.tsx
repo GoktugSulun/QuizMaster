@@ -65,7 +65,7 @@ const Footer = (props: FooterProps) => {
             editPayload.isRemovedImage = false; //* Add a new file or continue with default file
          }
          
-         // CreatorThunks.editQuiz(editPayload, newFile);
+         CreatorThunks.editQuiz(editPayload, newFile);
          return;
       }
 
