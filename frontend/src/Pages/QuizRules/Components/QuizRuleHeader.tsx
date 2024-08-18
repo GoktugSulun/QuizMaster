@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Stack, type Theme, Typography, useMediaQuery } from "@mui/material";
 import * as S from '../Style/QuizRules.style';
 import defaultQuizImage from "@/Pngs/default.png";
 
@@ -9,8 +9,10 @@ type QuizRuleHeaderProps = {
 };
 
 const QuizRuleHeader = ({ img, name, description }: QuizRuleHeaderProps) => {
+   const isBelowMd = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
+
    return (
-      <Stack flexDirection="row" alignItems="center" gap={3}>
+      <Stack flexDirection={isBelowMd ? "column" : "row"} alignItems={isBelowMd ? "stretch" : "center"} gap={3}>
          <Stack flex={1}>
             <Stack gap={1} marginTop={4}>
                <Typography color="primary" lineHeight={1.5} fontWeight="bold" variant="h6"> Name: </Typography>
@@ -21,7 +23,7 @@ const QuizRuleHeader = ({ img, name, description }: QuizRuleHeaderProps) => {
                <Typography alignSelf="stretch" display="flex" alignItems="center" flex={1} paragraph> {description} </Typography>
             </Stack>
          </Stack>
-         <Stack width={400} height={250}>
+         <Stack>
             <S.Image src={img || defaultQuizImage} alt="Quiz" />
          </Stack>
       </Stack>

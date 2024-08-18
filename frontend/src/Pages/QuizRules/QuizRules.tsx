@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Stack, Theme, Typography, useMediaQuery } from '@mui/material';
 import * as S from './Style/QuizRules.style';
 import { useEffect } from 'react';
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
@@ -34,6 +34,8 @@ const QuizRules = () => {
    const navigate = useNavigate();
    const quizRules = useAppSelector((state) => state.QuizRules.quizRules);
    const startQuizResponse = useAppSelector((state) => state.QuizRules.startQuizResponse);
+   const isBelowSm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+   const isBelowMd = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
    const { isLoading, isSuccess, setIdle } = useThunk('startQuiz');
    const { 
       isLoading: isLoadingGetQuizRulesById, 
@@ -97,7 +99,7 @@ const QuizRules = () => {
 
    return (
       <S.QuizRules>
-         <S.QuizRulesContent>
+         <S.QuizRulesContent $isBelowSm={isBelowSm}>
             { isLoadingGetQuizRulesById && <Loading blur /> }
             <Typography 
                color="primary" 
@@ -114,12 +116,12 @@ const QuizRules = () => {
                description={quizRules.description} 
             />
             <Divider sx={{ margin: '40px 0' }} />
-            <Stack flex={1} flexDirection="row">
-               <Stack flex={1} alignItems="center" justifyContent="center">
+            <Stack flex={1} flexDirection={isBelowMd ? "column" : "row"} rowGap={"15px"}>
+               <Stack flex={1} alignItems={isBelowMd ? "stretch" : "center"} justifyContent="center">
                   <QuizRuleInfos />
                </Stack>
                <Box width="1px" alignSelf="stretch" bgcolor="rgba(0, 0, 0, 0.16)"> </Box>
-               <Stack flex={1} alignItems="center" justifyContent="center">
+               <Stack flex={1} alignItems={isBelowMd ? "stretch" : "center"} justifyContent="center">
                   <QuizRuleQuestionTypes />
                </Stack>
             </Stack>

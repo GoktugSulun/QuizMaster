@@ -3,18 +3,19 @@ import { styled } from "@mui/material";
 
 export const QuizRules = styled(PageWrapper)({});
 
-export const QuizRulesContent = styled(PageContent)(() => ({
+export const QuizRulesContent = styled(PageContent)<{$isBelowSm: boolean}>(({ $isBelowSm }) => ({
    display: 'flex',
    flexDirection: 'column',
-   padding: '25px 50px',
+   padding: $isBelowSm ? "25px" : '25px 50px',
    position: 'relative',
 }));
 
 export const Image = styled('img')({
-   width: '100%',
-   height: '100%',
    objectFit: 'cover',
-   borderRadius: 10
+   borderRadius: 10,
+   width: "100%",
+   maxWidth: 500,
+   aspectRatio: 3 / 2
 });
 
 export const StyledQuizSessionInfoModal = styled('div')(({ theme }) => ({
