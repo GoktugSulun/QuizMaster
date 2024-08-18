@@ -9,8 +9,6 @@ type QuizRuleHeaderProps = {
 };
 
 const QuizRuleHeader = ({ img, name, description }: QuizRuleHeaderProps) => {
-   console.log(img, " img");
-
    return (
       <Stack flexDirection="row" alignItems="center" gap={3}>
          <Stack flex={1}>

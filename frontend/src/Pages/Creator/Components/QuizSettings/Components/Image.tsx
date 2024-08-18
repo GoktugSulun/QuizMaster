@@ -1,16 +1,16 @@
 
 import { useFormContext, useWatch } from "react-hook-form";
-import CropIcon from '@mui/icons-material/Crop';
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import * as S from '../../../Style/Creator.style';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ImageIcon from '@mui/icons-material/Image';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CustomTooltip } from "@/Components/Tooltip";
+import { ImageCropperModal } from "../../ImageCropperModal";
 
 const Image = () => {
    const form = useFormContext();
-
+   const [openImageCropper, setOpenImageCropper] = useState(false);
    const image = useWatch({ control: form.control, name: "image" });
    const blobURL = (typeof image == "object" && image !== null) ? URL.createObjectURL(image) : "";
    const imageURL = blobURL || image || "http://localhost:8000/default.png";
@@ -19,6 +19,7 @@ const Image = () => {
       const image = event.target.files?.[0];
       if (image) {
          form.setValue("image", image);
+         setOpenImageCropper(true);
       }
    }
 
@@ -53,6 +54,7 @@ const Image = () => {
             borderRadius="10px"
             border="1px solid"
             borderColor="secondary.light"
+            boxSizing={"content-box"}
          > 
             <img 
                width="100%" 
@@ -90,16 +92,7 @@ const Image = () => {
                               <DeleteIcon sx={{ color: "common.white" }} />
                            </IconButton>
                         </CustomTooltip>
-                        <CustomTooltip arrow title="Crop">
-                           <IconButton
-                              sx={{ 
-                                 backgroundColor: "primary.main",
-                                 '&:hover': { backgroundColor: "primary.dark" },
-                              }} 
-                           >
-                              <CropIcon sx={{ color: "common.white" }} />
-                           </IconButton>
-                        </CustomTooltip>
+                        <ImageCropperModal image={image} openState={[openImageCropper, setOpenImageCropper]} />
                      </Stack>
                   )
                }

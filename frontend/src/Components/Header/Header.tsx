@@ -1,4 +1,4 @@
-import { Box, Stack, Theme, alpha, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Stack, Theme, useMediaQuery } from '@mui/material';
 import * as S from './Style/Header.style';
 import ProfileMenu from './Components/Menu';
 import { useLocation, useParams } from 'react-router-dom';
@@ -27,17 +27,16 @@ const capitilize = (pathname: string): string => {
 const Header = ({ is404=false }: { is404?: boolean; }) => {
   const { pathname } = useLocation();
   const params = useParams();
-  const theme = useTheme();
   const dispatch = useAppDispatch();
   const isCreatorPage = pathname.includes('/creator');
   const doesQuizIdExist = !!useAppSelector((state) => state.Creator.quiz.id);
+  const quizName = useAppSelector((state) => state.Quiz.quiz.name);
   const isBelowLg = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
   const isUpLg = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"));
   const isUpSm = useMediaQuery((theme: Theme) => theme.breakpoints.up("sm"));
 
   const { isAuthorized } = useAuth();
 
-  // TODO : Fix this title
   const pageTitle = (() => {
     if (is404) {
       return 'Page Not Found';
@@ -51,18 +50,7 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
       case '/feed':
         return 'All Quizzes'
       case '/quiz':
-        return (
-          // TODO : Responsive
-          <Box 
-            bgcolor={alpha(theme.palette.error.light, 0.4)}
-            color="error.main"
-            padding="15px"
-            borderRadius="10px"
-            fontSize="16px"
-          > 
-            Check your time and be sure you complete the quiz!
-          </Box>
-        )
+        return quizName
       case '/rules/quiz':
       case '/results/quiz':
         return capitilize(pathname);

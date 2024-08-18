@@ -128,7 +128,7 @@ const Body = () => {
                variant="h6"
                color="primary.main"
             >
-               Total Attempt
+               Total Attempt*
             </Typography>
             <RadioGroup
                row
@@ -170,7 +170,7 @@ const Body = () => {
                variant="h6"
                color="primary.main"
             >
-               Visibility
+               Visibility*
             </Typography>
             <RadioGroup
                row

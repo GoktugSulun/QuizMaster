@@ -23,7 +23,7 @@ const quizInitialState = {
    name: "",
    description: "",
    visibility: VisibilityEnums.PRIVATE,
-   image: null,
+   image: "",
    totalTime: 0
 }
 
