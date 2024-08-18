@@ -37,6 +37,7 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
 
   const { isAuthorized } = useAuth();
 
+  // Todo: manage from ProdtectedRoute with prop maybe
   const pageTitle = (() => {
     if (is404) {
       return 'Page Not Found';
@@ -51,6 +52,8 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
         return 'All Quizzes'
       case '/quiz':
         return quizName
+      case '/profile':
+        return "Profile"
       case '/rules/quiz':
       case '/results/quiz':
         return capitilize(pathname);
