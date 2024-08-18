@@ -9,6 +9,7 @@ const Quiz = lazy(() => import('@/Pages/Quiz/Quiz'));
 const QuizRules = lazy(() => import('@/Pages/QuizRules/QuizRules'));
 const QuizResult = lazy(() => import('@/Pages/QuizResult/QuizResult'));
 const Creator = lazy(() => import('@/Pages/Creator/Creator'));
+const PageNotFound = lazy(() => import('@/Pages/PageNotFound/PageNotFound'));
 
 // todo : lazy olduğunda fallback'e düşüp geliyor onu düzenleyebiliriz fallback'i modal içinde yapabiliriz
 // const AuthModal = lazy(() => import('@/Pages/Auth/Auth'));
@@ -72,7 +73,7 @@ const RouteList = () => {
 
         {/* 404 Page */}
         <Route element={<ProtectedRoute is404 />}>
-          <Route path="*" element={<div> Page Not Found! </div>} />
+          <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
       { 
