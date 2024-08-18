@@ -18,8 +18,11 @@ export enum RouteEnums {
    // Auth
    AUTH = '/auth/:type',
 
+   // Profile
+   PROFILE = '/profile',
+
    // Test route
-   TEST = '/test',
+   TEST = '/test', // TODO : remove test folders
 }
 
 export enum QuizTypeEnums {

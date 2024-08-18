@@ -4,7 +4,6 @@ import Menu from '@mui/material/Menu';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import ProfileImg from '@/pngs/foto2.jpeg';
@@ -36,6 +35,11 @@ const ProfileMenu = () => {
       window.location.reload();
    };
 
+   const navigateProfileHandler = () => {
+      handleClose();
+      navigate(RouteEnums.PROFILE);
+   }
+
    return (
       <Box marginTop="0 !important">
          <CustomTooltip arrow title="Profile">
@@ -65,7 +69,7 @@ const ProfileMenu = () => {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
          >
-         <S.ProfileMenuItem onClick={handleClose}>
+         <S.ProfileMenuItem onClick={navigateProfileHandler}>
             <Avatar /> Profile
          </S.ProfileMenuItem>
          <Divider sx={{ margin: '0 !important' }} />
