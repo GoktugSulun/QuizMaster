@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import { StyledProfilePhoto } from "./Style/ProfilePhoto.style";
+import { useEffect, useState } from "react";
 
 type ProfilePhotoProps = {
    image: File | string;
@@ -8,11 +9,26 @@ type ProfilePhotoProps = {
 }
 
 const ProfilePhoto = (props: ProfilePhotoProps) => {
+   const [imageURL, setImageURL] = useState("");
+
+   useEffect(() => {
+      if (props.image) {
+         const blobURL = (typeof props.image == "object" && props.image !== null) ? URL.createObjectURL(props.image) : "";
+         const imageURL = (blobURL || props.image) as string; 
+         setImageURL(imageURL);
+   
+         return () => {
+            URL.revokeObjectURL(imageURL)
+         }
+      } else {
+         setImageURL("")
+      }
+   }, [props.image])
 
    if (props.image) {
       return (
          <StyledProfilePhoto>
-            İmage
+            <img src={imageURL} />
          </StyledProfilePhoto>
       )
    }

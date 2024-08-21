@@ -75,6 +75,7 @@ const Inputs = () => {
             type={showPassword ? "text" : "password"}
             disabled={isLoading}
             onKeyDown={onKeyDownHandler}
+            helperText="If you want to continue with the current password, please leave this field blank."
             endAdornment={
                <CustomTooltip arrow title={showPassword ? "Hide" : "Show"} placement="top">
                   <IconButton disabled={isLoading} onClick={() => setShowPassword((prev) => !prev)}> 

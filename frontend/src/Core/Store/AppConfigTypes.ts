@@ -37,6 +37,7 @@ export type UserType = {
    email: string;
    password: string;
    id: string;
+   image: string;
    createdAt: string;
    updatedAt: string;
    isRemoved: false;

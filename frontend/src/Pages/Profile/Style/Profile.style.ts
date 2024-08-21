@@ -1,9 +1,10 @@
 import { PageContent, PageWrapper } from "@/Core/Layout";
 import { styled } from "@mui/material";
+import { shouldForwardProp } from "@/Core/Utils";
 
 export const StyledProfile = styled(PageWrapper)({});
 
-export const StyledProfileContent = styled(PageContent)<{ $isBelowMd: boolean; }>(({ $isBelowMd }) => ({
+export const StyledProfileContent = styled(PageContent, { shouldForwardProp })<{ $isBelowMd: boolean; }>(({ $isBelowMd }) => ({
    display: 'flex',
    flexDirection: 'column',
    padding: $isBelowMd ? '25px' : '25px 50px',

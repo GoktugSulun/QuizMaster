@@ -47,6 +47,7 @@ const defaultValues: DefaultValuesType = {
 const Profile = () => {
    const form = useForm({ defaultValues, resolver: yupResolver(schema), mode: "onChange" });
    const isBelowMd = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
+   const isBelowLg = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
 
    return (
       <StyledProfile>
@@ -59,6 +60,8 @@ const Profile = () => {
                   gap={isBelowMd ? "30px" : "60px"}
                   height={"100%"}
                   padding={"50px 0"}
+                  width={isBelowLg ? "100%" : "900px"}
+                  margin={isBelowLg ? "0" : "0 auto"}
                >
                   <PhotoUpload />
                   <Divider orientation={isBelowMd ? "horizontal" : "vertical"} />

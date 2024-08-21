@@ -9,6 +9,7 @@ const defaultAuthorizedUser: UserType = {
   name: "",
   surname: "",
   email: "",
+  image: "",
   password: "",
   createdAt: "",
   updatedAt: "",

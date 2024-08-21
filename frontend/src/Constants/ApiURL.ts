@@ -17,6 +17,8 @@ export enum ApiURL {
    QUIZ_RESULTS = "v1/quizResults",
    ALL_QUIZ_RESULTS = "v1/quizResults/all",
 
+   USER = "v1/user",
+
    // Auth
    AUTH = "v1/auth",
    AUTH_LOGIN = "v1/auth/login",

@@ -1,9 +1,10 @@
 import { PageContent, PageWrapper } from "@/Core/Layout";
 import { styled } from "@mui/material";
+import { shouldForwardProp } from "@/Core/Utils";
 
 export const QuizRules = styled(PageWrapper)({});
 
-export const QuizRulesContent = styled(PageContent)<{$isBelowSm: boolean}>(({ $isBelowSm }) => ({
+export const QuizRulesContent = styled(PageContent, { shouldForwardProp })<{$isBelowSm: boolean}>(({ $isBelowSm }) => ({
    display: 'flex',
    flexDirection: 'column',
    padding: $isBelowSm ? "25px" : '25px 50px',
