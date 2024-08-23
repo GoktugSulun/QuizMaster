@@ -26,3 +26,10 @@ export interface IGet {
    password?: string;
    _id?: string;
 }
+
+export interface IEdit {
+   name: string;
+   surname: string;
+   email: string;
+   newPassword?: string;
+}

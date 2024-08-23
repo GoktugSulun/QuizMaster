@@ -1,10 +1,11 @@
 import { IResponse } from "../types/Types.ts";
 import Helpers from "../utils/Helpers.ts";
-import { IRegister, ILogin, IGet, IUser } from "../constants/Types/User/UserType.ts";
+import { type IRegister, type ILogin, type IGet, type IUser, type IEdit } from "../constants/Types/User/UserType.ts";
 import { ILoginResponse } from "../constants/Types/User/UserResponseType.ts";
 import { type ResponseType } from "../constants/Types/Common/CommonType.ts";
 import jwt from 'jsonwebtoken';
 import User from "../models/User.ts";
+import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
 
 class AuthService {
    static async get(params: IGet): Promise<ResponseType<IUser>> {
@@ -27,6 +28,28 @@ class AuthService {
          return { 
             type: true, 
             message: 'You have been logged in successfully', 
+            data
+         };
+
+      } catch (error) {
+         return Helpers.responseError(error)
+      }
+   }
+
+   static async edit(params: IEdit): Promise<ResponseType<IUser>> {
+      try {
+         // Todo: image handle et
+         const data = await User.findOneAndUpdate({ _id: AuthenticatedUser.getUserId(), isRemoved: false }, params);
+         if (!data) {
+            return {
+               type: false,
+               message: "Error occurs while editing user information!"
+            }
+         }
+         
+         return { 
+            type: true, 
+            message: 'User has been edited successfully', 
             data
          };
 

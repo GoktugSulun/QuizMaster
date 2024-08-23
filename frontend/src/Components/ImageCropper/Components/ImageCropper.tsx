@@ -5,9 +5,14 @@ import Cropper, { type Area, type Point } from 'react-easy-crop';
 type ImageCropperProps = {
   image: string;
   onCropCompleteHandler: (_croppedArea: Area, croppedAreaPixels: Area) => void;
+  aspectRatio: number;
+  width: number;
+  height: number;
+  cropShape: "rect" | "round"
 }
 
-const ImageCropper = ({ image, onCropCompleteHandler }: ImageCropperProps) => {
+const ImageCropper = (props: ImageCropperProps) => {
+  const { image, onCropCompleteHandler, aspectRatio, width, height, cropShape } = props;
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
 
@@ -16,27 +21,36 @@ const ImageCropper = ({ image, onCropCompleteHandler }: ImageCropperProps) => {
   };
   
   return (
-    <Box margin={"20px 0"}>
+    <Stack
+      margin={"20px 0"}
+      flexDirection={"column"}
+      alignItems={"center"}
+    >
       <Box
         position={"relative"}
-        width={600}
-        height={400}
+        maxWidth={width}
+        maxHeight={height}
+        width="100%"
+        height={"100%"}
+        sx={{ aspectRatio }}
         marginBottom={"20px"}
       >
         <Cropper
           image={image}
           crop={crop}
           zoom={zoom}
-          aspect={3 / 2}
+          aspect={aspectRatio}
           onCropChange={setCrop}
           onCropComplete={onCropCompleteHandler}
           onZoomChange={onZoomChange}
+          cropShape={cropShape}
         />
       </Box>
       <Stack
         flexDirection={"row"}
         alignItems={"center"}
         gap={2}
+        alignSelf={"stretch"}
       >
         <Typography color={"primary.main"} fontWeight={"bold"} > Zoom </Typography>
         <Slider
@@ -49,7 +63,7 @@ const ImageCropper = ({ image, onCropCompleteHandler }: ImageCropperProps) => {
           onChange={(_, zoom) => onZoomChange(zoom)}
         />
       </Stack>
-    </Box>
+    </Stack>
   );
 };
 

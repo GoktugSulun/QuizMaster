@@ -3,8 +3,11 @@ import AuthController from '../controllers/AuthController.ts';
 
 const app = express();
 
-// Get
+// Get authenticated user
 app.get('/', AuthController.get);
+
+// Edit authenticated user
+app.put('/', AuthController.edit);
 
 // Login
 app.post('/login', AuthController.login);

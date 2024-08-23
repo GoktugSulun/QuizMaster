@@ -6,6 +6,7 @@ export const StyledProfilePhoto = styled(Stack)(({ theme }) => ({
    alignItems: "center",
    justifyContent: "center",
    background: theme.palette.primary.light,
+   border: `1px solid ${theme.palette.primary.main}`,
    borderRadius: "50%",
    "& img": {
       borderRadius: "50%",
