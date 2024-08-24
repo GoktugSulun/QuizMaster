@@ -1,8 +1,9 @@
 import { Stack, styled } from "@mui/material";
+import { shouldForwardProp } from "@/Core/Utils";
 
-export const StyledProfilePhoto = styled(Stack)(({ theme }) => ({
-   width: 200,
-   height: 200,
+export const StyledProfilePhoto = styled(Stack, { shouldForwardProp })<{ $width?: number; $height?: number; }>(({ theme, $width, $height }) => ({
+   width: $width || 200,
+   height: $height || 200,
    alignItems: "center",
    justifyContent: "center",
    background: theme.palette.primary.light,

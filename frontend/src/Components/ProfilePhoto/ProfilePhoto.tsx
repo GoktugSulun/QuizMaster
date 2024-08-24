@@ -6,6 +6,9 @@ type ProfilePhotoProps = {
    image: File | string;
    name: string;
    surname?: string;
+   width?: number;
+   height?: number;
+   fontSize?: string;
 }
 
 const ProfilePhoto = (props: ProfilePhotoProps) => {
@@ -27,18 +30,18 @@ const ProfilePhoto = (props: ProfilePhotoProps) => {
 
    if (props.image) {
       return (
-         <StyledProfilePhoto>
+         <StyledProfilePhoto $width={props.width} $height={props.height}>
             <img src={imageURL} />
          </StyledProfilePhoto>
       )
    }
 
    return (
-      <StyledProfilePhoto>
+      <StyledProfilePhoto $width={props.width} $height={props.height}>
          <Typography 
             color={"primary.main"} 
             fontWeight={"bold"} 
-            fontSize={"60px"} 
+            fontSize={props.fontSize || "60px"} 
          >
             { props.name.charAt(0).toLocaleUpperCase() }
             { props.surname ? props.surname.charAt(0).toLocaleUpperCase() : "" }
