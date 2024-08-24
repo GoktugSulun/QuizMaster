@@ -19,10 +19,24 @@ class UserController {
    }
 
    static async edit(req: Request, res: Response) {
+      if (!req.params.id) { 
+         return Helpers.responseMessage(res, false, "'Id' field is required!");
+      }
       try {
-         // todo: validate body
-         const param = req.body as IEdit;
-         const result = await AuthService.edit(param);
+         let params;
+         if (req.body?.data) {
+            params = { 
+               body: { 
+                  ...JSON.parse(req.body.data), 
+                  uuid: req.uuid, 
+                  multer_image: req.multer_image 
+               }, 
+               id: req.params.id
+            } as IEdit;
+         } else {
+            params = { body: req.body, id: req.params.id } as IEdit;
+         }
+         const result = await AuthService.edit(params);
          Helpers.responseJSON(res, result);
       } catch (error) {
          const err = error as IError;

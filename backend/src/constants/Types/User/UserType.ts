@@ -16,6 +16,7 @@ export interface IUser {
    name: string;
    email: string;
    password: string;
+   image: string;
    createdAt: Date;
    updatedAt: Date;
    isRemoved: boolean;
@@ -28,8 +29,15 @@ export interface IGet {
 }
 
 export interface IEdit {
-   name: string;
-   surname: string;
-   email: string;
-   newPassword?: string;
+   body: {
+      name: string;
+      surname: string;
+      email: string;
+      newPassword?: string;
+      image: string;
+      uuid?: string;
+      multer_image?: string;
+      isRemovedImage?: boolean;
+   },
+   id: string;
 }

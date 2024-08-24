@@ -8,6 +8,7 @@ export interface IUserSchema {
    surname: string;
    email: string;
    password: string;
+   image: string;
    isRemoved: boolean;
 }
 
@@ -31,6 +32,11 @@ export const userSchema = new mongoose.Schema<IUserSchema>({
       type: String, 
       trim: true, 
       required: true
+   },
+   image: { 
+      type: String, 
+      required: false,
+      default: ""
    },
    isRemoved: {
       type: Boolean,

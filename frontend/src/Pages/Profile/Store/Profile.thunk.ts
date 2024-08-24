@@ -5,10 +5,11 @@ import { UserType } from "@/Core/Store/AppConfigTypes";
 import { AppConfigActions } from "@/Core/Store/AppConfig.slice";
 
 const ProfileThunks = {
-   saveUserInfo: ({ payload, id }: { payload: UserPayloadType, id: string }) => request({
+   saveUserInfo: ({ payload, id, files }: { payload: UserPayloadType, id: string, files: File | null }) => request({
       method: 'PUT',
-      url: `${ApiURL.USER}/${id}`,
+      url: `${ApiURL.AUTH}/${id}`,
       payload,
+      files,
       key: 'saveUserInfo',
       success: ({ data, thunkAPI }) => {
          const payload = data as UserType;

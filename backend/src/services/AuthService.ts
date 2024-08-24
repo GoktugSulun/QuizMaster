@@ -38,15 +38,36 @@ class AuthService {
 
    static async edit(params: IEdit): Promise<ResponseType<IUser>> {
       try {
-         // Todo: image handle et
-         const data = await User.findOneAndUpdate({ _id: AuthenticatedUser.getUserId(), isRemoved: false }, params);
-         if (!data) {
+         const { body, id } = params;
+         const { uuid, multer_image, isRemovedImage, newPassword, ...currentUserData } = body;
+
+         const user = await User.findById({ _id: AuthenticatedUser.getUserId(), isRemoved: false });
+         if (!user) {
             return {
                type: false,
                message: "Error occurs while editing user information!"
             }
          }
-         
+
+         const userData = { ...currentUserData, password: user.password }
+
+         if (isRemovedImage) {
+            userData.image = "";
+         } else {
+            if (multer_image) {
+               const image = Helpers.createImagePath(multer_image);
+               userData.image = image;
+            } else {
+               userData.image = user.image
+            }
+         }
+
+         if (newPassword) {
+            userData.password = newPassword;
+         }
+
+         const data = await User.findByIdAndUpdate(AuthenticatedUser.getUserId(), userData, { new: true }) as IUser;
+
          return { 
             type: true, 
             message: 'User has been edited successfully', 
@@ -94,7 +115,7 @@ class AuthService {
 
    static async register(params: IRegister): Promise<IResponse> {
       try {
-         const newUser = params;
+         const newUser = { ...params, image: "" };
 
          const isUserExist = await User.exists({ email: newUser.email });
          if (isUserExist) {
@@ -104,7 +125,7 @@ class AuthService {
             }
          }
 
-         const user = new User(newUser);
+         const user = new User();
          await user.save();
          
          return { 

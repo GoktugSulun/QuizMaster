@@ -50,7 +50,7 @@ const PhotoUpload = () => {
                            </IconButton>
                         </CustomTooltip>
                         <ImageCropperModal 
-                           image={watch("image") || selectedImage} 
+                           image={selectedImage || watch("image")} 
                            openState={[openImageCropper, setOpenImageCropper]}
                            handleClose={() => { 
                               setOpenImageCropper(false);
