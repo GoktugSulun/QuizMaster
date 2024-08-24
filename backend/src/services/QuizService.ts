@@ -241,7 +241,7 @@ class QuizService {
         const image = Helpers.getDefaultImagePath();
         quizData.image = image;
       } else {
-        if (currentQuizData.image) {
+        if (multer_image) {
           const image = Helpers.createImagePath(multer_image);
           quizData.image = image;
         } else {
