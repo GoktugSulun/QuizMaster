@@ -58,8 +58,6 @@ const RouteList = () => {
           <Route path={RouteEnums.FEED} element={<Dashboard />} />
           <Route path={RouteEnums.TEST} element={<Test />} />
           <Route path={RouteEnums.AUTH} element={<AuthModal />} />
-          <Route path={RouteEnums.PROFILE} element={<Profile />} />
-          <Route path={RouteEnums.CREATOR} element={<Creator />} />
         </Route>
 
         {/* Protected Routes */}
@@ -71,6 +69,8 @@ const RouteList = () => {
           <Route path={RouteEnums.QUIZ} element={<Quiz />} />
           <Route path={RouteEnums.QUIZ_RULES} element={<QuizRules />} />
           <Route path={RouteEnums.QUIZ_RESULTS} element={<QuizResult />} />
+          <Route path={RouteEnums.PROFILE} element={<Profile />} />
+          <Route path={RouteEnums.CREATOR} element={<Creator />} />
         </Route>
 
         {/* 404 Page */}
