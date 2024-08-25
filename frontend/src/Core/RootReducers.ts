@@ -11,7 +11,7 @@ const reducer = {
   ...QuizSlice,
   ...CreatorSlice,
   ...QuizRulesSlice,
-  ...QuizResultSlice
+  ...QuizResultSlice,
 }
 
 export default reducer;

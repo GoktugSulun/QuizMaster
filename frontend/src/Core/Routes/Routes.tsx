@@ -9,6 +9,7 @@ const Quiz = lazy(() => import('@/Pages/Quiz/Quiz'));
 const QuizRules = lazy(() => import('@/Pages/QuizRules/QuizRules'));
 const QuizResult = lazy(() => import('@/Pages/QuizResult/QuizResult'));
 const Creator = lazy(() => import('@/Pages/Creator/Creator'));
+const Profile = lazy(() => import('@/Pages/Profile/Profile'));
 const PageNotFound = lazy(() => import('@/Pages/PageNotFound/PageNotFound'));
 
 // todo : lazy olduğunda fallback'e düşüp geliyor onu düzenleyebiliriz fallback'i modal içinde yapabiliriz
@@ -68,6 +69,7 @@ const RouteList = () => {
           <Route path={RouteEnums.QUIZ} element={<Quiz />} />
           <Route path={RouteEnums.QUIZ_RULES} element={<QuizRules />} />
           <Route path={RouteEnums.QUIZ_RESULTS} element={<QuizResult />} />
+          <Route path={RouteEnums.PROFILE} element={<Profile />} />
           <Route path={RouteEnums.CREATOR} element={<Creator />} />
         </Route>
 

@@ -1,5 +1,5 @@
 import Modal from '@mui/material/Modal';
-import { Button, Divider, IconButton, Stack, styled, Typography, useTheme } from "@mui/material";
+import { Button, Divider, IconButton, Stack, styled, Theme, Typography, useMediaQuery, useTheme } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 
 export const StyledBaseModal = styled("div")(({ theme }) => ({
@@ -47,6 +47,7 @@ const BaseModal = (props: BaseModalProps) => {
       disableSecondButton = false
    } = props;
    const theme = useTheme();
+   const isDownSm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
    return (
       <div>
@@ -97,14 +98,19 @@ const BaseModal = (props: BaseModalProps) => {
                         '&:hover': {
                            bgcolor: 'rgba(0, 0, 0, 0.1)',
                            color: "common.black",
-                        }
+                        },
+                        ...(isDownSm && { flex: 1 })
                      }}
                      onClick={firstButtonOnClick ?? handleClose}
                      disabled={disableFirstButton}
                   >
                      {firstButtonName}
                   </Button>
-                  <Button onClick={secondButtonOnClick} disabled={disableSecondButton}>
+                  <Button 
+                     onClick={secondButtonOnClick} 
+                     disabled={disableSecondButton} 
+                     sx={{ ...(isDownSm && { flex: 1 }) }}
+                  >
                      {secondButtonName}
                   </Button>
                </Stack>

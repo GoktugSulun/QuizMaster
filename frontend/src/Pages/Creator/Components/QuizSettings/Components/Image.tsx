@@ -6,11 +6,12 @@ import { useEffect, useState } from "react";
 import ImageIcon from '@mui/icons-material/Image';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CustomTooltip } from "@/Components/Tooltip";
-import { ImageCropperModal } from "../../ImageCropperModal";
+import ImageCropperModal from "@/Components/ImageCropper/ImageCropperModal";
 
 const Image = () => {
    const form = useFormContext();
    const [openImageCropper, setOpenImageCropper] = useState(false);
+   const [selectedImage, setSelectedImage] = useState<File | null>(null);
    const image = useWatch({ control: form.control, name: "image" });
    const blobURL = (typeof image == "object" && image !== null) ? URL.createObjectURL(image) : "";
    const imageURL = blobURL || image || "http://localhost:8000/default.png";
@@ -18,7 +19,7 @@ const Image = () => {
    const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const image = event.target.files?.[0];
       if (image) {
-         form.setValue("image", image);
+         setSelectedImage(image);
          setOpenImageCropper(true);
       }
    }
@@ -68,14 +69,14 @@ const Image = () => {
                left="0"
                width="100%"
                flexDirection="row"
-               justifyContent={!isDefaultImage() ? "space-between" : "center"}
+               justifyContent={(selectedImage || !isDefaultImage()) ? "space-between" : "center"}
                alignItems="centeer"
                zIndex={20}
                padding="0 10px 0 5px"
                sx={{ filter: "drop-shadow(2px 2px 6px #222)" }}
             >  
                {
-                  !isDefaultImage() && (
+                  (selectedImage || !isDefaultImage()) && (
                      <Stack 
                         flexDirection="row" 
                         alignItems="center"
@@ -92,7 +93,17 @@ const Image = () => {
                               <DeleteIcon sx={{ color: "common.white" }} />
                            </IconButton>
                         </CustomTooltip>
-                        <ImageCropperModal image={image} openState={[openImageCropper, setOpenImageCropper]} />
+                        <ImageCropperModal 
+                           image={selectedImage || form.watch("image")} 
+                           openState={[openImageCropper, setOpenImageCropper]}
+                           handleClose={() => {
+                              setOpenImageCropper(false);
+                              setSelectedImage(null);
+                           }}
+                           width={600}
+                           height={400}
+                           aspectRatio={3 / 2}
+                        />
                      </Stack>
                   )
                }

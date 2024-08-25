@@ -1,12 +1,12 @@
 import { BaseModal } from "@/Core/Components"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import ImageCropper from "./Components/ImageCropper";
 import { CustomTooltip } from "@/Components/Tooltip";
 import { Box, IconButton } from "@mui/material";
 import CropIcon from '@mui/icons-material/Crop';
 import { type Area } from "react-easy-crop";
 import { snackbar } from "@/Core/Utils";
 import { useFormContext } from "react-hook-form";
+import ImageCropper from "./Components/ImageCropper";
 
 const getCroppedImg = async (imageURL: string, croppedAreaPixels: Area): Promise<Blob> => {
    return new Promise((resolve, reject) => {
@@ -52,17 +52,30 @@ const getCroppedImg = async (imageURL: string, croppedAreaPixels: Area): Promise
   
 type ImageCropperModalProps = {
    image: File | string | null;
-   openState: [boolean, Dispatch<SetStateAction<boolean>>]
+   openState: [boolean, Dispatch<SetStateAction<boolean>>];
+   handleClose: () => void;
+   aspectRatio: number;
+   width: number;
+   height: number;
+   buttonColor?: "primary" | "secondary";
+   cropShape?: "rect" | "round"
 }
 
-const ImageCropperModal = ({ image, openState }: ImageCropperModalProps) => {
+type ButtonStyle = { 
+   bgColor: string; 
+   hoverBgColor: string;
+   color: string 
+};
+
+const ImageCropperModal = (props: ImageCropperModalProps) => {
    const form = useFormContext();
+   const { image, openState, handleClose, aspectRatio, width, height, buttonColor="primary", cropShape="rect" } = props;
    const [open, setOpen] = openState;
    const [imageURL, setImageURL] = useState("");
    const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
+   const [buttonStyle, setButtonStyle] = useState<ButtonStyle>({ bgColor: "", hoverBgColor: "", color: "" });
 
    const handleOpen = () => setOpen(true);
-   const handleClose = () => setOpen(false);
 
    const onCropCompleteHandler = (_croppedArea: Area, croppedAreaPixels: Area) => {
       setCroppedAreaPixels(croppedAreaPixels);
@@ -113,17 +126,31 @@ const ImageCropperModal = ({ image, openState }: ImageCropperModalProps) => {
       }
    }, [image])
 
+   useEffect(() => {
+      switch (buttonColor) {
+         case "primary":
+            setButtonStyle({ bgColor: "primary.main", hoverBgColor: "primary.dark", color: "common.white" })
+            break;
+         case "secondary": 
+            setButtonStyle({ bgColor: "primary.light", hoverBgColor: "primary.light", color: "primary.main" })
+            break;
+         default:
+            break;
+      }
+   }, [buttonColor])
+
    return (
       <Box>
          <CustomTooltip arrow title="Crop">
             <IconButton
                sx={{ 
-                  backgroundColor: "primary.main",
-                  '&:hover': { backgroundColor: "primary.dark" },
+                  backgroundColor: buttonStyle.bgColor,
+                  '&:hover': { backgroundColor: buttonStyle.hoverBgColor },
+                  
                }} 
                onClick={handleOpen}
             >
-               <CropIcon sx={{ color: "common.white" }} />
+               <CropIcon sx={{ color: buttonStyle.color }} />
             </IconButton>
          </CustomTooltip>
          <BaseModal
@@ -136,6 +163,10 @@ const ImageCropperModal = ({ image, openState }: ImageCropperModalProps) => {
             <ImageCropper 
                image={imageURL} 
                onCropCompleteHandler={onCropCompleteHandler} 
+               aspectRatio={aspectRatio}
+               width={width}
+               height={height}
+               cropShape={cropShape}
             />
          </BaseModal>
       </Box>
