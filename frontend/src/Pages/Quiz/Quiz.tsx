@@ -9,7 +9,7 @@ import { useEffect, useRef } from 'react';
 import { Loading } from '@/Core/Components';
 import { AppConfigActions } from '@/Core/Store/AppConfig.slice';
 import { QuizRulesThunks } from '../QuizRules/Store/QuizRules.thunk';
-import { QuizStatusEnums } from '@/Constants/Enums';
+import { QuizStatusEnums, RouteEnums } from '@/Constants/Enums';
 import { QuizActions } from './Store/Quiz.slice';
 import { type QuizWithQuestions } from '../Creator/Types/CreatorTypes';
 import { type QuizSessionResponse } from './Types/QuizTypes';
@@ -40,18 +40,8 @@ const Quiz = () => {
    const { isSuccess: isSuccessCompleteQuizSession, isLoading: isLoadingCompleteQuizSession  } = useThunk("completeQuizSession");
 
    if (!id || !question) {
-      return <Navigate to="/" replace />
+      return <Navigate to={RouteEnums.FEED} replace />
    }
-
-   useEffect(() => {
-      if (!quiz.id) {
-         QuizRulesThunks.startQuiz({ quizId: id })
-      }
-   }, [quiz]);
-
-   useEffect(() => {
-      answersRef.current = { answers, canContinue: quizSession.totalAttempt <= quizSession.maxAttempt };
-   }, [answers, quizSession]);
 
    const setQuizInfo = (quiz: QuizWithQuestions, quizSession?: QuizSessionResponse) => {
       if (startQuizResponse?.status) {
@@ -61,6 +51,16 @@ const Quiz = () => {
          dispatch(QuizActions.setQuiz(quiz));
       }
    }
+
+   useEffect(() => {
+      if (!quiz.id) {
+         QuizRulesThunks.startQuiz({ quizId: id });
+      }
+   }, [quiz]);
+
+   useEffect(() => {
+      answersRef.current = { answers, canContinue: quizSession.totalAttempt <= quizSession.maxAttempt };
+   }, [answers, quizSession]);
 
    useEffect(() => {
       if (isSuccessStartQuiz && startQuizResponse) {
@@ -119,6 +119,7 @@ const Quiz = () => {
       }
    }, []);
 
+
    if (!quiz.id || isOpenSessionInfoModal || isSuccessCompleteQuizSession) {
       return (
          <S.Quiz>
@@ -129,6 +130,11 @@ const Quiz = () => {
             </S.QuizContent>
          </S.Quiz>
       )
+   }
+
+   //* URL üzerinden soru değiştirilmeye çalışılırsa ve o soru bulunamazsa kullanıcıyı ana sayfaya yönlendirir.
+   if (quiz.questions.length > 0 && !!question && !quiz.questions[Number(question) - 1]) {
+      return <Navigate to={RouteEnums.FEED} replace />
    }
 
    return (

@@ -11,7 +11,7 @@ const Options = () => {
 
    const questionId = searchParams.get("question") as string;
    const question = questions[Number(questionId) - 1];
-   const options = question?.options  || [];
+   const options = question.options;
    
    const setAnswerHandler = (selectedId: string) => {
       const isSelected = !!answers.find((answer) => answer.answerId === selectedId);
