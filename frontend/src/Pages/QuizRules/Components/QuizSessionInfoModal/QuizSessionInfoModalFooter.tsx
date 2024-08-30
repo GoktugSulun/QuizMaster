@@ -1,6 +1,6 @@
 import { Button, Stack } from "@mui/material"
 import { QuizRulesThunks } from "../../Store/QuizRules.thunk";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 type QuizSessionInfoModalFooterProps = {
    handleClose: (navigateBack?: boolean) => void;
@@ -8,11 +8,13 @@ type QuizSessionInfoModalFooterProps = {
 }
 
 const QuizSessionInfoModalFooter = ({ handleClose, isQuizPage }: QuizSessionInfoModalFooterProps) => {
+   const navigate = useNavigate();
    const [searchParams] = useSearchParams();
    const id = searchParams.get("id") as string;
 
    const startQuizHandler = () => {
       if (isQuizPage) {
+         navigate(`/quiz?id=${searchParams.get("id")}&question=${1}`, { replace: true })
          window.location.reload();
          handleClose();
       } else {

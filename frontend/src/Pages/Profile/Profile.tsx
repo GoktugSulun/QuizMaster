@@ -86,6 +86,12 @@ const Profile = () => {
    }, [isSuccessGetUser]);
 
    useEffect(() => {
+      if (!changePasswordFlag) {
+         form.resetField("newPassword");
+      }
+   }, [changePasswordFlag]);
+
+   useEffect(() => {
       if (authorizedUser.id) {
          setUser();
       }

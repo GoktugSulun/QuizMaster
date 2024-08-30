@@ -1,8 +1,9 @@
-import { PointEnums, QuizSessionEnums, VisibilityEnums } from "@/Constants/Enums";
+import { PointEnums, QuestionEnums, QuizSessionEnums, VisibilityEnums } from "@/Constants/Enums";
 
 export type Option = {
    id: string;
    name: string;
+   userAnswer?: string;
    isCorrect: boolean;
 }
 
@@ -12,6 +13,7 @@ export type Question = {
    time?: number | null;
    image?: string;
    point: PointEnums;
+   type: QuestionEnums;
    options: Option[];
    selectedOptionId?: string;
 }
@@ -24,12 +26,32 @@ export type Quiz = {
    questions: Question[];
 }
 
-export type Answer = {
-   questionId: string,
-} & ( 
-   { answerId: string | null, answer?: never } 
-   | { answerId?: never, answer: string | null }
-)
+export type UserShortAnswerType = { answerId: string | null, text: string }
+
+export type ShortAnswerType = {
+   answerId?: never;
+   answer?: never;
+   answers: UserShortAnswerType[];
+}
+
+export type MultipleAndTrueFalseAnswerType = { 
+   answerId: string | null;
+   answer?: never;
+   answers?: never;
+}
+
+export type Answer = 
+   { questionId: string; } 
+   & 
+   ( 
+      ShortAnswerType 
+      | MultipleAndTrueFalseAnswerType
+      | { 
+         answerId?: never; 
+         answer: string | null; 
+         answers?: never; 
+      } 
+   )
 
 export type QuizSessionResponse = {
    id: string;   

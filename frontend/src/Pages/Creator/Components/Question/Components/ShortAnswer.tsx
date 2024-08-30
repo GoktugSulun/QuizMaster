@@ -41,7 +41,7 @@ const ShortAnswer = () => {
                </Typography>
             </Stack>
          </Grid>
-         <Grid item xs={4}>
+         <Grid item xs={12} md={4}>
             <QuestionStyle.OptionBox size="small">
                <TextInput
                   fullWidth
@@ -56,7 +56,7 @@ const ShortAnswer = () => {
                />
             </QuestionStyle.OptionBox>
          </Grid>
-         <Grid item xs={4}>
+         <Grid item xs={12} md={4}>
             <QuestionStyle.OptionBox size="small">
                <TextInput
                   fullWidth
@@ -71,7 +71,7 @@ const ShortAnswer = () => {
                />
             </QuestionStyle.OptionBox>
          </Grid>
-         <Grid item xs={4}>
+         <Grid item xs={12} md={4}>
             <QuestionStyle.OptionBox size="small">
                <TextInput
                   fullWidth

@@ -3,7 +3,7 @@ import { type ResponseType } from "../constants/Types/Common/CommonType.ts";
 import { type IGetById, type IGetAll, type ICreate } from "../constants/Types/QuizResult/QuizResultType.ts";
 import { type IInitialResultState, type ICreateResult, type IGetResultById, type IAllQuizResultId } from "../constants/Types/QuizResult/QuizResultResponseType.ts";
 import QuizService from "./QuizService.ts";
-import { PointEnums } from "../constants/Enums/Enums.ts";
+import { PointEnums, QuestionEnums } from "../constants/Enums/Enums.ts";
 import QuizResult from "../models/QuizResult.ts";
 import QuizSession from "../models/QuizSession.ts";
 import Quiz from "../models/Quiz.ts";
@@ -56,7 +56,10 @@ class QuizResultService {
                message: `Quiz couldn't find with id: ${quiz}`
             }
          }
+
+         console.log(quizResult," quizResult");
          
+
          const data = {
             ...quizResult.toJSON(),
             quiz: quiz.toJSON()
@@ -122,13 +125,34 @@ class QuizResultService {
                   name: currentQuestion.name,
                   point: currentQuestion.point,
                   selectedOptionId: targetQuestion?.answerId || "",
-                  options: currentQuestion.options.map((option) => ({ id: option.id, name: option.name, isCorrect: option.isCorrect }))
+                  type: currentQuestion.type,
+                  options: currentQuestion.options.map((option, index) => ({ 
+                     id: option.id, 
+                     name: option.name, 
+                     ...(currentQuestion.type === QuestionEnums.SHORT_ANSWER && { userAnswer: targetQuestion?.answers?.[index]?.text || "" }),
+                     isCorrect: option.isCorrect 
+                  }))
                }
             ]
         
+            //* Question type: Multiple choice OR True/False
             if (targetQuestion?.answerId) {
                const correctAnswer = currentQuestion.options.find((option) => option.isCorrect);
                if (targetQuestion.answerId === correctAnswer?.id) {
+                  resultState.totalCorrect++;
+                  if (currentQuestion.point === PointEnums.STANDART){
+                     resultState.grade += pointEachQuestion;
+                  } else if (currentQuestion.point === PointEnums.DOUBLE_UP){
+                     resultState.grade += pointEachQuestion * 2;
+                  } else {
+                    throw new Error("Unknown PointEnums")
+                  }
+               } else {
+                  resultState.totalWrong++;
+               }
+            } else if (targetQuestion?.answers?.some((answer) => !!answer.text)) { //* Question type: Short Answer
+               const correctAnswers = currentQuestion.options.map((option) => option.name);
+               if (correctAnswers.find((correctAnswer) => targetQuestion.answers.find((answer) => answer.text.toLocaleLowerCase() === correctAnswer.toLocaleLowerCase()))) {
                   resultState.totalCorrect++;
                   if (currentQuestion.point === PointEnums.STANDART){
                      resultState.grade += pointEachQuestion;
