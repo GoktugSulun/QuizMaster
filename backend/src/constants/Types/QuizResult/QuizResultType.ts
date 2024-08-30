@@ -1,13 +1,15 @@
-import { PointEnums } from "../../Enums/Enums";
+import { PointEnums, QuestionEnums } from "../../Enums/Enums";
 
 export interface IQuestionsWithResults { 
    id: string; 
    name: string; 
    selectedOptionId: string; 
    point: PointEnums,
+   type: QuestionEnums,
    options: { 
       id: string; 
       name: string; 
+      userAnswer?: string;
       isCorrect: boolean 
    }[]; 
 }
@@ -23,11 +25,21 @@ export interface IGetById {
 export interface IAnswer { 
    questionId: string; 
    answerId: string; 
+   answers?: never;
+}
+
+export interface IShortAnswer {
+   questionId: string; 
+   answers: {
+      answerId: string;
+      text: string;
+   }[]; 
+   answerId?: never;
 }
 
 export interface ICreate { 
    quizId: string; 
    quizSessionId: string;
-   answers: IAnswer[];
+   answers: (IAnswer | IShortAnswer)[];
    completeTime: number; 
 }

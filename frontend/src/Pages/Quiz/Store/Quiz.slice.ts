@@ -77,7 +77,7 @@ const QuizSlice = createSlice({
             state.answers = action.payload.questions.map((question) => {
                const shortAnswer = question.type === QuestionEnums.SHORT_ANSWER;
                if (shortAnswer) {
-                  return { questionId: question.id, answers: [] };
+                  return { questionId: question.id, answers: question.options.map((option) => ({ answerId: option.id, text: "" })) };
                }
                return { questionId: question.id, answerId: null };
             })

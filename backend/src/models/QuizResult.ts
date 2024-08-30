@@ -1,6 +1,6 @@
 import mongoose, { Types } from 'mongoose';
 import { IQuestionsWithResults } from '../constants/Types/QuizResult/QuizResultType';
-import { PointEnums } from '../constants/Enums/Enums';
+import { PointEnums, QuestionEnums } from '../constants/Enums/Enums';
 
 interface IQuizResult {
    id: Types.ObjectId;   
@@ -70,9 +70,15 @@ export const quizResultSchema = new mongoose.Schema<IQuizResult>({
             enum: Object.values(PointEnums),
             required: true
          },
+         type: {
+            type: String,
+            enum: Object.values(QuestionEnums),
+            required: true
+         },
          options: [{
             id: { type: String, required: true },
             name: { type: String, required: true },
+            userAnswer: { type: String, required: false },
             isCorrect: { type: Boolean, required: true },
          }],
       }],

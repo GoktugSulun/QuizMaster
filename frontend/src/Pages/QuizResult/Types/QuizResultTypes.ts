@@ -1,10 +1,11 @@
-import { PointEnums, VisibilityEnums } from "@/Constants/Enums";
+import { PointEnums, QuestionEnums, VisibilityEnums } from "@/Constants/Enums";
 
 export type QuestionsWithResultsType = {
    id: string; 
    name: string; 
    selectedOptionId: string; 
    point: PointEnums;
+   type: QuestionEnums;
    options: { 
       id: string; 
       name: string; 
