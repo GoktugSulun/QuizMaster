@@ -1,6 +1,6 @@
 import { CustomTooltip } from "@/Components/Tooltip";
 import { TextInput } from "@/Core/Inputs";
-import { Button, FormControlLabel, IconButton, Stack, Switch, type Theme, useMediaQuery } from "@mui/material"
+import { Button, FormControlLabel, IconButton, Stack, Switch, type Theme, Typography, useMediaQuery } from "@mui/material"
 import { type Dispatch, type SetStateAction, useState, type KeyboardEvent } from "react";
 import { useFormContext } from "react-hook-form";
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -9,6 +9,7 @@ import { snackbar } from "@/Core/Utils";
 import { type UserPayloadType } from "../Types/ProfileTypes";
 import ProfileThunks from "../Store/Profile.thunk";
 import useAuth from "@/Hooks/useAuth";
+import InfoIcon from '@mui/icons-material/Info';
 
 enum KeyboardEventCode {
    ENTER = 'Enter'
@@ -114,23 +115,39 @@ const Inputs = (props: InputsProps) => {
          {
             changePasswordFlag
                && (
-                  <TextInput
-                     placeholder="Your new password"
-                     shrink
-                     label="New Password"
-                     control={form.control}
-                     name="newPassword"
-                     type={showPassword ? "text" : "password"}
-                     onKeyDown={onKeyDownHandler}
-                     helperText="If you want to continue with the current password, please leave this field blank."
-                     endAdornment={
-                        <CustomTooltip arrow title={showPassword ? "Hide" : "Show"} placement="top">
-                           <IconButton onClick={() => setShowPassword((prev) => !prev)}> 
-                              { showPassword ? <VisibilityIcon sx={{ color: "primary.main" }} /> : <VisibilityOffIcon sx={{ color: "primary.main" }} />   } 
-                           </IconButton>
-                        </CustomTooltip>
-                     }
-                  />
+                  <>
+                     <TextInput
+                        placeholder="Your new password"
+                        shrink
+                        label="New Password"
+                        control={form.control}
+                        name="newPassword"
+                        type={showPassword ? "text" : "password"}
+                        onKeyDown={onKeyDownHandler}
+                        endAdornment={
+                           <CustomTooltip arrow title={showPassword ? "Hide" : "Show"} placement="top">
+                              <IconButton onClick={() => setShowPassword((prev) => !prev)}> 
+                                 { showPassword ? <VisibilityIcon sx={{ color: "primary.main" }} /> : <VisibilityOffIcon sx={{ color: "primary.main" }} /> } 
+                              </IconButton>
+                           </CustomTooltip>
+                        }
+                     />
+                     <Stack
+                        sx={{ color: "primary.main", backgroundColor: "primary.light", borderRadius: "5px", padding: "10px" }}
+                        flexDirection={"row"}
+                        alignItems={"center"}
+                        gap={2}
+                     >
+                        <InfoIcon />
+                        <Typography
+                           color={"primary.main"}
+                           variant="h6"
+                           fontSize={"14px"}
+                        >
+                           If you want to continue with the current password, please turn off change password switch.
+                        </Typography>
+                     </Stack>
+                  </>
                )
          }
          <Button 
