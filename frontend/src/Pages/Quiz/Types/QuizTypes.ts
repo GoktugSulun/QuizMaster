@@ -24,12 +24,32 @@ export type Quiz = {
    questions: Question[];
 }
 
-export type Answer = {
-   questionId: string,
-} & ( 
-   { answerId: string | null, answer?: never } 
-   | { answerId?: never, answer: string | null }
-)
+export type UserShortAnswerType = { answerId: string | null, text: string }
+
+export type ShortAnswerType = {
+   answerId?: never;
+   answer?: never;
+   answers: UserShortAnswerType[];
+}
+
+export type MultipleAndTrueFalseAnswerType = { 
+   answerId: string | null;
+   answer?: never;
+   answers?: never;
+}
+
+export type Answer = 
+   { questionId: string; } 
+   & 
+   ( 
+      ShortAnswerType 
+      | MultipleAndTrueFalseAnswerType
+      | { 
+         answerId?: never; 
+         answer: string | null; 
+         answers?: never; 
+      } 
+   )
 
 export type QuizSessionResponse = {
    id: string;   

@@ -3,6 +3,10 @@ import { useAppDispatch, useAppSelector } from '@/Core/Hooks';
 import { QuizActions } from '../Store/Quiz.slice';
 import MultipleChoice from '@/Components/Question/MultipleChoice';
 import { Stack } from '@mui/material';
+import { QuestionEnums } from '@/Constants/Enums';
+import ShortAnswer from '@/Components/Question/ShortAnswer';
+
+export type ShortAnswerFuncParams = { answerId: string; text: string; index: number }
 
 const Options = () => {
    const dispatch = useAppDispatch();
@@ -16,12 +20,15 @@ const Options = () => {
    const setAnswerHandler = (selectedId: string) => {
       const isSelected = !!answers.find((answer) => answer.answerId === selectedId);
       dispatch(QuizActions.setAnswer({ questionId: question.id, answerId: isSelected ? null : selectedId }));
-   };
+   }; 
 
-   if (!options) {
-      // Todo : handle it
-      console.log('seçenekler bulunamadı ?');
-   }  
+   const setShortAnswerHandler = (params: ShortAnswerFuncParams) => {
+      const { answerId, text, index } = params;
+      const shortAnswers = answers.find((answer) => answer.questionId === question.id)?.answers || [];
+      const newAnswers = [...shortAnswers];
+      newAnswers[index] = { answerId, text }
+      dispatch(QuizActions.setAnswer({ questionId: question.id, answers: newAnswers }));
+   }; 
 
    return (
       <Stack 
@@ -31,11 +38,23 @@ const Options = () => {
          padding="0 50px"
          margin={{ xs: "20px 0" }}
       >
-         <MultipleChoice
-            onClick={(option) => setAnswerHandler(option.id)}
-            checked={(option) => !!answers.find((answer) => answer.answerId === option.id)}
-            options={options}
-         />
+         {
+            question.type === QuestionEnums.SHORT_ANSWER
+               ? (
+                  <ShortAnswer
+                     onChange={setShortAnswerHandler}
+                     userAnswers={answers.find((answer) => answer.questionId === question.id)?.answers || []}
+                     options={options}
+                  />
+               )
+               : (
+                  <MultipleChoice
+                     onClick={(option) => setAnswerHandler(option.id)}
+                     checked={(option) => !!answers.find((answer) => answer.answerId === option.id)}
+                     options={options}
+                  />
+               )
+         }
       </Stack>
    )
 }

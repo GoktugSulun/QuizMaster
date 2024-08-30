@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { type QuizSessionResponse, type Answer, type QuizResultResponse } from '../Types/QuizTypes';
-import { VisibilityEnums, type QuizWithQuestions } from '@/Pages/Creator/Types/CreatorTypes';
+import { QuestionEnums, VisibilityEnums, type QuizWithQuestions } from '@/Pages/Creator/Types/CreatorTypes';
 
 const NAME = 'Quiz';
 
@@ -74,7 +74,13 @@ const QuizSlice = createSlice({
       setQuiz: (state, action: PayloadAction<QuizWithQuestions>) => {
          state.quiz = action.payload;
          if (!state.answers.length) {
-            state.answers = action.payload.questions.map((question) => ({ questionId: question.id, answerId: null }))
+            state.answers = action.payload.questions.map((question) => {
+               const shortAnswer = question.type === QuestionEnums.SHORT_ANSWER;
+               if (shortAnswer) {
+                  return { questionId: question.id, answers: [] };
+               }
+               return { questionId: question.id, answerId: null };
+            })
          }
       },
       setAnswer: (state, action: PayloadAction<Answer>) => {

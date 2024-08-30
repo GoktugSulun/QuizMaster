@@ -5,13 +5,13 @@ import { type Option } from "@/Pages/Quiz/Types/QuizTypes";
 type DisabledProps = {
   readOnly?: true;
   options: Option[];
-  checked: (option: Option) => boolean | boolean;
+  checked: (option: Option) => boolean;
 }
 
 type DefaultProps = {
   readOnly?: false; 
   options: Option[];
-  checked?: (option: Option) => boolean | boolean;
+  checked?: (option: Option) => boolean;
   onClick: (option: Option) => void;
 }
 

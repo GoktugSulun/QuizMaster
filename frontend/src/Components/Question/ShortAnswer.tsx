@@ -1,13 +1,26 @@
 import { TextInput } from "@/Core/Inputs";
 import { Grid, Stack, Typography } from "@mui/material";
-import { useFormContext } from "react-hook-form";
 import * as QuestionStyle from "@/Components/Question/Style/Question.style";
+import { type UserShortAnswerType, type Option } from "@/Pages/Quiz/Types/QuizTypes";
+import { type ShortAnswerFuncParams } from "@/Pages/Quiz/Components/Options";
 
-const ShortAnswer = () => {
-   const form = useFormContext();
-   const index = form.getValues("activeIndex"); 
+type DisabledProps = {
+   readOnly?: true;
+   userAnswers: UserShortAnswerType[];
+   options: Option[];
+ }
+ 
+ type DefaultProps = {
+   readOnly?: false; 
+   onChange: (params: ShortAnswerFuncParams) => void;
+   userAnswers: UserShortAnswerType[];
+   options: Option[];
+ }
+ 
+type ShortAnswerProps = DefaultProps | DisabledProps;
 
-   const options = form.watch(`questions.${index}.options`);
+const ShortAnswer = (props: ShortAnswerProps) => {
+   const { readOnly=false, userAnswers, options } = props;
 
    return (
       <Grid container spacing={2}>
@@ -16,10 +29,10 @@ const ShortAnswer = () => {
                <TextInput
                   fullWidth
                   shrink
+                  readOnly={readOnly}
                   placeholder="Write an answer"
-                  control={form.control}
-                  name={`questions.${index}.options.0.name`}
-                  value={options[0].name}
+                  {...('onChange' in props && { onChange: (e) => props.onChange({ answerId: options[0].id, index: 0, text: e.target.value })})}
+                  value={userAnswers[0]?.text || ""}
                   sx={{
                      '& .MuiOutlinedInput-notchedOutline': { border: "none" }
                   }}
@@ -47,9 +60,8 @@ const ShortAnswer = () => {
                   fullWidth
                   shrink
                   placeholder="Write a other answer"
-                  control={form.control}
-                  name={`questions.${index}.options.1.name`}
-                  value={options[1].name}
+                  {...('onChange' in props && { onChange: (e) => props.onChange({ answerId: options[1].id, index: 1, text: e.target.value })})}
+                  value={userAnswers[1]?.text || ""}
                   sx={{
                      '& .MuiOutlinedInput-notchedOutline': { border: "none" }
                   }}
@@ -62,9 +74,8 @@ const ShortAnswer = () => {
                   fullWidth
                   shrink
                   placeholder="Write a other answer"
-                  control={form.control}
-                  name={`questions.${index}.options.2.name`}
-                  value={options[2].name}
+                  {...('onChange' in props && { onChange: (e) => props.onChange({ answerId: options[2].id, index: 2, text: e.target.value })})}
+                  value={userAnswers[2]?.text || ""}
                   sx={{
                      '& .MuiOutlinedInput-notchedOutline': { border: "none" }
                   }}
@@ -77,9 +88,8 @@ const ShortAnswer = () => {
                   fullWidth
                   shrink
                   placeholder="Write a other answer"
-                  control={form.control}
-                  name={`questions.${index}.options.3.name`}
-                  value={options[3].name}
+                  {...('onChange' in props && { onChange: (e) => props.onChange({ answerId: options[3].id, index: 3, text: e.target.value })})}
+                  value={userAnswers[3]?.text || ""}
                   sx={{
                      '& .MuiOutlinedInput-notchedOutline': { border: "none" }
                   }}

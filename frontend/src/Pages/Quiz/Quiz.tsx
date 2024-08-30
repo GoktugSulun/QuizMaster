@@ -119,7 +119,6 @@ const Quiz = () => {
       }
    }, []);
 
-
    if (!quiz.id || isOpenSessionInfoModal || isSuccessCompleteQuizSession) {
       return (
          <S.Quiz>
