@@ -11,7 +11,7 @@ export const editAuthValidation = (data: Partial<IEdit>): ValidationResponse<IEd
          surname: Joi.string().required(),
          email: Joi.string().email().required(),
          newPassword: Joi.string(),
-         image: Joi.string().required(),
+         image: Joi.string().allow(""),
          uuid: Joi.string(),
          multer_image: Joi.string(),
          isRemovedImage: Joi.boolean().required()

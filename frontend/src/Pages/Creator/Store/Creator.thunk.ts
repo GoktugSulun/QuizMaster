@@ -47,20 +47,16 @@ const CreatorThunks = {
          thunkAPI.dispatch(CreatorActions.setQuestions(questions));
       },
    }),
-   createQuestions: (payload: QuestionType[]) => {
-      console.log(payload, " payload");
-      
-      request({
-         method: 'POST',
-         url: `${ApiURL.QUESTION}`,
-         key: 'createQuestions',
-         payload,
-         success: ({ data, thunkAPI }) => {
-            const payload = data as QuestionWithIdType[];
-            thunkAPI.dispatch(CreatorActions.setQuestions(payload));
-         },
-      })
-   },
+   createQuestions: (payload: QuestionType[]) => request({
+      method: 'POST',
+      url: `${ApiURL.QUESTION}`,
+      key: 'createQuestions',
+      payload,
+      success: ({ data, thunkAPI }) => {
+         const payload = data as QuestionWithIdType[];
+         thunkAPI.dispatch(CreatorActions.setQuestions(payload));
+      },
+   }),
    editQuestions: (payload: { quizId: string; questions: QuestionWithIdType[] }) => request({
       method: 'PUT',
       url: `${ApiURL.QUESTION}/${payload.quizId}`,

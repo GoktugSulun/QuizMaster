@@ -98,8 +98,7 @@ class QuizController {
       multer_image: req.multer_image
     }
     : {
-      ...req.body, 
-      creatorId: AuthenticatedUser.getUserId()
+      ...req.body
     }
     const validation = editQuizValidation({ id: req.params.id, body });
     if (!validation.type) {

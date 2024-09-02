@@ -10,7 +10,7 @@ export const createQuestionValidation = (data: Partial<ICreate[]>): ValidationRe
       name: Joi.string().required(),
       point: Joi.string().required().valid(...Object.values(PointEnums)),
       type: Joi.string().required().valid(...Object.values(QuestionEnums)),
-      optionType: Joi.string().valid(...Object.values(CorrectOptionEnums)),
+      optionType: Joi.string().valid(...Object.values(CorrectOptionEnums)).allow(null),
       options: Joi.array().required().min(2).items(Joi.object({
          name: Joi.string().required(),
          isCorrect: Joi.boolean().required()
@@ -29,11 +29,18 @@ export const editQuestionValidation = (data: Partial<IEdit>): ValidationResponse
          name: Joi.string().required(),
          point: Joi.string().required().valid(...Object.values(PointEnums)),
          type: Joi.string().required().valid(...Object.values(QuestionEnums)),
-         optionType: Joi.string().valid(...Object.values(CorrectOptionEnums)),
+         optionType: Joi.string().valid(...Object.values(CorrectOptionEnums)).allow(null),
          options: Joi.array().required().min(2).items(Joi.object({
             name: Joi.string().required(),
-            isCorrect: Joi.boolean().required()
-         }))
+            isCorrect: Joi.boolean().required(),
+            createdAt: Joi.string(),
+            updatedAt: Joi.string(),
+            id: Joi.string()
+         })),
+         createdAt: Joi.string(),
+         updatedAt: Joi.string(),
+         isRemoved: Joi.boolean(),
+         id: Joi.string(),
       }))
    });
 

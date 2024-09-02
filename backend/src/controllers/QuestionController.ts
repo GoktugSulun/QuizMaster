@@ -23,7 +23,7 @@ class QuestionController {
    }
 
    static async edit(req: Request, res: Response) {
-      const validation = editQuestionValidation(req.body);
+      const validation = editQuestionValidation({ quizId: req.params.quizId, questions: req.body });
       if (!validation.type) {    
          Helpers.responseMessage(res, false, validation.message);
          return;
