@@ -12,3 +12,5 @@ export type ResponseType<T = null> = {
    type: false;
    message: string;
 };
+
+export type ValidationResponse<T> = { type: false; message: string } | { type: true; data: T }

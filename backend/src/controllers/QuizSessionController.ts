@@ -1,15 +1,19 @@
 import Helpers from "../utils/Helpers.ts";
 import { type Request, type Response } from "express";
 import { type IError } from "../constants/Types/Error/ErrorType.ts";
-import { type IStart, type IComplete, type IEnd, type ISave } from "../constants/Types/QuizSession/QuizSessionType.ts";
 import QuizSessionService from "../services/QuizSessionService.ts";
+import { completeQuizSessionValidation, endQuizSessionValidation, saveQuizSessionValidation, startQuizSessionValidation } from "../validations/QuizSessionValidation.ts";
 
 class QuizSessionController {
    static async start(req: Request, res: Response) {
+      const validation = startQuizSessionValidation(req.body);
+      if (!validation.type) {
+         Helpers.responseMessage(res, false, validation.message);
+         return;
+      }
+
       try {
-         // Todo : Validate req.body
-         const params = req.body as IStart;
-         const result = await QuizSessionService.start(params);
+         const result = await QuizSessionService.start(validation.data);
          Helpers.responseJSON(res, result);
       } catch (error) {
          const err = error as IError;
@@ -18,10 +22,14 @@ class QuizSessionController {
    }
 
    static async complete(req: Request, res: Response) {
+      const validation = completeQuizSessionValidation(req.body);
+      if (!validation.type) {
+         Helpers.responseMessage(res, false, validation.message);
+         return;
+      }
+
       try {
-         // Todo : Validate req.body
-         const params = req.body as IComplete;
-         const result = await QuizSessionService.complete(params);
+         const result = await QuizSessionService.complete(validation.data);
          Helpers.responseJSON(res, result);
       } catch (error) {
          const err = error as IError;
@@ -30,10 +38,14 @@ class QuizSessionController {
    }
 
    static async end(req: Request, res: Response) {
+      const validation = endQuizSessionValidation(req.body);
+      if (!validation.type) {
+         Helpers.responseMessage(res, false, validation.message);
+         return;
+      }
+
       try {
-         // Todo : Validate req.body
-         const params = req.body as IEnd;
-         const result = await QuizSessionService.end(params);
+         const result = await QuizSessionService.end(validation.data);
          Helpers.responseJSON(res, result);
       } catch (error) {
          const err = error as IError;
@@ -42,10 +54,14 @@ class QuizSessionController {
    }
 
    static async save(req: Request, res: Response) {
+      const validation = saveQuizSessionValidation(req.body);
+      if (!validation.type) {
+         Helpers.responseMessage(res, false, validation.message);
+         return;
+      }
+
       try {
-        // Todo : Validate req.body
-         const params = req.body as ISave;
-         const result = await QuizSessionService.save(params);
+         const result = await QuizSessionService.save(validation.data);
          Helpers.responseJSON(res, result);
       } catch (error) {
          const err = error as IError;

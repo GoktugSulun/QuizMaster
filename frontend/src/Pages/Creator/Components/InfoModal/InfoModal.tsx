@@ -12,14 +12,26 @@ const InfoModal = () => {
    const isOpen = useAppSelector((state) => state.Creator.isOpenInfoModal);
    const isEditing = useAppSelector((state) => state.Creator.isEditing);
 
-   const { isLoading: isLoadingCreate, isSuccess: isSuccessCreate, isError: isErrorCreate, setIdle: setIdleCreateQuestions } = useThunk("createQuestions");
-   const { isLoading: isLoadingEdit, isSuccess: isSuccessEdit, isError: isErrorEdit, setIdle: setIdleEditQuestions } = useThunk("editQuestions");
+   const { 
+      isLoading: isLoadingCreate, 
+      isSuccess: isSuccessCreate, 
+      isError: isErrorCreate, 
+      setIdle: setIdleCreateQuestions 
+   } = useThunk("createQuestions");
+   const { 
+      isLoading: isLoadingEdit, 
+      isSuccess: isSuccessEdit, 
+      isError: isErrorEdit, 
+      setIdle: setIdleEditQuestions 
+   } = useThunk("editQuestions");
    const isLoading = isLoadingCreate || isLoadingEdit;
    const isSuccess = isSuccessCreate || isSuccessEdit;
    const isError = isErrorCreate || isErrorEdit;
 
    const handleClose = () => {
       dispatch(CreatorActions.setIsOpenInfoModal("CLOSE"));
+      console.log(isEditing, " isEditing");
+      
       if (isEditing) {
          setIdleEditQuestions();
       } else {

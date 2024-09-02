@@ -48,12 +48,8 @@ class QuestionService {
   static async edit(params: IEdit): Promise<IResponse> {
     try {
       const { quizId, questions } = params;
-
-      // todo : find all questions belongs to quizId
-      // todo : update isRemoved: true for this questions data
-      // todo : insert new questions
       
-      const removeResult = await Question.updateMany({ quizId, isRemoved: false }, { isRemoved: true });
+      await Question.updateMany({ quizId, isRemoved: false }, { isRemoved: true });
       const data = await Question.insertMany(questions);
         
       return { 

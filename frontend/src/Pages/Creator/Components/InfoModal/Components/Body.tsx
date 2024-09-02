@@ -19,12 +19,14 @@ const iconProps = {
 const Body = () => {
    const theme = useTheme();
    const { id, name } = useAppSelector((state) => state.Creator.quiz);
+   const isEditing = useAppSelector((state) => state.Creator.isEditing);
+   const questions = useAppSelector((state) => state.Creator.questions);
    
    const { requestStatus: requestStatusCreate, error: errorCreate } = useThunk("createQuestions");
    const { requestStatus: requestStatusEdit, error: errorEdit } = useThunk("editQuestions");
-   const isEditing = useAppSelector((state) => state.Creator.isEditing);
-   const requestStatus = isEditing ? requestStatusEdit : requestStatusCreate;
-   const error = isEditing ? errorEdit : errorCreate;
+   
+   const requestStatus = (isEditing && questions.length) ? requestStatusEdit : requestStatusCreate;
+   const error = (isEditing && questions.length) ? errorEdit : errorCreate;
 
    const valueMap = useMemo(() => (
       {
@@ -46,8 +48,8 @@ const Body = () => {
             error: error ? `Error detail: ${error}` : null
          }
       }
-   ), [HttpResponseEnums, name, id, theme.palette.primary.main])
-
+   ), [HttpResponseEnums, name, id, theme.palette.primary.main, error])
+   
    return (
       <Stack padding="25px 0" gap="30px">
          <Stack alignItems="center"> { valueMap[requestStatus].icon } </Stack>

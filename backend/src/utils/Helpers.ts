@@ -1,7 +1,8 @@
 import { Response } from "express";
 import mongoose from "mongoose";
-import { type ResponseErrorType } from "../constants/Types/Common/CommonType";
+import { type ValidationResponse, type ResponseErrorType } from "../constants/Types/Common/CommonType";
 import { defaultImage } from "../index.ts";
+import Joi from "joi";
 
 class Helpers {
    static responseMessage(res: Response, type: boolean, message: string, data?: any): void {
@@ -29,6 +30,13 @@ class Helpers {
          type: false,
          message: (error instanceof Error) ? error.message : (message || 'Unknown Error!')
       }
+   }
+
+   static responseJoiValidation(validationResult: Joi.ValidationResult<any[]>): ValidationResponse<typeof validationResult.value> {
+      if (validationResult.error) {
+         return { type: false, message: validationResult.error.message }
+      }
+      return { type: true, data: validationResult.value }
    }
 
    static createImagePath(image?: string) {

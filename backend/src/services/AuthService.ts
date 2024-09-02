@@ -125,7 +125,7 @@ class AuthService {
             }
          }
 
-         const user = new User();
+         const user = new User(newUser);
          await user.save();
          
          return { 
