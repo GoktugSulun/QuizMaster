@@ -1,15 +1,20 @@
 import { type Request, type Response } from "express";
 import FavoriteService from "../services/FavoriteService.ts";
 import Helpers from "../utils/Helpers.ts";
-import { type IUnmarkAsFavorite, type IMarkAsFavorite } from "../constants/Types/Favorite/FavoriteType.ts";
+import { type IUnmarkAsFavorite } from "../constants/Types/Favorite/FavoriteType.ts";
 import { type IError } from "../constants/Types/Error/ErrorType.ts";
+import { markFavoriteValidation } from "../validations/QuizValidation.ts";
 
 class FavoriteController {
    static async markAsFavorite(req: Request, res: Response) {
+      const validation = markFavoriteValidation(req.body);
+      if (!validation.type) {
+         Helpers.responseMessage(res, false, validation.message);
+         return;
+      }
+      
       try {
-         // Todo : Validate req.body
-         const params = req.body as IMarkAsFavorite;
-         const result = await FavoriteService.markAsFavorite(params);
+         const result = await FavoriteService.markAsFavorite(validation.data);
          Helpers.responseJSON(res, result);
       } catch (error) {
          const err = error as IError;

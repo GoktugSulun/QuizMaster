@@ -3,6 +3,8 @@ import { ValidationResponse } from "../constants/Types/Common/CommonType";
 import Helpers from "../utils/Helpers";
 import { IEdit, type ICreate } from "../constants/Types/Quiz/QuizType";
 import { VisibilityEnums } from "../constants/Enums/Enums";
+import { IMarkAsFavorite } from "../constants/Types/Favorite/FavoriteType";
+import { IMarkAsSaved } from "../constants/Types/Save/SaveType";
 
 export const createQuizValidation = (data: Partial<ICreate>): ValidationResponse<ICreate> => {
    const schema = Joi.object({
@@ -36,6 +38,24 @@ export const editQuizValidation = (data: Partial<IEdit>): ValidationResponse<IEd
          multer_image: Joi.string(),
          isRemovedImage: Joi.boolean(),
       })
+   })
+
+   const result = schema.validate(data);
+   return Helpers.responseJoiValidation(result);
+}
+
+export const markFavoriteValidation = (data: Partial<IMarkAsFavorite>): ValidationResponse<IMarkAsFavorite> => {
+   const schema = Joi.object({
+      quizId: Joi.string().required()
+   })
+
+   const result = schema.validate(data);
+   return Helpers.responseJoiValidation(result);
+}
+
+export const markSavedValidation = (data: Partial<IMarkAsSaved>): ValidationResponse<IMarkAsSaved> => {
+   const schema = Joi.object({
+      quizId: Joi.string().required()
    })
 
    const result = schema.validate(data);
