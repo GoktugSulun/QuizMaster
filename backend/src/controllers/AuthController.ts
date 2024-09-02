@@ -2,9 +2,10 @@
 import Helpers from "../utils/Helpers.ts";
 import { type Request, type Response } from "express";
 import { type IError } from "../constants/Types/Error/ErrorType.ts";
-import { type IRegister, type ILogin, type IGet, type IEdit } from "../constants/Types/User/UserType.ts";
+import { type IGet } from "../constants/Types/User/UserType.ts";
 import AuthService from "../services/AuthService.ts";
 import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
+import { editAuthValidation, loginAuthValidation, registerAuthValidation } from "../validations/AuthValidation.ts";
 
 class UserController {
    static async get(req: Request, res: Response) {
@@ -19,24 +20,21 @@ class UserController {
    }
 
    static async edit(req: Request, res: Response) {
-      if (!req.params.id) { 
-         return Helpers.responseMessage(res, false, "'Id' field is required!");
-      }
-      try {
-         let params;
-         if (req.body?.data) {
-            params = { 
-               body: { 
-                  ...JSON.parse(req.body.data), 
-                  uuid: req.uuid, 
-                  multer_image: req.multer_image 
-               }, 
-               id: req.params.id
-            } as IEdit;
-         } else {
-            params = { body: req.body, id: req.params.id } as IEdit;
+      const body = req.body?.data 
+         ? { 
+            ...JSON.parse(req.body.data), 
+            uuid: req.uuid, 
+            multer_image: req.multer_image 
          }
-         const result = await AuthService.edit(params);
+         : { ...req.body }
+      const validation = editAuthValidation({ id: req.params.id, body });
+      if (!validation.type) {    
+         Helpers.responseMessage(res, false, validation.message);
+         return;
+      }
+
+      try {
+         const result = await AuthService.edit(validation.data);
          Helpers.responseJSON(res, result);
       } catch (error) {
          const err = error as IError;
@@ -45,9 +43,14 @@ class UserController {
    }
 
    static async login(req: Request, res: Response) {
+      const validation = loginAuthValidation(req.body);
+      if (!validation.type) {    
+         Helpers.responseMessage(res, false, validation.message);
+         return;
+      }
+
       try {
-         const param = req.body as ILogin;
-         const result = await AuthService.login(param);
+         const result = await AuthService.login(validation.data);
          Helpers.responseJSON(res, result);
       } catch (error) {
          const err = error as IError;
@@ -56,9 +59,14 @@ class UserController {
    }
 
    static async register(req: Request, res: Response) {
+      const validation = registerAuthValidation(req.body);
+      if (!validation.type) {    
+         Helpers.responseMessage(res, false, validation.message);
+         return;
+      }
+
       try {
-         const param = req.body as IRegister;
-         const result = await AuthService.register(param);
+         const result = await AuthService.register(validation.data);
          Helpers.responseJSON(res, result);
       } catch (error) {
          const err = error as IError;

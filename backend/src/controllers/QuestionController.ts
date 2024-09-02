@@ -1,10 +1,9 @@
 
 import Helpers from "../utils/Helpers.ts";
 import QuestionService from "../services/QuestionService.ts";
-import { type ICreate, type IEdit } from "../constants/Types/Question/QuestionType.ts";
 import { type Request, type Response } from "express";
 import { type IError } from "../constants/Types/Error/ErrorType.ts";
-import { createQuestionValidation, editQuestionValidation } from "../validations/QuestionController.ts";
+import { createQuestionValidation, editQuestionValidation } from "../validations/QuestionValidation.ts";
 
 class QuestionController {
    static async create(req: Request, res: Response) {
