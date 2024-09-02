@@ -8,6 +8,9 @@ interface IOption {
 export interface ICreate {
    quizId: String;
    name: String;
+   point: PointEnums;
+   type: QuestionEnums;
+   optionType: CorrectOptionEnums;
    options: IOption[];
 }
 
