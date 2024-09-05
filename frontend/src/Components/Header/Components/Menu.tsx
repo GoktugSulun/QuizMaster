@@ -75,13 +75,13 @@ const ProfileMenu = () => {
             <Avatar /> Profile
          </S.ProfileMenuItem>
          <Divider sx={{ margin: '0 !important' }} />
-         <S.ProfileMenuItem onClick={handleClose}>
+         {/* <S.ProfileMenuItem onClick={handleClose}>
             <ListItemIcon>
                <Settings fontSize="small" />
             </ListItemIcon>
             Settings
          </S.ProfileMenuItem>
-         <Divider sx={{ margin: '0 !important' }} />
+         <Divider sx={{ margin: '0 !important' }} /> */}
          <S.ProfileMenuItem onClick={logoutHandler}>
             <ListItemIcon>
                <Logout fontSize="small" />
