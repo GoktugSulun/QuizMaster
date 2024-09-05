@@ -9,8 +9,8 @@ export enum RouteEnums {
 
    // Solving quiz
    QUIZ = '/quiz',
-   QUIZ_RULES = '/rules/quiz', // TODO : query ile yönetiliyordu bunu belki param ile yapabiliriz
-   QUIZ_RESULTS = '/results/quiz', // TODO : query ile yönetiliyordu bunu belki param ile yapabiliriz
+   QUIZ_RULES = '/rules/quiz',
+   QUIZ_RESULTS = '/results/quiz',
 
    // Create Quiz
    CREATOR = '/creator/:quizId?',
@@ -19,10 +19,7 @@ export enum RouteEnums {
    AUTH = '/auth/:type',
 
    // Profile
-   PROFILE = '/profile',
-
-   // Test route
-   TEST = '/test', // TODO : remove test folders
+   PROFILE = '/profile'
 }
 
 export enum QuizTypeEnums {

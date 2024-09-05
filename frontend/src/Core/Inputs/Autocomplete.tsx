@@ -5,8 +5,6 @@ import { AutocompleteData, AutocompleteType } from '../Models';
 
 type AutocompleteInputProps<T extends FieldValues, U extends FieldPath<T>> = AutocompleteType<T, U>;
 
-// TODO : This input should be also work correctly without react-hook-form
-// TODO : Fix problems
 const AutocompleteInput = <T extends FieldValues, U extends FieldPath<T>>(props: AutocompleteInputProps<T, U>) => {
    const [showPlaceholder, setShowPlaceholder] = useState(true);
    const { control, helperText, shrink=false, options, error=false, ...autocompleteInputProps } = props; 

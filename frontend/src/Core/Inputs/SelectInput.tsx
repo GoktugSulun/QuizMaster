@@ -5,7 +5,6 @@ import { type ReactNode } from 'react';
 
 type SelectInputProps<T extends FieldValues, U extends FieldPath<T>> = SelectType<T, U>;
 
-// TODO : This input should be also work correctly without react-hook-form
 const SelectInput = <T extends FieldValues, U extends FieldPath<T>>(props: SelectInputProps<T, U>) => {
    
    const { control, helperText, shrink=false, emptyValue, disabledEmptyItem=false, ...selectProps } = props;

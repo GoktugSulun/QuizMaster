@@ -57,9 +57,6 @@ class QuizResultService {
             }
          }
 
-         console.log(quizResult," quizResult");
-         
-
          const data = {
             ...quizResult.toJSON(),
             quiz: quiz.toJSON()
