@@ -30,7 +30,6 @@ const InfoModal = () => {
 
    const handleClose = () => {
       dispatch(CreatorActions.setIsOpenInfoModal("CLOSE"));
-      console.log(isEditing, " isEditing");
       
       if (isEditing) {
          setIdleEditQuestions();

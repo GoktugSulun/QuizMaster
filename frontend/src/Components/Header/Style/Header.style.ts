@@ -1,12 +1,12 @@
 import { Button, MenuItem, Stack, Typography, alpha, styled } from '@mui/material';
 
-export const HeaderWrapper = styled(Stack)(({ theme }) => ({
+export const HeaderWrapper = styled(Stack)({
    width: '100%',
    height: "90px",
    position: "sticky",
    top: 0,
    zIndex: 10,
-}));
+});
 
 export const Header = styled('div')(({ theme }) => ({
    width: '100%',

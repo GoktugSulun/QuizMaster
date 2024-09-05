@@ -8,7 +8,7 @@ import User from "../models/User.ts";
 import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
 
 class AuthService {
-   static async get(params: IGet): Promise<ResponseType<IUser>> {
+   static async get(params: IGet): Promise<ResponseType<Omit<IUser, "password">>> {
       try {
          const query = {} as { [key: string]: string };
          Object.entries(params).forEach(([key, value]) => {
@@ -17,7 +17,7 @@ class AuthService {
             }
          });
 
-         const data = await User.findOne(query);
+         const data = await User.findOne({ ...query, isRemoved: false }).select("-password");
          if (!data) {
             return {
                type: false,
@@ -76,35 +76,36 @@ class AuthService {
 
       } catch (error) {
          return Helpers.responseError(error)
-      }
+      } 
    }
 
    static async login(params: ILogin): Promise<ResponseType<ILoginResponse>> {
       try {
          const userData = params;
 
-         const userResult = await AuthService.get(userData);
-         if (!userResult.type) {
+         const user = await User.findOne({ ...userData, isRemoved: false });
+         if (!user) {
             return {
                type: false,
-               message: userResult.message
+               message: "The information you entered is incorrect, please check it!"
             }
          }
 
-         const user = {
-            id: userResult.data.id,
-            email: userResult.data.email,
-            password: userResult.data.password
+         const authenticatedUser = {
+            id: user.id,
+            email: user.email,
+            password: user.password
          };
          
-         const token = jwt.sign(user, process.env.TOKEN_SECRET || "token_secret", { expiresIn: '72h' });
+         const token = jwt.sign(authenticatedUser, process.env.TOKEN_SECRET || "token_secret", { expiresIn: '72h' });
+         AuthenticatedUser.setUserId(user.id)
 
          return { 
             type: true, 
             message: 'You have been logged in successfully', 
             data: {
                token,
-               user: userResult.data as IUser
+               user: user as IUser
             }
          };
 

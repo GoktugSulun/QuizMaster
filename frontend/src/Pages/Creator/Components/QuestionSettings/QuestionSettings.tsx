@@ -112,7 +112,7 @@ const QuestionSettings = ({ openState }: QuestionSettings) => {
                      name="optionType"
                      options={[
                         { id: CorrectOptionEnums.SINGLE_OPTION, name: CorrectOptionEnums.SINGLE_OPTION },
-                        { id: CorrectOptionEnums.MULTIPLE_OPTIONS, name: CorrectOptionEnums.MULTIPLE_OPTIONS },
+                        // { id: CorrectOptionEnums.MULTIPLE_OPTIONS, name: CorrectOptionEnums.MULTIPLE_OPTIONS }, // Todo: Daha sonra açılacak
                      ]}
                      condition={questionType === QuestionEnums.MULTIPLE_CHOICE}
                   />

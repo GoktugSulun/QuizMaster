@@ -14,7 +14,7 @@ class QuizResultService {
    static async getAll(params: IGetAll): Promise<ResponseType<IAllQuizResultId[]>> {
       try {
          const { quizId } = params;
-         const quizResults = await QuizResult.find({ quizId })
+         const quizResults = await QuizResult.find({ quizId }).sort({ completedDate: -1 })
          if (!quizResults || quizResults.length === 0) {
             return {
                type: false,
@@ -56,9 +56,6 @@ class QuizResultService {
                message: `Quiz couldn't find with id: ${quiz}`
             }
          }
-
-         console.log(quizResult," quizResult");
-         
 
          const data = {
             ...quizResult.toJSON(),

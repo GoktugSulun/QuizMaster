@@ -1,12 +1,11 @@
 import Helpers from "../utils/Helpers.ts";
 import { type ICreateQuizSession, type IComplete, type IEnd, type IStart, type ICreate, type ISave, type IGetAllCompletedSession } from "../constants/Types/QuizSession/QuizSessionType.ts";
 import { type ResponseType } from "../constants/Types/Common/CommonType.ts";
-import { type ICompleteResponse, type IQuizSessionResponse, type IStartResponse } from "../constants/Types/QuizSession/QuizSessionResponseType.ts";
-import { QuizSessionEndEnums, QuizSessionEnums, QuizStatusEnums } from "../constants/Enums/Enums.ts";
+import { type IQuizSessionQuizResponse, type ICompleteResponse, type IQuizSessionResponse, type IStartResponse } from "../constants/Types/QuizSession/QuizSessionResponseType.ts";
+import { QuestionEnums, QuizSessionEndEnums, QuizSessionEnums, QuizStatusEnums } from "../constants/Enums/Enums.ts";
 import QuizSession from "../models/QuizSession.ts";
 import Quiz from "../models/Quiz.ts";
 import QuizService from "./QuizService.ts";
-import { IQuizWithQuestions } from "../constants/Types/Quiz/QuizResponseTypes.ts";
 import QuizResultService from "./QuizResultService.ts";
 import { type ICreate as ICreateResult } from "../constants/Types/QuizResult/QuizResultType.ts";
 import AuthenticatedUser from "../utils/AuthenticatedUser.ts";
@@ -106,9 +105,38 @@ class QuizSessionService {
                message: quizServiceResult.message 
             }
          }
-
-         // Todo: IQuizSessionQuizResponse tipini kullan ve optionlar içinde isCorrect dönme
-         const quizWithQuestions = quizServiceResult.data as IQuizWithQuestions;
+         
+         const questions = quizServiceResult.data.questions;
+         const questionOptions = questions.map((question) => {
+            if (question.type === QuestionEnums.MULTIPLE_CHOICE || question.type === QuestionEnums.TRUE_FALSE) {
+               return question.options.map((option) => ({ 
+                  id: option.id,
+                  createdAt: option.createdAt,
+                  updatedAt: option.updatedAt,
+                  name: option.name,
+                  isCorrect: false
+               }))
+            } else if (question.type === QuestionEnums.SHORT_ANSWER) {
+               return question.options.map((option) => ({ 
+                  id: option.id,
+                  createdAt: option.createdAt,
+                  updatedAt: option.updatedAt,
+                  name: "",
+                  isCorrect: false
+               }))
+            } else {
+               return question.options
+            }
+         }) 
+         const filteredQuestionOptions = questions.map((question, index) => ({
+            ...question,
+            options: questionOptions[index]
+         }))
+         
+         const quizWithQuestions = {
+            ...quizServiceResult.data,
+            questions: filteredQuestionOptions
+         } as IQuizSessionQuizResponse
 
          const quizSessions = await QuizSession.find({ quizId, userId: AuthenticatedUser.getUserId() });
          if (!quizSessions) {

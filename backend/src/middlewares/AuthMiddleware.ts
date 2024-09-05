@@ -35,6 +35,7 @@ const AuthMiddleware = (publicRoute?: boolean) => (req: Request, res: Response, 
       if (err) {
          return res.status(401).json({ type: false, message: 'Invalid token' });
       }
+      
       AuthenticatedUser.setUserId(decoded?.id || "");
       req.user = decoded;
       next();

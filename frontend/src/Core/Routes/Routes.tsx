@@ -4,7 +4,6 @@ import { Suspense, lazy, useEffect } from 'react';
 import { RouteEnums } from '@/Constants/Enums';
 
 const Dashboard = lazy(() => import('@/Pages/Dashboard/Dashboard'));
-const Test = lazy(() => import('@/Pages/Test/Test'));
 const Quiz = lazy(() => import('@/Pages/Quiz/Quiz'));
 const QuizRules = lazy(() => import('@/Pages/QuizRules/QuizRules'));
 const QuizResult = lazy(() => import('@/Pages/QuizResult/QuizResult'));
@@ -12,8 +11,6 @@ const Creator = lazy(() => import('@/Pages/Creator/Creator'));
 const Profile = lazy(() => import('@/Pages/Profile/Profile'));
 const PageNotFound = lazy(() => import('@/Pages/PageNotFound/PageNotFound'));
 
-// todo : lazy olduğunda fallback'e düşüp geliyor onu düzenleyebiliriz fallback'i modal içinde yapabiliriz
-// const AuthModal = lazy(() => import('@/Pages/Auth/Auth'));
 import { Auth as AuthModal } from '@/Pages/Auth';
 import useAuth from '@/Hooks/useAuth';
 import AppConfigThunks from '../Store/AppConfig.thunk';
@@ -21,7 +18,6 @@ import { FullSizeLoadingWrapper } from '../Layout';
 import { Loading } from '../Components';
 
 // TODO : Change route structure and use useBlocker to prevent navigation in some cases
-// TODO : HomePage will be global route, and others will be protected
 const RouteList = () => {
   const token = localStorage.getItem("token");
   const location = useLocation();
@@ -56,7 +52,6 @@ const RouteList = () => {
         <Route element={<ProtectedRoute />}>
           <Route path={RouteEnums.DEFAULT} element={<Navigate to={RouteEnums.FEED} replace />} />
           <Route path={RouteEnums.FEED} element={<Dashboard />} />
-          <Route path={RouteEnums.TEST} element={<Test />} />
           <Route path={RouteEnums.AUTH} element={<AuthModal />} />
         </Route>
 

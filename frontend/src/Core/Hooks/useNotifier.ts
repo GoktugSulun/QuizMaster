@@ -10,7 +10,7 @@ let displayed: SnackbarKey[] = [];
 const useNotifier = () => {
   const dispatch = useAppDispatch();
   const { notifications }: { notifications: NotificationTypes[] } = useAppSelector((state) => state.AppConfig);
-  const { enqueueSnackbar, closeSnackbar  } = useSnackbar();
+  const { enqueueSnackbar  } = useSnackbar();
 
   const addSnackbar = (key: SnackbarKey) => {
     displayed.push(key);

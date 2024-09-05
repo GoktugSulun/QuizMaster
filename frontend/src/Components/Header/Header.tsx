@@ -37,7 +37,6 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
 
   const { isAuthorized } = useAuth();
 
-  // Todo: manage from ProdtectedRoute with prop maybe
   const pageTitle = (() => {
     if (is404) {
       return 'Page Not Found';

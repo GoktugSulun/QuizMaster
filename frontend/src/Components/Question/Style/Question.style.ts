@@ -1,12 +1,12 @@
 import { Box, Stack, styled } from "@mui/material";
 import { shouldForwardProp } from "@/Core/Utils";
 
-export const QuestionHeader = styled(Stack)(({ theme }) => ({
+export const QuestionHeader = styled(Stack)({
    boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px',
    margin: '20px 40px 0',
    borderRadius: 15,
    padding: 20,
-}));
+});
 
 export const Time = styled(Stack)(({ theme }) => ({
    borderRadius: 15,

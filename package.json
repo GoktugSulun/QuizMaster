@@ -1,7 +1,7 @@
 {
   "name": "quiz-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "QuizMaster is an interactive quiz application",
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
