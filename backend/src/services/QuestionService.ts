@@ -18,11 +18,12 @@ class QuestionService {
         }
 
         const data = await Question.find({ quizId, isRemoved });
+        const transformedData = data.map((item) => item.toJSON())
         
         return { 
           type: true, 
           message: 'Questions has been fetched successfully!', 
-          data
+          data: transformedData
         };
 
       } catch (error) {

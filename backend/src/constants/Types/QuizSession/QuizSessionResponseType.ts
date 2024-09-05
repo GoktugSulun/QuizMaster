@@ -6,11 +6,11 @@ import { type IAnswer } from "./QuizSessionType";
 
 export type IStartResponse = { 
    status: QuizStatusEnums.START_NEW_QUIZ;
-   quiz: IQuizWithQuestions; // Todo: IQuizSessionQuizResponse => bunu kullan service kısmından düzenleme yaptıktan sonra "isCorrect" göndermemek için
+   quiz: IQuizWithQuestions;
    quizSession: IQuizSessionResponse;
 } | {
    status: QuizStatusEnums.CONTINUE_STARTED_QUIZ;
-   quiz: IQuizWithQuestions; // Todo: IQuizSessionQuizResponse => bunu kullan service kısmından düzenleme yaptıktan sonra "isCorrect" göndermemek için
+   quiz: IQuizWithQuestions;
    quizSession: IQuizSessionResponse;
 }  | {
    status: QuizStatusEnums.EXCEED_ATTEMPT;
@@ -43,8 +43,8 @@ export interface IQuizSessionQuizResponse extends IQuizResponse {
       id: string;
       createdAt: Date;
       updatedAt: Date;
-      quizId: String;
-      name: String;
+      quizId: string;
+      name: string;
       optionType: CorrectOptionEnums | null;
       point: PointEnums;
       type: QuestionEnums;
@@ -52,9 +52,10 @@ export interface IQuizSessionQuizResponse extends IQuizResponse {
          id: string;
          createdAt: Date;
          updatedAt: Date;
-         name: String;
+         name: string;
+         isCorrect: boolean;
       }[],
-      isRemoved: Boolean;
+      isRemoved: boolean;
    }[]
 }
 
