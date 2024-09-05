@@ -26,6 +26,7 @@ export const Slide = styled(Stack, { shouldForwardProp })<{ $isActive: boolean; 
    padding: "10px 15px 10px 0",
    backgroundColor: $isActive ? alpha(theme.palette.custom.light, .7) : 'initial',
    cursor: "pointer",
+   borderBottom: `1px solid ${theme.palette.secondary.light}`,
    '& .MuiStack-root.slide': {
       border: `2px solid ${$isActive ? alpha(theme.palette.custom.main, .5) : "2px solid rgb(150 147 147 / 10%)"}`
    },
