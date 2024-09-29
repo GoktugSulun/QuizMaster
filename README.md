@@ -12,11 +12,8 @@
 
 <h2> 🎬 Project Overview </h2>
 <strong> What is this application and how to use it ? </strong>
-<video controls>
-  <source src="./images/Overview.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-<br />
+
+https://github.com/user-attachments/assets/45bba324-e652-41ea-ac3a-05482523a8d4
 
 <h2> 📷 Screenshots </h2>
 <strong> LOGIN PAGE </strong>
@@ -137,8 +134,37 @@
 <h2> 🏁 Getting Started </h2>
 <p>&nbsp;&nbsp;&nbsp; To run the project locally, follow these steps: </p>
 
-* Clone the repository. <code> git clone https://github.com/GoktugSulun/QuizMaster.git </code>
-* Install dependencies using <code>npm install</code> in root folder.
-* Create a <code>.env</code> file in the frontend folder and write <code>VITE_API_URL = "http://localhost:8000"</code> in it. (PORT must be the equal to the port in the backend env file)
-* Create a <code>.env</code> file in the backend folder and write <code>TOKEN_SECRET = "your_secure_random_string", DB_CONNECTION_URL = "your_mongodb_url", PORT = "an_available_port"</code> (Generate a secure random string to enhance security.)
-* Run the project with <code>npm start</code> in root folder.
+Clone the repository.
+
+```sh
+$ git clone https://github.com/GoktugSulun/QuizMaster.git
+```
+
+Create an <code>.env</code> file in the frontend folder:
+
+```ini
+# PORT=8000 must be the equal to the port in the backend env file
+# Example VITE_API_URL = 'http://localhost:8000'
+VITE_API_URL = 'http://localhost:${PORT}'
+```
+
+Create an <code>.env</code> file in the backend folder:
+
+```ini
+# This port is gonna be used for frontend .env url
+PORT = 'an_avaiable_port'
+DB_CONNECTION_URL = 'your_mondodb_url'
+```
+
+Install dependencies in the root folder:
+
+```sh
+$ npm install 
+```
+
+Run the project in the root folder:
+
+```sh
+$ npm start 
+```
+
