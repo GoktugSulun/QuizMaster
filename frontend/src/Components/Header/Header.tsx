@@ -45,6 +45,10 @@ const Header = ({ is404=false }: { is404?: boolean; }) => {
     if (isCreatorPage) {
       return capitilize(pathname);
     }
+
+    if (pathname.includes("auth")) {
+      return "Authentication"
+    }
     
     switch (pathname) {
       case '/feed':
