@@ -12,7 +12,10 @@
 
 <h2> 🎬 Project Overview </h2>
 <strong> What is this application and how to use it ? </strong>
-<img src="./images/Project Overview.mp4" /> 
+<video controls>
+  <source src="./images/Overview.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 <br />
 
 <h2> 📷 Screenshots </h2>
