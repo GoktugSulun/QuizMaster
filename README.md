@@ -137,7 +137,7 @@ https://github.com/user-attachments/assets/45bba324-e652-41ea-ac3a-05482523a8d4
 Clone the repository.
 
 ```sh
-$ git clone https://github.com/GoktugSulun/QuizMaster.git
+git clone https://github.com/GoktugSulun/QuizMaster.git
 ```
 
 Create an <code>.env</code> file in the frontend folder:
@@ -159,12 +159,12 @@ DB_CONNECTION_URL = 'your_mondodb_url'
 Install dependencies in the root folder:
 
 ```sh
-$ npm install 
+npm install 
 ```
 
 Run the project in the root folder:
 
 ```sh
-$ npm start 
+npm start 
 ```
 
