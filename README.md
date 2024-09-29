@@ -10,6 +10,11 @@
 * <strong> Database: </strong> MongoDB
 * <strong> Helper packages: </strong> Redux-toolkit, Redux-thunk, React-router, Material UI, React-hook-form, Axios, Notistack, Jsonwebtoken, Multer, Mongoose, Joi, ...
 
+<h2> 🎬 Project Overview </h2>
+<strong> What is this application and how to use it ? </strong>
+<img src="./images/Project Overview.mp4" /> 
+<br />
+
 <h2> 📷 Screenshots </h2>
 <strong> LOGIN PAGE </strong>
 <img src="./images/Login.png" /> 
