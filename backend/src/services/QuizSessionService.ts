@@ -17,7 +17,8 @@ class QuizSessionService {
          const skip = page === 1 ? 0 : (page - 1) * limit;
 
          const allCompletedSessions = await QuizSession
-            .find({ 
+            .find({
+               userId: AuthenticatedUser.getUserId(),
                status: { $in: [QuizSessionEnums.COMPLETED, QuizSessionEnums.TIMEOUT, QuizSessionEnums.EXCEED_ATTEMPT] } 
             })
             .sort({ createdAt: "desc" })
